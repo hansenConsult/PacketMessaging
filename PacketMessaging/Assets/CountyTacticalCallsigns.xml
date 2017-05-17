@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticalCallsigns xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Area="County Agencies" BulletinCreationTime="0001-01-01T00:00:00">
+  <TacticalCallsignsArray>
+    <TacticalCalls TacticalCallsign="ARCEOC" AgencyName="American Red Cross" Prefix="ARC" PrimaryBBS="W1XSC" SecondaryBBS="W4XSC" Selected="true" />
+    <TacticalCalls TacticalCallsign="SCUCIC" AgencyName="Cal-Fire VIPs Santa Clara Unit" Prefix="SCU" PrimaryBBS="W2XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="CBLEOC" AgencyName="Campbell, City of" Prefix="CBL" PrimaryBBS="W1XSC" SecondaryBBS="W4XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="CUPEOC" AgencyName="Cupertino, City of" Prefix="CUP" PrimaryBBS="W1XSC" SecondaryBBS="W4XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="GILEOC" AgencyName="Gilroy, City of" Prefix="GIL" PrimaryBBS="W2XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSDOC" AgencyName="Hospitals, all SCCo" Prefix="HOS" PrimaryBBS="W2XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="LMPEOC" AgencyName="Loma Prieta Region" Prefix="LMP" PrimaryBBS="W2XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="LOSEOC" AgencyName="Los Altos, City of" Prefix="LOS" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="LAHEOC" AgencyName="Los Altos Hills, Town of" Prefix="LAH" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="LGTEOC" AgencyName="Los Gatos, Town of" Prefix="LGT" PrimaryBBS="W1XSC" SecondaryBBS="W4XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MLPEOC" AgencyName="Milpitas, City of" Prefix="MLP" PrimaryBBS="W4XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MSOEOC" AgencyName="Monte Sereno, City of" Prefix="MSO" PrimaryBBS="W1XSC" SecondaryBBS="W4XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MRGEOC" AgencyName="Morgan Hill, City of" Prefix="MRG" PrimaryBBS="W2XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVEOC" AgencyName="Mountain View, City of" Prefix="MTV" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="NAMEOC" AgencyName="NASA - Ames" Prefix="NAM" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="PAFEOC" AgencyName="Palo Alto, City of" Prefix="PAF" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="SJCEOC" AgencyName="San Jose, City of" Prefix="SJC" PrimaryBBS="W1XSC" SecondaryBBS="W2XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="SJWEOC" AgencyName="San Jose Water Co" Prefix="SJW" PrimaryBBS="W1XSC" SecondaryBBS="W2XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="SNCEOC" AgencyName="Santa Clara, City of" Prefix="SNC" PrimaryBBS="W1XSC" SecondaryBBS="W2XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="XSCEOC" AgencyName="Santa Clara County" Prefix="XSC" PrimaryBBS="W1XSC" SecondaryBBS="W4XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="VWDEOC" AgencyName="SC Valley Water District" Prefix="VWD" PrimaryBBS="W1XSC" SecondaryBBS="W2XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="SAREOC" AgencyName="Saratoga, City of" Prefix="SAR" PrimaryBBS="W1XSC" SecondaryBBS="W4XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="STUEOC" AgencyName="Stanford University" Prefix="STU" PrimaryBBS="W4XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="SNYEOC" AgencyName="Sunnyvale, City of" Prefix="SNY" PrimaryBBS="W1XSC" SecondaryBBS="W3XSC" Selected="false" />
+  </TacticalCallsignsArray>
+</TacticalCallsigns>

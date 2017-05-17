@@ -1,0 +1,305 @@
+﻿<!--<UserControl-->
+<MyBaseNamespace:FormControlBase
+	x:Name="city_scan"
+    x:Class="CityScanFormControl.CityScanControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CityScanFormControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:MyNamespace="using:ToggleButtonGroupControl"
+    xmlns:MyBaseNamespace="using:FormControlBaseClass"
+
+    mc:Ignorable="d"
+    d:DesignHeight="1100"
+    d:DesignWidth="750">
+
+	<MyBaseNamespace:FormControlBase.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="/Styles/ICSFormsDictionary.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</MyBaseNamespace:FormControlBase.Resources>
+
+	<StackPanel x:Name="root" RequestedTheme="Light" >
+		<Border x:Name="FormCityScan" BorderBrush="Black" BorderThickness="1" Padding="15" >
+			<StackPanel >
+				<Border BorderBrush="Black" BorderThickness="1,1,1,0">
+					<Grid >
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition />
+							<ColumnDefinition />
+							<ColumnDefinition />
+						</Grid.ColumnDefinitions>
+						<TextBlock x:Name="labelMessageForm"  Grid.Column="0" FontSize="20" FontFamily="Arial Black" FontWeight="Bold" HorizontalAlignment="Left"  Text="CITY SCAN - Flash report" VerticalAlignment="Center"/>
+						<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
+							<StackPanel >
+								<TextBlock FontSize="8" FontFamily="Arial" FontWeight="Bold" HorizontalAlignment="Center"  Text="Sender's msg #:"/>
+								<TextBox x:Name="senderMsgNo" Style="{StaticResource TypedText}" TextAlignment="Center" BorderBrush="White" Margin="0,0,0,2" />
+							</StackPanel>
+						</Border>
+						<Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,0,0,0">
+							<StackPanel Grid.Column="2">
+								<TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold" HorizontalAlignment="Center"  Text="Message #:"/>
+								<TextBox x:Name="messageNo" IsReadOnly="True"
+										 Text="{Binding MessageNo }"
+										 TextAlignment="Center" BorderBrush="White" Margin="0,0,0,2" Tag="required" TextChanged="Subject_Changed"/>
+							</StackPanel>
+						</Border>
+						<Border Grid.Column="3" BorderBrush="Black" BorderThickness="1,0,0,0">
+							<StackPanel Grid.Column="3">
+								<TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold"  HorizontalAlignment="Center"  Text="Receiver's msg #:"/>
+								<TextBox x:Name="receiverMsgNo" Style="{StaticResource TypedText}" TextAlignment="Center" BorderBrush="White" Margin="0,0,0,2" />
+							</StackPanel>
+						</Border>
+					</Grid>
+				</Border>
+				<Border BorderBrush="Black" BorderThickness="3">
+					<StackPanel>
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="0.7*"/>
+								<ColumnDefinition Width="0.8*"/>
+								<ColumnDefinition Width="0.8*"/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<!--<StackPanel  >-->
+							<Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,0,1" >
+								<StackPanel>
+									<Border BorderBrush="Black" BorderThickness="0,0,0,1" >
+										<StackPanel >
+											<TextBlock Style="{StaticResource LabelFontTNR12B}" Padding="5,0,5,5" Text=" Date:"   />
+											<TextBox x:Name="msgDate" TextAlignment="Center" Style="{StaticResource TypedText}" BorderBrush="White" Margin="2,0,2,2"/>
+										</StackPanel>
+									</Border>
+									<Border BorderBrush="Black" BorderThickness="0,0,0,1">
+										<StackPanel >
+											<TextBlock Style="{StaticResource LabelFontTNR12B}" Padding="5,0,5,5" Text="Time:" />
+											<TextBox x:Name="msgTime" TextAlignment="Center" Style="{StaticResource TypedText}" BorderBrush="White" Margin="2,0,2,2"/>
+										</StackPanel>
+									</Border>
+								</StackPanel>
+							</Border>
+							<!--</StackPanel>-->
+							<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,1">
+								<StackPanel>
+									<TextBlock Style="{StaticResource LabelFontTNR12B}" Foreground="LightSalmon" Margin="5,5"
+										Text="Situation Severity"/>
+									<MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required"/>
+									<RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Content="EMERGENCY" Checked="Subject_Changed" Padding="4,0,0,0">
+										<!--<RadioButton.ToolTip>Life Threat</RadioButton.ToolTip>-->
+									</RadioButton>
+									<RadioButton x:Name="urgent" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Content="URGENT" Checked="Subject_Changed" Padding="4,0,0,0">
+										<!--<RadioButton.ToolTip>Property Threat</RadioButton.ToolTip>-->
+									</RadioButton>
+									<RadioButton x:Name="other" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Content="OTHER" Checked="Subject_Changed" Padding="4,0,0,0">
+										<!--<RadioButton.ToolTip>Life Threat</RadioButton.ToolTip>-->
+									</RadioButton>
+								</StackPanel>
+							</Border>
+							<Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,0,0,1">
+								<StackPanel>
+									<TextBlock Style="{StaticResource LabelFontTNR12B}" Foreground="LightSalmon" Margin="5,5" 
+										Text="Msg. Handling Order" />
+									<MyNamespace:ToggleButtonGroup x:Name="handlingOrder" Tag="required"/>
+									<RadioButton x:Name="immediate" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Content="IMMEDIATE" Checked="Subject_Changed" Padding="4,0,0,0">
+										<!--<RadioButton.ToolTip>As soon as possible</RadioButton.ToolTip>-->
+									</RadioButton>
+									<RadioButton x:Name="priority" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Content="PRIORITY" Checked="Subject_Changed" Padding="4,0,0,0">
+										<!--<RadioButton.ToolTip>:Less than one hour</RadioButton.ToolTip>-->
+									</RadioButton>
+									<RadioButton x:Name="routine" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Content="ROUTINE" Checked="Subject_Changed" Padding="4,0,0,0">
+										<!--<RadioButton.ToolTip>More than one hour</RadioButton.ToolTip>-->
+									</RadioButton>
+								</StackPanel>
+							</Border>
+							<Border Grid.Column="3" BorderBrush="Black" BorderThickness="1,0,0,1">
+								<StackPanel x:Name="msgRequest" Grid.Column="3" >
+									<TextBlock Style="{StaticResource LabelFontTNR12B}"   Text="Message requests:" Margin="5,5"/>
+									<MyNamespace:ToggleButtonGroup x:Name="action"/>
+									<TextBlock Style="{StaticResource LabelFontTNR12B}"  Text="Reply" Margin="10"/>
+									<StackPanel Orientation="Horizontal">
+										<MyNamespace:ToggleButtonGroup x:Name="reply"/>
+										<RadioButton x:Name="replyYes" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Margin="10" Content="Yes, by" Width="50"  Padding="4,0,0,0"/>
+										<TextBox x:Name="replyBy" Style="{StaticResource TypedText}" PlaceholderText="1234" Width="35" BorderBrush="White" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="-55"/>
+										<RadioButton x:Name="replyNo" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Content="No" Width="34" Margin="10,0,0,0" Padding="4,0,0,0" />
+									</StackPanel>
+								</StackPanel>
+							</Border>
+						</Grid>
+						<Grid >
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="50"/>
+								<ColumnDefinition Width="1*"/>
+								<ColumnDefinition Width="50"/>
+								<ColumnDefinition Width="1*"/>
+							</Grid.ColumnDefinitions>
+							<Border BorderBrush="Black" BorderThickness="0,1,0,0">
+							<TextBlock x:Name="labelTo" Grid.Column="0" Style="{StaticResource LabelFontTNR14B}" Text=" To:" />
+							</Border>
+							<StackPanel Grid.Column="1" >
+								<Border BorderBrush="Black" BorderThickness="1,1,0,1">
+									<StackPanel >
+										<TextBlock Style="{StaticResource LabelFontTNR14B}" Foreground="LightSalmon" Padding="5,0,5,5" Text="ICS Position:" />
+										<TextBox x:Name="toICSPosition" Style="{StaticResource TypedText}" Margin="10,0,2,2" BorderBrush="White" Text="Planning" IsReadOnly="True"/>
+									</StackPanel>
+								</Border>
+								<Border BorderBrush="Black" BorderThickness="1,0,0,1" >
+									<StackPanel >
+										<TextBlock Style="{StaticResource LabelFontTNR14B}" Foreground="LightSalmon" Padding="5,0,5,5"  Text="Name:" />
+										<TextBox x:Name="toName" Style="{StaticResource TypedText}" BorderBrush="White" Margin="10,0,2,2"  Tag="required"/>
+									</StackPanel>
+								</Border>
+								<Border BorderBrush="Black" BorderThickness="1,0,0,0">
+								<StackPanel >
+									<TextBlock Style="{StaticResource LabelFontTNR14B}" Padding="5,0,5,5" Text="Telephone:" />
+									<TextBox x:Name="toTelephone" Style="{StaticResource TypedText}" PlaceholderText="(123) 456-7890" BorderBrush="White" Margin="10,0,2,2"/>
+								</StackPanel>
+								</Border>
+							</StackPanel>
+							<Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,1,1,0"/>
+							<StackPanel Grid.Column="3">
+								<Border BorderBrush="Black" BorderThickness="0,1">
+									<StackPanel >
+										<TextBlock Style="{StaticResource LabelFontTNR14B}" Padding="5,0,5,5" Text="" />
+										<TextBox  Style="{StaticResource TypedText}" BorderBrush="White" Margin="10,0,2,2" IsReadOnly="True"/>
+									</StackPanel>
+								</Border>
+								<Border BorderBrush="Black" BorderThickness="0,0,0,1" >
+									<StackPanel >
+										<TextBlock Style="{StaticResource LabelFontTNR14B}" Text="Title:" Padding="5,0,5,5" />
+										<TextBox x:Name="toTitle" Style="{StaticResource TypedText}" BorderBrush="White" Margin="10,0,2,2" />
+									</StackPanel>
+								</Border>
+								<Border BorderBrush="Black" BorderThickness="0,0,0,0">
+									<StackPanel >
+										<TextBlock Style="{StaticResource LabelFontTNR14B}" Text="Radio Frequency:" Padding="5,0,5,5" />
+										<TextBox x:Name="toRadioFrequency" Style="{StaticResource TypedText}" BorderBrush="White" Margin="10,0,2,2" />
+									</StackPanel>
+								</Border>
+							</StackPanel>
+						</Grid>
+						<StackPanel Orientation="Horizontal"/>
+					</StackPanel>
+				</Border>
+				<Grid Margin="0,20,10,10">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="1*"/>
+						<ColumnDefinition Width="0.8*"/>
+						<ColumnDefinition Width="1*"/>
+					</Grid.ColumnDefinitions>
+					<StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Width="auto">
+						<TextBlock Text="City:" Foreground="LightSalmon" HorizontalAlignment="Left" Style="{StaticResource ResourceKey=LabelFontTNR12B}" Width="34" VerticalAlignment="Center"/>
+						<ComboBox x:Name="city" Grid.Column="0" Tag="required" SelectionChanged="city_SelectionChanged" Width="181" >
+						</ComboBox>
+					</StackPanel>
+					<TextBlock x:Name="labelOther" Grid.Column="1" Text="If Other is selected, enter Entity Name:" Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center"/>
+					<TextBox x:Name="cityOther" Grid.Column="2" IsEnabled="False" Style="{StaticResource TypedText}" TextChanged="Subject_Changed" />
+				</Grid>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition  Width="*"/>
+						<ColumnDefinition Width="75"/>
+						<ColumnDefinition Width="75" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Column="0" Text="HAS THE CITY BEEN IMPACTED?" Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center" />
+					<MyNamespace:ToggleButtonGroup x:Name="cityImpact"/>
+					<RadioButton Grid.Column="1" Grid.Row="0"  Name="cityImpactYes" GroupName="cityImpact" Content="Yes" Style="{StaticResource RadioButtonTNR12B}" Padding="4,0,0,0"/>
+					<RadioButton Grid.Column="2" Grid.Row="0"  Name="cityImpactNo" GroupName="cityImpact" Content="No"  Style="{StaticResource RadioButtonTNR12B}" Padding="4,0,0,0"/>
+					<TextBlock Grid.Column="0" Grid.Row="1" Text="HAS A LOCAL EMERGENCY BEEN DECLARED?" Style="{StaticResource LabelFontTNR12B}" Foreground="LightSalmon" VerticalAlignment="Center"/>
+					<MyNamespace:ToggleButtonGroup x:Name="emergencyDeclared" Tag="required"/>
+					<RadioButton Grid.Column="1" Grid.Row="1" Name="emergencyDeclaredYes" GroupName="emergencyDeclared" Content="Yes"  Style="{StaticResource RadioButtonTNR12B}" Checked="Subject_Changed" Padding="4,0,0,0"/>
+					<RadioButton Grid.Column="2" Grid.Row="1" Name="emergencyDeclaredNo" GroupName="emergencyDeclared" Content="No"  Style="{StaticResource RadioButtonTNR12B}" Checked="Subject_Changed" Padding="4,0,0,0"/>
+					<Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition  Width="90"/>
+							<ColumnDefinition Width="45"/>
+							<ColumnDefinition Width="100" />
+							<ColumnDefinition Width="45" />
+							<ColumnDefinition Width="80" />
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Text="When?" Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center"/>
+						<TextBlock Grid.Column="1" Text="Date: " Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center"/>
+						<TextBox Name="emergencyDeclaredDate" Grid.Column="2" Style="{StaticResource TypedText}" PlaceholderText="mm/dd/yy" Width="auto" Margin="0,1"/>
+						<TextBlock Grid.Column="3" Text="Time: " Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center"
+								   Margin="5,0,0,0"/>
+						<TextBox Name="emergencyDeclaredTime" Grid.Column="4" Margin="5,0,0,0" Style="{StaticResource TypedText}" PlaceholderText="hhmm"/>
+					</Grid>
+					<Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition  Width="90"/>
+							<ColumnDefinition Width="45"/>
+							<ColumnDefinition Width="145*" />
+							<ColumnDefinition Width="45" />
+							<ColumnDefinition Width="70*" />
+							<ColumnDefinition Width="47*"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Text="Who signed it?" Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center"/>
+						<TextBlock Grid.Column="1" Text="Name:" Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Bottom" Margin="0,0,0,10"/>
+						<TextBox Name="emergencyDeclaredName" Grid.Column="2" Style="{StaticResource TypedText}" Margin="0,1"/>
+						<TextBlock Grid.Column="3" Text="Title:" Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+						<TextBox Name="emergencyDeclaredTitle" Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TypedText}"/>
+					</Grid>
+					<TextBlock Grid.Column="0" Grid.Row="4" Text="HAS YOUR EMERGENCY OPERATIONS CENTER BEEN ACTIVATED?" Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center"/>
+					<MyNamespace:ToggleButtonGroup x:Name="emergencyOpsCenterActivated"/>
+					<RadioButton Grid.Column="1" Grid.Row="4" Name="emergencyOpsCenterActivatedYes" GroupName="emergencyOpsCenterActivated" Content="Yes"  Style="{StaticResource RadioButtonTNR12B}" Padding="4,0,0,0"/>
+					<RadioButton Grid.Column="2" Grid.Row="4" Name="emergencyOpsCenterActivatedNo" GroupName="emergencyOpsCenterActivated" Content="No"  Style="{StaticResource RadioButtonTNR12B}" Padding="4,0,0,0"/>
+					<TextBlock Grid.Column="0" Grid.Row="5" Text=" Can you tell me what MAJOR INCIDENTS are occurring now?" Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center"/>
+					<MyNamespace:ToggleButtonGroup x:Name="majorIncidents"/>
+					<RadioButton Grid.Column="1" Grid.Row="5" Name="majorIncidentsYes" GroupName="majorIncidents" Content="Yes"  Style="{StaticResource RadioButtonTNR12B}" Padding="4,0,0,0"/>
+					<RadioButton Grid.Column="2" Grid.Row="5" Name="majorIncidentsNo" GroupName="majorIncidents" Content="No"  Style="{StaticResource RadioButtonTNR12B}" Padding="4,0,0,0"/>
+				</Grid>
+				<Grid Margin="0,5,0,0" >
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition  Width="*"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Column="0" Text="INCIDENT"  Style="{StaticResource LabelFontTNR12B}" Grid.ColumnSpan="2" Margin="10,0,212,0"/>
+					<TextBlock Grid.Column="1" Text="LOCATION"  Style="{StaticResource LabelFontTNR12B}"/>
+					<TextBlock Grid.Column="2" Text="STATUS"  Style="{StaticResource LabelFontTNR12B}"/>
+					<Border  Grid.Column="0" Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,0,5,0">
+						<TextBox Grid.Column="0" Grid.Row="1" Name="incident" AcceptsReturn="True" TextWrapping="Wrap"   Height="250"  Margin="0,0,5,0" Style="{StaticResource TypedText}"/>
+					</Border>
+					<Border  Grid.Column="1" Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,0">
+						<TextBox Grid.Column="1" Grid.Row="1" Name="location" AcceptsReturn="True" TextWrapping="Wrap"  Height="250"  Margin="6,-1,-1,1" Style="{StaticResource TypedText}"/>
+					</Border>
+					<Border  Grid.Column="2" Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="5,0,5,0">
+						<TextBox Grid.Column="2" Grid.Row="1" Name="status" AcceptsReturn="True" TextWrapping="Wrap"  Height="250"  Margin="5,0,0,0" Style="{StaticResource TypedText}"/>
+					</Border>
+				</Grid>
+				<Grid Margin="0,10,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition  Width="*"/>
+						<ColumnDefinition Width="80"/>
+						<ColumnDefinition Width="80" />
+					</Grid.ColumnDefinitions>
+					<TextBlock Grid.Column="0" Text="Are you requesting any ADDITIONAL RESOURCES from the Operation Area?" Style="{StaticResource LabelFontTNR12B}" VerticalAlignment="Center"/>
+					<MyNamespace:ToggleButtonGroup x:Name="additionalResources" />
+					<RadioButton Grid.Column="1" Name="additionalResourcesYes" GroupName="additionalResources" Content="Yes"  Style="{StaticResource RadioButtonTNR12B}"/>
+					<RadioButton Grid.Column="2" Name="additionalResourcesNo" GroupName="additionalResources" Content="No"  Style="{StaticResource RadioButtonTNR12B}"/>
+				</Grid>
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="If you Checked YES, YOU NEED TO SUBMIT RESOURCE REQUEST." Style="{StaticResource LabelFontTNR12B}"/>
+					<TextBox x:Name="operatorDate" Visibility="Collapsed"/>
+					<TextBox x:Name="operatorTime" Visibility="Collapsed" />
+				</StackPanel>
+			</StackPanel>
+		</Border>
+	</StackPanel>
+</MyBaseNamespace:FormControlBase>
+<!--</UserControl>-->

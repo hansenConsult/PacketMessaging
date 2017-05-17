@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticalCallsigns xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Area="County Hospitals" BulletinCreationTime="2015-04-01T00:00:00">
+  <TacticalCallsignsArray>
+    <TacticalCalls TacticalCallsign="HOSSUH" AgencyName="Stanford Hospital" Prefix="SUH" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSPAV" AgencyName="Palo Alto Veterans Hospital" Prefix="PAV" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSECM" AgencyName="El Camino Hospital Mountain View" Prefix="ECM" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSKSC" AgencyName="Kaiser Santa Clara" Prefix="KSC" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSECL" AgencyName="El Camino Hospital Los Gatos" Prefix="ECL" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSGSH" AgencyName="Good Samaritan Hospital" Prefix="GSH" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSOCH" AgencyName="O'Connor Hospital" Prefix="OCH" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSRSJ" AgencyName="Regional San Jose" Prefix="RSJ" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSVMC" AgencyName="Valley Medical Center" Prefix="VMC" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSKSJ" AgencyName="Kaiser San Jose Medical Center" Prefix="KSJ" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+    <TacticalCalls TacticalCallsign="HOSSLH" AgencyName="Saint Louise Regional" Prefix="SLH" PrimaryBBS="W2XSC" PrimaryBBSActive="true" SecondaryBBS="W1XSC" SecondaryBBSActive="false" Selected="false" />
+  </TacticalCallsignsArray>
+</TacticalCallsigns>

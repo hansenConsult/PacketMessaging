@@ -1,0 +1,60 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="LabelFontTNR8B" TargetType="TextBlock">
+        <Setter Property="TextBlock.FontFamily" Value="Times New Roman"/>
+        <Setter Property="TextBlock.FontSize" Value="8"/>
+        <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="LabelFontTNR9B" TargetType="TextBlock">
+        <Setter Property="TextBlock.FontFamily" Value="Times New Roman"/>
+        <Setter Property="TextBlock.FontSize" Value="9"/>
+        <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="LabelFontTNR10B" TargetType="TextBlock">
+        <Setter Property="TextBlock.FontFamily" Value="Times New Roman"/>
+        <Setter Property="TextBlock.FontSize" Value="10"/>
+        <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="LabelFontTNR11B" TargetType="TextBlock">
+        <Setter Property="TextBlock.FontFamily" Value="Times New Roman"/>
+        <Setter Property="TextBlock.FontSize" Value="11"/>
+        <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="LabelFontTNR12B" TargetType="TextBlock">
+        <Setter Property="TextBlock.FontFamily" Value="Times New Roman"/>
+        <Setter Property="TextBlock.FontSize" Value="12"/>
+        <Setter Property="TextBlock.FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="LabelFontTNR14B"  TargetType="TextBlock" BasedOn="{StaticResource LabelFontTNR12B}">
+        <Setter Property="TextBlock.FontSize" Value="14"/>
+        <Setter Property="TextBlock.Margin" Value="0"/>
+        <!--<Setter Property="Panel.VerticalAlignment" Value="Top"/>-->
+    </Style>
+    <Style x:Key="TextC12" TargetType="TextBlock">
+        <Setter Property="TextBlock.FontFamily" Value="Courier New"/>
+        <Setter Property="TextBlock.FontSize" Value="12"/>
+        <!--<Setter Property="TextBlock.FontWeight" Value="Bold"/>-->
+        <!--<Setter Property="Panel.VerticalAlignment" Value="Center"/>-->
+    </Style>
+    <Style x:Key="TypedText" TargetType="TextBox">
+        <Setter Property="TextBox.FontFamily" Value="Courier New"/>
+        <Setter Property="TextBox.FontSize" Value="15"/>
+        <!--<Setter Property="TextBox.FontWeight" Value="Bold"/>-->
+        <Setter Property="TextBox.VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="CheckBoxTNR12B" TargetType="CheckBox">
+        <Setter Property="CheckBox.FontFamily" Value="Times New Roman"/>
+        <Setter Property="CheckBox.FontSize" Value="12"/>
+        <Setter Property="CheckBox.FontWeight" Value="Bold"/>
+        <Setter Property="CheckBox.VerticalAlignment" Value="Center"/>
+        <Setter Property="CheckBox.VerticalContentAlignment" Value="Center"/>
+    </Style >
+    <Style x:Key="RadioButtonTNR12B" TargetType="RadioButton">
+		<Setter Property="RadioButton.FontFamily" Value="Times New Roman"/>
+		<Setter Property="RadioButton.FontSize" Value="12"/>
+		<Setter Property="RadioButton.VerticalAlignment" Value="Center"/>
+		<Setter Property="RadioButton.FontWeight" Value="Bold"/>
+		<Setter Property="RadioButton.VerticalContentAlignment" Value="Center"/>
+	</Style>
+</ResourceDictionary>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TNCDeviceArray xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Device Name="XSC_Kantronics_KPC3-Plus" Selected="false">
+    <Prompts Command="cmd:" Timeout="*** retry count exceeded" Connected="*** CONNECTED" Disconnected="*** DISCONNECTED" />
+    <Commands MyCall="my" Connect="connect" Retry="retry" Conversmode="conv" Datetime="daytime" />
+    <InitCommands Precommands="INTFACE TERMINAL&#xD;&#xA;CD SOFTWARE&#xD;&#xA;NEWMODE ON&#xD;&#xA;8BITCONV ON&#xD;&#xA;BEACON EVERY 0&#xD;&#xA;SLOTTIME 10&#xD;&#xA;PERSIST 63&#xD;&#xA;PACLEN 128&#xD;&#xA;MAXFRAME 2&#xD;&#xA;FRACK 6&#xD;&#xA;RETRY 8&#xD;&#xA;CHECK 30&#xD;&#xA;TXDELAY 40&#xD;&#xA;XFLOW OFF&#xD;&#xA;SENDPAC $05&#xD;&#xA;CR OFF&#xD;&#xA;PACTIME AFTER 2&#xD;&#xA;CPACTIME ON&#xD;&#xA;STREAMEV OFF&#xD;&#xA;STREAMSW $00&#xD;&#xA;" Postcommands="SENDPAC $0D&#xD;&#xA;CR ON&#xD;&#xA;PACTIME AFTER 10&#xD;&#xA;CPACTIME OFF&#xD;&#xA;STREAMSW $7C&#xD;&#xA;" />
+    <CommPort IsBluetooth="false" Comport="COM6" Baudrate="9600" Databits="8" Parity="None" Stopbits="One" Flowcontrol="RequestToSend" />
+  </Device>
+  <Device Name="XSC_Kenwood_TM-D710A" Selected="true">
+    <Prompts Command="cmd:" Timeout="*** retry count exceeded" Connected="*** CONNECTED" Disconnected="*** DISCONNECTED" />
+    <Commands MyCall="my" Connect="connect" Retry="retry" Conversmode="conv" Datetime="daytime" />
+    <InitCommands Precommands="NEWMODE ON&#xD;8BITCONV ON&#xD;BEACON EVERY 0&#xD;SLOTTIME 10&#xD;PERSIST 63&#xD;PPERSIST ON&#xD;PACLEN 128&#xD;MAXFRAME 2&#xD;FRACK 6&#xD;RETRY 8&#xD;RESPTIME 5&#xD;CHECK 30&#xD;TXDELAY 40&#xD;XFLOW OFF&#xD;SENDPAC $05&#xD;CR OFF&#xD;PACTIME AFTER 2&#xD;CPACTIME ON&#xD;STREAMSW $00" Postcommands="SENDPAC $0D&#xD;CR ON&#xD;PACTIME AFTER 10&#xD;CPACTIME OFF&#xD;STREAMSW $01" />
+    <CommPort IsBluetooth="false" Comport="COM4" Baudrate="9600" Databits="8" Parity="None" Stopbits="One" Flowcontrol="RequestToSend" />
+  </Device>
+  <Device Name="XSC_Kenwood_TH-D72A" Selected="false">
+    <Prompts Command="cmd:" Timeout="*** retry count exceeded" Connected="*** CONNECTED" Disconnected="*** DISCONNECTED" />
+    <Commands MyCall="my" Connect="connect" Retry="retry" Conversmode="conv" Datetime="daytime" />
+    <InitCommands Precommands="NEWMODE ON&#xA;8BITCONV ON&#xA;BEACON EVERY 0&#xA;SLOTTIME 10&#xD;&#xA;PERSIST 63&#xA;PPERSIST ON&#xA;PACLEN 128&#xD;&#xA;MAXFRAME 1&#xD;&#xA;FRACK 6&#xA;RETRY 8&#xA;RESPTIME 5&#xA;CHECK 30&#xD;&#xA;TXDELAY 40&#xA;XFLOW OFF&#xA;SENDPAC $05&#xA;CR OFF&#xD;&#xA;PACTIME AFTER 2&#xA;CPACTIME ON&#xA;LOCATION EVERY 0" Postcommands="SENDPAC $0D&#xA;CR ON&#xD;&#xA;PACTIME AFTER 10&#xA;CPACTIME OFF&#xA;" />
+    <CommPort IsBluetooth="false" Comport="COM5" Baudrate="9600" Databits="8" Parity="None" Stopbits="One" Flowcontrol="RequestToSend" />
+  </Device>
+</TNCDeviceArray>

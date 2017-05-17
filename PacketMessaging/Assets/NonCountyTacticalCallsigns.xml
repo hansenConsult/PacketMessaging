@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticalCallsigns xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Area="non County Agencies" BulletinCreationTime="0001-01-01T00:00:00">
+  <TacticalCallsignsArray>
+    <TacticalCalls TacticalCallsign="COSEOC" AgencyName="CalEMA - Coastal Region" Prefix="COS" PrimaryBBS="W1XSC" SecondaryBBS="W1XSC" Selected="true" />
+    <TacticalCalls TacticalCallsign="XALEOC" AgencyName="Alameda County" Prefix="XAL" PrimaryBBS="W4XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="XCCEOC" AgencyName="Contra Costa County" Prefix="XCC" PrimaryBBS="W1XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="XMREOC" AgencyName="Marin County" Prefix="XMR" PrimaryBBS="W4XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="XMYEOC" AgencyName="Monterey County" Prefix="XMY" PrimaryBBS="W2XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="XBEEOC" AgencyName="San Benito County" Prefix="XBE" PrimaryBBS="W2XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="XSFEOC" AgencyName="San Francisco County" Prefix="XSF" PrimaryBBS="W4XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="XSMEOC" AgencyName="San Mateo County" Prefix="XSM" PrimaryBBS="W4XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="XCZEOC" AgencyName="Santa Cruz County" Prefix="XCZ" PrimaryBBS="W2XSC" SecondaryBBS="W1XSC" Selected="false" />
+  </TacticalCallsignsArray>
+</TacticalCallsigns>

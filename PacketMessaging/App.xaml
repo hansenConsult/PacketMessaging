@@ -1,0 +1,18 @@
+﻿<common:BootStrapper
+    x:Class="PacketMessaging.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PacketMessaging"
+    xmlns:common="using:Template10.Common"
+    RequestedTheme="Light">
+
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Styles\Custom.xaml" />
+				<ResourceDictionary Source="Styles\ICSFormsDictionary.xaml" />
+		</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+
+</common:BootStrapper>

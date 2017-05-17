@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BBSDefinitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <RevisionTime>2014-01-16T21:15:00</RevisionTime>
+  <BBS Name="W1XSC" ConnectName="W1XSC" Description="Santa Clara County ARES/RACES PacketSystem. SCCo Office Bldg (San Jose)" Frequency1="145.750" Frequency2="223.620" Selected="true" />
+  <BBS Name="W2XSC" ConnectName="W2XSC" Description="Santa Clara County ARES/RACES PacketSystem. Crystal Peak (South County)" Frequency1="145.730" Frequency2="223.560" Selected="false" />
+  <BBS Name="W3XSC" ConnectName="W3XSC" Description="Santa Clara County ARES/RACES PacketSystem. Mountain View" Frequency1="144.310" Frequency2="223.540" Selected="false" />
+  <BBS Name="W4XSC" ConnectName="W4XSC" Description="Santa Clara County ARES/RACES PacketSystem. Frazier Peak (above Milpitas)" Frequency1="145.690" Frequency2="223.600" Selected="false" />
+  <BBS Name="W5XSC" ConnectName="W5XSC" Description="Used for training and testing" Selected="false" />
+</BBSDefinitions>

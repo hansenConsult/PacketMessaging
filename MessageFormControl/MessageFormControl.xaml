@@ -1,0 +1,23 @@
+﻿<MyBaseNamespace:FormControlBase 
+	x:Name="MessageForm"
+	x:Class="MessageFormControl.MessageControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="using:MessageFormControl"
+             xmlns:MyBaseNamespace="using:FormControlBaseClass"
+             mc:Ignorable="d" 
+             d:DesignHeight="120" d:DesignWidth="300">
+
+	<StackPanel x:Name="root" Height="auto" RequestedTheme="Light">
+        <TextBox x:Name="messageBody" AcceptsReturn="True" TextWrapping="Wrap" Margin="5" Tag="required"/>
+		<!--<RichTextBox x:Name="messageBody" FontFamily="Courier New" FontSize="12" Height="100" AcceptsReturn="True" AcceptsTab="True" Margin="5" Tag="required">
+			<FlowDocument>
+				<Paragraph>
+					<Run Text="RichTextBox"/>
+				</Paragraph>
+			</FlowDocument>
+		</RichTextBox>-->
+	</StackPanel>
+</MyBaseNamespace:FormControlBase>

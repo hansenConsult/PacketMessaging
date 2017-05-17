@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TacticalCallsigns xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Area="Local Mountain View" BulletinCreationTime="0001-01-01T00:00:00">
+  <TacticalCallsignsArray>
+    <TacticalCalls TacticalCallsign="MTVMOC" AgencyName="Mtn. View Municipal Operations Ctr " Prefix="MOC" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="true" />
+    <TacticalCalls TacticalCallsign="MTVPUB" AgencyName="Mtn. View Public Works Branch " Prefix="PUB" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVOPS" AgencyName="Mtn. View Operations Section " Prefix="OPS" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVFIR" AgencyName="Mtn. View Fire Branch " Prefix="FIR" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVLAW" AgencyName="Mtn. View Law Branch " Prefix="LAW" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVPLN" AgencyName="Mtn. View Planning Section " Prefix="PLN" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVLOG" AgencyName="Mtn. View Logistics Section  " Prefix="LOG" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVAPK" AgencyName="Ada Park CERT " Prefix="APK" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVATA" AgencyName="Appletree Area CERT " Prefix="ATA" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVCPK" AgencyName="Cuesta Park CERT " Prefix="CPK" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVCPR" AgencyName="Cooper Neighborhood CERT " Prefix="CPR" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVGSA" AgencyName="Greater San Antonio " Prefix="GSA" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVMLN" AgencyName="Monta Loma CERT " Prefix="MLN" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVMVG" AgencyName="Mountain View Gardens CERT " Prefix="MVG" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVNWA" AgencyName="North Whisman CERT " Prefix="NWA" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVOMV" AgencyName="Old Mtn. View CERT " Prefix="OMV" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVREX" AgencyName="Rex Manor CERT " Prefix="REX" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVSFA" AgencyName="Saint Francis Acres CERT " Prefix="SFA" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVSMV" AgencyName="South Mountain View CERT " Prefix="SMV" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVSLA" AgencyName="Slater CERT " Prefix="SLA" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVSLV" AgencyName="Sylvan Park CERT " Prefix="SLV" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVVAR" AgencyName="Varsity Park CERT " Prefix="VAR" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVWWN" AgencyName="Wagon Wheel CERT  " Prefix="WWN" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVMLA" AgencyName="Mtn. View-Los Altos H.S. Dist. " Prefix="MLA" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVMVW" AgencyName="Mtn. View-Whisman School Dist.  " Prefix="MVW" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVEVC" AgencyName="Mtn. View Emergent Volunteer Ctr. " Prefix="EVC" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVSEN" AgencyName="Mtn. View Senior Ctr. " Prefix="SEN" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVCOM" AgencyName="Mtn. View Community Ctr. " Prefix="COM" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVECH" AgencyName="El Camino Hospital-Mtn. View " Prefix="ECH" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVYMC" AgencyName="Mtn. View YMCA " Prefix="YMC" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVGMS" AgencyName="Graham Middle School" Prefix=" " PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVCMS" AgencyName="Crittenden Middle School  " Prefix="CMS" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVFS1" AgencyName="MTV Fire Sta. 1 " Prefix="FS1" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVFS2" AgencyName="MTV Fire Sta. 2 " Prefix="FS2" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVFS3" AgencyName="MTV Fire Sta. 3 " Prefix="FS3" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVFS4" AgencyName="MTV Fire Sta. 4 " Prefix="FS4" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVFS5" AgencyName="MTV Fire Sta. 5  " Prefix="FS5" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVPAV" AgencyName="Mtn. View Sports Pavilian " Prefix="PAV" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVWSC" AgencyName="Whisman Sports Center " Prefix="WSC" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+    <TacticalCalls TacticalCallsign="MTVSHR" AgencyName="Shoreline Amphitheater  " Prefix="SHR" PrimaryBBS="W3XSC" SecondaryBBS="W1XSC" Selected="false" />
+  </TacticalCallsignsArray>
+</TacticalCallsigns>
