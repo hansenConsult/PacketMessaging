@@ -110,7 +110,20 @@
 
 				</ScrollViewer>
 			</PivotItem>
-		</Pivot>
+
+            <!--  EOCResourceRequest  -->
+            <PivotItem x:Name="EOCResourceRequest" DataContext="{Binding FormsPartViewModel}" Header="EOC Resource Request">
+                <ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
+                              VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
+                    <StackPanel x:Name="ResourceRequestPanel" HorizontalAlignment="Left">
+                        <!--Insert form here-->
+                        <!--<My213Control:ICS213Control x:Name="ICSForm213" />-->
+                        <!--<local:SendFormDataControl x:Name="sendFormData" />-->
+                    </StackPanel>
+
+                </ScrollViewer>
+            </PivotItem>
+        </Pivot>
 
 		<!--<Border RelativePanel.Below="MyPivot" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" BorderThickness="1" BorderBrush="Black" Padding="2,2,5,2">-->
 		<!--<RelativePanel x:Name="panelMessageInfo" RelativePanel.Below="MyPivot" Margin="7,0,-7,0" >

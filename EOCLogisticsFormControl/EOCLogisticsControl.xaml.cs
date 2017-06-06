@@ -195,30 +195,30 @@ namespace EOCLogisticsFormControl
 						switch (formField.ControlContent)
 						{
 							case "emergency":
-								outpostData.Add($"3: [true]");
-								break;
-							case "urgent":
 								outpostData.Add($"4: [true]");
 								break;
-							case "other":
+							case "urgent":
 								outpostData.Add($"5: [true]");
+								break;
+							case "other":
+								outpostData.Add($"6: [true]");
 								break;
 						}
 						break;
-					//6: [true] immediate
-					//7: [true] priority
-					//8: [true] routine
+					//7: [true] immediate
+					//8: [true] priority
+					//9: [true] routine
 					case "handlingOrder":
 						switch (formField.ControlContent)
 						{
 							case "immediate":
-								outpostData.Add($"6: [true]");
-								break;
-							case "priority":
 								outpostData.Add($"7: [true]");
 								break;
-							case "routine":
+							case "priority":
 								outpostData.Add($"8: [true]");
+								break;
+							case "routine":
+								outpostData.Add($"9: [true]");
 								break;
 						}
 						break;
@@ -356,8 +356,8 @@ namespace EOCLogisticsFormControl
 					case "authorizationName":
 						outpostData.Add($"37: [{formField.ControlContent}]");
 						break;
-					//38: [true] sent
-					//39: [true] Received
+                    //38: [true] Received
+					//39: [true] Sent
 					case "receivedOrSent":
 						switch (formField.ControlContent)
 						{
@@ -413,8 +413,8 @@ namespace EOCLogisticsFormControl
 			outpostData.Add("!PACF!" + packetMessage.Subject);
 			//# JS:EOC Logistics Request (which4)
 			outpostData.Add("# JS:EOC Logistics Request (which4)");
-			//# JS-ver. PR-4.1-2.5, 01/11/15
-			outpostData.Add("# JS-ver. PR-4.1-2.5, 01/11/15");
+            //# JS-ver. PR-4.1-2.7, 03/10/17
+            outpostData.Add("# JS-ver. PR-4.1-2.7, 03/10/17");
 			//# FORMFILENAME: EOCLogisticsRequest.html
 			outpostData.Add("# FORMFILENAME: EOCLogisticsRequest.html");
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketMessaging", "PacketMessaging\PacketMessaging.csproj", "{AB1B2422-3B0A-4E7A-815E-50CDDF2C0C51}"
 EndProject
@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestPacketMessaging", "
 		{03845F9E-F25A-4E0B-BD71-41EB0A66F4E1} = {03845F9E-F25A-4E0B-BD71-41EB0A66F4E1}
 		{7DF8B2F3-22E6-46B8-AB34-77B50BA2307E} = {7DF8B2F3-22E6-46B8-AB34-77B50BA2307E}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICS213RRFormControl", "ICS213RRFormControl\ICS213RRFormControl.csproj", "{F095759D-A58A-4479-B4C6-2289C50AB7BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -176,38 +178,24 @@ Global
 		{5E7E6381-6ACB-43FA-9122-2FAB44225A94}.Release|x86.ActiveCfg = Release|x86
 		{5E7E6381-6ACB-43FA-9122-2FAB44225A94}.Release|x86.Build.0 = Release|x86
 		{5E7E6381-6ACB-43FA-9122-2FAB44225A94}.Release|x86.Deploy.0 = Release|x86
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Debug|ARM.ActiveCfg = Debug|ARM
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Debug|ARM.Build.0 = Debug|ARM
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Debug|x64.ActiveCfg = Debug|x64
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Debug|x64.Build.0 = Debug|x64
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Debug|x86.ActiveCfg = Debug|x86
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Debug|x86.Build.0 = Debug|x86
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Release|ARM.ActiveCfg = Release|ARM
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Release|ARM.Build.0 = Release|ARM
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Release|x64.ActiveCfg = Release|x64
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Release|x64.Build.0 = Release|x64
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Release|x86.ActiveCfg = Release|x86
+		{F095759D-A58A-4479-B4C6-2289C50AB7BD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://hansenca.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = PacketMessaging\\PacketMessaging.csproj
-		SccProjectName1 = PacketMessaging
-		SccLocalPath1 = PacketMessaging
-		SccProjectUniqueName2 = FormControlBase\\FormControlBase.csproj
-		SccProjectName2 = FormControlBase
-		SccLocalPath2 = FormControlBase
-		SccProjectUniqueName3 = ToggleButtonGroupControl\\ToggleButtonGroupControl.csproj
-		SccProjectName3 = ToggleButtonGroupControl
-		SccLocalPath3 = ToggleButtonGroupControl
-		SccProjectUniqueName4 = CityScanFormControl\\CityScanFormControl.csproj
-		SccProjectName4 = CityScanFormControl
-		SccLocalPath4 = CityScanFormControl
-		SccProjectUniqueName5 = EOCLogisticsFormControl\\EOCLogisticsFormControl.csproj
-		SccProjectName5 = EOCLogisticsFormControl
-		SccLocalPath5 = EOCLogisticsFormControl
-		SccProjectUniqueName6 = ICS213FormControl\\ICS213FormControl.csproj
-		SccProjectName6 = ICS213FormControl
-		SccLocalPath6 = ICS213FormControl
-		SccProjectUniqueName7 = MessageFormControl\\MessageFormControl.csproj
-		SccProjectName7 = MessageFormControl
-		SccLocalPath7 = MessageFormControl
-		SccProjectUniqueName8 = UnitTestPacketMessaging\\UnitTestPacketMessaging.csproj
-		SccProjectName8 = UnitTestPacketMessaging
-		SccLocalPath8 = UnitTestPacketMessaging
 	EndGlobalSection
 EndGlobal

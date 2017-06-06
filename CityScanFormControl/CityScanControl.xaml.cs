@@ -308,7 +308,7 @@ namespace CityScanFormControl
 			//!PACF!6DM-123_O/R_CityScan_Mountain View Fremont Emergency Declared: no
 			outpostData.Add("!PACF! " + packetMessage.Subject);
 			outpostData.Add("# CITY-SCAN UPDATE FLASH REPORT ");
-			outpostData.Add("# JS-ver. PR-4.1-3.9, 01/11/15");
+			outpostData.Add("# JS-ver. PR-4.1-3.11, 03/10/17");
 			//# FORMFILENAME: city-scan.html
 			outpostData.Add("# FORMFILENAME: city-scan.html");
 

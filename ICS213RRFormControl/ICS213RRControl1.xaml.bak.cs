@@ -1,34 +1,18 @@
-﻿using System.Collections.Generic;
-using Windows.UI.Xaml;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using FormControlBaseClass;
-using Windows.UI.Xaml.Controls;
-
-// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
+using ToggleButtonGroupControl;
 
 namespace ICS213FormControl
 {
-	[FormControl(
-		FormControlName = "Message",
-		FormControlMenuName = "XSC ICS-213 Message Form",
-		FormControlType = FormControlAttribute.FormType.CountyForm)
-	]
-
-	public partial class ICS213Control : FormControlBase
+    public partial class ICS213Control : FormControlBase
 	{
-		public string[] ICSPosition = new string[] {
-				"Incident Commander",
-				"Operations",
-				"Planning",
-				"Logistics",
-				"Finance",
-				"Public Info. Officer",
-				"Liaison Officer",
-				"Safety Officer"
-		};
-
 		public ICS213Control()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 
 			ScanControls(root);
 
@@ -37,16 +21,13 @@ namespace ICS213FormControl
 			ReceivedOrSent = "sent";
 			HowRecevedSent = "otherRecvdType";
 			OtherText = "Packet";
-			comboBoxToICSPosition.ItemsSource = ICSPosition;
-			comboBoxFromICSPosition.ItemsSource = ICSPosition;
 		}
 
 		public string ReceiverMsgNo
 		{ get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
 
-		public override string MessageNo
-		{ get { return GetTextBoxString(messageNo); }
-			set { SetTextBoxString(messageNo, value); } }
+		public override string MessagegNo
+		{ get { return GetTextBoxString(messageNo); } set { messageNo.Text = value; } }
 
 		public string SenderMsgNo
 		{ get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
@@ -76,7 +57,7 @@ namespace ICS213FormControl
 		{ get { return GetCheckBoxCheckedState(forInfo); } set { SetCheckBoxCheckedState(forInfo, value); } }
 
 		public string ToICSPosition
-		{ get { return GetComboBoxString(comboBoxToICSPosition); } set { SetComboBoxString(comboBoxToICSPosition, value); } }
+		{ get { return GetComboBoxString(toICSPosition); } set { SetComboBoxString(toICSPosition, value); } }
 
 		public string ToLocation
 		{ get { return GetTextBoxString(toLocation); } set { SetTextBoxString(toLocation, value); } }
@@ -87,8 +68,8 @@ namespace ICS213FormControl
 		public string ToTelephone
 		{ get { return GetTextBoxString(toTelephone); } set { SetTextBoxString(toTelephone, value); } }
 
-		public string FromICSPositionComboBox
-		{ get { return GetComboBoxString(comboBoxFromICSPosition); } set { SetComboBoxString(comboBoxFromICSPosition, value); } }
+		public string FromICSPosition
+		{ get { return GetComboBoxString(fromICSPosition); } set { SetComboBoxString(fromICSPosition, value); } }
 
 		public string FromLocation
 		{ get { return GetTextBoxString(fromLocation); } set { SetTextBoxString(fromLocation, value); } }
@@ -129,14 +110,7 @@ namespace ICS213FormControl
 		public override string OperatorTime
 		{ get { return GetTextBoxString(operatorTime); } set { SetTextBoxString(operatorTime, value); } }
 
-		public override string PacFormName => "Message";
-
-		//public override string PacFormName => FormControl.FormControlName = "Message";
-
-		public override string CreateSubject()
-		{
-			return (MessageNo + "_" + Severity?.ToUpper()[0] + "/" + HandlingOrder?.ToUpper()[0] + "_ICS213_" + Subject);
-		}
+		public override string CreateSubject() => (MessagegNo + "_" + Severity?.ToUpper()[0] + "/" + HandlingOrder?.ToUpper()[0] + "_ICS213_" + Subject);
 
 		protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
 		{
@@ -186,13 +160,8 @@ namespace ICS213FormControl
 						outpostData.Add($"6d.: [{formField.ControlContent}]");
 						break;
 					//8.: [Operations]
-					case "comboBoxToICSPosition":
-						if ((string)buttonSelectToICSPosInput.Content == "List Input")
-							outpostData.Add($"7.: [{formField.ControlContent}]");
-						break;
-					case "textBpxToICSPosition":
-						if ((string)buttonSelectToICSPosInput.Content == "Manual Input")
-							outpostData.Add($"7.: [{formField.ControlContent}]");
+					case "toICSPosition":
+						outpostData.Add($"7.: [{formField.ControlContent}]");
 						break;
 					//9a.: [Jerry]
 					case "toLocation":
@@ -205,13 +174,8 @@ namespace ICS213FormControl
 						outpostData.Add($"ToTel.: [{formField.ControlContent}]");
 						break;
 					//8.: [Operations]
-					case "comboBoxFromICSPosition":
-						if ((string)buttonSelectFromICSPosInput.Content == "List Input")
-							outpostData.Add($"8.: [{formField.ControlContent}]");
-						break;
-					case "textBoxFromICSPosition":
-						if ((string)buttonSelectFromICSPosInput.Content == "Manual Input")
-							outpostData.Add($"8.: [{formField.ControlContent}]");
+					case "fromICSPosition":
+						outpostData.Add($"8.: [{formField.ControlContent}]");
 						break;
 					//9b.: [Poul Hansen]
 					case "fromLocation":
@@ -232,6 +196,7 @@ namespace ICS213FormControl
 						break;
 					//12.: [\nweekly check in]
 					case "message":
+						//string messageTemp = "\\n" + formField.ControlContent;
 						outpostData.Add($"12.: [\\n{formField.ControlContent}]");
 						break;
 					//Rec-Sent: [Sent]
@@ -278,9 +243,9 @@ namespace ICS213FormControl
 		{
 			List<string> outpostData = new List<string>();
 
-			outpostData.Add("!PACF! " + packetMessage.Subject);
+			outpostData.Add("!PACF! " + packetMessage.MessageSubject);
 			outpostData.Add("# EOC MESSAGE FORM ");
-			outpostData.Add("# JS-ver. PR-4.1-3.1, 01/19/17");
+			outpostData.Add("# JS-ver. PR-4.1-2.9, 01/11/15,");
 			outpostData.Add("# FORMFILENAME: Message.html");
 
 			outpostData = CreateOutpostDataFromFormFields(ref packetMessage, ref outpostData);
@@ -334,8 +299,7 @@ namespace ICS213FormControl
 					case "replyBy":
 						formField.ControlContent = GetOutpostValue("6d.", ref msgLines);
 						break;
-					case "textBoxToICSPosition":
-						ButtonTextInput(true, true);
+					case "toICSPosition":
 						formField.ControlContent = GetOutpostValue("7.", ref msgLines);
 						break;
 					case "toLocation":
@@ -347,9 +311,7 @@ namespace ICS213FormControl
 					case "toTelephone":
 						formField.ControlContent = GetOutpostValue("ToTel", ref msgLines);
 						break;
-					//case "fromICSPosition":
-					case "textBoxFromICSPosition":
-						ButtonTextInput(false, true);
+					case "fromICSPosition":
 						formField.ControlContent = GetOutpostValue("8.", ref msgLines);
 						break;
 					case "fromLocation":
@@ -368,6 +330,7 @@ namespace ICS213FormControl
 						formField.ControlContent = GetOutpostValue("11.", ref msgLines);
 						break;
 					case "message":
+						//formField.ControlContent = GetOutpostValue("12.", ref msgLines).TrimStart(new char[] { '\n' });
 						formField.ControlContent = GetOutpostValue("12.", ref msgLines).Substring(2);
 						break;
 					case "receivedOrSent":
@@ -410,48 +373,6 @@ namespace ICS213FormControl
 			}
 			return formFields;
 		}
-
-		private void ButtonTextInput(bool to, bool buttonStateText)
-		{
-			Button buttonSelectICSPosInput;
-			TextBox textBoxICSPosition;
-			ComboBox comboBoxICSPosition;
-			if (to)
-			{
-				buttonSelectICSPosInput = buttonSelectToICSPosInput;
-				textBoxICSPosition = textBoxToICSPosition;
-				comboBoxICSPosition = comboBoxToICSPosition;
-			}
-			else
-			{
-				buttonSelectICSPosInput = buttonSelectFromICSPosInput;
-				textBoxICSPosition = textBoxFromICSPosition;
-				comboBoxICSPosition = comboBoxFromICSPosition;
-			}
-			if (buttonStateText)
-			{
-				buttonSelectICSPosInput.Content = "List Input";
-				textBoxICSPosition.Visibility = Visibility.Collapsed;
-				textBoxICSPosition.Tag = null;
-				comboBoxICSPosition.Visibility = Visibility.Visible;
-				comboBoxICSPosition.Tag = "required";
-			}
-			else
-			{
-				buttonSelectICSPosInput.Content = "Manual Input";
-				textBoxICSPosition.Visibility = Visibility.Visible;
-				textBoxICSPosition.Tag = "required";
-				comboBoxICSPosition.Visibility = Visibility.Collapsed;
-				comboBoxICSPosition.Tag = null;
-			}
-		}
-
-		private void buttonSelectICSPosInput_Click(object sender, RoutedEventArgs e)
-		{
-			ButtonTextInput((Button)sender == buttonSelectToICSPosInput, 
-					((string)((Button)sender).Content == "Manual Input"));
-		}
-
 
 	}
 }
