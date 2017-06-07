@@ -15,17 +15,6 @@ namespace ICS213RRFormControl
 
 	public partial class ICS213RRControl : FormControlBase
 	{
-		//public string[] ICSPosition = new string[] {
-		//		"Incident Commander",
-		//		"Operations",
-		//		"Planning",
-		//		"Logistics",
-		//		"Finance",
-		//		"Public Info. Officer",
-		//		"Liaison Officer",
-		//		"Safety Officer"
-		//};
-
 		public ICS213RRControl()
 		{
 			this.InitializeComponent();
@@ -34,8 +23,8 @@ namespace ICS213RRFormControl
 
 			InitializeControls();
 
-			ReceivedOrSent = "sent";
-			HowRecevedSent = "otherRecvdType";
+			//ReceivedOrSent = "sent";
+			//HowRecevedSent = "otherRecvdType";
 		}
 
 		public string ReceiverMsgNo

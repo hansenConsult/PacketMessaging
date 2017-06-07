@@ -14,105 +14,105 @@
     d:DesignHeight="1100"
     d:DesignWidth="750">
 
-	<MyBaseNamespace:FormControlBase.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Styles/ICSFormsDictionary.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</MyBaseNamespace:FormControlBase.Resources>
+    <MyBaseNamespace:FormControlBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/ICSFormsDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </MyBaseNamespace:FormControlBase.Resources>
 
-	<StackPanel x:Name="root" RequestedTheme="Light" >
-		<Border x:Name="Form213RR" BorderBrush="Black" BorderThickness="1" Padding="15" >
-			<StackPanel >
-				<Border BorderBrush="Black" BorderThickness="1,1,1,0">
-					<Grid >
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition />
-							<ColumnDefinition />
-							<ColumnDefinition />
-						</Grid.ColumnDefinitions>
-						<TextBlock Grid.Column="0" FontSize="20" FontFamily="Arial Black" FontWeight="Bold" Foreground="Black" Text="RESOURCE REQUEST FORM" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" />
-						<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
-							<StackPanel >
-								<TextBlock FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" Text="Sender's msg #:"/>
-								<TextBox x:Name="senderMsgNo"  
+    <StackPanel x:Name="root" RequestedTheme="Light" >
+        <Border x:Name="Form213RR" BorderBrush="Black" BorderThickness="1" Padding="15" >
+            <StackPanel >
+                <Border BorderBrush="Black" BorderThickness="1,1,1,0">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" FontSize="20" FontFamily="Arial Black" FontWeight="Bold" Foreground="Black" Text="RESOURCE REQUEST FORM" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" />
+                        <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
+                            <StackPanel >
+                                <TextBlock FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" Text="Sender's msg #:"/>
+                                <TextBox x:Name="senderMsgNo"  
 										 TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2"  />
-							</StackPanel>
-						</Border>
-						<Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,0,0,0">
-							<StackPanel Grid.Column="2">
-								<TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" Text="Message #:"/>
-								<TextBox x:Name="messageNo"  IsReadOnly="True"
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,0,0,0">
+                            <StackPanel Grid.Column="2">
+                                <TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" Text="Message #:"/>
+                                <TextBox x:Name="messageNo"  IsReadOnly="True"
 										 TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2"  Tag="required" TextChanged="Subject_Changed"/>
-							</StackPanel>
-						</Border>
-						<Border Grid.Column="3" BorderBrush="Black" BorderThickness="1,0,0,0">
-							<StackPanel Grid.Column="3">
-								<TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black"  HorizontalAlignment="Center" Text="Receiver's msg #:"/>
-								<TextBox x:Name="receiverMsgNo" TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2"/>
-							</StackPanel>
-						</Border>
-					</Grid>
-				</Border>
-				<StackPanel>
-					<Grid BorderBrush="Black" BorderThickness="1">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="10*"/>
-							<ColumnDefinition Width="10*"/>
-							<ColumnDefinition Width="11*"/>
-						</Grid.ColumnDefinitions>
-                           <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1,0,0,0">
-							<StackPanel>
-								<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Situation Severity" Foreground="LightSalmon" Margin="10"/>
-								<MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required"/>
-								<RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="EMERGENCY" Checked="Subject_Changed" 
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="3" BorderBrush="Black" BorderThickness="1,0,0,0">
+                            <StackPanel Grid.Column="3">
+                                <TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black"  HorizontalAlignment="Center" Text="Receiver's msg #:"/>
+                                <TextBox x:Name="receiverMsgNo" TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+                <StackPanel>
+                    <Grid BorderBrush="Black" BorderThickness="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10*"/>
+                            <ColumnDefinition Width="10*"/>
+                            <ColumnDefinition Width="11*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1,0,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Situation Severity" Foreground="LightSalmon" Margin="10"/>
+                                <MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required"/>
+                                <RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="EMERGENCY" Checked="Subject_Changed" 
 									ToolTipService.ToolTip="Life threat">
-								</RadioButton>
-								<RadioButton x:Name="urgent" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="URGENT" Checked="Subject_Changed"
+                                </RadioButton>
+                                <RadioButton x:Name="urgent" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="URGENT" Checked="Subject_Changed"
 									ToolTipService.ToolTip="Property threat">
-								</RadioButton>
-								<RadioButton x:Name="other" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="OTHER" Checked="Subject_Changed"
+                                </RadioButton>
+                                <RadioButton x:Name="other" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="OTHER" Checked="Subject_Changed"
 									ToolTipService.ToolTip="All other">
-								</RadioButton>
-							</StackPanel>
-						</Border>
-						<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
-						<StackPanel>
-							<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Msg. Handling Order" Foreground="LightSalmon" Margin=" 10"/>
-								<MyNamespace:ToggleButtonGroup x:Name="handlingOrder" Tag="required"/>
-								<RadioButton x:Name="immediate" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="IMMEDIATE" Checked="Subject_Changed">
-								<!--<RadioButton.ToolTip>As soon as possible</RadioButton.ToolTip>-->
-								</RadioButton>
-								<RadioButton x:Name="priority" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="PRIORITY" Checked="Subject_Changed">
-								<!--<RadioButton.ToolTip>Less than one hour</RadioButton.ToolTip>-->
-								</RadioButton>
-								<RadioButton x:Name="routine" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="ROUTINE" Checked="Subject_Changed">
-								<!--<RadioButton.ToolTip>More than one hour</RadioButton.ToolTip>-->
-								</RadioButton>
-							</StackPanel>
-						</Border>
-						<Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,0,0,0">
-							<StackPanel x:Name="msgRequest" Grid.Column="3">
-								<TextBlock Style="{StaticResource LabelFontTNR12B}"  Text="Message requests" Margin="10"/>
+                                </RadioButton>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Msg. Handling Order" Foreground="LightSalmon" Margin=" 10"/>
+                                <MyNamespace:ToggleButtonGroup x:Name="handlingOrder" Tag="required"/>
+                                <RadioButton x:Name="immediate" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="IMMEDIATE" Checked="Subject_Changed">
+                                    <!--<RadioButton.ToolTip>As soon as possible</RadioButton.ToolTip>-->
+                                </RadioButton>
+                                <RadioButton x:Name="priority" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="PRIORITY" Checked="Subject_Changed">
+                                    <!--<RadioButton.ToolTip>Less than one hour</RadioButton.ToolTip>-->
+                                </RadioButton>
+                                <RadioButton x:Name="routine" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,2" Padding="4" Content="ROUTINE" Checked="Subject_Changed">
+                                    <!--<RadioButton.ToolTip>More than one hour</RadioButton.ToolTip>-->
+                                </RadioButton>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,0,0,0">
+                            <StackPanel x:Name="msgRequest" Grid.Column="3">
+                                <TextBlock Style="{StaticResource LabelFontTNR12B}"  Text="Message requests" Margin="10"/>
                                 <MyNamespace:ToggleButtonGroup x:Name="action"/>
-								<StackPanel Orientation="Horizontal"/>
-                                    <TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Reply" Margin="10,0,0,0" />
-								<StackPanel Orientation="Horizontal">
-				    				<MyNamespace:ToggleButtonGroup x:Name="reply"/>
-									<RadioButton x:Name="replyYes" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0,0,0" Content="Yes, by" Width="80" Padding="4"/>
-									<TextBox x:Name="replyBy"  Width="3.998" BorderBrush="White" HorizontalAlignment="Left" Margin="-50,0,0,0" PlaceholderText="hhmm" VerticalAlignment="Stretch" Height="16.986" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
-									<TextBox.RenderTransform>
-									<CompositeTransform ScaleY="-1" Rotation="-180.429" ScaleX="-1"/>
-									</TextBox.RenderTransform>
-									</TextBox>
-										<!--<TextBlock Style="{StaticResource LabelFontTNR12B}" Padding="0, 0" Text=", by" Width="20" />-->
-										<RadioButton x:Name="replyNo" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Content="No" Width="34" Margin="5,0,0,0" Padding="4"/>
-									</StackPanel>
+                                <StackPanel Orientation="Horizontal"/>
+                                <TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Reply" Margin="10,0,0,0" />
+                                <StackPanel Orientation="Horizontal">
+                                    <MyNamespace:ToggleButtonGroup x:Name="reply"/>
+                                    <RadioButton x:Name="replyYes" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0,0,0" Content="Yes, by" Width="80" Padding="4"/>
+                                    <TextBox x:Name="replyBy"  Width="3.998" BorderBrush="White" HorizontalAlignment="Left" Margin="-50,0,0,0" PlaceholderText="hhmm" VerticalAlignment="Stretch" Height="16.986" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
+                                        <TextBox.RenderTransform>
+                                            <CompositeTransform ScaleY="-1" Rotation="-180.429" ScaleX="-1"/>
+                                        </TextBox.RenderTransform>
+                                    </TextBox>
+                                    <!--<TextBlock Style="{StaticResource LabelFontTNR12B}" Padding="0, 0" Text=", by" Width="20" />-->
+                                    <RadioButton x:Name="replyNo" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Content="No" Width="34" Margin="5,0,0,0" Padding="4"/>
                                 </StackPanel>
-							</Border>
-						</Grid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -165,9 +165,9 @@
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Column="0" Grid.Row="0" Text="County" FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
                                 <TextBox Name="trackingNoCounty" Grid.Column="1" Grid.Row="0"  FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="State" FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="State" FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
                                 <TextBox Name="trackingNoState" Grid.Column="1" Grid.Row="1"  FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
-                            <TextBlock Grid.Column="0" Grid.Row="2" Text="Federal" FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Federal" FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
                                 <TextBox Name="trackingNoFederal" Grid.Column="1" Grid.Row="2"  FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
                             </Grid>
                         </StackPanel>
@@ -240,30 +240,116 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="1" Grid.Row="0" Text="How to use EOC form 213RR" FontWeight="Bold" />
+                                <TextBlock Grid.Column="1" Grid.Row="0" Text="How to use EOC form 213RR" FontWeight="Bold" TextDecorations="Underline" />
                                 <TextBlock Grid.Column="0" Grid.Row="1" Text="Purpose:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="1" Text="How to use EOC form 213RR"/>
+                                <TextBlock Grid.Column="1" Grid.Row="1" Text="The EOC 213RR is used to request supplies, services, personnel, teams, equipment, utilities, fuel, facilities, procurement actions, or any other resource required by the EOC or any incident management activity from the County EOC Logistics Section." TextWrapping="WrapWholeWords"/>
                                 <TextBlock Grid.Column="0" Grid.Row="2" Text="When to use:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="How to use EOC form 213RR"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="The EOC 213RR may be used anytime during any opeational Period."/>
                                 <TextBlock Grid.Column="0" Grid.Row="3" Text="Prepared by:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="3" Text="How to use EOC form 213RR"/>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="Any EOC position or agency requesting resources from the EOC Logistics Section" TextWrapping="WrapWholeWords"/>
                                 <TextBlock Grid.Column="0" Grid.Row="4" Text="Approved by:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="4" Text="How to use EOC form 213RR"/>
+                                <TextBlock Grid.Column="1" Grid.Row="4" Text="Section Chief of the requesting EOC position or Supervising Official at Requesting Agency."  TextWrapping="WrapWholeWords" />
                                 <TextBlock Grid.Column="0" Grid.Row="5" Text="Routed to:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="5" Text="How to use EOC form 213RR"/>
+                                <TextBlock Grid.Column="1" Grid.Row="5" Text="Logistics Section -> Finance/Admin Section -> Planning and Intelligence Section."  TextWrapping="WrapWholeWords"/>
                                 <TextBlock Grid.Column="0" Grid.Row="6" Text="Filed with:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="6" Text="How to use EOC form 213RR"/>
+                                <TextBlock Grid.Column="1" Grid.Row="6" Text="Documentation Unit."/>
                                 <TextBlock Grid.Column="0" Grid.Row="7" Text="User Notes:"/>
-                                <TextBlock Grid.Column="1" Grid.Row="7" Text="How to use EOC form 213RR"/>
+                                <TextBlock Grid.Column="1" Grid.Row="7" Text="The EOC 213RR has multiple pages.   Please check all that all pages are copied." IsHitTestVisible="False" TextWrapping="WrapWholeWords"/>
                             </Grid>
                         </Border>
-                    </Grid>    
-                    
-                        
-                        
-				</StackPanel>
-			</StackPanel>
-		</Border>
-	</StackPanel>
+                    </Grid>
+                    <Grid BorderBrush="Black" BorderThickness="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="10*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Requesting EOC Section or Agency" RenderTransformOrigin="0.5,0.5"  UseLayoutRounding="False" d:LayoutRounding="Auto" Margin="-149.479,145.062,531.771,5.688" Grid.ColumnSpan="2" Grid.RowSpan="2" >
+                            <TextBlock.RenderTransform>
+                                <CompositeTransform Rotation="270"/>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <Grid Grid.Column="1" Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.ColumnSpan="5" Grid.Row="0" Text="8. Resource Information" HorizontalAlignment="Center" />
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Quantity" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Grid.Row="1" Text="Detailed Resource Description" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Grid.Row="1" Text="Requested Arrival" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Grid.Row="1" Text="Requested" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="4" Grid.Row="1" Text="Estimated" HorizontalAlignment="Center"/>
+                            <TextBox Grid.Column="0" Grid.Row="2" Name="resourceInfoQuantity1" />
+                            <TextBox Grid.Column="1" Grid.Row="2" Name="resourceInfoDetailedResourceDesc1" />
+                            <TextBox Grid.Column="2" Grid.Row="2" Name="resourceInfoArrival1" />
+                            <TextBox Grid.Column="3" Grid.Row="2" Name="resourceInfoPriority1" />
+                            <TextBox Grid.Column="4" Grid.Row="2" Name="resourceInfoCost1" />
+                            <TextBox Grid.Column="0" Grid.Row="3" Name="resourceInfoQuantity2" />
+                            <TextBox Grid.Column="1" Grid.Row="3" Name="resourceInfoDetailedResourceDesc2" />
+                            <TextBox Grid.Column="2" Grid.Row="3" Name="resourceInfoArrival2" />
+                            <TextBox Grid.Column="3" Grid.Row="3" Name="resourceInfoPriority2" />
+                            <TextBox Grid.Column="4" Grid.Row="3" Name="resourceInfoCost2" />
+                            <TextBox Grid.Column="0" Grid.Row="4" Name="resourceInfoQuantity3" />
+                            <TextBox Grid.Column="1" Grid.Row="4" Name="resourceInfoDetailedResourceDesc3" />
+                            <TextBox Grid.Column="2" Grid.Row="4" Name="resourceInfoArrival3" />
+                            <TextBox Grid.Column="3" Grid.Row="4" Name="resourceInfoPriority3" />
+                            <TextBox Grid.Column="4" Grid.Row="4" Name="resourceInfoCost3" />
+                            <TextBox Grid.Column="0" Grid.Row="5" Name="resourceInfoQuantity4" />
+                            <TextBox Grid.Column="1" Grid.Row="5" Name="resourceInfoDetailedResourceDesc4" />
+                            <TextBox Grid.Column="2" Grid.Row="5" Name="resourceInfoArrival4" />
+                            <TextBox Grid.Column="3" Grid.Row="5" Name="resourceInfoPriority4" />
+                            <TextBox Grid.Column="4" Grid.Row="5" Name="resourceInfoCost4" />
+                        </Grid>
+                        <StackPanel Grid.Column="1" Grid.Row="1">
+                            <TextBlock Text="9. Requested Delivery/Reporting Location and Point of Contact\n
+(First/Last Name, Position, Shift, Agency, Address, Phone, Radio, Email)" />
+                            <TextBox Name="deliveryLocation" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="2">
+                            <TextBlock Text="10. Suitable Substitutes and/or Suggested Sources
+(Source Name/Company Name)" />
+                            <TextBox Name="substitute" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="3">
+                            <TextBlock Text="11. Requested by EOC Position or Response/Support Agency Information
+(First/Last Name, Position, Shift, Agency, Phone, Radio, Email)" />
+                            <TextBox Name="requestedByEOCPos" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="4">
+                            <TextBlock Text="12. EOC Section Chief or Supervising Official Approval of Requesting Section/Agency
+(First/Last Name, Position, Shift, Agency, Phone, Radio, Email)" />
+                            <TextBox Name="sectionChief" />
+                            <StackPanel>
+                                <TextBlock Text="Signature:" />
+                                <TextBox Name="sectionChiefSignature" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+
+
+
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </StackPanel>
 </MyBaseNamespace:FormControlBase>
 <!--</UserControl>-->
