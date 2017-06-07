@@ -5,17 +5,17 @@ using Windows.UI.Xaml.Controls;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace ICS213RRFormControl
+namespace EOC213RRFormControl
 {
 	[FormControl(
-		FormControlName = "Message",
-		FormControlMenuName = "XSC ICS-213RR Message Form",
+		FormControlName = "EOCResourceRequest",
+		FormControlMenuName = "XSC EOC Resource Request Form",
 		FormControlType = FormControlAttribute.FormType.CountyForm)
 	]
 
-	public partial class ICS213RRControl : FormControlBase
+	public partial class EOC213RRControl : FormControlBase
 	{
-		public ICS213RRControl()
+		public EOC213RRControl()
 		{
 			this.InitializeComponent();
 
@@ -55,7 +55,7 @@ namespace ICS213RRFormControl
 
         public string IncidentName
         { get => GetTextBoxString(incidentName); set => SetTextBoxString(incidentName, value); }
-/*
+
 		public string ReceivedOrSent
 		{ get { return receivedOrSent.GetRadioButtonCheckedState(); } set { receivedOrSent.SetRadioButtonCheckedState(value); } }
 
@@ -73,7 +73,7 @@ namespace ICS213RRFormControl
 
 		public override string OperatorTime
 		{ get { return GetTextBoxString(operatorTime); } set { SetTextBoxString(operatorTime, value); } }
-*/
+
 		public override string PacFormName => "Message";
 
 		//public override string PacFormName => FormControl.FormControlName = "Message";

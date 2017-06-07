@@ -34,7 +34,31 @@
         <Setter Property="Margin" Value="0"/>
         <!--<Setter Property="Panel.VerticalAlignment" Value="Top"/>-->
     </Style>
-	<Style x:Key="TextC12" TargetType="TextBlock">
+    <Style x:Key="EOC213RRFieldBase" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Ariel"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="EOC213RRFieldLabel" TargetType="TextBlock" BasedOn="{StaticResource EOC213RRFieldBase}">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="EOC213RRFieldLabelRequired" TargetType="TextBlock" BasedOn="{StaticResource EOC213RRFieldLabel}">
+        <Setter Property="Foreground" Value="Red"/>
+    </Style>
+    <Style x:Key="EOC213RRFieldHeader" TargetType="TextBlock" BasedOn="{StaticResource EOC213RRFieldBase}">
+        <Setter Property="Margin" Value="5,2,0,0"/>
+    </Style>
+    <Style x:Key="EOC213RRFieldHeaderRequired" TargetType="TextBlock" BasedOn="{StaticResource EOC213RRFieldHeader}">
+        <Setter Property="Foreground" Value="Red"/>
+    </Style>
+    <Style x:Key="EOC213RRFieldText" TargetType="TextBlock" >
+        <Setter Property="FontFamily" Value="Ariel"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
+
+    <Style x:Key="TextC12" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Courier New"/>
         <Setter Property="FontSize" Value="12"/>
         <!--<Setter Property="FontWeight" Value="Bold"/>-->

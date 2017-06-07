@@ -238,6 +238,10 @@
       <Project>{14d17123-f4da-49ce-9707-480d7c71c543}</Project>
       <Name>ICS213FormControl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ICS213RRFormControl\ICS213RRFormControl.csproj">
+      <Project>{f095759d-a58a-4479-b4c6-2289c50ab7bd}</Project>
+      <Name>ICS213RRFormControl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MessageFormControl\MessageFormControl.csproj">
       <Project>{03845f9e-f25a-4e0b-bd71-41eb0a66f4e1}</Project>
       <Name>MessageFormControl</Name>

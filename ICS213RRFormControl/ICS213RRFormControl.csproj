@@ -7,8 +7,8 @@
     <ProjectGuid>{F095759D-A58A-4479-B4C6-2289C50AB7BD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ICS213RRFormControl</RootNamespace>
-    <AssemblyName>ICS213RRFormControl</AssemblyName>
+    <RootNamespace>EOC213RRFormControl</RootNamespace>
+    <AssemblyName>EOC213RRFormControl</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>

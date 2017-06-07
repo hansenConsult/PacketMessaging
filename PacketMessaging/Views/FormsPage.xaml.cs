@@ -296,7 +296,7 @@ namespace PacketMessaging.Views
 				return null;
 
 			Type foundType = null;
-			foreach (var file in files.Where(file => file.FileType == ".dll" && file.Name.Contains("FormControl")))
+			foreach (var file in files.Where(file => file.FileType == ".dll" && file.Name.Contains("FormControl.dll")))
 			{
 				try
 				{
@@ -306,8 +306,10 @@ namespace PacketMessaging.Views
 						var attrib = classType.GetTypeInfo();
 						foreach (CustomAttributeData customAttribute in attrib.CustomAttributes.Where(customAttribute => customAttribute.GetType() == typeof(CustomAttributeData)))
 						{
+                            //if (customAttribute.GetType() != typeof(FormControlAttribute))
+                            //    continue;
 							var namedArguments = customAttribute.NamedArguments;
-							if (namedArguments.Count > 0)
+							if (namedArguments.Count == 3)
 							{
 								var formControlName = namedArguments[0].TypedValue.Value;
 								//var arg1 = Enum.Parse(typeof(FormControlAttribute.FormType), namedArguments[1].TypedValue.Value.ToString());
@@ -365,6 +367,12 @@ namespace PacketMessaging.Views
 			_packetAddressForm = new SendFormDataControl();
 			string pivotItemName = ((PivotItem)((Pivot)sender).SelectedItem).Name.Replace('_', '-');    // required since city-scan is not a valid PivotItem name
 			_packetForm = CreateFormControlInstance(pivotItemName);
+            if (_packetForm == null)
+            {
+                MessageDialog messageDialog = new MessageDialog("failed to find packet form");
+                return;
+            }
+
 			if (!_loadMessage)
 				_packetMessage = new PacketMessage();
 			_packetForm.MessageNo = ViewModels.SettingsPageViewModel.GetMessageNumberPacket();
@@ -392,12 +400,20 @@ namespace PacketMessaging.Views
 				CityScanPanel.Children.Insert(1, _packetAddressForm);
 				_packetAddressForm.MessageSubject = _packetForm.CreateSubject();
 			}
-			else if (pivotItemName == "EOCLogisticsRequest")
+            else if (pivotItemName == "EOCLogisticsRequest")
+            {
+                Form213Panel.Children.Clear();
+                LogisticsPanel.Children.Clear();
+                LogisticsPanel.Children.Insert(0, _packetForm);
+                LogisticsPanel.Children.Insert(1, _packetAddressForm);
+                _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
+            }
+            else if (pivotItemName == "EOCResourceRequest")
             {
 				Form213Panel.Children.Clear();
-				LogisticsPanel.Children.Clear();
-				LogisticsPanel.Children.Insert(0, _packetForm);
-				LogisticsPanel.Children.Insert(1, _packetAddressForm);
+                ResourceRequestPanel.Children.Clear();
+                ResourceRequestPanel.Children.Insert(0, _packetForm);
+                ResourceRequestPanel.Children.Insert(1, _packetAddressForm);
 				_packetAddressForm.MessageSubject = _packetForm.CreateSubject();
 			}
 			if (!_loadMessage)

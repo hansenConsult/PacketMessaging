@@ -39,7 +39,16 @@
 		<!--<Setter Property="FontWeight" Value="Bold"/>-->
 		<!--<Setter Property="Panel.VerticalAlignment" Value="Center"/>-->
 	</Style>
-	<Style x:Key="TypedText" TargetType="TextBox">
+    <Style x:Key="EOC213RRFieldHeader" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Ariel"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="FieldHeaderRequired" TargetType="TextBlock" BasedOn="{StaticResource FieldHeader}">
+        <Setter Property="Foreground" Value="Red"/>
+    </Style>
+    <Style x:Key="TypedText" TargetType="TextBox">
 		<Setter Property="FontFamily" Value="Courier New"/>
 		<Setter Property="FontSize" Value="15"/>
 		<Setter Property="Background" Value="White"/>

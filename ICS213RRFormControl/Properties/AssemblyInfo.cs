@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ICS213RRFormControl")]
-[assembly: AssemblyDescription("ICS 213RR Form")]
+[assembly: AssemblyTitle("EOC213RRFormControl")]
+[assembly: AssemblyDescription("EOC 213RR Form")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ICS213RRFormControl")]
+[assembly: AssemblyProduct("EOC213RRFormControl")]
 [assembly: AssemblyCopyright("Copyright © KZ6DM 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
