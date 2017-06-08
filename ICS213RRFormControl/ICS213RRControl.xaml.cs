@@ -23,29 +23,24 @@ namespace EOC213RRFormControl
 
 			InitializeControls();
 
-			//ReceivedOrSent = "sent";
-			//HowRecevedSent = "otherRecvdType";
-		}
+            ReceivedOrSent = "sent";
+            HowRecevedSent = "packet";
+        }
 
 		public string ReceiverMsgNo
 		{ get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
 
 		public override string MessageNo
-		{ get { return GetTextBoxString(messageNo); }
-			set { SetTextBoxString(messageNo, value); } }
+		{ get { return GetTextBoxString(messageNo); } set { SetTextBoxString(messageNo, value); } }
 
 		public string SenderMsgNo
 		{ get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
-
 
 		public string Severity
 		{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
 		public override string HandlingOrder
 		{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
-
-		public string Action
-		{ get { return action.GetRadioButtonCheckedState(); } set { action.SetRadioButtonCheckedState(value); } }
 
 		public string Reply
 		{ get { return reply.GetRadioButtonCheckedState(); } set { reply.SetRadioButtonCheckedState(value); } }
@@ -56,7 +51,13 @@ namespace EOC213RRFormControl
         public string IncidentName
         { get => GetTextBoxString(incidentName); set => SetTextBoxString(incidentName, value); }
 
-		public string ReceivedOrSent
+        public override string MsgDate
+        { get => GetTextBoxString(msgDate); set => SetTextBoxString(msgDate, value); }
+
+        public override string MsgTime
+        { get => GetTextBoxString(msgTime); set => SetTextBoxString(msgTime, value); }
+
+        public string ReceivedOrSent
 		{ get { return receivedOrSent.GetRadioButtonCheckedState(); } set { receivedOrSent.SetRadioButtonCheckedState(value); } }
 
 		public string HowRecevedSent
@@ -74,9 +75,7 @@ namespace EOC213RRFormControl
 		public override string OperatorTime
 		{ get { return GetTextBoxString(operatorTime); } set { SetTextBoxString(operatorTime, value); } }
 
-		public override string PacFormName => "Message";
-
-		//public override string PacFormName => FormControl.FormControlName = "Message";
+		public override string PacFormName => "EOCResourceRequest";
 
 		public override string CreateSubject()
 		{
@@ -106,20 +105,45 @@ namespace EOC213RRFormControl
 						break;
 					//4.: [OTHER]
 					case "severity":
-						outpostData.Add($"4.: [{formField.ControlContent.ToUpper()}]");
-                        outpostData.Add($"5.: [{formField.ControlContent.ToUpper()}]");
-                        outpostData.Add($"6.: [{formField.ControlContent.ToUpper()}]");
+                        switch (formField.ControlContent)
+                        {
+                            case "emergency":
+                                outpostData.Add($"4: [true]");
+                                break;
+                            case "urgent":
+                                outpostData.Add($"5: [true]");
+                                break;
+                            case "other":
+                                outpostData.Add($"6: [true]");
+                                break;
+                        }
                         break;
 					//5.: [ROUTINE]
 					case "handlingOrder":
-						outpostData.Add($"7.: [{formField.ControlContent.ToUpper()}]");
-                        outpostData.Add($"8.: [{formField.ControlContent.ToUpper()}]");
-                        outpostData.Add($"9.: [{formField.ControlContent.ToUpper()}]");
+                        switch (formField.ControlContent)
+                        {
+                            case "immediate":
+                                outpostData.Add($"7: [true]");
+                                break;
+                            case "priority":
+                                outpostData.Add($"8: [true]");
+                                break;
+                            case "routine":
+                                outpostData.Add($"9: [true]");
+                                break;
+                        }
                         break;
 					//10.: [true]
 					case "reply":
-						outpostData.Add($"10: [{(formField.ControlContent == "replyYes" ? "true" : "")}]");
-                        outpostData.Add($"11: [{(formField.ControlContent == "replyYes" ? "" : "true")}]");
+                        switch (formField.ControlContent)
+                        {
+                            case "yes":
+                                outpostData.Add($"10: [true]");
+                                break;
+                            case "no":
+                                outpostData.Add($"11: [true]");
+                                break;
+                        }
                         break;
                     //12: [1234]
                     case "replyBy":
@@ -191,9 +215,18 @@ namespace EOC213RRFormControl
                         break;
                     // 29: [ResourceInfo Request Priority1] 
                     case "resourceInfoPriority1":
-                        outpostData.Add($"29: [{formField.ControlContent}]");
-                        outpostData.Add($"30: [{formField.ControlContent}]");
-                        outpostData.Add($"31: [{formField.ControlContent}]");
+                        switch (formField.ControlContent)
+                        {
+                            case "resourceInfoUrgent1":
+                                outpostData.Add($"29: [true]");
+                                break;
+                            case "resourceInfoRoutine1":
+                                outpostData.Add($"30: [true]");
+                                break;
+                            case "resourceInfoLow1":
+                                outpostData.Add($"31: [true]");
+                                break;
+                        }
                         break;
                     // 32: [ResourceInfo Cost1] 
                     case "resourceInfoCost1":
@@ -213,9 +246,18 @@ namespace EOC213RRFormControl
                         break;
                     // 29: [ResourceInfo Request Priority1] 
                     case "resourceInfoPriority2":
-                        outpostData.Add($"36: [{formField.ControlContent}]");
-                        outpostData.Add($"37: [{formField.ControlContent}]");
-                        outpostData.Add($"38: [{formField.ControlContent}]");
+                        switch (formField.ControlContent)
+                        {
+                            case "resourceInfoUrgent2":
+                                outpostData.Add($"36: [true]");
+                                break;
+                            case "resourceInfoRoutine2":
+                                outpostData.Add($"37: [true]");
+                                break;
+                            case "resourceInfoLow2":
+                                outpostData.Add($"38: [true]");
+                                break;
+                        }
                         break;
                     // 32: [ResourceInfo Cost1] 
                     case "resourceInfoCost2":
@@ -235,9 +277,18 @@ namespace EOC213RRFormControl
                         break;
                     // 29: [ResourceInfo Request Priority1] 
                     case "resourceInfoPriority3":
-                        outpostData.Add($"43: [{formField.ControlContent}]");
-                        outpostData.Add($"44: [{formField.ControlContent}]");
-                        outpostData.Add($"45: [{formField.ControlContent}]");
+                        switch (formField.ControlContent)
+                        {
+                            case "resourceInfoUrgent3":
+                                outpostData.Add($"43: [true]");
+                                break;
+                            case "resourceInfoRoutine3":
+                                outpostData.Add($"44: [true]");
+                                break;
+                            case "resourceInfoLow3":
+                                outpostData.Add($"45: [true]");
+                                break;
+                        }
                         break;
                     // 32: [ResourceInfo Cost1] 
                     case "resourceInfoCost3":
@@ -257,9 +308,18 @@ namespace EOC213RRFormControl
                         break;
                     // 29: [ResourceInfo Request Priority1] 
                     case "resourceInfoPriority4":
-                        outpostData.Add($"50: [{formField.ControlContent}]");
-                        outpostData.Add($"51: [{formField.ControlContent}]");
-                        outpostData.Add($"52: [{formField.ControlContent}]");
+                        switch (formField.ControlContent)
+                        {
+                            case "resourceInfoUrgent4":
+                                outpostData.Add($"50: [true]");
+                                break;
+                            case "resourceInfoRoutine4":
+                                outpostData.Add($"51: [true]");
+                                break;
+                            case "resourceInfoLow4":
+                                outpostData.Add($"52: [true]");
+                                break;
+                        }
                         break;
                     // 32: [ResourceInfo Cost1] 
                     case "resourceInfoCost4":
@@ -287,13 +347,27 @@ namespace EOC213RRFormControl
                         break;
                     //59. Rec-Sent: [received]
                     case "receivedOrSent":
-						outpostData.Add($"59: [{formField.ControlContent}]");
-                        outpostData.Add($"60: [{formField.ControlContent}]");
+                        switch (formField.ControlContent)
+                        {
+                            case "received":
+                                outpostData.Add($"59: [true]");
+                                break;
+                            case "sent":
+                                outpostData.Add($"60: [true]");
+                                break;
+                        }
                         break;
 					//Method: [Other]
 					case "howRecevedSent":
-                        outpostData.Add($"61: [{formField.ControlContent}]");
-                        outpostData.Add($"62: [{formField.ControlContent}]");
+                        switch (formField.ControlContent)
+                        {
+                            case "voice":
+                                outpostData.Add($"61: [true]");
+                                break;
+                            case "packet":
+                                outpostData.Add($"62: [true]");
+                                break;
+                        }
                         break;
 					//OpCall: [KZ6DM]
 					case "operatorCallsign":
@@ -340,75 +414,302 @@ namespace EOC213RRFormControl
 			string radioButtonContent;
 			foreach (FormField formField in formFields)
 			{
-				switch (formField.ControlName)
-				{
-					case "senderMsgNo":
-						formField.ControlContent = GetOutpostValue("MsgNo", ref msgLines);
-						break;
-					case "messagegNo":
-						formField.ControlContent = msgNumber;
-						break;
-					case "msgDate":
-						formField.ControlContent = GetOutpostValue("1a.", ref msgLines);
-						break;
-					case "msgTime":
-						formField.ControlContent = GetOutpostValue("1b.", ref msgLines);
-						break;
-					case "severity":
-						formField.ControlContent = GetOutpostValue("4.", ref msgLines).ToLower();
-						break;
-					case "handlingOrder":
-						formField.ControlContent = GetOutpostValue("5.", ref msgLines).ToLower();
-						break;
-					case "reply":
-						radioButtonContent = GetOutpostValue("6b.", ref msgLines);
-						if (radioButtonContent?.Length > 0)
-						{
-							formField.ControlContent = (radioButtonContent == "yes" ? "replyYes" : "replyNo");
-						}
-						break;
-					case "replyBy":
-						formField.ControlContent = GetOutpostValue("6d.", ref msgLines);
-						break;
-					case "receivedOrSent":
-						formField.ControlContent = GetOutpostValue("Rec-Sent", ref msgLines).ToLower();
-						break;
-					case "howRecevedSent":
-						radioButtonContent = GetOutpostValue("Method", ref msgLines);
-						if (radioButtonContent?.Length > 0)
-						{
-							if (radioButtonContent == "EOC Radio")
-							{
-								formField.ControlContent = "eOCRadio";
-							}
-							else if (radioButtonContent == "Other")
-							{
-								formField.ControlContent = "other";
-							}
-							else
-							{
-								formField.ControlContent = radioButtonContent;
-							}
-						}
-						break;
-					case "otherText":
-						formField.ControlContent = GetOutpostValue("Other", ref msgLines);
-						break;
-					case "operatorCallsign":
-						formField.ControlContent = GetOutpostValue("OpCall", ref msgLines);
-						break;
-					case "operatorName":
-						formField.ControlContent = GetOutpostValue("OpName", ref msgLines);
-						break;
-					case "operatorDate":
-						formField.ControlContent = GetOutpostValue("OpDate", ref msgLines);
-						break;
-					case "operatorTime":
-						formField.ControlContent = GetOutpostValue("OpTime", ref msgLines);
-						break;
-				}
-			}
-			return formFields;
+                switch (formField.ControlName)
+                {
+                    //0: [02/02/2015]
+                    case "senderMsgNo":
+                        formField.ControlContent = GetOutpostValue("0", ref msgLines);
+                        break;
+                    //MsgNo: [6DM-150P]
+                    case "messageNo":
+                        formField.ControlContent = msgNumber;
+                        break;
+                    //4.: [OTHER]
+                    case "severity":
+                        if ((radioButtonContent = GetOutpostValue("4", ref msgLines)?.ToLower()) == "true")
+                        {
+                            formField.ControlContent = "emergency";
+                        }
+                        else if (GetOutpostValue("5", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "urgent";
+                        }
+                        else if (GetOutpostValue("6", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "other";
+                        }
+                        break;
+                    //5.: [ROUTINE]
+                    case "handlingOrder":
+                        if (GetOutpostValue("7", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "immediate";
+                        }
+                        else if (GetOutpostValue("8", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "priority";
+                        }
+                        else if (GetOutpostValue("9", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "routine";
+                        }
+                        break;
+                    //10.: [true]
+                    case "reply":
+                        //string s = GetOutpostValue("10", ref msgLines)?.ToLower();
+                        //string s2 = GetOutpostValue("11", ref msgLines)?.ToLower();
+                        if (GetOutpostValue("10", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "replyYes";
+                        }
+                        else if (GetOutpostValue("11", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "replyNo";
+                        }
+                        break;
+                    //12: [1234]
+                    case "replyBy":
+                        formField.ControlContent = GetOutpostValue("12", ref msgLines);
+                        break;
+                    //13: [Incident Name]
+                    case "incidentName":
+                        formField.ControlContent = GetOutpostValue("13", ref msgLines);
+                        break;
+                    //14: [Incident Number]
+                    case "incidentNumber":
+                        formField.ControlContent = GetOutpostValue("14", ref msgLines);
+                        break;
+                    //15: [Message date]
+                    case "msgDate":
+                        formField.ControlContent = GetOutpostValue("15", ref msgLines);
+                        break;
+                    //16: [1917]
+                    case "msgTime":
+                        formField.ControlContent = GetOutpostValue("16", ref msgLines);
+                        break;
+                    //17: [Operational preiod]
+                    case "operationalPeriod":
+                        formField.ControlContent = GetOutpostValue("17", ref msgLines);
+                        break;
+                    //18: [County]
+                    case "trackingNoCounty":
+                        formField.ControlContent = GetOutpostValue("18", ref msgLines);
+                        break;
+                    //19: [Operational preiod]
+                    case "trackingNoState":
+                        formField.ControlContent = GetOutpostValue("19", ref msgLines);
+                        break;
+                    //20: [Operational preiod]
+                    case "trackingNoFederal":
+                        formField.ControlContent = GetOutpostValue("20", ref msgLines);
+                        break;
+                    // 21: Prepared by Name
+                    case "preparedByName":
+                        formField.ControlContent = GetOutpostValue("21", ref msgLines);
+                        break;
+                    // 22: Prepared by Position
+                    case "preparedByPosition":
+                        formField.ControlContent = GetOutpostValue("22", ref msgLines);
+                        break;
+                    // 23: [Approval Authority Name] 
+                    case "approvalAuthorityName":
+                        formField.ControlContent = GetOutpostValue("23", ref msgLines);
+                        break;
+                    // 24: [Approval Authority Position] 
+                    case "approvalAuthorityPosition":
+                        formField.ControlContent = GetOutpostValue("24", ref msgLines);
+                        break;
+                    // 25: [Approval Authority Signature] 
+                    case "approvalAuthoritySignature":
+                        formField.ControlContent = GetOutpostValue("25", ref msgLines);
+                        break;
+                    // 26: [ResourceInfoQuantity1] 
+                    case "resourceInfoQuantity1":
+                        formField.ControlContent = GetOutpostValue("26", ref msgLines);
+                        break;
+                    // 27: [ResourceInfoDetailedResourceDesc1] 
+                    case "resourceInfoDetailedResourceDesc1":
+                        formField.ControlContent = GetOutpostValue("27", ref msgLines);
+                        break;
+                    // 28: [ResourceInfo Arrival1] 
+                    case "resourceInfoArrival1":
+                        formField.ControlContent = GetOutpostValue("28", ref msgLines);
+                        break;
+                    // 29: [ResourceInfo Request Priority1] 
+                    case "resourceInfoPriority1":
+                        if (GetOutpostValue("29", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoUrgent1";
+                        }
+                        else if (GetOutpostValue("30", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoRoutine1";
+                        }
+                        else if (GetOutpostValue("31", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoLow1";
+                        }
+                        break;
+                    // 32: [ResourceInfo Cost1] 
+                    case "resourceInfoCost1":
+                        formField.ControlContent = GetOutpostValue("32", ref msgLines);
+                        break;
+                    // 26: [ResourceInfoQuantity1] 
+                    case "resourceInfoQuantity2":
+                        formField.ControlContent = GetOutpostValue("33", ref msgLines);
+                        break;
+                    // 34: [ResourceInfoDetailedResourceDesc1] 
+                    case "resourceInfoDetailedResourceDes2":
+                        formField.ControlContent = GetOutpostValue("34", ref msgLines);
+                        break;
+                    // 28: [ResourceInfo Arrival1] 
+                    case "resourceInfoArrival2":
+                        formField.ControlContent = GetOutpostValue("35", ref msgLines);
+                        break;
+                    // 29: [ResourceInfo Request Priority1] 
+                    case "resourceInfoPriority2":
+                        if (GetOutpostValue("36", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoUrgent2";
+                        }
+                        else if (GetOutpostValue("37", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoRoutine2";
+                        }
+                        else if (GetOutpostValue("38", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoLow2";
+                        }
+                        break;
+                    // 32: [ResourceInfo Cost1] 
+                    case "resourceInfoCost2":
+                        formField.ControlContent = GetOutpostValue("39", ref msgLines);
+                        break;
+                    // 26: [ResourceInfoQuantity1] 
+                    case "resourceInfoQuantity3":
+                        formField.ControlContent = GetOutpostValue("40", ref msgLines);
+                        break;
+                    // 34: [ResourceInfoDetailedResourceDesc1] 
+                    case "resourceInfoDetailedResourceDes3":
+                        formField.ControlContent = GetOutpostValue("41", ref msgLines);
+                        break;
+                    // 28: [ResourceInfo Arrival1] 
+                    case "resourceInfoArrival3":
+                        formField.ControlContent = GetOutpostValue("42", ref msgLines);
+                        break;
+                    // 29: [ResourceInfo Request Priority1] 
+                    case "resourceInfoPriority3":
+                        if (GetOutpostValue("43", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoUrgent3";
+                        }
+                        else if (GetOutpostValue("44", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoRoutine3";
+                        }
+                        else if (GetOutpostValue("45", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoLow3";
+                        }
+                        break;
+                    // 32: [ResourceInfo Cost1] 
+                    case "resourceInfoCost3":
+                        formField.ControlContent = GetOutpostValue("46", ref msgLines);
+                        break;
+                    // 26: [ResourceInfoQuantity1] 
+                    case "resourceInfoQuantity4":
+                        formField.ControlContent = GetOutpostValue("47", ref msgLines);
+                        break;
+                    // 34: [ResourceInfoDetailedResourceDesc1] 
+                    case "resourceInfoDetailedResourceDes4":
+                        formField.ControlContent = GetOutpostValue("48", ref msgLines);
+                        break;
+                    // 28: [ResourceInfo Arrival1] 
+                    case "resourceInfoArrival4":
+                        formField.ControlContent = GetOutpostValue("49", ref msgLines);
+                        break;
+                    // 29: [ResourceInfo Request Priority1] 
+                    case "resourceInfoPriority4":
+                        if (GetOutpostValue("50", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoUrgent4";
+                        }
+                        else if (GetOutpostValue("51", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoRoutine4";
+                        }
+                        else if (GetOutpostValue("52", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "resourceInfoLow4";
+                        }
+                        break;
+                    // 32: [ResourceInfo Cost1] 
+                    case "resourceInfoCost4":
+                        formField.ControlContent = GetOutpostValue("53", ref msgLines);
+                        break;
+                    // 54: [Requested Delivery Location] 
+                    case "deliveryLocation":
+                        formField.ControlContent = GetOutpostValue("54", ref msgLines);
+                        break;
+                    // 55: [ResourceInfo Cost1] 
+                    case "substitute":
+                        formField.ControlContent = GetOutpostValue("55", ref msgLines);
+                        break;
+                    // 56: [Requested by EOC Pos] 
+                    case "requestedByEOCPos":
+                        formField.ControlContent = GetOutpostValue("56", ref msgLines);
+                        break;
+                    // 57: [EOC Section Chief] 
+                    case "sectionChief":
+                        formField.ControlContent = GetOutpostValue("57", ref msgLines);
+                        break;
+                    // 58: [Section Chief Signature] 
+                    case "sectionChiefSignature":
+                        formField.ControlContent = GetOutpostValue("58", ref msgLines);
+                        break;
+                    //59. Rec-Sent: [received]
+                    case "receivedOrSent":
+                        if (GetOutpostValue("59", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "received";
+                        }
+                        else if (GetOutpostValue("60", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "sent";
+                        }
+                        break;
+                    //Method: [Other]
+                    case "howRecevedSent":
+                        if (GetOutpostValue("61", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "voice";
+                        }
+                        else if (GetOutpostValue("62", ref msgLines)?.ToLower() == "true")
+                        {
+                            formField.ControlContent = "packet";
+                        }
+                        break;
+                    //OpCall: [KZ6DM]
+                    case "operatorCallsign":
+                        formField.ControlContent = GetOutpostValue("63", ref msgLines);
+                        break;
+                    //OpName: [Poul Hansen]
+                    case "operatorName":
+                        formField.ControlContent = GetOutpostValue("64", ref msgLines);
+                        break;
+                    //OpDate: [02/02/2015]
+                    case "operatorDate":
+                        //formField.ControlContent = OperatorDate;
+                        formField.ControlContent = GetOutpostValue("65", ref msgLines);
+                        break;
+                    //OpTime: [1920]
+                    case "operatorTime":
+                        //formField.ControlContent = OperatorTime;
+                        formField.ControlContent = GetOutpostValue("66", ref msgLines);
+                        break;
+                }
+            }
+            return formFields;
 		}
 
 
