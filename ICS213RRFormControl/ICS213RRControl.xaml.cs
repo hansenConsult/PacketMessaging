@@ -343,7 +343,7 @@ namespace EOC213RRFormControl
                         break;
                     // 58: [Section Chief Signature] 
                     case "sectionChiefSignature":
-                        outpostData.Add($"53: [{formField.ControlContent}]");
+                        outpostData.Add($"58: [{formField.ControlContent}]");
                         break;
                     //59. Rec-Sent: [received]
                     case "receivedOrSent":
