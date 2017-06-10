@@ -103,7 +103,7 @@ namespace EOC213RRFormControl
 					case "receiverMsgNo":
 						outpostData.Add($"2: [{formField.ControlContent}]");
 						break;
-					//4.: [OTHER]
+					//6.: [OTHER]
 					case "severity":
                         switch (formField.ControlContent)
                         {
@@ -118,7 +118,7 @@ namespace EOC213RRFormControl
                                 break;
                         }
                         break;
-					//5.: [ROUTINE]
+					//9.: [ROUTINE]
 					case "handlingOrder":
                         switch (formField.ControlContent)
                         {
@@ -396,14 +396,14 @@ namespace EOC213RRFormControl
 
 		public override string CreateOutpostData(ref PacketMessage packetMessage)
 		{
-			List<string> outpostData = new List<string>();
-
-			outpostData.Add("!PACF! " + packetMessage.Subject);
-			outpostData.Add("# JS:EOC Resource Request (which4)");
-			outpostData.Add("# JS-ver. PR-4.1-1.11, 05/23/17");
-			outpostData.Add("# FORMFILENAME: EOCResourceRequest.html");
-
-			outpostData = CreateOutpostDataFromFormFields(ref packetMessage, ref outpostData);
+            List<string> outpostData = new List<string>
+            {
+                "!PACF! " + packetMessage.Subject,
+                "# JS:EOC Resource Request (which4)",
+                "# JS-ver. PR-4.1-1.11, 05/23/17",
+                "# FORMFILENAME: EOCResourceRequest.html"
+            };
+            outpostData = CreateOutpostDataFromFormFields(ref packetMessage, ref outpostData);
 
 			return CreateOutpostMessageBody(outpostData);
 		}

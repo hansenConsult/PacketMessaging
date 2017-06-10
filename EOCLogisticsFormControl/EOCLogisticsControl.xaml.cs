@@ -407,18 +407,19 @@ namespace EOCLogisticsFormControl
 
 		public override string CreateOutpostData(ref PacketMessage packetMessage)
 		{
-			List<string> outpostData = new List<string>();
-
-			//!PACF!1234_O / R_EOC Logistics Req_Mountain View
-			outpostData.Add("!PACF!" + packetMessage.Subject);
-			//# JS:EOC Logistics Request (which4)
-			outpostData.Add("# JS:EOC Logistics Request (which4)");
-            //# JS-ver. PR-4.1-2.7, 03/10/17
-            outpostData.Add("# JS-ver. PR-4.1-2.7, 03/10/17");
-			//# FORMFILENAME: EOCLogisticsRequest.html
-			outpostData.Add("# FORMFILENAME: EOCLogisticsRequest.html");
-
-			outpostData = CreateOutpostDataFromFormFields(ref packetMessage, ref outpostData);
+            List<string> outpostData = new List<string>
+            {
+        
+                //!PACF!1234_O / R_EOC Logistics Req_Mountain View
+                "!PACF!" + packetMessage.Subject,
+                //# JS:EOC Logistics Request (which4)
+                "# JS:EOC Logistics Request (which4)",
+                //# JS-ver. PR-4.1-2.7, 03/10/17
+                "# JS-ver. PR-4.1-2.7, 03/10/17",
+                //# FORMFILENAME: EOCLogisticsRequest.html
+                "# FORMFILENAME: EOCLogisticsRequest.html"
+            };
+            outpostData = CreateOutpostDataFromFormFields(ref packetMessage, ref outpostData);
 
 			return CreateOutpostMessageBody(outpostData);
 		}
