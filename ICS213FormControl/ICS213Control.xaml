@@ -122,14 +122,11 @@
 									<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Reply" Margin="10,0,0,0" />
 									<StackPanel Orientation="Horizontal">
 										<MyNamespace:ToggleButtonGroup x:Name="reply"/>
-										<RadioButton x:Name="replyYes" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0,0,0" Content="Yes, by" Width="80" Padding="4"/>
-										<TextBox x:Name="replyBy"  Width="3.998" BorderBrush="White" HorizontalAlignment="Left" Margin="-50,0,0,0" PlaceholderText="hhmm" VerticalAlignment="Stretch" Height="16.986" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto">
-											<TextBox.RenderTransform>
-												<CompositeTransform ScaleY="-1" Rotation="-180.429" ScaleX="-1"/>
-											</TextBox.RenderTransform>
-										</TextBox>
-										<!--<TextBlock Style="{StaticResource LabelFontTNR12B}" Padding="0, 0" Text=", by" Width="20" />-->
-										<RadioButton x:Name="replyNo" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Content="No" Width="34" Margin="5,0,0,0" Padding="4"/>
+										<RadioButton x:Name="replyYes" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0,0,0" Content="Yes, by" Width="65" Padding="4" MinWidth="50"/>
+                                        <TextBox x:Name="replyBy"  HorizontalAlignment="Left" PlaceholderText="hhmm" Height="16.986" UseLayoutRounding="False" d:LayoutRounding="Auto" VerticalAlignment="Center"/>
+
+                                        <!--<TextBlock Style="{StaticResource LabelFontTNR12B}" Padding="0, 0" Text=", by" Width="20" />-->
+										<RadioButton x:Name="replyNo" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Content="No" Width="50" Margin="10,0,0,0" Padding="4" MinWidth="50"/>
 									</StackPanel>
 									<CheckBox x:Name="forInfo" Style="{StaticResource CheckBoxTNR12B}" Margin="10,5,4,5" Content="FOR INFO" Padding="4"/>
 								</StackPanel>

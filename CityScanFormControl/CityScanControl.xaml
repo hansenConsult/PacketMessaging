@@ -122,9 +122,9 @@
 									<TextBlock Style="{StaticResource LabelFontTNR12B}"  Text="Reply" Margin="10"/>
 									<StackPanel Orientation="Horizontal">
 										<MyNamespace:ToggleButtonGroup x:Name="reply"/>
-										<RadioButton x:Name="replyYes" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Margin="10" Content="Yes, by" Width="50"  Padding="4,0,0,0"/>
-										<TextBox x:Name="replyBy" Style="{StaticResource TypedText}" PlaceholderText="1234" Width="35" BorderBrush="White" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="-55"/>
-										<RadioButton x:Name="replyNo" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Content="No" Width="34" Margin="10,0,0,0" Padding="4,0,0,0" />
+										<RadioButton x:Name="replyYes" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0,0,0" Content="Yes, by" Width="65"  Padding="4,0,0,0" MinWidth="50"/>
+										<TextBox x:Name="replyBy" Style="{StaticResource TypedText}" PlaceholderText="1234" Width="35" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
+										<RadioButton x:Name="replyNo" GroupName="reply" Style="{StaticResource RadioButtonTNR12B}" Content="No" Width="50" Margin="10,0,0,0" Padding="4,0,0,0" MinWidth="50" />
 									</StackPanel>
 								</StackPanel>
 							</Border>

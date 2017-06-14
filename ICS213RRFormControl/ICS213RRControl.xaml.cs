@@ -232,19 +232,15 @@ namespace EOC213RRFormControl
                     case "resourceInfoCost1":
                         outpostData.Add($"32: [{formField.ControlContent}]");
                         break;
-                    // 26: [ResourceInfoQuantity1] 
                     case "resourceInfoQuantity2":
                         outpostData.Add($"33: [{formField.ControlContent}]");
                         break;
-                    // 34: [ResourceInfoDetailedResourceDesc1] 
                     case "resourceInfoDetailedResourceDes2":
                         outpostData.Add($"34: [{formField.ControlContent}]");
                         break;
-                    // 28: [ResourceInfo Arrival1] 
                     case "resourceInfoArrival2":
                         outpostData.Add($"35: [{formField.ControlContent}]");
                         break;
-                    // 29: [ResourceInfo Request Priority1] 
                     case "resourceInfoPriority2":
                         switch (formField.ControlContent)
                         {
@@ -259,23 +255,18 @@ namespace EOC213RRFormControl
                                 break;
                         }
                         break;
-                    // 32: [ResourceInfo Cost1] 
                     case "resourceInfoCost2":
                         outpostData.Add($"39: [{formField.ControlContent}]");
                         break;
-                    // 26: [ResourceInfoQuantity1] 
                     case "resourceInfoQuantity3":
                         outpostData.Add($"40: [{formField.ControlContent}]");
                         break;
-                    // 34: [ResourceInfoDetailedResourceDesc1] 
                     case "resourceInfoDetailedResourceDes3":
                         outpostData.Add($"41: [{formField.ControlContent}]");
                         break;
-                    // 28: [ResourceInfo Arrival1] 
                     case "resourceInfoArrival3":
                         outpostData.Add($"42: [{formField.ControlContent}]");
                         break;
-                    // 29: [ResourceInfo Request Priority1] 
                     case "resourceInfoPriority3":
                         switch (formField.ControlContent)
                         {
@@ -290,23 +281,18 @@ namespace EOC213RRFormControl
                                 break;
                         }
                         break;
-                    // 32: [ResourceInfo Cost1] 
                     case "resourceInfoCost3":
                         outpostData.Add($"46: [{formField.ControlContent}]");
                         break;
-                    // 26: [ResourceInfoQuantity1] 
                     case "resourceInfoQuantity4":
                         outpostData.Add($"47: [{formField.ControlContent}]");
                         break;
-                    // 34: [ResourceInfoDetailedResourceDesc1] 
                     case "resourceInfoDetailedResourceDes4":
                         outpostData.Add($"48: [{formField.ControlContent}]");
                         break;
-                    // 28: [ResourceInfo Arrival1] 
                     case "resourceInfoArrival4":
                         outpostData.Add($"49: [{formField.ControlContent}]");
                         break;
-                    // 29: [ResourceInfo Request Priority1] 
                     case "resourceInfoPriority4":
                         switch (formField.ControlContent)
                         {
@@ -321,7 +307,6 @@ namespace EOC213RRFormControl
                                 break;
                         }
                         break;
-                    // 32: [ResourceInfo Cost1] 
                     case "resourceInfoCost4":
                         outpostData.Add($"53: [{formField.ControlContent}]");
                         break;
