@@ -137,7 +137,7 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Date" FontFamily="Helvetica" FontSize="14" VerticalAlignment="Center" Margin="5,2,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Date" VerticalAlignment="Center" Style="{StaticResource EOC213RRFieldText}" Margin="5,2,0,0"/>
                                 <TextBox Name="msgDate" Grid.Column="1" Grid.Row="0" PlaceholderText="mm/dd/yy" FontFamily="Ariel" FontSize="14"  Margin="5,2,5,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="1" Text="Time" VerticalAlignment="Center" Style="{StaticResource EOC213RRFieldText}" Margin="5,2,0,0"/>
                                 <TextBox Name="msgTime" Grid.Column="1" Grid.Row="1" PlaceholderText="hhmm" FontFamily="Helvetica" FontSize="14"  Margin="5,2,5,2"/>
@@ -151,7 +151,7 @@
                             <TextBlock Text="5. Tracking Number" Style="{StaticResource EOC213RRFieldHeader}"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="55"/>
+                                    <ColumnDefinition Width="45"/>
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -159,11 +159,11 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="0" Grid.Row="0" Text="County" VerticalAlignment="Center" FontFamily="Helvetica" FontSize="14"  Margin="5,2"/>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="County" VerticalAlignment="Center" Style="{StaticResource EOC213RRFieldText}" Margin="5,2,0,0"/>
                                 <TextBox Name="trackingNoCounty" Grid.Column="1" Grid.Row="0"  FontFamily="Helvetica" FontSize="12"  Margin="5,2"/>
-                                <TextBlock Grid.Column="0" Grid.Row="1" Text="State" VerticalAlignment="Center" FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="State" VerticalAlignment="Center" Style="{StaticResource EOC213RRFieldText}" Margin="5,2,0,0"/>
                                 <TextBox Name="trackingNoState" Grid.Column="1" Grid.Row="1"  FontFamily="Helvetica" FontSize="14"  Margin="5,2"/>
-                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Federal" VerticalAlignment="Center" FontFamily="Helvetica" FontSize="14"  Margin="5,2,0,0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Federal" VerticalAlignment="Center" Style="{StaticResource EOC213RRFieldText}" Margin="5,2,0,0"/>
                                 <TextBox Name="trackingNoFederal" Grid.Column="1" Grid.Row="2"  FontFamily="Helvetica" FontSize="14"  Margin="5,2"/>
                             </Grid>
                         </StackPanel>
@@ -429,24 +429,24 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal" BorderBrush="Black" BorderThickness="1,0,0,1">
                         <MyNamespace:ToggleButtonGroup x:Name="receivedOrSent" />
-                        <RadioButton Name="received" GroupName="receivedOrSent" Content="Rcv'd"  MinWidth="70" Margin="5,0,0,0"/>
-                        <RadioButton Name="sent" GroupName="receivedOrSent" Content="Sent" Width="60" MinWidth="75"/>
+                        <RadioButton Name="received" GroupName="receivedOrSent" Content="Rcv'd"  MinWidth="70" Margin="5,0,0,0" Padding="8,5,0,0"/>
+                        <RadioButton Name="sent" GroupName="receivedOrSent" Content="Sent" Width="60" MinWidth="75" Padding="8,5,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" BorderBrush="Black" BorderThickness="1,0,0,1">
                         <MyNamespace:ToggleButtonGroup x:Name="howRecevedSent" />
-                        <RadioButton Name="voice" GroupName="howRecevedSent" Content="Voice" MinWidth="75" Width="60" Margin="5,0,0,0" />
-                        <RadioButton Name="packet" GroupName="howRecevedSent" Content="Packet" MinWidth="75"/>
+                        <RadioButton Name="voice" GroupName="howRecevedSent" Content="Voice" MinWidth="75" Width="60" Margin="5,0,0,0" Padding="8,5,0,0" />
+                        <RadioButton Name="packet" GroupName="howRecevedSent" Content="Packet" MinWidth="75" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" VerticalAlignment="Top" Padding="8,5,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" BorderBrush="Black" BorderThickness="1,0,0,1">
-                        <TextBlock Text="Call"  Margin="5,0,0,0" VerticalAlignment="Center"/>
-                        <TextBox Name="operatorCallsign" Margin="2"/>
-                        <TextBlock Text="Name"  Margin="5,0,0,0" VerticalAlignment="Center"/>
-                        <TextBox Name="operatorName" Margin="2"/>
+                        <TextBlock Text="Call:"  Margin="5,0,0,0" VerticalAlignment="Center" Padding="0,0,0,1"/>
+                        <TextBox Name="operatorCallsign" Margin="0"  BorderBrush="White"/>
+                        <TextBlock Text="Name:"  Margin="5,0,0,0" VerticalAlignment="Center" Padding="0,0,0,1" />
+                        <TextBox Name="operatorName" Margin="0" BorderBrush="White" VerticalContentAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" BorderBrush="Black" BorderThickness="1,0,1,1">
-                        <TextBlock Text="Submitted"  Margin="5,0,0,0" VerticalAlignment="Center" Style="{StaticResource EOC213RRFieldText}"/>
-                        <TextBox Name="operatorDate" PlaceholderText="mm/dd/yy" Margin="2"/>
-                        <TextBox Name="operatorTime" PlaceholderText="hhmm" Margin="2"/>
+                        <TextBlock Text="Submitted:"  Margin="5,0,0,0" VerticalAlignment="Center" Style="{StaticResource EOC213RRFieldText}"/>
+                        <TextBox Name="operatorDate" PlaceholderText="mm/dd/yy" Margin="0" BorderBrush="White"/>
+                        <TextBox Name="operatorTime" PlaceholderText="hhmm" Margin="0" BorderBrush="White"/>
                     </StackPanel>
                 </StackPanel>
                 <TextBlock Text="Last Revised 08/16  EOC Form 213RR" Style="{StaticResource EOC213RRFieldLabel}"/>
