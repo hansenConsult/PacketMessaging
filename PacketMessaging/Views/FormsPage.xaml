@@ -99,17 +99,14 @@
 			</PivotItem>
 
 			<!--  EOCLogistics  -->
-			<PivotItem x:Name="EOCLogisticsRequest" DataContext="{Binding FormsPartViewModel}" Header="EOC Logistics">
+			<!--<PivotItem x:Name="EOCLogisticsRequest" DataContext="{Binding FormsPartViewModel}" Header="EOC Logistics">
 				<ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
 					<StackPanel x:Name="LogisticsPanel" HorizontalAlignment="Left">
-						<!--Insert form here-->
-						<!--<My213Control:ICS213Control x:Name="ICSForm213" />-->
-						<!--<local:SendFormDataControl x:Name="sendFormData" />-->
 					</StackPanel>
 
 				</ScrollViewer>
-			</PivotItem>
+			</PivotItem>-->
 
             <!--  EOCResourceRequest  -->
             <PivotItem x:Name="EOCResourceRequest" DataContext="{Binding FormsPartViewModel}" Header="EOC Resource Request">

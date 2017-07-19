@@ -400,14 +400,14 @@ namespace PacketMessaging.Views
 				CityScanPanel.Children.Insert(1, _packetAddressForm);
 				_packetAddressForm.MessageSubject = _packetForm.CreateSubject();
 			}
-            else if (pivotItemName == "EOCLogisticsRequest")
-            {
-                Form213Panel.Children.Clear();
-                LogisticsPanel.Children.Clear();
-                LogisticsPanel.Children.Insert(0, _packetForm);
-                LogisticsPanel.Children.Insert(1, _packetAddressForm);
-                _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
-            }
+            //else if (pivotItemName == "EOCLogisticsRequest")
+            //{
+            //    Form213Panel.Children.Clear();
+            //    LogisticsPanel.Children.Clear();
+            //    LogisticsPanel.Children.Insert(0, _packetForm);
+            //    LogisticsPanel.Children.Insert(1, _packetAddressForm);
+            //    _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
+            //}
             else if (pivotItemName == "EOCResourceRequest")
             {
 				Form213Panel.Children.Clear();
