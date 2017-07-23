@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("KZ6DM")]
 [assembly: AssemblyProduct("PacketMessaging")]
-[assembly: AssemblyCopyright("Copyright © KZ6DM 2016")]
+[assembly: AssemblyCopyright("Copyright © KZ6DM 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -30,7 +30,7 @@ namespace ICS213FormControl
 		{
 			this.InitializeComponent();
 
-			ScanControls(root);
+			ScanControls(PrintableArea);
 
 			InitializeControls();
 

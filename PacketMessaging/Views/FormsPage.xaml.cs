@@ -17,6 +17,7 @@ using Windows.Foundation;
 using Windows.Devices.SerialCommunication;
 using Windows.ApplicationModel;
 using System.Collections.ObjectModel;
+using Windows.Graphics.Printing;
 
 namespace PacketMessaging.Views
 {
@@ -63,7 +64,9 @@ namespace PacketMessaging.Views
 	{
 		private ILogger log = LogManagerFactory.DefaultLogManager.GetLogger<FormsPage>();
 
-		public enum ReturnResult
+        private PrintHelper printHelper;
+
+        public enum ReturnResult
 		{
 			Cancel = 0,
 			Send = 2,
@@ -124,7 +127,12 @@ namespace PacketMessaging.Views
 
 			//_packetMessage = new PacketMessage();
 		}
-		protected override void OnNavigatedTo(NavigationEventArgs e)
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
 			//DeviceListSource.Source = listOfDevices;
 			if (e.Parameter == null)
@@ -146,9 +154,12 @@ namespace PacketMessaging.Views
 				}
 				index++;
 			}
-		}
 
-		public void ScanControls(DependencyObject panelName)
+
+
+        }
+
+        public void ScanControls(DependencyObject panelName)
 		{
 			var childrenCount = VisualTreeHelper.GetChildrenCount(panelName);
 
@@ -362,7 +373,12 @@ namespace PacketMessaging.Views
 
 		private void MyPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			ViewModels.SettingsPageViewModel.ReturnMessageNumber();
+            if (printHelper != null)
+            {
+                printHelper.UnregisterForPrinting();
+            }
+
+            ViewModels.SettingsPageViewModel.ReturnMessageNumber();
 
 			_packetAddressForm = new SendFormDataControl();
 			string pivotItemName = ((PivotItem)((Pivot)sender).SelectedItem).Name.Replace('_', '-');    // required since city-scan is not a valid PivotItem name
@@ -435,9 +451,18 @@ namespace PacketMessaging.Views
 				FillFormFromPacketMessage();
 				_loadMessage = false;
 			}
-		}
+            // Printing-related event handlers will never be called if printing
+            // is not supported, but it's okay to register for them anyway.
 
-		private void ICS213Control_Loaded(object sender, RoutedEventArgs e)
+            // Initalize common helper class and register for printing
+            printHelper = new PrintHelper(this);
+            printHelper.RegisterForPrinting();
+
+            // Initialize print content for this scenario
+            printHelper.PreparePrintContent(_packetForm);
+        }
+
+        private void ICS213Control_Loaded(object sender, RoutedEventArgs e)
 		{
 
 		}
@@ -481,29 +506,34 @@ namespace PacketMessaging.Views
 			_packetForm.MessageNo = ViewModels.SettingsPageViewModel.GetMessageNumberPacket();
 		}
 
-		//private async void appBarOpen_Click(object sender, RoutedEventArgs e)
-		//{
-		//	StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", MainPage.draftMessagesFolder);
+        private async void AppBarPrint_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            await printHelper.ShowPrintUIAsync();
+        }
 
-		//	FileOpenPicker fileOpenPicker = new FileOpenPicker();
-		//	fileOpenPicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
-		//	fileOpenPicker.FileTypeFilter.Add(".xml");
-		//	StorageFile file = await fileOpenPicker.PickSingleFileAsync();
-		//	if (file != null)
-		//	{
-		//		_packetMessage = PacketMessage.Open(MainPage.draftMessagesFolder.Path + @"\" + file.Name);
+        //private async void appBarOpen_Click(object sender, RoutedEventArgs e)
+        //{
+        //	StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", MainPage.draftMessagesFolder);
 
-		//		foreach (PivotItem pivotItem in MyPivot.Items)
-		//		{
-		//			if (pivotItem.Name == _packetMessage.PacFormName)
-		//			{
-		//				MyPivot.SelectedItem = pivotItem;
-		//				CreatePacketForm();
-		//				FillFormFromPacketMessage();
-		//				break;
-		//			}
-		//		}
-		//	}
-		//}
-	}
+        //	FileOpenPicker fileOpenPicker = new FileOpenPicker();
+        //	fileOpenPicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
+        //	fileOpenPicker.FileTypeFilter.Add(".xml");
+        //	StorageFile file = await fileOpenPicker.PickSingleFileAsync();
+        //	if (file != null)
+        //	{
+        //		_packetMessage = PacketMessage.Open(MainPage.draftMessagesFolder.Path + @"\" + file.Name);
+
+        //		foreach (PivotItem pivotItem in MyPivot.Items)
+        //		{
+        //			if (pivotItem.Name == _packetMessage.PacFormName)
+        //			{
+        //				MyPivot.SelectedItem = pivotItem;
+        //				CreatePacketForm();
+        //				FillFormFromPacketMessage();
+        //				break;
+        //			}
+        //		}
+        //	}
+        //}
+    }
 }

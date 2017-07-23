@@ -51,7 +51,9 @@
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True" />
 
-		<!--  content  -->
+        <Canvas x:Name="PrintCanvas" Opacity="0"/>
+
+        <!--  content  -->
 		<Pivot x:Name="MyPivot" Grid.Row="1" Height="auto"        
                RelativePanel.AlignLeftWithPanel="True"
                RelativePanel.AlignRightWithPanel="True"
@@ -136,7 +138,12 @@
 				RelativePanel.AlignRightWithPanel="True"
 				RelativePanel.AlignLeftWithPanel="True">
 			<AppBarButton x:Name="appBarSave" Label="Save Message" Icon="Save" HorizontalAlignment="Right" Click="AppBarSave_Click"/>
-			<AppBarButton x:Name="appBarSend" Label="Send Message" Icon="Send" Click="AppBarSend_ClickAsync"/>
+            <AppBarButton x:Name="appBarPrint" Label="Print Message" HorizontalAlignment="Right" Click="AppBarPrint_ClickAsync">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE2F6;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="appBarSend" Label="Send Message" Icon="Send" Click="AppBarSend_ClickAsync"/>
 		</CommandBar>
 	</RelativePanel>
 </Page>

@@ -19,7 +19,7 @@ namespace MessageFormControl
         {
             InitializeComponent();
 
-            ScanControls(root);
+            ScanControls(PrintableArea);
 
             InitializeControls();
 		}

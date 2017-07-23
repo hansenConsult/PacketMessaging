@@ -43,7 +43,7 @@ namespace CityScanFormControl
 		{
 			this.InitializeComponent();
 
-			ScanControls(root);
+			ScanControls(PrintableArea);
 
 			InitializeControls();
 

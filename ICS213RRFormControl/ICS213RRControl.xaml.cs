@@ -19,7 +19,7 @@ namespace EOC213RRFormControl
 		{
 			this.InitializeComponent();
 
-			ScanControls(root);
+			ScanControls(PrintableArea);
 
 			InitializeControls();
 

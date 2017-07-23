@@ -331,34 +331,6 @@ namespace FormControlBaseClass
 			}
 		}
 
-        // LogHelper
-        private static  void LogHelper(LogLevel logLevel, string message, [CallerMemberName] string memberName = "",
-                [CallerFilePath] string sourceFilePath = "",
-                [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            switch (logLevel)
-            {
-                case LogLevel.Trace:
-                    log.Trace($"{message}, Line = {sourceLineNumber}");
-                    break;
-                case LogLevel.Debug:
-                    log.Debug($"{message}, Line = {sourceLineNumber}");
-                    break;
-                case LogLevel.Info:
-                    log.Info($"{message}, Line = {sourceLineNumber}");
-                    break;
-                case LogLevel.Warn:
-                    log.Warn($"{message}, Line = {sourceLineNumber}");
-                    break;
-                case LogLevel.Error:
-                    log.Error($"{message}, Line = {sourceLineNumber}");
-                    break;
-                case LogLevel.Fatal:
-                    log.Fatal($"{message}, Line = {sourceLineNumber}");
-                    break;
-            }
-        }
-
         public static PacketMessage Open(string filePath)
 		{
 			if (!File.Exists(filePath))
@@ -381,7 +353,7 @@ namespace FormControlBaseClass
 			}
 			catch (Exception e)
 			{
-                LogHelper(LogLevel.Error, $"Failed to open {filePath}, {e}");
+                LogHelper.Log(LogLevel.Error, $"Failed to open {filePath}, {e}");
 			}
 			//finally
 			//{
@@ -437,7 +409,7 @@ namespace FormControlBaseClass
 			}
 			catch (Exception e)
 			{
-                LogHelper(LogLevel.Error, $"Failed to save {filePath}", e.Message);
+                LogHelper.Log(LogLevel.Error, $"Failed to save {filePath}", e.Message);
 			}
 			finally
 			{
@@ -463,7 +435,7 @@ namespace FormControlBaseClass
 			}
 			catch (Exception e)
 			{
-                LogHelper(LogLevel.Error, $"Failed to read {filePath} for substituting tab characters, {e}");
+                LogHelper.Log(LogLevel.Error, $"Failed to read {filePath} for substituting tab characters, {e}");
 			}
 
 			if (tabCharacterFound)
@@ -481,7 +453,7 @@ namespace FormControlBaseClass
 				}
 				catch (Exception e)
 				{
-                    LogHelper(LogLevel.Error, $"Failed to write {filePath} with escaped tab characters {e}");
+                    LogHelper.Log(LogLevel.Error, $"Failed to write {filePath} with escaped tab characters {e}");
 				}
 			}
 		}

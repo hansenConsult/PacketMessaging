@@ -226,10 +226,6 @@
       <Project>{0d5f7195-b0c6-4b11-8a86-8f429bbe186d}</Project>
       <Name>CityScanFormControl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EOCLogisticsFormControl\EOCLogisticsFormControl.csproj">
-      <Project>{a58fda92-65d0-4d17-a583-e06402698796}</Project>
-      <Name>EOCLogisticsFormControl</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FormControlBase\FormControlBase.csproj">
       <Project>{4dd3b526-5cc4-4ec5-982f-b910a166bbec}</Project>
       <Name>FormControlBase</Name>

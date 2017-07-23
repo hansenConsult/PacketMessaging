@@ -557,15 +557,19 @@
 
 		</Pivot>
 
-		<CommandBar x:Name="ButtomCommandBar"
+        <CommandBar x:Name="ButtomCommandBar"
 				RelativePanel.AlignBottomWithPanel="True"
 				RelativePanel.AlignRightWithPanel="True"
 				RelativePanel.AlignLeftWithPanel="True">
-			<AppBarButton Label="Open" Icon="OpenFile" Click="AppBarButton_OpenMessage" />
-			<AppBarButton Label="Send/Receive" Icon="Send" Click="AppBar_SendReceive" />
-			<AppBarButton Label="Delete Item" Icon="Delete" Click="AppBar_DeleteItemAsync" HorizontalAlignment="Right" />
-		</CommandBar>
-
-	</RelativePanel>
+            <AppBarButton Label="Open" Icon="OpenFile" Click="AppBarButton_OpenMessage" />
+            <!--<AppBarButton x:Name="appBarPrint" Label="Print Message" HorizontalAlignment="Right" Click="AppBarPrint_Click">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE2F6;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>-->
+            <AppBarButton Label="Send/Receive" Icon="Send" Click="AppBar_SendReceive" />
+            <AppBarButton Label="Delete Item" Icon="Delete" Click="AppBar_DeleteItemAsync" HorizontalAlignment="Right" />
+        </CommandBar>
+    </RelativePanel>
 </Page>
 
