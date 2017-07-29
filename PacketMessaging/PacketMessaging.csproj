@@ -128,6 +128,7 @@
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PreviewUnavailable.xaml.cs" />
     <Compile Include="Views\SendFormData.xaml.cs" />
     <Compile Include="Views\SerialDeviceConfig.cs" />
     <Compile Include="Views\SettingsPage.xaml.cs" />
@@ -199,6 +200,10 @@
     <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PreviewUnavailable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SendFormData.xaml">
       <Generator>MSBuild:Compile</Generator>
