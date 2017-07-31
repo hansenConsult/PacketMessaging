@@ -267,7 +267,7 @@ namespace PacketMessaging.Views
         }
 
         /// <summary>
-        /// This is the event handler for Pagination.
+        /// This is the event handler for PrintDocument.Paginate.
         /// </summary>
         /// <param name="sender">The document for which pagination occurs.</param>
         /// <param name="e">The pagination event arguments containing the print options.</param>
@@ -282,11 +282,11 @@ namespace PacketMessaging.Views
             PageDescription pageDescription = new PageDescription();
 
             // Get printer's page description.
-            PrintTaskOptionDetails printDetailedOptions = PrintTaskOptionDetails.GetFromPrintTaskOptions(e.PrintTaskOptions);
+            //PrintTaskOptionDetails printDetailedOptions = PrintTaskOptionDetails.GetFromPrintTaskOptions(e.PrintTaskOptions);
             PrintPageDescription printPageDescription = e.PrintTaskOptions.GetPageDescription(0);
 
             // Reset the error state
-            printDetailedOptions.Options["photoSize"].ErrorText = string.Empty;
+           // printDetailedOptions.Options["photoSize"].ErrorText = string.Empty;
 
             // Compute the printing page description (page size & center printable area)
             pageDescription.PageSize = printPageDescription.PageSize;
@@ -331,7 +331,7 @@ namespace PacketMessaging.Views
                 if (pageDescription.PictureViewSize.Width > pageDescription.ViewablePageSize.Width ||
                     pageDescription.PictureViewSize.Height > pageDescription.ViewablePageSize.Height)
                 {
-                    printDetailedOptions.Options["photoSize"].ErrorText = "Photo doesn’t fit on the selected paper";
+                    //printDetailedOptions.Options["photoSize"].ErrorText = "Photo doesn’t fit on the selected paper";
 
                     // Inform preview that it has only 1 page to show.
                     printDoc.SetPreviewPageCount(1, PreviewPageCountType.Intermediate);
@@ -448,6 +448,72 @@ namespace PacketMessaging.Views
         }
 
         /// <summary>
+        /// This function creates and adds one print preview page to the internal cache of print preview
+        /// pages stored in printPreviewPages.
+        /// </summary>
+        /// <param name="lastRTBOAdded">Last RichTextBlockOverflow element added in the current content</param>
+        /// <param name="printPageDescription">Printer's page description</param>
+        //protected virtual RichTextBlockOverflow AddOnePrintPreviewPage(RichTextBlockOverflow lastRTBOAdded, PrintPageDescription printPageDescription)
+        //{
+        //    // XAML element that is used to represent to "printing page"
+        //    FrameworkElement page;
+
+        //    // The link container for text overflowing in this page
+        //    RichTextBlockOverflow textLink;
+
+        //    // Check if this is the first page ( no previous RichTextBlockOverflow)
+        //    if (lastRTBOAdded == null)
+        //    {
+        //        // If this is the first page add the specific scenario content
+        //        page = firstPage;
+        //        //Hide footer since we don't know yet if it will be displayed (this might not be the last page) - wait for layout
+        //        StackPanel footer = (StackPanel)page.FindName("Footer");
+        //        footer.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+        //    }
+        //    else
+        //    {
+        //        // Flow content (text) from previous pages
+        //        page = new ContinuationPage(lastRTBOAdded);
+        //    }
+
+        //    // Set "paper" width
+        //    page.Width = printPageDescription.PageSize.Width;
+        //    page.Height = printPageDescription.PageSize.Height;
+
+        //    Grid printableArea = (Grid)page.FindName("PrintableArea");
+
+        //    // Get the margins size
+        //    // If the ImageableRect is smaller than the app provided margins use the ImageableRect
+        //    double marginWidth = Math.Max(printPageDescription.PageSize.Width - printPageDescription.ImageableRect.Width, printPageDescription.PageSize.Width * ApplicationContentMarginLeft * 2);
+        //    double marginHeight = Math.Max(printPageDescription.PageSize.Height - printPageDescription.ImageableRect.Height, printPageDescription.PageSize.Height * ApplicationContentMarginTop * 2);
+
+        //    // Set-up "printable area" on the "paper"
+        //    printableArea.Width = firstPage.Width - marginWidth;
+        //    printableArea.Height = firstPage.Height - marginHeight;
+
+        //    // Add the (newley created) page to the print canvas which is part of the visual tree and force it to go
+        //    // through layout so that the linked containers correctly distribute the content inside them.
+        //    PrintCanvas.Children.Add(page);
+        //    PrintCanvas.InvalidateMeasure();
+        //    PrintCanvas.UpdateLayout();
+
+        //    // Find the last text container and see if the content is overflowing
+        //    textLink = (RichTextBlockOverflow)page.FindName("ContinuationPageLinkedContainer");
+
+        //    // Check if this is the last page
+        //    if (!textLink.HasOverflowContent && textLink.Visibility == Windows.UI.Xaml.Visibility.Visible)
+        //    {
+        //        StackPanel footer = (StackPanel)page.FindName("Footer");
+        //        footer.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        //    }
+
+        //    // Add the page to the page preview collection
+        //    printPreviewPages.Add(page);
+
+        //    return textLink;
+        //}
+
+        /// <summary>
         /// Helper function that clears the page collection and also the pages attached to the "visual root".
         /// </summary>
         private void ClearPageCollection()
@@ -508,33 +574,33 @@ namespace PacketMessaging.Views
             photoView.SetValue(Canvas.TopProperty, (viewablePage.Height - photoView.Height) / 2);
 
             // Return an async task that will complete when the image is fully loaded.
-            WriteableBitmap bitmap = await LoadBitmapAsync(
-                new Uri(string.Format("ms-appx:///Assets/photo{0}.jpg", photoNumber)),
-                pageDescription.PageSize.Width > pageDescription.PageSize.Height);
+            //WriteableBitmap bitmap = await LoadBitmapAsync(
+            //    new Uri(string.Format("ms-appx:///Assets/photo{0}.jpg", photoNumber)),
+            //    pageDescription.PageSize.Width > pageDescription.PageSize.Height);
 
-            if (bitmap != null)
-            {
-                Image image = new Image
-                {
-                    Source = bitmap,
-                    HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center,
-                    VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Center
-                };
+            //if (bitmap != null)
+            //{
+            //    Image image = new Image
+            //    {
+            //        Source = bitmap,
+            //        HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center,
+            //        VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Center
+            //    };
 
-                // Use the real image size when croping or if the image is smaller then the target area (prevent a scale-up).
-                if (bitmap.PixelWidth <= pageDescription.PictureViewSize.Width &&
-                    bitmap.PixelHeight <= pageDescription.PictureViewSize.Height)
-                {
-                    image.Stretch = Stretch.None;
-                    image.Width = bitmap.PixelWidth;
-                    image.Height = bitmap.PixelHeight;
-                }
+            //    // Use the real image size when croping or if the image is smaller then the target area (prevent a scale-up).
+            //    if (bitmap.PixelWidth <= pageDescription.PictureViewSize.Width &&
+            //        bitmap.PixelHeight <= pageDescription.PictureViewSize.Height)
+            //    {
+            //        image.Stretch = Stretch.None;
+            //        image.Width = bitmap.PixelWidth;
+            //        image.Height = bitmap.PixelHeight;
+            //    }
 
-                // Add the newly created image to the visual root.
-                photoView.Children.Add(image);
-                viewablePage.Children.Add(photoView);
-                page.Children.Add(viewablePage);
-            }
+            //    // Add the newly created image to the visual root.
+            //    photoView.Children.Add(image);
+            //    viewablePage.Children.Add(photoView);
+            //    page.Children.Add(viewablePage);
+            //}
 
             // Return the page with the image centered.
             return page;
