@@ -163,14 +163,14 @@ namespace PacketMessaging.Views
                 printDetailedOptions.DisplayedOptions.Add(StandardPrintTaskOptions.Copies);
 
                 // Create a new list option.
-                PrintCustomItemListOptionDetails photoSize = printDetailedOptions.CreateItemListOption("photoSize", "Photo Size");
-                photoSize.AddItem("SizeFullPage", "Full Page");
+                //PrintCustomItemListOptionDetails photoSize = printDetailedOptions.CreateItemListOption("photoSize", "Photo Size");
+                //photoSize.AddItem("SizeFullPage", "Full Page");
 
                 // Add the custom option to the option list.
-                printDetailedOptions.DisplayedOptions.Add("photoSize");
+                //printDetailedOptions.DisplayedOptions.Add("photoSize");
 
                 // Set default orientation to portrait.
-                printTask.Options.Orientation = PrintOrientation.Portrait;
+                //printTask.Options.Orientation = PrintOrientation.Portrait;
 
                 // Register for print task option changed notifications.
                 printDetailedOptions.OptionChanged += PrintDetailedOptionsOptionChanged;
@@ -222,47 +222,10 @@ namespace PacketMessaging.Views
 
             string optionId = args.OptionId.ToString();
 
-            if (optionId == "photoSize")
-            {
-                IPrintOptionDetails photoSizeOption = sender.Options[optionId];
-                string photoSizeValue = photoSizeOption.Value as string;
-
-                if (!string.IsNullOrEmpty(photoSizeValue))
-                {
-                    switch (photoSizeValue)
-                    {
-                        case "SizeFullPage":
-                            photoSize = PhotoSize.SizeFullPage;
-                            break;
-                        case "Size8x10":
-                            photoSize = PhotoSize.Size8x10;
-                            break;
-                    }
-                    invalidatePreview = true;
-                }
-            }
-
-            if (optionId == "scaling")
-            {
-                IPrintOptionDetails scalingOption = sender.Options[optionId];
-                string scalingValue = scalingOption.Value as string;
-
-                if (!string.IsNullOrEmpty(scalingValue))
-                {
-                    switch (scalingValue)
-                    {
-                        case "ShrinkToFit":
-                            photoScale = Scaling.ShrinkToFit;
-                            break;
-                    }
-                    invalidatePreview = true;
-                }
-            }
-
             // Invalidate preview if one of the 2 options (photoSize, scaling) changed.
             if (invalidatePreview)
             {
-                await scenarioPage.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, printDocument.InvalidatePreview);
+                await scenarioPage.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, printDocument.InvalidatePreview);
             }
         }
 
