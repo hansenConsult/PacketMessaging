@@ -63,7 +63,7 @@
                             <ColumnDefinition Width="11*"/>
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1,0,0,0">
-                            <StackPanel>
+                            <StackPanel >
                                 <TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Situation Severity" Foreground="LightSalmon" Margin="5"/>
                                 <MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required"/>
                                 <RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="EMERGENCY" Checked="Subject_Changed" 
@@ -429,13 +429,13 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal" BorderBrush="Black" BorderThickness="1,0,0,1">
                         <MyNamespace:ToggleButtonGroup x:Name="receivedOrSent" />
-                        <RadioButton Name="received" GroupName="receivedOrSent" Content="Rcv'd"  MinWidth="70" Margin="5,0,0,0" Padding="8,5,0,0"/>
-                        <RadioButton Name="sent" GroupName="receivedOrSent" Content="Sent" Width="60" MinWidth="75" Padding="8,5,0,0"/>
+                        <RadioButton Name="received" GroupName="receivedOrSent" Content="Rcv'd"  MinWidth="70" Margin="5,0,0,0" Padding="5,5,0,0"/>
+                        <RadioButton Name="sent" GroupName="receivedOrSent" Content="Sent" MinWidth="75" Padding="5,5,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" BorderBrush="Black" BorderThickness="1,0,0,1">
                         <MyNamespace:ToggleButtonGroup x:Name="howRecevedSent" />
-                        <RadioButton Name="voice" GroupName="howRecevedSent" Content="Voice" MinWidth="75" Width="60" Margin="5,0,0,0" Padding="8,5,0,0" />
-                        <RadioButton Name="packet" GroupName="howRecevedSent" Content="Packet" MinWidth="75" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" VerticalAlignment="Top" Padding="8,5,0,0"/>
+                        <RadioButton Name="voice" GroupName="howRecevedSent" Content="Voice" MinWidth="75" Margin="5,0,0,0" Padding="5,5,0,0" />
+                        <RadioButton Name="packet" GroupName="howRecevedSent" Content="Packet" MinWidth="75" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" VerticalAlignment="Top" Padding="5,5,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" BorderBrush="Black" BorderThickness="1,0,0,1">
                         <TextBlock Text="Call:"  Margin="5,0,0,0" VerticalAlignment="Center" Padding="0,0,0,1"/>

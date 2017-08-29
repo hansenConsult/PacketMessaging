@@ -1,8 +1,8 @@
 ﻿{
   "dependencies": {
     "MetroLog": "1.0.1",
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.3",
-    "System.ValueTuple": "4.3.0",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.4.0",
+    "System.ValueTuple": "4.4.0",
     "Template10": "1.1.12"
   },
   "frameworks": {
