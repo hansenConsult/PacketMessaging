@@ -146,7 +146,8 @@
                RelativePanel.AlignBottomWithPanel="True"
                RelativePanel.AlignLeftWithPanel="True"
                RelativePanel.AlignRightWithPanel="True"
-               RelativePanel.Below="pageHeader" >
+               RelativePanel.Below="pageHeader" 
+               FontFamily="Bahnschrift">
 
 			<!--  settings  -->
 			<PivotItem DataContext="{Binding SettingsPartViewModel}" Header="Settings">

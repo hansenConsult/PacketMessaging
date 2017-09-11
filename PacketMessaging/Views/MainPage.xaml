@@ -210,7 +210,9 @@
                RelativePanel.AlignLeftWithPanel="True"
                RelativePanel.AlignRightWithPanel="True"
 			   RelativePanel.Above="ButtomCommandBar"
-               RelativePanel.Below="pageHeader"  SelectionChanged="MyPivot_SelectionChanged" 
+               RelativePanel.Below="pageHeader"  
+               FontFamily="Bahnschrift"
+               SelectionChanged="MyPivot_SelectionChanged" 
 			     >
 
 			<!--  Inbox  -->

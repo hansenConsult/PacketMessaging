@@ -40,6 +40,13 @@
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
+    <Style x:Key="EOC213RRHeaderItalic" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Helvetica"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontStyle" Value="Italic"/>
+    </Style>
+
     <Style x:Key="EOC213RRFieldLabel" TargetType="TextBlock" BasedOn="{StaticResource EOC213RRFieldBase}">
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -56,6 +63,12 @@
         <Setter Property="FontFamily" Value="Ariel"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground" Value="Black"/>
+    </Style>
+    <Style x:Key="EOC213RRFieldHeaderCB" TargetType="CheckBox">
+        <Setter Property="FontFamily" Value="Ariel"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Bold"/>
     </Style>
 
     <Style x:Key="TextC12" TargetType="TextBlock">
