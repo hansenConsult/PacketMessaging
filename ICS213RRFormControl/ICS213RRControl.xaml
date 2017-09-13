@@ -121,7 +121,7 @@
 
                     <Grid BorderBrush="Black" BorderThickness="1,1,1,1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="4.3*"/>
+                            <ColumnDefinition Width="5*"/>
                             <ColumnDefinition Width="7*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -152,7 +152,7 @@
                             </StackPanel>
                             <StackPanel Grid.Column="2" BorderBrush="Black" BorderThickness="1,1,0,1">
                                 <TextBlock Text="4. Tracking Number" Style="{StaticResource EOC213RRFieldHeader}"/>
-                                <TextBlock Text="(Completed by OA EOC)" Style="{StaticResource EOC213RRHeaderItalic}"/>
+                                <TextBlock Text=" (Completed by OA EOC)" Style="{StaticResource EOC213RRHeaderItalic}"/>
                             </StackPanel>
 
                         </Grid>
@@ -162,7 +162,7 @@
                                     <Run Text="5. Requested by" />
                                     <Run Text=" (Name, agency, email, phone)" FontSize="11" FontStyle="Italic" FontWeight="Normal" Foreground="Black"/>
                                 </TextBlock>
-                                <TextBox Name="requestedBy" FontFamily="Helvetica" FontSize="14"  Margin="5,2,4.667,2" Grid.ColumnSpan="2" Tag="required"/>
+                                <TextBox Name="requestedBy" FontFamily="Helvetica" FontSize="14"  Margin="5,2,4.667,2" MinHeight="50" Tag="required"/>
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="0" Grid.Row="2" BorderBrush="Black" BorderThickness="1,0">
@@ -171,7 +171,7 @@
                                     <Run Text="6. Prepared by"/>
                                     <Run Text=" (Name, position, email, phone)" FontSize="11" FontStyle="Italic" FontWeight="Normal" Foreground="Black"/>
                                 </TextBlock>
-                                <TextBox Name="preparedBy" FontFamily="Helvetica" FontSize="14"  Margin="5,2,4.667,2" Grid.ColumnSpan="2" />
+                                <TextBox Name="preparedBy" FontFamily="Helvetica" FontSize="14"  Margin="5,2,4.667,2" MinHeight="70"/>
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="0" Grid.Row="3" BorderBrush="Black" BorderThickness="1,1,1,0">
@@ -266,25 +266,17 @@
                             <Border Grid.Column="4" Grid.Row="1" Grid.RowSpan="5" BorderBrush="Black" BorderThickness="0,1,0,1"/>
                             <Border Grid.ColumnSpan="5" Grid.Row="2" BorderBrush="Black" BorderThickness="1,1,0,0"/>
                             <Border Grid.ColumnSpan="5" Grid.Row="5" BorderBrush="Black" BorderThickness="1,1,0,0"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="8. Qty/Unit" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource EOC213RRFieldHeaderRequired}" />
-                            <StackPanel Grid.Column="1" Grid.Row="1">
-                                <TextBlock HorizontalAlignment="Center" Style="{StaticResource EOC213RRFieldLabelRequired}">
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="8. Qty/Unit" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldHeaderRequired}" Height="16" />
+                                <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldLabelRequired}" Margin="10,0,0,0">
                                     <Run Text="9. Resource Description"/>
                                     <Run Text=" (Kind/Type if applicable)" FontSize="11" FontStyle="Italic" FontWeight="Normal" Foreground="Black"/>
                                 </TextBlock>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Grid.Row="1">
-                                <TextBlock HorizontalAlignment="Center" Style="{StaticResource EOC213RRFieldLabelRequired}">
+                                <TextBlock Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldLabelRequired}" Margin="8,0,0,0">
                                     <Run Text="10, Arrival"/>
                                     <Run Text=" (date/time)" FontSize="11" FontStyle="Italic" FontWeight="Normal" Foreground="Black"/>
                                 </TextBlock>
-                            </StackPanel>
-                            <StackPanel Grid.Column="3" Grid.Row="1">
-                                <TextBlock Grid.Column="3" Grid.Row="1" Text="11. Priority" HorizontalAlignment="Center" Style="{StaticResource EOC213RRFieldLabelRequired}"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="4" Grid.Row="1">
-                                <TextBlock Text="12. Est'd Cost" HorizontalAlignment="Center" Style="{StaticResource EOC213RRFieldLabel}"/>
-                            </StackPanel>
+                                <TextBlock Grid.Column="3" Grid.Row="1" Text="11. Priority" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldLabelRequired}" Margin="8,0,0,0"/>
+                                <TextBlock Grid.Column="4" Grid.Row="1" Text="12. Est'd Cost" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldLabel}" Margin="8,0,0,0"/>
                             <TextBox Grid.Column="0" Grid.Row="2" Name="resourceInfoQuantity1" Margin="5,10,5,5" AcceptsReturn="True" Tag="Required"/>
                             <TextBox Grid.Column="1" Grid.Row="2" Name="resourceInfoDetailedResourceDesc1" Margin="5,10" AcceptsReturn="True" Tag="Required"/>
                             <TextBox Grid.Column="2" Grid.Row="2" Name="resourceInfoArrival1" PlaceholderText="mm/dd/yy hhmm" Margin="5,10,5,10" Height="24" VerticalAlignment="Top" Tag="Required"/>
@@ -295,16 +287,16 @@
                                     <RadioButton x:Name="resourceInfoNow" GroupName="resourceInfoPriority1"  RelativePanel.AlignLeftWithPanel="True" Margin="100,-5,0,0" MinWidth="0" HorizontalAlignment="Center" VerticalAlignment="Stretch"  Padding="2,6,0,0" Height="28" />
                                 </RelativePanel>
                                 <RelativePanel>
-                                    <TextBlock Text="High (0-4 hrs.)" FontFamily="helvetica" FontSize="11" Margin="5,0,0,0"  RelativePanel.AlignVerticalCenterWith="resourceInfoUrgent1"/>
-                                    <RadioButton x:Name="resourceInfoUrgent1" GroupName="resourceInfoPriority1"  RelativePanel.AlignLeftWithPanel="True" Margin="100,-5,0,0" MinWidth="0" HorizontalAlignment="Center" VerticalAlignment="Stretch"  Padding="2,6,0,0" Height="28" />
+                                    <TextBlock Text="High (0-4 hrs.)" FontFamily="helvetica" FontSize="11" Margin="5,0,0,0"  RelativePanel.AlignVerticalCenterWith="resourceInfoHigh"/>
+                                    <RadioButton x:Name="resourceInfoHigh" GroupName="resourceInfoPriority1"  RelativePanel.AlignLeftWithPanel="True" Margin="100,-5,0,0" MinWidth="0" HorizontalAlignment="Center" VerticalAlignment="Stretch"  Padding="2,6,0,0" Height="28" />
                                 </RelativePanel>
                                 <RelativePanel>
-                                    <TextBlock Text="Medium (5-12 hrs.)" FontFamily="helvetica" FontSize="11" Margin="5,0,0,0"  RelativePanel.AlignVerticalCenterWith="resourceInfoRoutine1"/>
-                                    <RadioButton x:Name="resourceInfoRoutine1" GroupName="resourceInfoPriority1" RelativePanel.AlignLeftWithPanel="True" Margin="100,-5,0,0" MinWidth="20" Height="28" Padding="0,6,0,0" />
+                                    <TextBlock Text="Medium (5-12 hrs.)" FontFamily="helvetica" FontSize="11" Margin="5,0,0,0"  RelativePanel.AlignVerticalCenterWith="resourceInfoMedium"/>
+                                    <RadioButton x:Name="resourceInfoMedium" GroupName="resourceInfoPriority1" RelativePanel.AlignLeftWithPanel="True" Margin="100,-5,0,0" MinWidth="20" Height="28" Padding="0,6,0,0" />
                                 </RelativePanel>
                                 <RelativePanel>
-                                    <TextBlock Text="Low (12+ hrs)" FontFamily="helvetica" FontSize="11"  Margin="5,0,0,0" RelativePanel.AlignVerticalCenterWith="resourceInfoLow1"  />
-                                    <RadioButton x:Name="resourceInfoLow1" GroupName="resourceInfoPriority1" RelativePanel.AlignLeftWithPanel="True" Margin="100,-5,0,0" MinWidth="20" Height="28"  />
+                                    <TextBlock Text="Low (12+ hrs)" FontFamily="helvetica" FontSize="11"  Margin="5,0,0,0" RelativePanel.AlignVerticalCenterWith="resourceInfoLow"  />
+                                    <RadioButton x:Name="resourceInfoLow" GroupName="resourceInfoPriority1" RelativePanel.AlignLeftWithPanel="True" Margin="100,-5,0,0" MinWidth="20" Height="28"  />
                                 </RelativePanel>
                             </StackPanel>
                             <!--<TextBox Grid.Column="3" Grid.Row="2" Name="resourceInfoPriority1" />-->
@@ -335,7 +327,7 @@
                                     <Run Text="15. Suitable Substitutes / Suggested Sources"/>
                                     <Run Text=" (name, source, website)" FontSize="11" FontStyle="Italic" FontWeight="Normal" />
                             </TextBlock>
-                            <TextBox Name="substitute" MinHeight="48" Margin="5" AcceptsReturn="True" />
+                            <TextBox Name="substitutes" MinHeight="48" Margin="5" AcceptsReturn="True" />
                         </StackPanel>
                         <Grid Grid.Column="1" Grid.Row="3">
                             <Grid.ColumnDefinitions>
