@@ -439,15 +439,15 @@ namespace CityScanFormControl
 						break;
 					// 16a-I: [\nincident]
 					case "incident":
-						formField.ControlContent = GetOutpostValue("16a-I", ref msgLines)?.Substring(2);
+						formField.ControlContent = GetOutpostValue("16a-I", ref msgLines);
 						break;
 					// 16a-L: [\nlocation]
 					case "location":
-						formField.ControlContent = GetOutpostValue("16a-L", ref msgLines)?.Substring(2);
+						formField.ControlContent = GetOutpostValue("16a-L", ref msgLines);
 						break;
 					// 16a-S: [\nstatus]
 					case "status":
-						formField.ControlContent = GetOutpostValue("16a-S", ref msgLines)?.Substring(2);
+						formField.ControlContent = GetOutpostValue("16a-S", ref msgLines);
 						break;
 					// OpDate: [08/23/2015]
 					case "operatorDate":

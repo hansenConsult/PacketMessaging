@@ -368,8 +368,9 @@ namespace ICS213FormControl
 						formField.ControlContent = GetOutpostValue("11.", ref msgLines);
 						break;
 					case "message":
-						formField.ControlContent = GetOutpostValue("12.", ref msgLines).Substring(2);
-						break;
+                        //formField.ControlContent = GetOutpostValue("12.", ref msgLines).Substring(2);
+                        formField.ControlContent = GetOutpostValue("12.", ref msgLines);
+                        break;
 					case "receivedOrSent":
 						formField.ControlContent = GetOutpostValue("Rec-Sent", ref msgLines).ToLower();
 						break;

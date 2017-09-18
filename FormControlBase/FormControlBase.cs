@@ -564,7 +564,10 @@ namespace FormControlBaseClass
 			int endIndex = field.IndexOf(']');
 			if (startIndex != -1 && endIndex != -1)
 			{
-				return field.Substring(startIndex + 1, endIndex - startIndex - 1);
+                if (field.StartsWith("\\n"))
+                    return field.Substring(startIndex + 3, endIndex - startIndex - 3);
+                else
+                    return field.Substring(startIndex + 1, endIndex - startIndex - 1);
 			}
 			else
 			{

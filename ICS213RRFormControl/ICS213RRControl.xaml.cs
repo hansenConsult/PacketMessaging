@@ -163,27 +163,27 @@ namespace EOC213RRFormControl
                         break;
                     //16: [\nRequested By]
                     case "requestedBy":
-                        outpostData.Add($"16: [{formField.ControlContent}]");
+                        outpostData.Add($"16: [\\n{formField.ControlContent}]");
                         break;
                     //17: [\nPrepared by]
                     case "preparedBy":
-                        outpostData.Add($"17: [{formField.ControlContent}]");
+                        outpostData.Add($"17: [\\n{formField.ControlContent}]");
                         break;
                     //18: [\nApproved by]
                     case "approvedBy":
-                        outpostData.Add($"18: [{formField.ControlContent}]");
+                        outpostData.Add($"18: [\\n{formField.ControlContent}]");
                         break;
                     //19: [\nQty]
                     case "resourceInfoQuantity1":
-                        outpostData.Add($"19: [{formField.ControlContent}]");
+                        outpostData.Add($"19: [\\n{formField.ControlContent}]");
                         break;
                     //20: [\nResource descr]
                     case "resourceInfoDetailedResourceDesc1":
-                        outpostData.Add($"20: [{formField.ControlContent}]");
+                        outpostData.Add($"20: [\\n{formField.ControlContent}]");
                         break;
                     // 21: [\nArrival]
                     case "resourceInfoArrival1":
-                        outpostData.Add($"21: [{formField.ControlContent}]");
+                        outpostData.Add($"21: [\\n{formField.ControlContent}]");
                         break;
                     // 22: [true]
                     case "resourceInfoPriority1":
@@ -205,19 +205,19 @@ namespace EOC213RRFormControl
                         break;
                     // 26: [\nCost] 
                     case "resourceInfoCost1":
-                        outpostData.Add($"26: [{formField.ControlContent}]");
+                        outpostData.Add($"26: [\\n{formField.ControlContent}]");
                         break;
                     // 27: [\nDelivery to] 
                     case "deliveryTo":
-                        outpostData.Add($"27: [{formField.ControlContent}]");
+                        outpostData.Add($"27: [\\n{formField.ControlContent}]");
                         break;
                     // 28: [\nLocation] 
                     case "deliveryLocation":
-                        outpostData.Add($"28: [{formField.ControlContent}]");
+                        outpostData.Add($"28: [\\n{formField.ControlContent}]");
                         break;
                     // 29: [\nSubstitutes] 
                     case "substitutes":
-                        outpostData.Add($"29: [{formField.ControlContent}]");
+                        outpostData.Add($"29: [\\n{formField.ControlContent}]");
                         break;
                     // 30: [true] 
                     case "suppReqEquipmentOperator":
@@ -257,7 +257,7 @@ namespace EOC213RRFormControl
                         break;
                     // 39: [\nSpecial Instructions] 
                     case "specialInstructions":
-                        outpostData.Add($"39: [{formField.ControlContent}]");
+                        outpostData.Add($"39: [\\n{formField.ControlContent}]");
                         break;
                     //40. Rec-Sent: [received]
                     case "receivedOrSent":

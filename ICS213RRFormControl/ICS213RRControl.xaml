@@ -121,18 +121,18 @@
 
                     <Grid BorderBrush="Black" BorderThickness="1,1,1,1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="4*"/>
                             <ColumnDefinition Width="7*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Column="0" BorderBrush="Black" BorderThickness="0,1,1,1">
                             <TextBlock Text="1. Incident Name" Style="{StaticResource EOC213RRFieldHeaderRequired}" Margin="5,2,0,0"/>
-                            <TextBox Name="incidentName" Margin="5,2" TextChanged="Subject_Changed" Tag="required"/>
+                            <TextBox Name="incidentName" Margin="5,2" AcceptsReturn="True" TextChanged="Subject_Changed" Tag="required"/>
                         </StackPanel>
                         <Grid Grid.Column="1" Grid.Row="0" >
                             <Grid.ColumnDefinitions>
@@ -140,21 +140,20 @@
                                 <ColumnDefinition Width="0.8*"/>
                                 <ColumnDefinition Width="1.2*"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,0,1">
+                            <StackPanel Grid.Column="0" BorderBrush="Black" BorderThickness="0,1,0,1">
                                 <TextBlock Text="2. Date Initiated" Style="{StaticResource EOC213RRFieldHeaderRequired}"/>
-                                <TextBox Name="msgDate" PlaceholderText="mm/dd/yy" FontFamily="Ariel" FontSize="14"  Margin="5,2,5,0" Tag="required"/>
+                                <TextBox Name="msgDate" PlaceholderText="mm/dd/yy" FontFamily="Ariel" FontSize="14"  Margin="5,2" Tag="required"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1" BorderBrush="Black" BorderThickness="1,1,0,1">
                                 <TextBlock Style="{StaticResource EOC213RRFieldHeaderRequired}">
                                 <Run Text="3. Time Initiated"/>
                                 </TextBlock>
-                                <TextBox Name="msgTime" PlaceholderText="hhmm" FontFamily="Helvetica" FontSize="14" Margin="5,2,5,0"  Tag="required"/>
+                                <TextBox Name="msgTime" PlaceholderText="hhmm" FontFamily="Helvetica" FontSize="14" Margin="5,2"  Tag="required"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2" BorderBrush="Black" BorderThickness="1,1,0,1">
                                 <TextBlock Text="4. Tracking Number" Style="{StaticResource EOC213RRFieldHeader}"/>
                                 <TextBlock Text=" (Completed by OA EOC)" Style="{StaticResource EOC213RRHeaderItalic}"/>
                             </StackPanel>
-
                         </Grid>
                         <Border Grid.Column="0" Grid.Row="1" BorderBrush="Black" BorderThickness="1,0,1,1">
                             <StackPanel >
@@ -162,7 +161,7 @@
                                     <Run Text="5. Requested by" />
                                     <Run Text=" (Name, agency, email, phone)" FontSize="11" FontStyle="Italic" FontWeight="Normal" Foreground="Black"/>
                                 </TextBlock>
-                                <TextBox Name="requestedBy" FontFamily="Helvetica" FontSize="14"  Margin="5,2,4.667,2" MinHeight="50" Tag="required"/>
+                                <TextBox Name="requestedBy" FontFamily="Helvetica" FontSize="14" MinHeight="60" AcceptsReturn="True" Margin="5,2" Tag="required" />
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="0" Grid.Row="2" BorderBrush="Black" BorderThickness="1,0">
@@ -171,7 +170,7 @@
                                     <Run Text="6. Prepared by"/>
                                     <Run Text=" (Name, position, email, phone)" FontSize="11" FontStyle="Italic" FontWeight="Normal" Foreground="Black"/>
                                 </TextBlock>
-                                <TextBox Name="preparedBy" FontFamily="Helvetica" FontSize="14"  Margin="5,2,4.667,2" MinHeight="70"/>
+                                <TextBox Name="preparedBy" FontFamily="Helvetica" FontSize="14" MinHeight="50" AcceptsReturn="True" Margin="5,2" />
                             </StackPanel>
                         </Border>
                         <Border Grid.Column="0" Grid.Row="3" BorderBrush="Black" BorderThickness="1,1,1,0">
@@ -180,43 +179,47 @@
                                     <Run Text="6. Approved by"/>
                                     <Run Text=" (Name, position, email, phone)" FontSize="11" FontStyle="Italic" FontWeight="Normal" Foreground="Black"/>
                                 </TextBlock>
-                                <TextBox Name="approvedBy" FontFamily="Helvetica" FontSize="14"  Margin="5,2" />
+                                <TextBox Name="approvedBy" FontFamily="Helvetica" FontSize="14" MinHeight="80" AcceptsReturn="True" Margin="5,2" />
                             </StackPanel>
                         </Border>
-                        <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="0,0,1,0">
+                        <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" >
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="85"/>
+                                    <ColumnDefinition Width="90"/>
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="1" Grid.Row="0" Text="How to use EOC form 213RR" Style="{StaticResource EOC213RRFieldHeader}" TextDecorations="Underline" />
+                                <TextBlock Grid.Column="1" Grid.Row="0" Style="{StaticResource EOC213RRFieldHeader}">
+                                    <Underline>How to use EOC form 213RR</Underline>
+                                </TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="1" Text="Purpose:" Style="{StaticResource EOC213RRFieldHeader}"/>
                                 <TextBlock Grid.Column="1" Grid.Row="1" Text="The EOC 213RR is used to request non-mutual aid supplies, services, personnel, teams, equipment, utilities, fuel, facilities, or any other resource or incident management activity required from the Operational Area (OA.)" 
-                                           TextWrapping="WrapWholeWords" Style="{StaticResource EOC213RRFieldText}" Margin="0,2,0,0"/>
+                                           TextWrapping="WrapWholeWords" Style="{StaticResource EOC213RRFieldText}" Margin="0,2,2,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <TextBlock Grid.Column="0" Grid.Row="2" Text="When to use:" Style="{StaticResource EOC213RRFieldHeader}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="2" Text="The Form 213RR may be used anytime during any Operational Period. If the OA EOC is not activated the Duty Officer will serve to coordinate the request." Style="{StaticResource EOC213RRFieldText}" Margin="0,2,0,0"/>
+                                <TextBlock Grid.Column="1" Grid.Row="2" Text="The Form 213RR may be used anytime during any Operational Period. If the OA EOC is not activated the Duty Officer will serve to coordinate the request." Style="{StaticResource EOC213RRFieldText}" 
+                                           Height="auto" TextWrapping="WrapWholeWords" Margin="0,2,2,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="3" Text="Prepared by:" Style="{StaticResource EOC213RRFieldHeader}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="3" Text="Any EOC position or agency requesting resources from the OA EOC." TextWrapping="WrapWholeWords" Style="{StaticResource EOC213RRFieldText}" Margin="0,2,0,0"/>
+                                <TextBlock Grid.Column="1" Grid.Row="3" Text="Any EOC position or agency requesting resources from the OA EOC." TextWrapping="WrapWholeWords" Style="{StaticResource EOC213RRFieldText}" Margin="0,2,2,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="4" Text="Approved by:" Style="{StaticResource EOC213RRFieldHeader}"/>
                                 <TextBlock Grid.Column="1" Grid.Row="4" Text="Section Chief of the requesting EOC or Supervising Official at Requesting Agency."  TextWrapping="WrapWholeWords" Style="{StaticResource EOC213RRFieldText}" Margin="0,2,0,0" />
                                 <TextBlock Grid.Column="0" Grid.Row="5" Text="Routed to:" Style="{StaticResource EOC213RRFieldHeader}"/>
-                                <TextBlock Grid.Column="1" Grid.Row="5" Text="Planning Section Resource Status Unit->Logistics Section -> Finance/Admin Section -> EOC Director -> Planning -> Intelligence Section"  TextWrapping="WrapWholeWords" Style="{StaticResource EOC213RRFieldText}" Margin="0,2,0,0"/>
+                                <TextBlock Grid.Column="1" Grid.Row="5" Text="Planning Section Resource Status Unit->Logistics Section -> Finance/Admin Section -> EOC Director -> Planning -> Intelligence Section"  TextWrapping="WrapWholeWords" Style="{StaticResource EOC213RRFieldText}" Margin="0,2,2,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="6" Text="Filed with:" Style="{StaticResource EOC213RRFieldHeader}"/>
                                 <TextBlock Grid.Column="1" Grid.Row="6" Text="Planning Section Documentation Unit." Style="{StaticResource EOC213RRFieldText}" Margin="0,2,0,0"/>
                                 <TextBlock Grid.Column="0" Grid.Row="7" Text="User Notes:" Style="{StaticResource EOC213RRFieldHeader}" />
                                 <StackPanel Grid.Column="1" Grid.Row="7">
-                                    <TextBlock Text="The Form 213RR is a two-sided form. Side one is completed by the requestor.   Side two is completed by the OA EOC." IsHitTestVisible="False" TextWrapping="WrapWholeWords" Style="{StaticResource EOC213RRFieldText}" Margin="0,2,0,0"/>
-                                    <TextBlock Text="Please check that both sides are available." Style="{StaticResource EOC213RRFieldHeader}"/>
+                                    <TextBlock Text="The Form 213RR is a two-sided form. Side one is completed by the requestor.   Side two is completed by the OA EOC." IsHitTestVisible="False" TextWrapping="WrapWholeWords" Style="{StaticResource EOC213RRFieldText}" Margin="0,2,2,0"/>
+                                    <TextBlock Text="Please check that both sides are available." Style="{StaticResource EOC213RRFieldHeader}" Margin="5,2,0,0"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -249,7 +252,7 @@
                                 <ColumnDefinition Width="1.5*"/>
                                 <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="2.7*"/>
-                                <ColumnDefinition Width="2.5*" MinWidth="80"/>
+                                <ColumnDefinition Width="2.5*"/>
                                 <ColumnDefinition Width="1.6*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -277,8 +280,8 @@
                                 </TextBlock>
                                 <TextBlock Grid.Column="3" Grid.Row="1" Text="11. Priority" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldLabelRequired}" Margin="8,0,0,0"/>
                                 <TextBlock Grid.Column="4" Grid.Row="1" Text="12. Est'd Cost" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldLabel}" Margin="8,0,0,0"/>
-                            <TextBox Grid.Column="0" Grid.Row="2" Name="resourceInfoQuantity1" Margin="5,10,5,5" AcceptsReturn="True" Tag="Required"/>
-                            <TextBox Grid.Column="1" Grid.Row="2" Name="resourceInfoDetailedResourceDesc1" Margin="5,10" AcceptsReturn="True" Tag="Required"/>
+                            <TextBox Grid.Column="0" Grid.Row="2" Name="resourceInfoQuantity1" Width="auto" Margin="5,10,5,5" AcceptsReturn="True" Tag="Required" MinWidth="0"/>
+                            <TextBox Grid.Column="1" Grid.Row="2" Name="resourceInfoDetailedResourceDesc1" Margin="5,10,5,5" AcceptsReturn="True" Tag="Required"/>
                             <TextBox Grid.Column="2" Grid.Row="2" Name="resourceInfoArrival1" PlaceholderText="mm/dd/yy hhmm" Margin="5,10,5,10" Height="24" VerticalAlignment="Top" Tag="Required"/>
                             <StackPanel Grid.Column="3" Grid.Row="2" Margin="0,5" >
                                 <MyNamespace:ToggleButtonGroup x:Name="resourceInfoPriority1" Tag="Required"/>
@@ -300,7 +303,7 @@
                                 </RelativePanel>
                             </StackPanel>
                             <!--<TextBox Grid.Column="3" Grid.Row="2" Name="resourceInfoPriority1" />-->
-                            <TextBox Grid.Column="4" Grid.Row="2" Name="resourceInfoCost1" Margin="5,10,5,5" />
+                            <TextBox Grid.Column="4" Grid.Row="2" Name="resourceInfoCost1" Margin="5,10,5,5" MinWidth="0" />
                         </Grid>
                         <Grid Grid.Column="1" Grid.Row="1">
                             <Grid.ColumnDefinitions>
@@ -399,7 +402,7 @@
                         <TextBox Name="operatorTime" PlaceholderText="hhmm" Margin="0" BorderBrush="White"/>
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Text="Last Revised 06/17   EOC Form 213RR   Page 1 of 2 (pg. 2 at EOC" Style="{StaticResource EOC213RRFieldLabel}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Last Revised 06/17   EOC Form 213RR   Page 1 of 2 (pg. 2 at EOC)" Style="{StaticResource EOC213RRFieldLabel}" HorizontalAlignment="Center"/>
             </StackPanel>
         </Border>
     </StackPanel>
