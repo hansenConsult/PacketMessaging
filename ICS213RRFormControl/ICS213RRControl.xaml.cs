@@ -82,231 +82,252 @@ namespace EOC213RRFormControl
 			return (MessageNo + "_" + Severity?.ToUpper()[0] + "/" + HandlingOrder?.ToUpper()[0] + "_EOC213RR_" + IncidentName);
 		}
 
-		protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
-		{
-			foreach (FormField formField in packetMessage.FormFieldArray)
-			{
-				if (formField.ControlContent == null || formField.ControlContent.Length == 0)
-					continue;
+        protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
+        {
+            foreach (FormField formField in packetMessage.FormFieldArray)
+            {
+                if (string.IsNullOrEmpty(formField.ControlContent))
+                    continue;
 
-				switch (formField.ControlName)
-				{
-                    //0: [02/02/2015]
-                    case "senderMsgNo":
-                        outpostData.Add($"0: [{formField.ControlContent}]");
-                        break;
-                    //MsgNo: [6DM-150P]
-                    case "messageNo":
-						outpostData.Add($"1: [{formField.ControlContent}]");
-						break;
-					//3: [1917]
-					case "receiverMsgNo":
-						outpostData.Add($"2: [{formField.ControlContent}]");
-						break;
-					//6.: [OTHER]
-					case "severity":
-                        switch (formField.ControlContent)
-                        {
-                            case "emergency":
-                                outpostData.Add($"4: [true]");
-                                break;
-                            case "urgent":
-                                outpostData.Add($"5: [true]");
-                                break;
-                            case "other":
-                                outpostData.Add($"6: [true]");
-                                break;
-                        }
-                        break;
-					//9.: [ROUTINE]
-					case "handlingOrder":
-                        switch (formField.ControlContent)
-                        {
-                            case "immediate":
-                                outpostData.Add($"7: [true]");
-                                break;
-                            case "priority":
-                                outpostData.Add($"8: [true]");
-                                break;
-                            case "routine":
-                                outpostData.Add($"9: [true]");
-                                break;
-                        }
-                        break;
-					//10.: [true]
-					case "reply":
-                        switch (formField.ControlContent)
-                        {
-                            case "yes":
-                                outpostData.Add($"10: [true]");
-                                break;
-                            case "no":
-                                outpostData.Add($"12: [true]");
-                                break;
-                        }
-                        break;
-                    //11: [1234]
-                    case "replyBy":
-						outpostData.Add($"11: [{formField.ControlContent}]");
-						break;
-					//13: [Incident Name]
-					case "incidentName":
-						outpostData.Add($"13: [{formField.ControlContent}]");
-						break;
-                    //14: [Message date]
-                    case "msgDate":
-                        outpostData.Add($"14: [{formField.ControlContent}]");
-                        break;
-                    //15: [1917]
-                    case "msgTime":
-                        outpostData.Add($"15: [{formField.ControlContent}]");
-                        break;
-                    //16: [\nRequested By]
-                    case "requestedBy":
-                        outpostData.Add($"16: [\\n{formField.ControlContent}]");
-                        break;
-                    //17: [\nPrepared by]
-                    case "preparedBy":
-                        outpostData.Add($"17: [\\n{formField.ControlContent}]");
-                        break;
-                    //18: [\nApproved by]
-                    case "approvedBy":
-                        outpostData.Add($"18: [\\n{formField.ControlContent}]");
-                        break;
-                    //19: [\nQty]
-                    case "resourceInfoQuantity1":
-                        outpostData.Add($"19: [\\n{formField.ControlContent}]");
-                        break;
-                    //20: [\nResource descr]
-                    case "resourceInfoDetailedResourceDesc1":
-                        outpostData.Add($"20: [\\n{formField.ControlContent}]");
-                        break;
-                    // 21: [\nArrival]
-                    case "resourceInfoArrival1":
-                        outpostData.Add($"21: [\\n{formField.ControlContent}]");
-                        break;
-                    // 22: [true]
-                    case "resourceInfoPriority1":
-                        switch (formField.ControlContent)
-                        {
-                            case "resourceInfoNow":
-                                outpostData.Add($"22: [true]");
-                                break;
-                            case "resourceInfoHigh":
-                                outpostData.Add($"23: [true]");
-                                break;
-                            case "resourceInfoMedium":
-                                outpostData.Add($"24: [true]");
-                                break;
-                            case "resourceInfoLow":
-                                outpostData.Add($"25: [true]");
-                                break;
-                        }
-                        break;
-                    // 26: [\nCost] 
-                    case "resourceInfoCost1":
-                        outpostData.Add($"26: [\\n{formField.ControlContent}]");
-                        break;
-                    // 27: [\nDelivery to] 
-                    case "deliveryTo":
-                        outpostData.Add($"27: [\\n{formField.ControlContent}]");
-                        break;
-                    // 28: [\nLocation] 
-                    case "deliveryLocation":
-                        outpostData.Add($"28: [\\n{formField.ControlContent}]");
-                        break;
-                    // 29: [\nSubstitutes] 
-                    case "substitutes":
-                        outpostData.Add($"29: [\\n{formField.ControlContent}]");
-                        break;
-                    // 30: [true] 
-                    case "suppReqEquipmentOperator":
-                        outpostData.Add($"30: [{formField.ControlContent}]");
-                        break;
-                    // 31: [true] 
-                    case "suppReqLodinng":
-                        outpostData.Add($"31: [{formField.ControlContent}]");
-                        break;
-                    // 32: [truw] 
-                    case "suppReqFuel":
-                        outpostData.Add($"32: [{formField.ControlContent}]");
-                        break;
-                    // 33: [Jet] 
-                    case "suppReqFuelType":
-                        outpostData.Add($"33: [{formField.ControlContent}]");
-                        break;
-                    // 34: [truw] 
-                    case "suppReqPower":
-                        outpostData.Add($"34: [{formField.ControlContent}]");
-                        break;
-                    // 35: [truw] 
-                    case "suppReqMeals":
-                        outpostData.Add($"35: [{formField.ControlContent}]");
-                        break;
-                    // 36: [truw] 
-                    case "suppReqMaintenance":
-                        outpostData.Add($"36: [{formField.ControlContent}]");
-                        break;
-                    // 37: [truw] 
-                    case "suppReqWater":
-                        outpostData.Add($"37: [{formField.ControlContent}]");
-                        break;
-                    // 38: [truw] 
-                    case "suppReqOther":
-                        outpostData.Add($"38: [{formField.ControlContent}]");
-                        break;
-                    // 39: [\nSpecial Instructions] 
-                    case "specialInstructions":
-                        outpostData.Add($"39: [\\n{formField.ControlContent}]");
-                        break;
-                    //40. Rec-Sent: [received]
-                    case "receivedOrSent":
-                        switch (formField.ControlContent)
-                        {
-                            case "received":
-                                outpostData.Add($"40: [true]");
-                                break;
-                            case "sent":
-                                outpostData.Add($"41: [true]");
-                                break;
-                        }
-                        break;
-					//Method: [Other]
-					case "howRecevedSent":
-                        switch (formField.ControlContent)
-                        {
-                            case "voice":
-                                outpostData.Add($"42: [true]");
-                                break;
-                            case "packet":
-                                outpostData.Add($"43: [true]");
-                                break;
-                        }
-                        break;
-					//OpCall: [KZ6DM]
-					case "operatorCallsign":
-						outpostData.Add($"44: [{formField.ControlContent}]");
-						break;
-					//OpName: [Poul Hansen]
-					case "operatorName":
-						outpostData.Add($"45: [{formField.ControlContent}]");
-						break;
-					//OpDate: [02/02/2015]
-					case "operatorDate":
-						outpostData.Add($"46: [{formField.ControlContent}" + "{odate]");
-						break;
-					//OpTime: [1920]
-					case "operatorTime":
-						outpostData.Add($"47: [{formField.ControlContent}" + "{otime]");
-						break;
-				}
-			}
-			outpostData.Add("#EOF");
+                string data = CreateOutpostDataString(formField);
+                if (string.IsNullOrEmpty(data))
+                {
+                    continue;
+                }
+                outpostData.Add(data);
+            }
+            outpostData.Add("#EOF");
+            return outpostData;
+        }
 
-			return outpostData;
-		}
+        //protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
+        //{
+        //    //for (int index = 0; index < packetMessage.FormFieldArray.Length; index++)
+        //    foreach (FormField formField in packetMessage.FormFieldArray)
+        //    {
+        //        //FormField formField = (FormField)packetMessage.FormFieldArray.GetValue(index);
 
-		public override string CreateOutpostData(ref PacketMessage packetMessage)
+        //        if (formField.ControlContent == null || formField.ControlContent.Length == 0)
+        //            continue;
+
+        //        switch (formField.ControlName)
+        //        {
+        //            //0: [02/02/2015]
+        //            case "senderMsgNo":
+        //                outpostData.Add($"0: [{formField.ControlContent}]");
+        //                break;
+        //            //MsgNo: [6DM-150P]
+        //            case "messageNo":
+        //                outpostData.Add($"1: [{formField.ControlContent}]");
+        //                break;
+        //            //3: [1917]
+        //            case "receiverMsgNo":
+        //                outpostData.Add($"2: [{formField.ControlContent}]");
+        //                break;
+        //            //6.: [OTHER]
+        //            case "severity":
+        //                switch (formField.ControlContent)
+        //                {
+        //                    case "emergency":
+        //                        outpostData.Add($"4: [true]");
+        //                        break;
+        //                    case "urgent":
+        //                        outpostData.Add($"5: [true]");
+        //                        break;
+        //                    case "other":
+        //                        outpostData.Add($"6: [true]");
+        //                        break;
+        //                }
+        //                break;
+        //            //9.: [ROUTINE]
+        //            case "handlingOrder":
+        //                switch (formField.ControlContent)
+        //                {
+        //                    case "immediate":
+        //                        outpostData.Add($"7: [true]");
+        //                        break;
+        //                    case "priority":
+        //                        outpostData.Add($"8: [true]");
+        //                        break;
+        //                    case "routine":
+        //                        outpostData.Add($"9: [true]");
+        //                        break;
+        //                }
+        //                break;
+        //            //10.: [true]
+        //            case "reply":
+        //                switch (formField.ControlContent)
+        //                {
+        //                    case "yes":
+        //                        outpostData.Add($"10: [true]");
+        //                        break;
+        //                    case "no":
+        //                        outpostData.Add($"12: [true]");
+        //                        break;
+        //                }
+        //                break;
+        //            //11: [1234]
+        //            case "replyBy":
+        //                outpostData.Add($"11: [{formField.ControlContent}]");
+        //                break;
+        //            //13: [\nIncident Name]
+        //            case "incidentName":
+        //                outpostData.Add($"13: [\\n{formField.ControlContent}]");
+        //                break;
+        //            //14: [Message date]
+        //            case "msgDate":
+        //                outpostData.Add($"14: [{formField.ControlContent}]");
+        //                break;
+        //            //15: [1917]
+        //            case "msgTime":
+        //                outpostData.Add($"15: [{formField.ControlContent}]");
+        //                break;
+        //            //16: [\nRequested By]
+        //            case "requestedBy":
+        //                outpostData.Add($"16: [\\n{formField.ControlContent}]");
+        //                break;
+        //            //17: [\nPrepared by]
+        //            case "preparedBy":
+        //                outpostData.Add($"17: [\\n{formField.ControlContent}]");
+        //                break;
+        //            //18: [\nApproved by]
+        //            case "approvedBy":
+        //                outpostData.Add($"18: [\\n{formField.ControlContent}]");
+        //                break;
+        //            //19: [\nQty]
+        //            case "resourceInfoQuantity1":
+        //                outpostData.Add($"19: [\\n{formField.ControlContent}]");
+        //                break;
+        //            //20: [\nResource descr]
+        //            case "resourceInfoDetailedResourceDesc1":
+        //                outpostData.Add($"20: [\\n{formField.ControlContent}]");
+        //                break;
+        //            // 21: [\nArrival]
+        //            case "resourceInfoArrival1":
+        //                outpostData.Add($"21: [\\n{formField.ControlContent}]");
+        //                break;
+        //            // 22: [true]
+        //            case "resourceInfoPriority1":
+        //                switch (formField.ControlContent)
+        //                {
+        //                    case "resourceInfoNow":
+        //                        outpostData.Add($"22: [true]");
+        //                        break;
+        //                    case "resourceInfoHigh":
+        //                        outpostData.Add($"23: [true]");
+        //                        break;
+        //                    case "resourceInfoMedium":
+        //                        outpostData.Add($"24: [true]");
+        //                        break;
+        //                    case "resourceInfoLow":
+        //                        outpostData.Add($"25: [true]");
+        //                        break;
+        //                }
+        //                break;
+        //            // 26: [\nCost] 
+        //            case "resourceInfoCost1":
+        //                outpostData.Add($"26: [\\n{formField.ControlContent}]");
+        //                break;
+        //            // 27: [\nDelivery to] 
+        //            case "deliveryTo":
+        //                outpostData.Add($"27: [\\n{formField.ControlContent}]");
+        //                break;
+        //            // 28: [\nLocation] 
+        //            case "deliveryLocation":
+        //                outpostData.Add($"28: [\\n{formField.ControlContent}]");
+        //                break;
+        //            // 29: [\nSubstitutes] 
+        //            case "substitutes":
+        //                outpostData.Add($"29: [\\n{formField.ControlContent}]");
+        //                break;
+        //            // 30: [true] 
+        //            case "suppReqEquipmentOperator":
+        //                outpostData.Add($"30: [{formField.ControlContent}]");
+        //                break;
+        //            // 31: [true] 
+        //            case "suppReqLodinng":
+        //                outpostData.Add($"31: [{formField.ControlContent}]");
+        //                break;
+        //            // 32: [true] 
+        //            case "suppReqFuel":
+        //                outpostData.Add($"32: [{formField.ControlContent}]");
+        //                break;
+        //            // 33: [Jet] 
+        //            case "suppReqFuelType":
+        //                outpostData.Add($"33: [{formField.ControlContent}]");
+        //                break;
+        //            // 34: [true] 
+        //            case "suppReqPower":
+        //                outpostData.Add($"34: [{formField.ControlContent}]");
+        //                break;
+        //            // 35: [true] 
+        //            case "suppReqMeals":
+        //                outpostData.Add($"35: [{formField.ControlContent}]");
+        //                break;
+        //            // 36: [true] 
+        //            case "suppReqMaintenance":
+        //                outpostData.Add($"36: [{formField.ControlContent}]");
+        //                break;
+        //            // 37: [true] 
+        //            case "suppReqWater":
+        //                outpostData.Add($"37: [{formField.ControlContent}]");
+        //                break;
+        //            // 38: [true] 
+        //            case "suppReqOther":
+        //                outpostData.Add($"38: [{formField.ControlContent}]");
+        //                break;
+        //            // 39: [\nSpecial Instructions] 
+        //            case "specialInstructions":
+        //                outpostData.Add($"39: [\\n{formField.ControlContent}]");
+        //                break;
+        //            //40. Rec-Sent: [received]
+        //            case "receivedOrSent":
+        //                switch (formField.ControlContent)
+        //                {
+        //                    case "received":
+        //                        outpostData.Add($"40: [true]");
+        //                        break;
+        //                    case "sent":
+        //                        outpostData.Add($"41: [true]");
+        //                        break;
+        //                }
+        //                break;
+        //            //Method: [Other]
+        //            case "howRecevedSent":
+        //                switch (formField.ControlContent)
+        //                {
+        //                    case "voice":
+        //                        outpostData.Add($"42: [true]");
+        //                        break;
+        //                    case "packet":
+        //                        outpostData.Add($"43: [true]");
+        //                        break;
+        //                }
+        //                break;
+        //            //OpCall: [KZ6DM]
+        //            case "operatorCallsign":
+        //                outpostData.Add($"44: [{formField.ControlContent}]");
+        //                break;
+        //            //OpName: [Poul Hansen]
+        //            case "operatorName":
+        //                outpostData.Add($"45: [{formField.ControlContent}]");
+        //                break;
+        //            //OpDate: [02/02/2015]
+        //            case "operatorDate":
+        //                outpostData.Add($"46: [{formField.ControlContent}" + "{odate]");
+        //                break;
+        //            //OpTime: [1920]
+        //            case "operatorTime":
+        //                outpostData.Add($"47: [{formField.ControlContent}" + "{otime]");
+        //                break;
+        //        }
+        //    }
+        //    outpostData.Add("#EOF");
+
+        //    return outpostData;
+        //}
+
+        public override string CreateOutpostData(ref PacketMessage packetMessage)
 		{
             List<string> outpostData = new List<string>
             {
@@ -320,12 +341,36 @@ namespace EOC213RRFormControl
 			return CreateOutpostMessageBody(outpostData);
 		}
 
-		public override FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines)
+        //public override FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines)
+        //{
+        //    FormField[] formFields = CreateEmptyFormFieldsArray();
+        //    for (int i = 0; i < formFields.Length; i++)
+        //    {
+        //        string tagIndex = GetTagIndex(formFields[i]);
+        //        formFields[i].ControlContent = GetOutpostValue(tagIndex, ref msgLines);
+        //    }
+        //    // Use local message number as message number and use Outpost message number as received nessage number. 
+        //    for (int i = 0; i < formFields.Length; i++)
+        //    {
+        //        if (formFields[i].ControlName == "messageNo")
+        //        {
+        //            formFields[i].ControlContent = msgNumber;
+        //            string tagIndex = GetTagIndex(formFields[i]);
+        //            // We assume recived message num,ber
+        //            formFields[i + 1].ControlContent = GetOutpostValue(tagIndex, ref msgLines);
+        //        }
+        //    }
+        //}
+
+        public override FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines)
 		{
 			FormField[] formFields = CreateEmptyFormFieldsArray();
 			string radioButtonContent;
+            //int index;
+            //for (index = 0; index < formFields.Length; index++)
 			foreach (FormField formField in formFields)
 			{
+                //FormField formField = (FormField)formFields.GetValue(index);
                 switch (formField.ControlName)
                 {
                     //0: [sen-123]
@@ -417,9 +462,9 @@ namespace EOC213RRFormControl
                     case "resourceInfoDetailedResourceDesc1":
                         formField.ControlContent = GetOutpostValue("20", ref msgLines);
                         break;
-                    // 28: [ResourceInfo Arrival1] 
+                    // 21: [ResourceInfo Arrival1] 
                     case "resourceInfoArrival1":
-                        formField.ControlContent = GetOutpostValue("28", ref msgLines);
+                        formField.ControlContent = GetOutpostValue("21", ref msgLines);
                         break;
                     // 29: [ResourceInfo Request Priority1] 
                     case "resourceInfoPriority1":

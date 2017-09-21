@@ -498,6 +498,8 @@ namespace FormControlBaseClass
 
         private string misSpelsField;
 
+        private int pacFormIndex;
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string ControlName
@@ -538,6 +540,14 @@ namespace FormControlBaseClass
             {
                 this.misSpelsField = value;
             }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int PacFormIndex
+        {
+            get => this.pacFormIndex;
+            set => this.pacFormIndex = value;
         }
 
     }

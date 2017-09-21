@@ -291,7 +291,10 @@ namespace FormControlBaseClass
 				}
 				else if (control is RadioButton)
 				{
-					radioButtonsList.Add((RadioButton)control);
+                    FormControl formControl = new FormControl((Control)control);
+                    formControlsList.Add(formControl);
+
+                    radioButtonsList.Add((RadioButton)control);
 				}
 			}
 		}
@@ -329,7 +332,7 @@ namespace FormControlBaseClass
 			foreach (FormControl formControl in formControlsList)
 			{
 				Control control = formControl.InputControl;
-				if (control.Tag?.ToString() == "required" && control.IsEnabled)
+				if (control.Tag != null && control.IsEnabled && control.Tag.ToString().Contains("required"))
 				{
                     //if (control.GetType() == typeof(TextBox))
                     if (control is TextBox textBox)
@@ -345,11 +348,10 @@ namespace FormControlBaseClass
                             textBox.BorderBrush = formControl.BaseBorderColor;
 						}
 					}
-                    //else if (control.GetType() == typeof(ComboBox))
                     else if (control is ComboBox comboBox)
                     {
-                        //if (((ComboBox)(Control)control).SelectionBoxItem == null || ((ComboBox)(Control)control).SelectionBoxItem?.ToString().Length == 0)
-                        if (comboBox.SelectionBoxItem == null || comboBox.SelectionBoxItem?.ToString().Length == 0)
+                        if (string.IsNullOrEmpty((string)comboBox.SelectionBoxItem))
+                        //if (comboBox.SelectionBoxItem == null || comboBox.SelectionBoxItem?.ToString().Length == 0)
                         {
                             //control.SetValue(Border.BorderBrushProperty, _redBrush);
                             //((TextBox)control).BorderBrush = _redBrush;
@@ -362,7 +364,6 @@ namespace FormControlBaseClass
 							control.BorderBrush = formControl.BaseBorderColor;
 						}
 					}
-                    //else if (control.GetType() == typeof(ToggleButtonGroup))
                     else if (control is ToggleButtonGroup toggleButtonGroup)
                     {
 						result &= toggleButtonGroup.Validate();
@@ -411,8 +412,71 @@ namespace FormControlBaseClass
 
 		public abstract FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines);
 
+        public (string id, Control control) GetTagIndex(FormField formField)
+        {
+            Control control = null;
+            string id = "";
+            try
+            {
+                FormControl formControl = formControlsList.Find(x => x.InputControl.Name == formField.ControlName);
+                control = formControl?.InputControl;
 
-		protected string CreateOutpostMessageBody(List<string> outpostData)
+                string tag = (string)control.Tag;
+                string[] tags = tag.Split(new char[] { ',' });
+                id = tags[0];
+                // Test if id is an integer
+                int index = Convert.ToInt32(id);
+            }
+            catch
+            {
+                return ("", control);
+            }
+            return (id, control);
+        }
+
+        public string CreateOutpostDataString(FormField formField)
+        {
+            (string id, Control control) = GetTagIndex(formField);
+            if (string.IsNullOrEmpty(id))
+                return "";
+
+            if (control is TextBox)
+            {
+                if (((TextBox)control).AcceptsReturn)
+                {
+                    return $"{id}: [\\n{formField.ControlContent}]";
+                }
+                else
+                {
+                    if (formField.ControlName == "operatorDate")
+                    {
+                        return $"{id}: [{formField.ControlContent}" + "{odate]";
+                    }
+                    else if (formField.ControlName == "operatorTime")
+                    {
+                        return $"{id}: [{formField.ControlContent}" + "{otime]";
+                    }
+                    else
+                    {
+                        return $"{id}: [{formField.ControlContent}]";
+                    }
+                }
+            }
+            else if (control is RadioButton || control is CheckBox)
+            {
+                if (formField.ControlContent == "True")
+                {
+                    return $"{id}: [true]";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            return "";
+        }
+
+        protected string CreateOutpostMessageBody(List<string> outpostData)
 		{
 			StringBuilder sb = new StringBuilder();
 			foreach (string s in outpostData)
@@ -464,9 +528,9 @@ namespace FormControlBaseClass
             for (int i = 0; i < formControlsList.Count; i++)
             {
                 FormField formField = new FormField()
-                { 
+                {
                     ControlName = formControlsList[i].InputControl.Name,
-				    ControlContent = ""
+                    ControlContent = "",
                 };
                 formFields.SetValue(formField, i);
 
@@ -482,7 +546,6 @@ namespace FormControlBaseClass
 			{
                 FormField formField = new FormField() { ControlName = formControlsList[i].InputControl.Name };
 
-                //if (formControlsList[i].InputControl.GetType() == typeof(TextBox))
                 if (formControlsList[i].InputControl is TextBox)
                 {
 					formField.ControlContent = ((TextBox)formControlsList[i].InputControl).Text;
@@ -508,22 +571,23 @@ namespace FormControlBaseClass
 					//	}
 					//}
 				}
-                //else if (formControlsList[i].InputControl.GetType() == typeof(ComboBox))
                 else if (formControlsList[i].InputControl is ComboBox)
                 {
 					formField.ControlContent = ((ComboBox)(Control)formControlsList[i].InputControl).SelectionBoxItem?.ToString();
 				}
-                //else if (formControlsList[i].InputControl.GetType() == typeof(ToggleButtonGroup))
                 else if (formControlsList[i].InputControl is ToggleButtonGroup)
                 {
 					formField.ControlContent = ((ToggleButtonGroup)(Control)formControlsList[i].InputControl).GetRadioButtonCheckedState();
 				}
-                //else if (formControlsList[i].InputControl.GetType() == typeof(CheckBox))
                 else if (formControlsList[i].InputControl is CheckBox)
                 {
 					formField.ControlContent = ((CheckBox)(Control)formControlsList[i].InputControl).IsChecked.ToString();
 				}
-				formFields.SetValue(formField, i);
+                else if (formControlsList[i].InputControl is RadioButton)
+                {
+                    formField.ControlContent = ((RadioButton)formControlsList[i].InputControl).IsChecked.ToString();
+                }
+                formFields.SetValue(formField, i);
 			}
 			return formFields;
 		}
@@ -564,7 +628,7 @@ namespace FormControlBaseClass
 			int endIndex = field.IndexOf(']');
 			if (startIndex != -1 && endIndex != -1)
 			{
-                if (field.StartsWith("\\n"))
+                if (field.Substring(startIndex + 1, endIndex - startIndex - 1).StartsWith("\\n"))
                     return field.Substring(startIndex + 3, endIndex - startIndex - 3);
                 else
                     return field.Substring(startIndex + 1, endIndex - startIndex - 1);
