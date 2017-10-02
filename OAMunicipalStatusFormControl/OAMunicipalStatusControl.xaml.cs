@@ -25,7 +25,8 @@ namespace OAMunicipalStatusFormControl
     /// 
 
     [FormControl(
-        FormControlName = "XSC_OA_MuniStatus_v1708",
+        //FormControlName = "XSC_OA_MuniStatus_v1708",
+        FormControlName = "OAMuniStatus",
         FormControlMenuName = "XSC OA Municopal Status",
         FormControlType = FormControlAttribute.FormType.CountyForm)
     ]
@@ -43,15 +44,16 @@ namespace OAMunicipalStatusFormControl
             ReceivedOrSent = "sent";
             HowRecevedSent = "packet";
 
-            foreach (FormControl formControl in FormControlsList)
-            {
-                Control control = formControl.InputControl;
-                if (control is ComboBox comboBox)
-                {
-                    SetComboBoxString(comboBox, "Unknown");
-                }
-            }
-            SetComboBoxString(municipalityName, "");
+            //foreach (FormControl formControl in FormControlsList)
+            //{
+            //    Control control = formControl.InputControl;
+            //    if (control is ComboBox comboBox)
+            //    {
+            //        //SetComboBoxString(comboBox, "Unknown");
+            //        comboBox.SelectedIndex = 0;
+            //    }
+            //}
+            //municipalityName.SelectedIndex = -1;
         }
 
         public string SenderMsgNo
@@ -152,6 +154,12 @@ namespace OAMunicipalStatusFormControl
                         break;
                     case "eocOpen":
                         if ((control as ComboBox).SelectedIndex == 0)
+                        {
+                            AddToErrorString(GetTagErrorMessage(control));
+                        }
+                        break;
+                    case "activationLevel":                        
+                        if (control.IsEnabled && (control as ComboBox).SelectedIndex == 0)
                         {
                             AddToErrorString(GetTagErrorMessage(control));
                         }
@@ -337,7 +345,10 @@ namespace OAMunicipalStatusFormControl
 
         private void eocOpen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            activationLevel.IsEnabled = (sender as ComboBox).SelectedIndex == 1;
+            if (activationLevel != null)
+            {
+                activationLevel.IsEnabled = (sender as ComboBox).SelectedIndex == 1;
+            }
         }
     }
 }

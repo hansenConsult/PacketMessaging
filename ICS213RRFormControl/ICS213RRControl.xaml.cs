@@ -8,8 +8,9 @@ using Windows.UI.Xaml.Controls;
 namespace EOC213RRFormControl
 {
 	[FormControl(
-		FormControlName = "XSC_EOC - 213RR_v1706",
-		FormControlMenuName = "XSC EOC Resource Request Form",
+        //FormControlName = "XSC_EOC - 213RR_v1706",
+        FormControlName = "EOCResourceRequest",
+        FormControlMenuName = "XSC EOC Resource Request Form",
 		FormControlType = FormControlAttribute.FormType.CountyForm)
 	]
 

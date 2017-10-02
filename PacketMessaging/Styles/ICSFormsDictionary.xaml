@@ -105,7 +105,8 @@
         <Setter Property="Margin" Value="10,2,2,2"/>
     </Style>
     <Style x:Key="MuniStatusComboBox" TargetType="ComboBox">
-        <Setter Property="Width" Value="80"/>
+        <Setter Property="SelectedIndex" Value="0"/>
+        <Setter Property="Width" Value="90"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 

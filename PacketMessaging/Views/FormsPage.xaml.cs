@@ -873,16 +873,16 @@ namespace PacketMessaging.Views
 						var attrib = classType.GetTypeInfo();
 						foreach (CustomAttributeData customAttribute in attrib.CustomAttributes.Where(customAttribute => customAttribute.GetType() == typeof(CustomAttributeData)))
 						{
-                            //if (customAttribute.GetType() != typeof(FormControlAttribute))
+                            //if (!(customAttribute is FormControlAttribute))
                             //    continue;
-							var namedArguments = customAttribute.NamedArguments;
+                            var namedArguments = customAttribute.NamedArguments;
 							if (namedArguments.Count == 3)
 							{
-								var formControlName = namedArguments[0].TypedValue.Value;
-								//var arg1 = Enum.Parse(typeof(FormControlAttribute.FormType), namedArguments[1].TypedValue.Value.ToString());
-								//var arg2 = namedArguments[2].TypedValue.Value;
-								if (formControlName is string frmControlName && frmControlName == controlName)
-								{
+								var formControlName = namedArguments[0].TypedValue.Value as string;
+                                //var arg1 = Enum.Parse(typeof(FormControlAttribute.FormType), namedArguments[1].TypedValue.Value.ToString());
+                                //var arg2 = namedArguments[2].TypedValue.Value;
+                                if (formControlName == controlName)
+                                {
 									foundType = classType;
 									break;
 								}
@@ -927,7 +927,7 @@ namespace PacketMessaging.Views
 			}
 		}
 
-		private void MyPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private async void MyPivot_SelectionChangedAsync(object sender, SelectionChangedEventArgs e)
 		{
             if (printHelper != null)
             {
@@ -942,6 +942,7 @@ namespace PacketMessaging.Views
             if (_packetForm == null)
             {
                 MessageDialog messageDialog = new MessageDialog("failed to find packet form");
+                await messageDialog.ShowAsync();
                 return;
             }
 

@@ -130,12 +130,12 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="4*"/>
-                                        <ColumnDefinition Width="90"/>
-                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="80"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0" Orientation="Horizontal" >
                                         <TextBlock Text="Municipality Name/Unincorporated:" Style="{StaticResource MuniStatusFieldTextRequired}"/>
-                                        <ComboBox Name="municipalityName" Width="165" SelectionChanged="Subject_Changed" Tag="14,required,Select a Municipality Name." >
+                                        <ComboBox Name="municipalityName" Width="205" PlaceholderText="SELECT the Municipality" SelectionChanged="Subject_Changed" Tag="14,required,Select a Municipality Name." >
                                             <ComboBoxItem Content="Campbell"/>
                                             <ComboBoxItem Content="Cupertino"/>
                                             <ComboBoxItem Content="Gilroy"/>
@@ -252,7 +252,7 @@
                                     <TextBlock Text="Activation Level:" Style="{StaticResource MuniStatusFieldText}" HorizontalAlignment="Right"/>
                                     <TextBlock Text="(Required if EOC is Open)" Style="{StaticResource MuniStatusFieldTextRequired}" HorizontalAlignment="Right"/>
                                 </StackPanel>
-                                <ComboBox Grid.Column="3" Grid.Row="1" Name="activationLevel" Style="{StaticResource MuniStatusComboBox}" Tag="29,required" HorizontalAlignment="Left">
+                                <ComboBox Grid.Column="3" Grid.Row="1" Name="activationLevel" Style="{StaticResource MuniStatusComboBox}" IsEnabled="False" Tag="29,conditionallyrequired,Select an Activation Level." HorizontalAlignment="Left">
                                     <ComboBoxItem Content="Unknown"/>
                                     <ComboBoxItem Content="Monitor"/>
                                     <ComboBoxItem Content="Minimal"/>

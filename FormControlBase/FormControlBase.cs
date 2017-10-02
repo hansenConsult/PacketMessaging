@@ -129,18 +129,19 @@ namespace FormControlBaseClass
 
 		public string GetComboBoxString(ComboBox comboBox)
 		{
-			//	{
-			//		if ((comboBox.Dispatcher.CheckAccess()))
-			//		{
-			return comboBox.SelectionBoxItem.ToString();
-			//		}
-			//		else
-			//		{
-			//			object retval = comboBox.Dispatcher.Invoke(DispatcherPriority.Normal, new GetComboBoxText(GetText), comboBox);
-			//			return (string)retval;
-			//		}
-			//	}
-		}
+            //	{
+            //		if ((comboBox.Dispatcher.CheckAccess()))
+            //		{
+            //return comboBox.SelectionBoxItem.ToString();
+            return comboBox.SelectedItem?.ToString();
+            //		}
+            //		else
+            //		{
+            //			object retval = comboBox.Dispatcher.Invoke(DispatcherPriority.Normal, new GetComboBoxText(GetText), comboBox);
+            //			return (string)retval;
+            //		}
+            //	}
+        }
 
 		//delegate void SetComboBoxText(ComboBox comboBox, string text);
 		//void SetText(ComboBox comboBox, string text) => comboBox.Text = text;
@@ -526,7 +527,8 @@ namespace FormControlBaseClass
         public string GetTagErrorMessage(FormField formField)
         {
             string name = formControlsList[1].InputControl.Name;
-            Control control = formControlsList.Find(x => x.InputControl.Name == formField.ControlName);
+            FormControl formControl = formControlsList.Find(x => x.InputControl.Name == formField.ControlName);
+            Control control = formControl.InputControl;
             string tag = control.Tag as string;
             if (string.IsNullOrEmpty(tag))
                 return "";
@@ -685,9 +687,9 @@ namespace FormControlBaseClass
 			{
                 FormField formField = new FormField() { ControlName = formControlsList[i].InputControl.Name };
 
-                if (formControlsList[i].InputControl is TextBox)
+                if (formControlsList[i].InputControl is TextBox textBox)
                 {
-					formField.ControlContent = ((TextBox)formControlsList[i].InputControl).Text;
+					formField.ControlContent = textBox.Text;
 					//if (((TextBox)formFieldsList[i]).IsSpellCheckEnabled)
 					//{
 					//	for (int j = 0; j < ((TextBox)formFieldsList[i]).Text.Length; j++)
@@ -710,21 +712,21 @@ namespace FormControlBaseClass
 					//	}
 					//}
 				}
-                else if (formControlsList[i].InputControl is ComboBox)
+                else if (formControlsList[i].InputControl is ComboBox comboBox)
                 {
-					formField.ControlContent = ((ComboBox)(Control)formControlsList[i].InputControl).SelectionBoxItem?.ToString();
+					formField.ControlContent = comboBox.SelectionBoxItem?.ToString();
 				}
-                else if (formControlsList[i].InputControl is ToggleButtonGroup)
+                else if (formControlsList[i].InputControl is ToggleButtonGroup toggleButtonGroup)
                 {
-					formField.ControlContent = ((ToggleButtonGroup)(Control)formControlsList[i].InputControl).GetRadioButtonCheckedState();
+					formField.ControlContent = toggleButtonGroup.GetRadioButtonCheckedState();
 				}
-                else if (formControlsList[i].InputControl is CheckBox)
+                else if (formControlsList[i].InputControl is CheckBox checkBox)
                 {
-					formField.ControlContent = ((CheckBox)(Control)formControlsList[i].InputControl).IsChecked.ToString();
+					formField.ControlContent = checkBox.IsChecked.ToString();
 				}
-                else if (formControlsList[i].InputControl is RadioButton)
+                else if (formControlsList[i].InputControl is RadioButton radioButton)
                 {
-                    formField.ControlContent = ((RadioButton)formControlsList[i].InputControl).IsChecked.ToString();
+                    formField.ControlContent = radioButton.IsChecked.ToString();
                 }
                 formFields.SetValue(formField, i);
 			}
