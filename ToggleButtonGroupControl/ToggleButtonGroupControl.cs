@@ -25,22 +25,25 @@ namespace ToggleButtonGroupControl
 				//DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
 			}
 
-			//public ToggleButtonGroup(List<RadioButton> radioButtonList, string groupName)
-			//{
-			//    DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
+        //public ToggleButtonGroup(List<RadioButton> radioButtonList, string groupName)
+        //{
+        //    DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
 
-			//    foreach (RadioButton radioButton in radioButtonList)
-			//    {
-			//        if (radioButton.GroupName == groupName)
-			//        {
-			//            radioButtonGroup.Add(radioButton);
-			//            radioButton.IsChecked = false;
-			//        }
-			//    }
-			//    SetBorderBrush(_blackBrush);
-			//}
+        //    foreach (RadioButton radioButton in radioButtonList)
+        //    {
+        //        if (radioButton.GroupName == groupName)
+        //        {
+        //            radioButtonGroup.Add(radioButton);
+        //            radioButton.IsChecked = false;
+        //        }
+        //    }
+        //    SetBorderBrush(_blackBrush);
+        //}
 
-			public string CheckedControlName
+        public IList<RadioButton> RadioButtonGroup
+        { get => _radioButtonGroup; }
+
+        public string CheckedControlName
 			{ get { return GetRadioButtonCheckedState(); } set { SetRadioButtonCheckedState(value); } }
 
 			//public override string Border

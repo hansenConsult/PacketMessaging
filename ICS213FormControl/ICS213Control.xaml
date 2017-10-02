@@ -253,7 +253,7 @@
 							</TextBox>
 						</StackPanel>-->
 						<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Message:" Foreground="LightSalmon" Margin="5,0,0,0"/>
-						<TextBox x:Name="message"  BorderBrush="White" ScrollViewer.VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap" Height="104" Margin="10,0,5,2" Tag="required" 
+						<TextBox x:Name="message"  BorderBrush="White" ScrollViewer.VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap" Height="104" Margin="5,0,5,2" Tag="required" 
 								 ToolTipService.ToolTip="What, when, where needed; how long; contact name and phone number. Keep message brief" PlaceholderText="Type message here.">
 						</TextBox>
 					</StackPanel>

@@ -986,6 +986,13 @@ namespace PacketMessaging.Views
                 ResourceRequestPanel.Children.Insert(1, _packetAddressForm);
                 _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
             }
+            else if (pivotItemName == "OAMuniStatus")
+            {
+                OAMuniStatusPanel.Children.Clear();
+                OAMuniStatusPanel.Children.Insert(0, _packetForm);
+                OAMuniStatusPanel.Children.Insert(1, _packetAddressForm);
+                _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
+            }
 
             if (!_loadMessage)
 			{
@@ -1022,9 +1029,9 @@ namespace PacketMessaging.Views
 #region SendMessage
 		private async void AppBarSend_ClickAsync(object sender, RoutedEventArgs e)
 		{
-			if (_packetForm.ValidateForm() == false)
+			if (!string.IsNullOrEmpty(_packetForm.ValidateForm()))
 			{
-				MessageDialog messageDialog = new MessageDialog("Please fill out areas in red.\nPress \"Send\" again to continue.", "Form Error");
+				MessageDialog messageDialog = new MessageDialog($"Please fill out areas in red.{_packetForm.ErrorMessage}\nPress \"Send\" again to continue.", "Form Error");
 				await messageDialog.ShowAsync();
 
 				return;

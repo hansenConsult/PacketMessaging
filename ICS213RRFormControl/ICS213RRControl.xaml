@@ -251,7 +251,6 @@
                             <Border Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="0,1,1,1"/>
                             <Border Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="0,1,0,1"/>
                             <Border Grid.ColumnSpan="5" Grid.Row="2" BorderBrush="Black" BorderThickness="1,1,0,0"/>
-                            <!--<Border Grid.ColumnSpan="5" Grid.Row="5" BorderBrush="Black" BorderThickness="1,1,0,0"/>-->
                             <TextBlock Grid.Column="0" Grid.Row="1" Text="8. Qty/Unit" VerticalAlignment="Center" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldHeaderRequired}" Height="16" />
                                 <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldLabelRequired}" Margin="10,0,0,0">
                                     <Run Text="9. Resource Description"/>
@@ -265,7 +264,7 @@
                                 <TextBlock Grid.Column="4" Grid.Row="1" Text="12. Est'd Cost" HorizontalAlignment="Left" Style="{StaticResource EOC213RRFieldLabel}" Margin="8,0,0,0"/>
                             <TextBox Grid.Column="0" Grid.Row="2" Name="resourceInfoQuantity1" Width="auto" Margin="5,10,5,5" AcceptsReturn="True" Tag="19,Required" MinWidth="0"/>
                             <TextBox Grid.Column="1" Grid.Row="2" Name="resourceInfoDetailedResourceDesc1" Margin="5,10,5,5" AcceptsReturn="True" Tag="20,Required"/>
-                            <TextBox Grid.Column="2" Grid.Row="2" Name="resourceInfoArrival1" PlaceholderText="mm/dd/yy hhmm" Margin="5,10,5,10" Height="24" VerticalAlignment="Top" Tag="21,Required"/>
+                            <TextBox Grid.Column="2" Grid.Row="2" Name="resourceInfoArrival1" AcceptsReturn="True" PlaceholderText="mm/dd/yy hhmm" Margin="5,10,5,10" Height="24" VerticalAlignment="Top" Tag="21,Required"/>
                             <StackPanel Grid.Column="3" Grid.Row="2" Margin="0,5" >
                                 <MyNamespace:ToggleButtonGroup x:Name="resourceInfoPriority1" Tag="Required"/>
                                 <RelativePanel>
@@ -285,8 +284,7 @@
                                     <RadioButton x:Name="resourceInfoLow" GroupName="resourceInfoPriority1" RelativePanel.AlignLeftWithPanel="True" Margin="100,-5,0,0" MinWidth="20" Height="28"  Tag="25"/>
                                 </RelativePanel>
                             </StackPanel>
-                            <!--<TextBox Grid.Column="3" Grid.Row="2" Name="resourceInfoPriority1" />-->
-                            <TextBox Grid.Column="4" Grid.Row="2" Name="resourceInfoCost1" Margin="5,10,5,5" MinWidth="0" Tag="26"/>
+                            <TextBox Grid.Column="4" Grid.Row="2" Name="resourceInfoCost1" AcceptsReturn="True" Margin="5,10,5,5" MinWidth="0" Tag="26"/>
                         </Grid>
                         <Grid Grid.Column="1" Grid.Row="1">
                             <Grid.ColumnDefinitions>

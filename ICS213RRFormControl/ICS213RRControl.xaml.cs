@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 namespace EOC213RRFormControl
 {
 	[FormControl(
-		FormControlName = "EOCResourceRequest",
+		FormControlName = "XSC_EOC - 213RR_v1706",
 		FormControlMenuName = "XSC EOC Resource Request Form",
 		FormControlType = FormControlAttribute.FormType.CountyForm)
 	]
@@ -356,7 +356,7 @@ namespace EOC213RRFormControl
         //        {
         //            formFields[i].ControlContent = msgNumber;
         //            string tagIndex = GetTagIndex(formFields[i]);
-        //            // We assume recived message num,ber
+        //            // We assume recived message number
         //            formFields[i + 1].ControlContent = GetOutpostValue(tagIndex, ref msgLines);
         //        }
         //    }

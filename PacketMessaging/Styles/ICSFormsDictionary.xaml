@@ -70,6 +70,44 @@
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
+    <Style x:Key="MuniStatusHeaderText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Ariel"/>
+        <Setter Property="FontStyle" Value="Normal"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="MuniStatusFieldTextRequired" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Ariel"/>
+        <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="FontSize" Value="9"/>
+        <Setter Property="Foreground" Value="Red"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="MuniStatusFieldText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Ariel"/>
+        <Setter Property="FontStyle" Value="Normal"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="MuniStatusCommentsText" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="Ariel"/>
+        <Setter Property="FontStyle" Value="Normal"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="Margin" Value="10,2,2,2"/>
+    </Style>
+    <Style x:Key="MuniStatusComboBox" TargetType="ComboBox">
+        <Setter Property="Width" Value="80"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
 
     <Style x:Key="TextC12" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Courier New"/>

@@ -115,6 +115,14 @@
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
+            <!--  OAMuniStatus  -->
+            <PivotItem x:Name="OAMuniStatus" DataContext="{Binding FormsPartViewModel}" Header="OA Municipal Status">
+                <ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
+                              VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
+                    <StackPanel x:Name="OAMuniStatusPanel" HorizontalAlignment="Left">
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
         </Pivot>
         <!--<ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">

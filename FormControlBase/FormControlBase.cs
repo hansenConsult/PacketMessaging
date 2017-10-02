@@ -60,8 +60,10 @@ namespace FormControlBaseClass
 
 		List<RadioButton> radioButtonsList = new List<RadioButton>();
 		List<FormControl> formControlsList = new List<FormControl>();
+        //List<Control> formFieldsList = new List<Control>();
+        string errorMessage;
 
-		public FormControlBase()
+        public FormControlBase()
 		{
 		}
 
@@ -326,54 +328,117 @@ namespace FormControlBaseClass
 			}
 		}
 
-		public bool ValidateForm()
-		{
-			bool result = true;
-			foreach (FormControl formControl in formControlsList)
-			{
-				Control control = formControl.InputControl;
-				if (control.Tag != null && control.IsEnabled && control.Tag.ToString().Contains("required"))
-				{
-                    //if (control.GetType() == typeof(TextBox))
+        public virtual string ValidateForm()
+        {
+            ErrorMessage = "";
+            bool result = true;
+            foreach (FormControl formControl in formControlsList)
+            {
+                Control control = formControl.InputControl;
+                string tag = control.Tag as string;
+                if (!string.IsNullOrEmpty(tag) && control.IsEnabled && tag.Contains("conditionallyrequired"))
+                {
+                    continue;
+                }
+
+                if (!string.IsNullOrEmpty(tag) && control.IsEnabled && tag.Contains("required"))
+                {
                     if (control is TextBox textBox)
                     {
-                        //if (((TextBox)(Control)control).Text.Length == 0)
                         if (textBox.Text.Length == 0)
                         {
-                            textBox.BorderBrush = _redBrush;
-							result &= false;
-						}
-						else
-						{
-                            textBox.BorderBrush = formControl.BaseBorderColor;
-						}
-					}
+                            AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                            result &= false;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
+                        }
+                    }
                     else if (control is ComboBox comboBox)
                     {
                         if (string.IsNullOrEmpty((string)comboBox.SelectionBoxItem))
-                        //if (comboBox.SelectionBoxItem == null || comboBox.SelectionBoxItem?.ToString().Length == 0)
                         {
-                            //control.SetValue(Border.BorderBrushProperty, _redBrush);
-                            //((TextBox)control).BorderBrush = _redBrush;
+                            //control.SetValue(Border.BorderBrushProperty, Brushes.Red);
+                            //((TextBox)control).BorderBrush = Brushes.Red;
                             //Border.
-                            comboBox.BorderBrush = _redBrush;
-							result &= false;
-						}
-						else
-						{
-							control.BorderBrush = formControl.BaseBorderColor;
-						}
-					}
+                            AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                            result &= false;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
+                        }
+                    }
                     else if (control is ToggleButtonGroup toggleButtonGroup)
                     {
-						result &= toggleButtonGroup.Validate();
-					}
-				}
-			}
-			return result;
-		}
+                        if (!toggleButtonGroup.Validate())
+                        {
+                            AddToErrorString(GetTagErrorMessage(control));
+                        }
+                        result &= ((ToggleButtonGroup)control).Validate();
+                    }
+                }
+            }
+            return result ? "" : ErrorMessage.Length > 0 ? ErrorMessage : "Error";
+        }
 
-		public virtual string OperatorCallsign
+        //public bool ValidateForm()
+        //{
+        //	bool result = true;
+        //	foreach (FormControl formControl in formControlsList)
+        //	{
+        //		Control control = formControl.InputControl;
+        //		if (control.Tag != null && control.IsEnabled && control.Tag.ToString().Contains("required"))
+        //		{
+        //                  //if (control.GetType() == typeof(TextBox))
+        //                  if (control is TextBox textBox)
+        //                  {
+        //                      //if (((TextBox)(Control)control).Text.Length == 0)
+        //                      if (textBox.Text.Length == 0)
+        //                      {
+        //                          textBox.BorderBrush = _redBrush;
+        //					result &= false;
+        //				}
+        //				else
+        //				{
+        //                          textBox.BorderBrush = formControl.BaseBorderColor;
+        //				}
+        //			}
+        //                  else if (control is ComboBox comboBox)
+        //                  {
+        //                      if (string.IsNullOrEmpty((string)comboBox.SelectionBoxItem))
+        //                      //if (comboBox.SelectionBoxItem == null || comboBox.SelectionBoxItem?.ToString().Length == 0)
+        //                      {
+        //                          //control.SetValue(Border.BorderBrushProperty, _redBrush);
+        //                          //((TextBox)control).BorderBrush = _redBrush;
+        //                          //Border.
+        //                          comboBox.BorderBrush = _redBrush;
+        //					result &= false;
+        //				}
+        //				else
+        //				{
+        //					control.BorderBrush = formControl.BaseBorderColor;
+        //				}
+        //			}
+        //                  else if (control is ToggleButtonGroup toggleButtonGroup)
+        //                  {
+        //				result &= toggleButtonGroup.Validate();
+        //			}
+        //		}
+        //	}
+        //	return result;
+        //}
+
+        public List<FormControl> FormControlsList
+        { get => formControlsList; }
+
+        public string ErrorMessage
+        { get => errorMessage; set => errorMessage = value; }
+
+        public virtual string OperatorCallsign
 		{ get; set; }
 
 		public virtual string OperatorName
@@ -423,16 +488,90 @@ namespace FormControlBaseClass
 
                 string tag = (string)control.Tag;
                 string[] tags = tag.Split(new char[] { ',' });
-                id = tags[0];
-                // Test if id is an integer
-                int index = Convert.ToInt32(id);
+                if (int.TryParse(tags[0], out int idint))
+                {
+                    return (id, control);
+                }
+                else
+                {
+                    return ("", control);
+                }
             }
             catch
             {
                 return ("", control);
             }
-            return (id, control);
         }
+        public static string GetTagIndex(Control control)
+        {
+            try
+            {
+                string tag = (string)control.Tag;
+                string[] tags = tag.Split(new char[] { ',' });
+                if (int.TryParse(tags[0], out int idint))
+                {
+                    return tags[0];
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        public string GetTagErrorMessage(FormField formField)
+        {
+            string name = formControlsList[1].InputControl.Name;
+            Control control = formControlsList.Find(x => x.InputControl.Name == formField.ControlName);
+            string tag = control.Tag as string;
+            if (string.IsNullOrEmpty(tag))
+                return "";
+
+            string[] tags = tag.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            if (tags.Length == 2 && tags[0] == "required")
+            {
+                return tags[1];
+            }
+            else if (tags.Length == 3)
+            {
+                return tags[2];
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public string GetTagErrorMessage(Control control)
+        {
+            string tag = control.Tag as string;
+            if (string.IsNullOrEmpty(tag))
+                return "";
+
+            string[] tags = tag.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            if (tags.Length == 2 && tags[0] == "required")
+            {
+                return tags[1];
+            }
+            else if (tags.Length == 3)
+            {
+                return tags[2];
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        protected void AddToErrorString(string errorText)
+        {
+            errorMessage += ($"\n{errorText}");
+        }
+
 
         public string CreateOutpostDataString(FormField formField)
         {
