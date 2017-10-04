@@ -77,6 +77,7 @@
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,2,2,2"/>
     </Style>
     <Style x:Key="MuniStatusFieldTextRequired" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Ariel"/>
@@ -85,6 +86,7 @@
         <Setter Property="Foreground" Value="Red"/>
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,2,2,2"/>
     </Style>
     <Style x:Key="MuniStatusFieldText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Ariel"/>
@@ -93,6 +95,7 @@
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,2,2,2"/>
     </Style>
     <Style x:Key="MuniStatusCommentsText" TargetType="TextBox">
         <Setter Property="FontFamily" Value="Ariel"/>
@@ -101,15 +104,30 @@
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="AcceptsReturn" Value="True"/>
-        <Setter Property="Height" Value="25"/>
+        <Setter Property="Height" Value="40"/>
         <Setter Property="Margin" Value="10,2,2,2"/>
     </Style>
     <Style x:Key="MuniStatusComboBox" TargetType="ComboBox">
+        <Setter Property="FontFamily" Value="Ariel"/>
+        <Setter Property="FontStyle" Value="Normal"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontWeight" Value="Normal"/>
         <Setter Property="SelectedIndex" Value="0"/>
-        <Setter Property="Width" Value="90"/>
+        <Setter Property="Width" Value="110"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="2"/>
     </Style>
-
+    <Style x:Key="MuniStatusTextBox" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <!--<Setter Property="TextBox.FontWeight" Value="Bold"/>-->
+        <Setter Property="TextBox.VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="2"/>
+    </Style>
+    
     <Style x:Key="TextC12" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Courier New"/>
         <Setter Property="FontSize" Value="12"/>

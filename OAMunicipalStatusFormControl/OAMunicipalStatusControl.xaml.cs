@@ -119,13 +119,18 @@ namespace OAMunicipalStatusFormControl
                     continue;
                 }
 
-                if (control.Tag != null && control.IsEnabled && control.Tag.ToString().Contains("required"))
+                if (control.Tag != null && control.IsEnabled && control.Visibility == Visibility.Visible && control.Tag.ToString().Contains("required"))
                 {
                     if (control is TextBox textBox)
                     {
                         if (string.IsNullOrEmpty(textBox.Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                     }
                     else if (control is ComboBox comboBox)
@@ -133,6 +138,11 @@ namespace OAMunicipalStatusFormControl
                         if (string.IsNullOrEmpty(GetComboBoxString(comboBox)))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                     }
                     else if (control is ToggleButtonGroup toggleButtonGroup)
@@ -150,122 +160,225 @@ namespace OAMunicipalStatusFormControl
                 Control control = formControl.InputControl;
                 switch (control.Name)
                 {
-                    case "municipalityName":
-                        break;
                     case "eocOpen":
                         if ((control as ComboBox).SelectedIndex == 0)
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "activationLevel":                        
                         if (control.IsEnabled && (control as ComboBox).SelectedIndex == 0)
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "stateOfEmergency":
                         if ((control as ComboBox).SelectedIndex == 0)
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "howSent":
+                        if (stateOfEmergency.SelectedIndex == 1 && string.IsNullOrEmpty((control as TextBox).Text))
+                        {
+                            AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
+                        }
                         break;
                     case "commentsCommunications":
                         if (comboBoxCommunications.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsDebris":
                         if (comboBoxDebris.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsFlooding":
                         if (comboBoxFlooding.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsHazmat":
                         if (comboBoxHazmat.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsEmergencyServices":
                         if (comboBoxEmergencyServices.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsCasualties":
                         if (comboBoxCasualties.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsUtilitiesGas":
                         if (comboBoxUtilitiesGas.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsUtilitiesElectric":
                         if (comboBoxUtilitiesElectric.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsInfrastructurePower":
                         if (comboBoxInfrastructurePower.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsInfrastructureWater":
                         if (comboBoxInfrastructureWater.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsInfrastructureSewer":
                         if (comboBoxInfrastructureSewer.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsSearchAndRescue":
                         if (comboBoxSearchAndRescue.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsTransportationsRoads":
                         if (comboBoxTransportationsRoads.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsTransportationsBridges":
                         if (comboBoxTransportationsBridges.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsCivilUnrest":
                         if (comboBoxCivilUnrest.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                     case "commentsAnimalIssues":
                         if (comboBoxAnimalIssues.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
                         {
                             AddToErrorString(GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
                         }
                         break;
                 }

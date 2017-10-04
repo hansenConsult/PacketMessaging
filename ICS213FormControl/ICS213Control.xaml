@@ -45,7 +45,7 @@
 							<StackPanel Grid.Column="2">
 								<TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" Text="Message #:"/>
 								<TextBox x:Name="messageNo"  IsReadOnly="True"
-										 TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2"  Tag="required" TextChanged="Subject_Changed"/>
+										 TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2"  Tag="required,Enter a Message Number." TextChanged="Subject_Changed"/>
 							</StackPanel>
 						</Border>
 						<Border Grid.Column="3" BorderBrush="Black" BorderThickness="1,0,0,0">
@@ -83,8 +83,8 @@
 							<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
 								<StackPanel>
 									<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Situation Severity" Foreground="LightSalmon" Margin="10"/>
-									<MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required"/>
-									<RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Padding="4" Content="EMERGENCY" Checked="Subject_Changed" 
+                                    <MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required,Indicate Situation Severity."/>
+									<RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Padding="4" Content="EMERGENCY" Tag="required," Checked="Subject_Changed" 
 										ToolTipService.ToolTip="Life threat">
 									</RadioButton>
 									<RadioButton x:Name="urgent" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Padding="4" Content="URGENT" Checked="Subject_Changed"
@@ -98,7 +98,7 @@
 							<Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,0,0,0">
 								<StackPanel>
 									<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Msg. Handling Order" Foreground="LightSalmon" Margin=" 10"/>
-									<MyNamespace:ToggleButtonGroup x:Name="handlingOrder" Tag="required"/>
+                                    <MyNamespace:ToggleButtonGroup x:Name="handlingOrder" Tag="required,Indicate Msg. Handling Order."/>
 									<RadioButton x:Name="immediate" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Padding="4" Content="IMMEDIATE" Checked="Subject_Changed">
 										<!--<RadioButton.ToolTip>As soon as possible</RadioButton.ToolTip>-->
 									</RadioButton>
@@ -149,14 +149,18 @@
 											<Button x:Name="buttonSelectToICSPosInput" 
 													RelativePanel.AlignVerticalCenterWithPanel="True" 
 													Content="List Input" Click="buttonSelectICSPosInput_Click" Margin="5,0,0,2"/>
-											<TextBox x:Name="textBoxToICSPosition" Style="{StaticResource TypedText}" 
+                                            <TextBox x:Name="textBoxToICSPosition" Style="{StaticResource TypedText}" 
 													RelativePanel.RightOf="buttonSelectToICSPosInput"
 													RelativePanel.AlignRightWithPanel="True"	 
-													BorderBrush="White" Margin="10,0,10,2"/>
-											<ComboBox x:Name="comboBoxToICSPosition"  Margin="10,0,10,2" 
+													BorderBrush="White" Margin="10,0,10,2" Visibility="Collapsed"
+                                                     Tag="required,Enter a To position."/>
+                                            <ComboBox x:Name="comboBoxToICSPosition"  Margin="9.667,0,10,2" 
 													RelativePanel.RightOf="buttonSelectToICSPosInput"
 													RelativePanel.AlignRightWithPanel="True"	  
-													BorderBrush="White" BorderThickness="2" Tag="required" HorizontalAlignment="Stretch" VerticalAlignment="Center" PlaceholderText="Select ICS Position" >
+													BorderBrush="White" BorderThickness="2"  
+                                                      HorizontalAlignment="Stretch" VerticalAlignment="Center" 
+                                                      PlaceholderText="Select ICS Position"
+                                                      Tag="required,Enter a To position.">
 												<!--<ComboBoxItem Content="Incident Commander"/>
 												<ComboBoxItem Content="Operations"/>
 												<ComboBoxItem Content="Planning"/>
@@ -172,7 +176,7 @@
 								<Border BorderBrush="Black" BorderThickness="0,0,0,1" >
 									<StackPanel >
 										<TextBlock Style="{StaticResource LabelFontTNR14B}" Padding="5,0,5,5"  Text="Location:" Foreground="LightSalmon" />
-										<TextBox x:Name="toLocation"  BorderBrush="White" Margin="10,0,10,2" Tag="required"/>
+                                        <TextBox x:Name="toLocation"  BorderBrush="White" Margin="10,0,10,2" Tag="required,Enter a To Location."/>
 									</StackPanel>
 								</Border>
 								<Border BorderBrush="Black" BorderThickness="0,0,0,1">
@@ -184,7 +188,7 @@
 								<Border BorderBrush="Black" BorderThickness="0,0,0,1" Margin="0, 0">
 									<StackPanel >
 										<TextBlock Style="{StaticResource LabelFontTNR14B}" Padding="5,0,5,5" Text="Telephone number:" />
-										<TextBox x:Name="toTelephone"  BorderBrush="White" Margin="10,0,10,2" />
+										<TextBox x:Name="toTelephone" InputScope="TelephoneNumber" BorderBrush="White" Margin="10,0,10,2" />
 									</StackPanel>
 								</Border>
 							</StackPanel>
@@ -199,11 +203,12 @@
 											<TextBox x:Name="textBoxFromICSPosition" Style="{StaticResource TypedText}" 
 												RelativePanel.RightOf="buttonSelectFromICSPosInput"
 												RelativePanel.AlignRightWithPanel="True"	 
-													BorderBrush="White" Margin="10,0,10,2"/>
-											<ComboBox x:Name="comboBoxFromICSPosition" Margin="10,0,10,2" 
+												BorderBrush="White" Margin="10,0,10,2" Visibility="Collapsed"
+                                                Tag="required,Enter a From position."/>
+											<ComboBox x:Name="comboBoxFromICSPosition" Margin="9.667,0,10,2" 
 												RelativePanel.RightOf="buttonSelectFromICSPosInput"
 												RelativePanel.AlignRightWithPanel="True" HorizontalAlignment="Stretch"
-												BorderBrush="White" BorderThickness="2" Tag="required" PlaceholderText="Select ICS Position" >
+												BorderBrush="White" BorderThickness="2" Tag="required,Enter a From position." PlaceholderText="Select ICS Position" >
 											</ComboBox>
 										</RelativePanel>
 									</StackPanel>
@@ -211,7 +216,7 @@
 								<Border BorderBrush="Black" BorderThickness="0,0,0,1" >
 									<StackPanel >
 										<TextBlock Style="{StaticResource LabelFontTNR14B}" Padding="5,0,5,5" Text="Location:" Foreground="LightSalmon" />
-										<TextBox x:Name="fromLocation"  BorderBrush="White" Margin="10,0,10,2" Tag="required" />
+                                        <TextBox x:Name="fromLocation"  BorderBrush="White" Margin="10,0,10,2" Tag="required,Enter a From Location." />
 									</StackPanel>
 								</Border>
 								<Border BorderBrush="Black" BorderThickness="0,0,0,1">
@@ -223,7 +228,7 @@
 								<Border BorderBrush="Black" BorderThickness="0,0,0,1" Margin="0, 0">
 									<StackPanel >
 										<TextBlock Style="{StaticResource LabelFontTNR14B}" Padding="5,0,5,5" Text="Telephone number:" />
-										<TextBox x:Name="fromTelephone"  Margin="10,0,10,2"  BorderBrush="White"/>
+										<TextBox x:Name="fromTelephone" InputScope="TelephoneNumber" Margin="10,0,10,2"  BorderBrush="White"/>
 									</StackPanel>
 								</Border>
 							</StackPanel>
@@ -238,7 +243,7 @@
 								<RowDefinition />
 							</Grid.RowDefinitions>
 							<TextBlock Grid.Column="0" Grid.Row="0" Text="SUBJECT:" Style="{StaticResource LabelFontTNR14B}"  Foreground="LightSalmon" VerticalAlignment="Center" Margin="5,0,0,0"/>
-							<TextBox  Grid.Column="1" Grid.Row="0" x:Name="subject" Tag="required" TextChanged="Subject_Changed" Margin="5,2,5,2"/>
+                            <TextBox  Grid.Column="1" Grid.Row="0" x:Name="subject" Tag="required,Enter a Subject." TextChanged="Subject_Changed" Margin="5,2,5,2"/>
 							<TextBlock Grid.Column="0" Grid.Row="1" Text="REFERENCE:" Style="{StaticResource LabelFontTNR14B}"   VerticalAlignment="Center" Margin="5,0,0,0"/>
 							<TextBox  Grid.Column="1" Grid.Row="1" x:Name="reference" TextChanged="Subject_Changed" Margin="5,2,5,2"/>
 						</Grid>
@@ -253,8 +258,10 @@
 							</TextBox>
 						</StackPanel>-->
 						<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Message:" Foreground="LightSalmon" Margin="5,0,0,0"/>
-						<TextBox x:Name="message"  BorderBrush="White" ScrollViewer.VerticalScrollBarVisibility="Auto" AcceptsReturn="True" TextWrapping="Wrap" Height="104" Margin="5,0,5,2" Tag="required" 
-								 ToolTipService.ToolTip="What, when, where needed; how long; contact name and phone number. Keep message brief" PlaceholderText="Type message here.">
+                        <TextBox x:Name="message"  BorderBrush="White" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                 AcceptsReturn="True" TextWrapping="Wrap" Height="104" Margin="5,0,5,2" Tag="required,You must include a Message." 
+								 ToolTipService.ToolTip="What, when, where needed; how long; contact name and phone number. Keep message brief" 
+                                 PlaceholderText="Type message here.">
 						</TextBox>
 					</StackPanel>
 				</Border>

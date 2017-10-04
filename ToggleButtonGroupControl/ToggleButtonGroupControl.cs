@@ -160,20 +160,26 @@ namespace ToggleButtonGroupControl
 				}
 			}
 
-			public bool Validate()
-			{
-				if (GetRadioButtonCheckedState() == null)
-				{
-					SetBorderBrush(_redBrush);
-					return false;
-				}
-				else
-				{
-					SetBorderBrush(_blackBrush);
-					return true;
-				}
-			}
+        public bool Validate()
+        {
+            if (GetRadioButtonCheckedState() == null)
+            {
+                foreach (RadioButton radioButton in _radioButtonGroup)
+                {
+                    radioButton.Foreground = _redBrush;
+                }
+                return false;
+            }
+            else
+            {
+                foreach (RadioButton radioButton in _radioButtonGroup)
+                {
+                    radioButton.Foreground = _blackBrush;
+                }
+                return true;
+            }
+        }
 
-		}
-	}
+    }
+}
 

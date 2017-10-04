@@ -342,7 +342,7 @@ namespace FormControlBaseClass
                     continue;
                 }
 
-                if (!string.IsNullOrEmpty(tag) && control.IsEnabled && tag.Contains("required"))
+                if (!string.IsNullOrEmpty(tag) && control.IsEnabled && control.Visibility == Visibility.Visible && tag.Contains("required"))
                 {
                     if (control is TextBox textBox)
                     {
@@ -361,9 +361,6 @@ namespace FormControlBaseClass
                     {
                         if (string.IsNullOrEmpty((string)comboBox.SelectionBoxItem))
                         {
-                            //control.SetValue(Border.BorderBrushProperty, Brushes.Red);
-                            //((TextBox)control).BorderBrush = Brushes.Red;
-                            //Border.
                             AddToErrorString(GetTagErrorMessage(control));
                             control.BorderBrush = _redBrush;
                             result &= false;

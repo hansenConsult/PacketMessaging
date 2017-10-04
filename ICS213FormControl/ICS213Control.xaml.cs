@@ -422,26 +422,30 @@ namespace ICS213FormControl
 				buttonSelectICSPosInput = buttonSelectToICSPosInput;
 				textBoxICSPosition = textBoxToICSPosition;
 				comboBoxICSPosition = comboBoxToICSPosition;
-			}
-			else
+                //textBoxICSPosition.Tag = "required,Enter a To position.";
+                //comboBoxICSPosition.Tag = "required,Enter a To position.";
+            }
+            else
 			{
 				buttonSelectICSPosInput = buttonSelectFromICSPosInput;
 				textBoxICSPosition = textBoxFromICSPosition;
 				comboBoxICSPosition = comboBoxFromICSPosition;
-			}
+                //textBoxICSPosition.Tag = "required,Enter a From position.";
+                //comboBoxICSPosition.Tag = "required,Enter a From position.";
+            }
 			if (buttonStateText)
 			{
 				buttonSelectICSPosInput.Content = "List Input";
 				textBoxICSPosition.Visibility = Visibility.Collapsed;
 				textBoxICSPosition.Tag = null;
 				comboBoxICSPosition.Visibility = Visibility.Visible;
-				comboBoxICSPosition.Tag = "required";
+				//comboBoxICSPosition.Tag = "required,Enter a From position.";
 			}
 			else
 			{
 				buttonSelectICSPosInput.Content = "Manual Input";
 				textBoxICSPosition.Visibility = Visibility.Visible;
-				textBoxICSPosition.Tag = "required";
+				//textBoxICSPosition.Tag = "required,Enter a From position.";
 				comboBoxICSPosition.Visibility = Visibility.Collapsed;
 				comboBoxICSPosition.Tag = null;
 			}
