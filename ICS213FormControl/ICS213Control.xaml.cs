@@ -76,7 +76,7 @@ namespace ICS213FormControl
 		{ get { return GetCheckBoxCheckedState(forInfo); } set { SetCheckBoxCheckedState(forInfo, value); } }
 
 		public string ToICSPosition
-		{ get { return GetComboBoxString(comboBoxToICSPosition); } set { SetComboBoxString(comboBoxToICSPosition, value); } }
+		{ get { return GetComboBoxSelectedValuePath(comboBoxToICSPosition); } set { SetComboBoxString(comboBoxToICSPosition, value); } }
 
 		public string ToLocation
 		{ get { return GetTextBoxString(toLocation); } set { SetTextBoxString(toLocation, value); } }
@@ -88,7 +88,7 @@ namespace ICS213FormControl
 		{ get { return GetTextBoxString(toTelephone); } set { SetTextBoxString(toTelephone, value); } }
 
 		public string FromICSPositionComboBox
-		{ get { return GetComboBoxString(comboBoxFromICSPosition); } set { SetComboBoxString(comboBoxFromICSPosition, value); } }
+		{ get { return GetComboBoxSelectedValuePath(comboBoxFromICSPosition); } set { SetComboBoxString(comboBoxFromICSPosition, value); } }
 
 		public string FromLocation
 		{ get { return GetTextBoxString(fromLocation); } set { SetTextBoxString(fromLocation, value); } }
@@ -421,31 +421,29 @@ namespace ICS213FormControl
 			{
 				buttonSelectICSPosInput = buttonSelectToICSPosInput;
 				textBoxICSPosition = textBoxToICSPosition;
-				comboBoxICSPosition = comboBoxToICSPosition;
-                //textBoxICSPosition.Tag = "required,Enter a To position.";
-                //comboBoxICSPosition.Tag = "required,Enter a To position.";
+                textBoxICSPosition.Tag = "required,Enter a To position.";
+                comboBoxICSPosition = comboBoxToICSPosition;
+                comboBoxICSPosition.Tag = "required,Enter a To position.";
             }
             else
 			{
 				buttonSelectICSPosInput = buttonSelectFromICSPosInput;
 				textBoxICSPosition = textBoxFromICSPosition;
-				comboBoxICSPosition = comboBoxFromICSPosition;
-                //textBoxICSPosition.Tag = "required,Enter a From position.";
-                //comboBoxICSPosition.Tag = "required,Enter a From position.";
+                textBoxICSPosition.Tag = "required,Enter a From position.";
+                comboBoxICSPosition = comboBoxFromICSPosition;
+                comboBoxICSPosition.Tag = "required,Enter a From position.";
             }
-			if (buttonStateText)
+            if (buttonStateText)
 			{
-				buttonSelectICSPosInput.Content = "List Input";
+				buttonSelectICSPosInput.Content = "Manual Input";
 				textBoxICSPosition.Visibility = Visibility.Collapsed;
 				textBoxICSPosition.Tag = null;
 				comboBoxICSPosition.Visibility = Visibility.Visible;
-				//comboBoxICSPosition.Tag = "required,Enter a From position.";
 			}
 			else
 			{
-				buttonSelectICSPosInput.Content = "Manual Input";
+				buttonSelectICSPosInput.Content = "List Input";
 				textBoxICSPosition.Visibility = Visibility.Visible;
-				//textBoxICSPosition.Tag = "required,Enter a From position.";
 				comboBoxICSPosition.Visibility = Visibility.Collapsed;
 				comboBoxICSPosition.Tag = null;
 			}
@@ -454,7 +452,7 @@ namespace ICS213FormControl
 		private void buttonSelectICSPosInput_Click(object sender, RoutedEventArgs e)
 		{
 			ButtonTextInput((Button)sender == buttonSelectToICSPosInput, 
-					((string)((Button)sender).Content == "Manual Input"));
+					((string)((Button)sender).Content == "List Input"));
 		}
 
 

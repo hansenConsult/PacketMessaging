@@ -1000,7 +1000,7 @@ namespace PacketMessaging.Views
 				_packetForm.EventSubjectChanged += FormControl_SubjectChange;
 			}
 			DateTime now = DateTime.Now;
-			_packetForm.MsgDate = $"{now.Month:d2}/{now.Day:d2}/{now.Year - 2000:d2}";
+            _packetForm.MsgDate = $"{now.Month:d2}/{now.Day:d2}/{now.Year - 2000:d2}";
 			_packetForm.MsgTime = $"{now.Hour:d2}{now.Minute:d2}";
 			_packetForm.OperatorDate = $"{now.Month:d2}/{now.Day:d2}/{now.Year - 2000:d2}";
 			_packetForm.OperatorTime = $"{now.Hour:d2}{now.Minute:d2}";
@@ -1032,7 +1032,7 @@ namespace PacketMessaging.Views
 		{
 			if (!string.IsNullOrEmpty(_packetForm.ValidateForm()))
 			{
-				MessageDialog messageDialog = new MessageDialog($"Please fill out areas in red.{_packetForm.ErrorMessage}\nPress \"Send\" again to continue.", "Form Error");
+				MessageDialog messageDialog = new MessageDialog($"Please fill out areas in red.\n{_packetForm.ValidationResultMessage}\nPress \"Send\" again to continue.", "Form Error");
 				await messageDialog.ShowAsync();
 
 				return;

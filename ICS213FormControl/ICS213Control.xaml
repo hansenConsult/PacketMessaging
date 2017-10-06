@@ -148,7 +148,7 @@
 										<RelativePanel x:Name="toICSPos">
 											<Button x:Name="buttonSelectToICSPosInput" 
 													RelativePanel.AlignVerticalCenterWithPanel="True" 
-													Content="List Input" Click="buttonSelectICSPosInput_Click" Margin="5,0,0,2"/>
+													Content="Manual Input" Click="buttonSelectICSPosInput_Click" Margin="5,0,0,2"/>
                                             <TextBox x:Name="textBoxToICSPosition" Style="{StaticResource TypedText}" 
 													RelativePanel.RightOf="buttonSelectToICSPosInput"
 													RelativePanel.AlignRightWithPanel="True"	 
@@ -199,7 +199,7 @@
 									<StackPanel >
 										<TextBlock Style="{StaticResource LabelFontTNR14B}" Text="ICS Position:" Foreground="LightSalmon" Padding="5,0,5,5" />
 										<RelativePanel x:Name="fromICSPos" >
-											<Button x:Name="buttonSelectFromICSPosInput" RelativePanel.AlignVerticalCenterWithPanel="True" Content="List Input" Click="buttonSelectICSPosInput_Click" Margin="5,0,0,2" />
+											<Button x:Name="buttonSelectFromICSPosInput" RelativePanel.AlignVerticalCenterWithPanel="True" Content="Manual Input" Click="buttonSelectICSPosInput_Click" Margin="5,0,0,2" />
 											<TextBox x:Name="textBoxFromICSPosition" Style="{StaticResource TypedText}" 
 												RelativePanel.RightOf="buttonSelectFromICSPosInput"
 												RelativePanel.AlignRightWithPanel="True"	 

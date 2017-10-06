@@ -91,8 +91,8 @@ namespace FormControlBaseClass
             printDocument.GetPreviewPage += GetPrintPreviewPage;
             printDocument.AddPages += AddPrintPages;
 
-            PrintManager printMan = PrintManager.GetForCurrentView();
-            printMan.PrintTaskRequested += PrintTaskRequested;
+            //PrintManager printMan = PrintManager.GetForCurrentView();
+            //printMan.PrintTaskRequested += PrintTaskRequested;
         }
 
         /// <summary>

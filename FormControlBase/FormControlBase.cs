@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using Windows.UI;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -13,8 +9,8 @@ using ToggleButtonGroupControl;
 
 namespace FormControlBaseClass
 {
-	// This is for deciding at runtime which form is supported by an assembly
-	[AttributeUsage(AttributeTargets.Class)]
+    // This is for deciding at runtime which form is supported by an assembly
+    [AttributeUsage(AttributeTargets.Class)]
 	public class FormControlAttribute : Attribute
 	{
 		public enum FormType
@@ -61,7 +57,12 @@ namespace FormControlBaseClass
 		List<RadioButton> radioButtonsList = new List<RadioButton>();
 		List<FormControl> formControlsList = new List<FormControl>();
         //List<Control> formFieldsList = new List<Control>();
-        string errorMessage;
+        string validationResultMessage;
+
+        protected List<string> outpostData;
+
+        string messageno;
+        string messageDate;
 
         public FormControlBase()
 		{
@@ -108,14 +109,15 @@ namespace FormControlBaseClass
 		}
 
 		//delegate ComboBoxItem GetCBxSelection(ComboBox comboBox);
-		ComboBoxItem GetCBSelectedItem(ComboBox comboBox) => (ComboBoxItem)comboBox.SelectedItem;
+		object GetCBSelectedItem(ComboBox comboBox) => comboBox.SelectedItem;
 
-		public ComboBoxItem GetComboBoxSelectedItem(ComboBox comboBox)
+		public string GetComboBoxSelectedItem(ComboBox comboBox)
 		{
-			//	{
-			//		if ((comboBox.Dispatcher.CheckAccess()))
-			//		{
-			return GetCBSelectedItem(comboBox);
+            //	{
+            //		if ((comboBox.Dispatcher.CheckAccess()))
+            //		{
+            //return comboBox.SelectedValuePath;
+			return GetCBSelectedItem(comboBox)?.ToString();
 			//		}
 			//		else
 			//		{
@@ -124,16 +126,17 @@ namespace FormControlBaseClass
 			//	}
 		}
 
-		//delegate string GetComboBoxText(ComboBox comboBox);
-		//string GetText(ComboBox comboBox) => comboBox.Text;
+        //delegate string GetComboBoxText(ComboBox comboBox);
+        //string GetText(ComboBox comboBox) => comboBox.Text;
 
-		public string GetComboBoxString(ComboBox comboBox)
-		{
+        public string GetComboBoxSelectedValuePath(ComboBox comboBox)
+        {
             //	{
             //		if ((comboBox.Dispatcher.CheckAccess()))
             //		{
+            return comboBox.SelectedValuePath;
             //return comboBox.SelectionBoxItem.ToString();
-            return comboBox.SelectedItem?.ToString();
+            //return comboBox.SelectedItem?.ToString();
             //		}
             //		else
             //		{
@@ -143,25 +146,22 @@ namespace FormControlBaseClass
             //	}
         }
 
-		//delegate void SetComboBoxText(ComboBox comboBox, string text);
-		//void SetText(ComboBox comboBox, string text) => comboBox.Text = text;
+        public void SetComboBoxString(ComboBox comboBox, string text)
+        {
+            //	if ((comboBox.Dispatcher.CheckAccess()))
+            //	{
+            comboBox.SelectedValue = text;
+            //	}
+            //	else
+            //	{
+            //		comboBox.Dispatcher.Invoke(DispatcherPriority.Normal, new SetComboBoxText(SetText), comboBox, text);
+            //	}
+        }
 
-		public void SetComboBoxString(ComboBox comboBox, string text)
-		{
-			//	if ((comboBox.Dispatcher.CheckAccess()))
-			//	{
-			comboBox.PlaceholderText = text;
-			//	}
-			//	else
-			//	{
-			//		comboBox.Dispatcher.Invoke(DispatcherPriority.Normal, new SetComboBoxText(SetText), comboBox, text);
-			//	}
-		}
+        //delegate bool? GetCheckBoxChecked(CheckBox checkBox);
+        //bool? GetCheckBox(CheckBox checkBox) => checkBox.IsChecked;
 
-		//delegate bool? GetCheckBoxChecked(CheckBox checkBox);
-		//bool? GetCheckBox(CheckBox checkBox) => checkBox.IsChecked;
-
-		public bool? GetCheckBoxCheckedState(CheckBox checkBox)
+        public bool? GetCheckBoxCheckedState(CheckBox checkBox)
 		{
 			//	if ((checkBox.Dispatcher.CheckAccess()))
 			//	{
@@ -261,19 +261,6 @@ namespace FormControlBaseClass
 		//delegate string GetFormControlName(Control control);
 		//string GetName(Control control) => control.Name;
 
-		public string GetControlName(Control control)
-		{
-			//	{
-			//		if ((control.Dispatcher.CheckAccess()))
-			//		{
-			return control.Name;
-			//		}
-			//		else
-			//		{
-			//			return (string)control.Dispatcher.Invoke(DispatcherPriority.Normal, new GetFormControlName(GetName), control);
-			//		}
-			//	}
-		}
 
 		public void ScanControls(DependencyObject panelName)
 		{
@@ -315,7 +302,6 @@ namespace FormControlBaseClass
 				}
 				else if (control is ComboBox)
 				{
-					//((ComboBox)control).PlaceholderText = "";
 					control.BorderBrush = formControl.BaseBorderColor;
 				}
 				else if (control is ToggleButtonGroup toggleButtonGroup)
@@ -331,8 +317,8 @@ namespace FormControlBaseClass
 
         public virtual string ValidateForm()
         {
-            ErrorMessage = "";
-            bool result = true;
+            validationResultMessage = "";
+            //bool result = true;
             foreach (FormControl formControl in formControlsList)
             {
                 Control control = formControl.InputControl;
@@ -342,6 +328,10 @@ namespace FormControlBaseClass
                     continue;
                 }
 
+                if (control.Name == "comboBoxToICSPosition" || control.Name == "textBoxToICSPosition" || control.Name == "comboBoxFromICSPosition" || control.Name == "textBoxFromICSPosition")
+                {
+                    int a = 0;
+                }
                 if (!string.IsNullOrEmpty(tag) && control.IsEnabled && control.Visibility == Visibility.Visible && tag.Contains("required"))
                 {
                     if (control is TextBox textBox)
@@ -350,7 +340,7 @@ namespace FormControlBaseClass
                         {
                             AddToErrorString(GetTagErrorMessage(control));
                             control.BorderBrush = _redBrush;
-                            result &= false;
+                            //result &= false;
                         }
                         else
                         {
@@ -363,7 +353,7 @@ namespace FormControlBaseClass
                         {
                             AddToErrorString(GetTagErrorMessage(control));
                             control.BorderBrush = _redBrush;
-                            result &= false;
+                            //result &= false;
                         }
                         else
                         {
@@ -376,65 +366,18 @@ namespace FormControlBaseClass
                         {
                             AddToErrorString(GetTagErrorMessage(control));
                         }
-                        result &= ((ToggleButtonGroup)control).Validate();
+                        //result &= ((ToggleButtonGroup)control).Validate();
                     }
                 }
             }
-            return result ? "" : ErrorMessage.Length > 0 ? ErrorMessage : "Error";
+            return validationResultMessage;
         }
-
-        //public bool ValidateForm()
-        //{
-        //	bool result = true;
-        //	foreach (FormControl formControl in formControlsList)
-        //	{
-        //		Control control = formControl.InputControl;
-        //		if (control.Tag != null && control.IsEnabled && control.Tag.ToString().Contains("required"))
-        //		{
-        //                  //if (control.GetType() == typeof(TextBox))
-        //                  if (control is TextBox textBox)
-        //                  {
-        //                      //if (((TextBox)(Control)control).Text.Length == 0)
-        //                      if (textBox.Text.Length == 0)
-        //                      {
-        //                          textBox.BorderBrush = _redBrush;
-        //					result &= false;
-        //				}
-        //				else
-        //				{
-        //                          textBox.BorderBrush = formControl.BaseBorderColor;
-        //				}
-        //			}
-        //                  else if (control is ComboBox comboBox)
-        //                  {
-        //                      if (string.IsNullOrEmpty((string)comboBox.SelectionBoxItem))
-        //                      //if (comboBox.SelectionBoxItem == null || comboBox.SelectionBoxItem?.ToString().Length == 0)
-        //                      {
-        //                          //control.SetValue(Border.BorderBrushProperty, _redBrush);
-        //                          //((TextBox)control).BorderBrush = _redBrush;
-        //                          //Border.
-        //                          comboBox.BorderBrush = _redBrush;
-        //					result &= false;
-        //				}
-        //				else
-        //				{
-        //					control.BorderBrush = formControl.BaseBorderColor;
-        //				}
-        //			}
-        //                  else if (control is ToggleButtonGroup toggleButtonGroup)
-        //                  {
-        //				result &= toggleButtonGroup.Validate();
-        //			}
-        //		}
-        //	}
-        //	return result;
-        //}
 
         public List<FormControl> FormControlsList
         { get => formControlsList; }
 
-        public string ErrorMessage
-        { get => errorMessage; set => errorMessage = value; }
+        public string ValidationResultMessage
+        { get => validationResultMessage; set => validationResultMessage = value; }
 
         public virtual string OperatorCallsign
 		{ get; set; }
@@ -446,12 +389,12 @@ namespace FormControlBaseClass
 		{ get; set; }
 
 		public virtual string MessageNo
-		{ get; set; }
+		{ get => messageno; set => messageno = value; }
+        
+        public virtual string MsgDate
+        { get => messageDate; set => messageDate = value; }
 
-		public virtual string MsgDate
-		{ get; set; }
-
-		public virtual string MsgTime
+        public virtual string MsgTime
 		{ get; set; }
 
 		public virtual string OperatorDate
@@ -471,9 +414,61 @@ namespace FormControlBaseClass
 
 		public abstract string CreateOutpostData(ref PacketMessage packetMessage);
 
-		protected abstract List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData);
+		protected virtual List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
+        {
+            foreach (FormField formField in packetMessage.FormFieldArray)
+            {
+                if (string.IsNullOrEmpty(formField.ControlContent))
+                    continue;
 
-		public abstract FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines);
+                string data = CreateOutpostDataString(formField);
+                if (string.IsNullOrEmpty(data))
+                {
+                    continue;
+                }
+                outpostData.Add(data);
+            }
+            outpostData.Add("#EOF");
+            return outpostData;
+        }
+
+        public virtual FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines)
+        {
+            FormField[] formFields = CreateEmptyFormFieldsArray();
+
+            foreach (FormField formField in formFields)
+            {
+                (string id, Control control) = GetTagIndex(formField);
+
+                if (control is ToggleButtonGroup)
+                {
+                    foreach (RadioButton radioButton in ((ToggleButtonGroup)control).RadioButtonGroup)
+                    {
+                        string radioButtonIndex = GetTagIndex(radioButton);
+                        if ((GetOutpostValue(radioButtonIndex, ref msgLines)?.ToLower()) == "true")
+                        {
+                            formField.ControlContent = radioButton.Name;
+                        }
+                    }
+
+                }
+                else if (control is CheckBox)
+                {
+                    formField.ControlContent = (GetOutpostValue(id, ref msgLines) == "true" ? "True" : "False");
+                }
+                else if (control is ComboBox comboBox)
+                {
+                    string conboBoxData = GetOutpostValue(id, ref msgLines);
+                    var comboBoxDataSet = conboBoxData.Split(new char[] { '}' }, StringSplitOptions.RemoveEmptyEntries);
+                    formField.ControlContent = comboBoxDataSet[0];
+                }
+                else
+                {
+                    formField.ControlContent = GetOutpostValue(id, ref msgLines);
+                }
+            }
+            return formFields;
+        }
 
         public (string id, Control control) GetTagIndex(FormField formField)
         {
@@ -488,7 +483,7 @@ namespace FormControlBaseClass
                 string[] tags = tag.Split(new char[] { ',' });
                 if (int.TryParse(tags[0], out int idint))
                 {
-                    return (id, control);
+                    return (tags[0], control);
                 }
                 else
                 {
@@ -568,7 +563,7 @@ namespace FormControlBaseClass
 
         protected void AddToErrorString(string errorText)
         {
-            errorMessage += ($"\n{errorText}");
+            validationResultMessage += ($"\n{errorText}");
         }
 
 
@@ -711,7 +706,7 @@ namespace FormControlBaseClass
 				}
                 else if (formControlsList[i].InputControl is ComboBox comboBox)
                 {
-					formField.ControlContent = comboBox.SelectionBoxItem?.ToString();
+					formField.ControlContent = GetComboBoxSelectedItem(comboBox);
 				}
                 else if (formControlsList[i].InputControl is ToggleButtonGroup toggleButtonGroup)
                 {
@@ -747,8 +742,9 @@ namespace FormControlBaseClass
 				}
 				else if (control is ComboBox comboBox)
 				{
-                    comboBox.SelectedItem = formField.ControlContent;
-				}
+                    //comboBox.SelectedValue = formField.ControlContent;
+                    comboBox.SelectedValue = formField.ControlContent;
+                }
 				else if (control is ToggleButtonGroup toggleButtonGroup)
 				{
                     toggleButtonGroup.SetRadioButtonCheckedState(formField.ControlContent);
@@ -796,12 +792,9 @@ namespace FormControlBaseClass
 
 		protected void Subject_Changed(object sender, RoutedEventArgs e)
 		{
-			if (sender is RadioButton radioButton)
+			if (sender is RadioButton radioButton && radioButton.Name == "emergency")
 			{
-				if (radioButton.Name == "emergency")
-				{
-					HandlingOrder = "immediate";
-				}
+    			HandlingOrder = "immediate";
 			}
 			EventHandler<FormEventArgs> OnSubjectChange = EventSubjectChanged;
             FormEventArgs formEventArgs = new FormEventArgs() { SubjectLine = MessageNo };

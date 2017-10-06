@@ -1,6 +1,7 @@
 ﻿using FormControlBaseClass;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -33,6 +34,40 @@ namespace OAMunicipalStatusFormControl
 
     public sealed partial class OAMunicipalStatusControl : FormControlBase
     {
+        public string[] Municipalities = new string[] {
+                "Campbell",
+                "Cupertino",
+                "Gilroy",
+                "Loma Prieta",
+                "Los Altos",
+                "Los Altos Hills",
+                "Los Gatos/Monte Sereno",
+                "Milpitas",
+                "Morgan Hill",
+                "Mountain View",
+                "NASA-Ames",
+                "Palo Alto",
+                "San Jose",
+                "Santa Clara",
+                "Saratoga",
+                "Stanford",
+                "Sunnyvale",
+                "Unincorporated"
+        };
+
+        public string[] UnknownYesNo = new string[] {
+                "Unknown",
+                "Yes",
+                "No"
+        };
+
+        string[] currentSituation = new string[] {
+                "Unknown",
+                "Normal",
+                "Problem",
+                "Failure"
+        };
+
         public OAMunicipalStatusControl()
         {
             this.InitializeComponent();
@@ -43,24 +78,36 @@ namespace OAMunicipalStatusFormControl
 
             ReceivedOrSent = "sent";
             HowRecevedSent = "packet";
-
-            //foreach (FormControl formControl in FormControlsList)
+            municipalityName.ItemsSource = Municipalities;
+            officeStatus.ItemsSource = UnknownYesNo;
+            officeStatus.SelectedIndex = 0;
+            eocOpen.ItemsSource = UnknownYesNo;
+            eocOpen.SelectedIndex = 0;
+            stateOfEmergency.ItemsSource = UnknownYesNo;
+            stateOfEmergency.SelectedIndex = 0;
+            //comboBoxCommunications.ItemsSource = CurrentSituation;
+            //comboBoxCommunications.SelectedIndex = 0;
+            //ObservableCollection<string> currentSituationCollection = new ObservableCollection<string>();
+            //foreach (string comboBoxItem in currentSituation)
             //{
-            //    Control control = formControl.InputControl;
-            //    if (control is ComboBox comboBox)
-            //    {
-            //        //SetComboBoxString(comboBox, "Unknown");
-            //        comboBox.SelectedIndex = 0;
-            //    }
+            //    currentSituationCollection.Add(comboBoxItem);
             //}
-            //municipalityName.SelectedIndex = -1;
+            //CurrentSituationCollection.Source = currentSituationCollection;
+            //comboBoxCommunications.SelectedIndex = 0;
+            comboBoxDebris.SelectedValue = "Unknown";
+            comboBoxFlooding.SelectedItem = 0;
+            var items = comboBoxHazmat.Items;
+            var item = items[0];
         }
+
+        public string[] CurrentSituation
+        { get => currentSituation; }
 
         public string SenderMsgNo
         { get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
 
         public override string MessageNo
-        { get { return GetTextBoxString(messageNo); } set { SetTextBoxString(messageNo, value); } }
+        { get => GetTextBoxString(messageNo); set => SetTextBoxString(messageNo, value); }
 
         public string ReceiverMsgNo
         { get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
@@ -99,7 +146,7 @@ namespace OAMunicipalStatusFormControl
         { get => GetTextBoxString(incidentName); }
 
         public string MunicipalityName
-        { get => GetComboBoxSelectedItem(municipalityName)?.Content.ToString(); }
+        { get => GetComboBoxSelectedValuePath(municipalityName); }
 
         public override string PacFormName => "OAMuniStatus";
 
@@ -108,305 +155,135 @@ namespace OAMunicipalStatusFormControl
             return (MessageNo + "_" + Severity?.ToUpper()[0] + "/" + HandlingOrder?.ToUpper()[0] + "_OAMuniStat_" + MunicipalityName + '_' + IncidentName);
         }
 
+        void UpdateControlValidationInfo(FormControl formControl, bool validationState)
+        {
+            if (validationState)
+            {
+                AddToErrorString(GetTagErrorMessage(formControl.InputControl));
+                formControl.InputControl.BorderBrush = _redBrush;
+            }
+            else
+            {
+                formControl.InputControl.BorderBrush = formControl.BaseBorderColor;
+            }
+        }
+
         public override string ValidateForm()
         {
-            ErrorMessage = "";
-            foreach (FormControl formControl in FormControlsList)
-            {
-                Control control = formControl.InputControl;
-                if (!string.IsNullOrEmpty(control.Tag as string) && control.IsEnabled && control.Tag.ToString().Contains("conditionallyrequired"))
-                {
-                    continue;
-                }
-
-                if (control.Tag != null && control.IsEnabled && control.Visibility == Visibility.Visible && control.Tag.ToString().Contains("required"))
-                {
-                    if (control is TextBox textBox)
-                    {
-                        if (string.IsNullOrEmpty(textBox.Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
-                    }
-                    else if (control is ComboBox comboBox)
-                    {
-                        if (string.IsNullOrEmpty(GetComboBoxString(comboBox)))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
-                    }
-                    else if (control is ToggleButtonGroup toggleButtonGroup)
-                    {
-                        if (!toggleButtonGroup.Validate())
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                        }
-                    }
-                }
-            }
+            base.ValidateForm();
 
             foreach (FormControl formControl in FormControlsList)
             {
+                bool validationState;
                 Control control = formControl.InputControl;
                 switch (control.Name)
                 {
                     case "eocOpen":
-                        if ((control as ComboBox).SelectedIndex == 0)
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = (control as ComboBox).SelectedIndex == 0;
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
-                    case "activationLevel":                        
-                        if (control.IsEnabled && (control as ComboBox).SelectedIndex == 0)
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                    case "activationLevel":
+                        validationState = control.IsEnabled && (control as ComboBox).SelectedIndex == 0;
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "stateOfEmergency":
-                        if ((control as ComboBox).SelectedIndex == 0)
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = (control as ComboBox).SelectedIndex == 0;
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "howSent":
-                        if (stateOfEmergency.SelectedIndex == 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = stateOfEmergency.SelectedIndex == 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsCommunications":
-                        if (comboBoxCommunications.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxCommunications.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsDebris":
-                        if (comboBoxDebris.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxDebris.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsFlooding":
-                        if (comboBoxFlooding.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxFlooding.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsHazmat":
-                        if (comboBoxHazmat.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxHazmat.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsEmergencyServices":
-                        if (comboBoxEmergencyServices.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxEmergencyServices.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsCasualties":
-                        if (comboBoxCasualties.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxCasualties.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsUtilitiesGas":
-                        if (comboBoxUtilitiesGas.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxUtilitiesGas.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsUtilitiesElectric":
-                        if (comboBoxUtilitiesElectric.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxUtilitiesElectric.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsInfrastructurePower":
-                        if (comboBoxInfrastructurePower.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxInfrastructurePower.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsInfrastructureWater":
-                        if (comboBoxInfrastructureWater.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxInfrastructureWater.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsInfrastructureSewer":
-                        if (comboBoxInfrastructureSewer.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxInfrastructureSewer.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsSearchAndRescue":
-                        if (comboBoxSearchAndRescue.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxSearchAndRescue.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsTransportationsRoads":
-                        if (comboBoxTransportationsRoads.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxTransportationsRoads.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsTransportationsBridges":
-                        if (comboBoxTransportationsBridges.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxTransportationsBridges.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsCivilUnrest":
-                        if (comboBoxCivilUnrest.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxCivilUnrest.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                     case "commentsAnimalIssues":
-                        if (comboBoxAnimalIssues.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
+                        validationState = comboBoxAnimalIssues.SelectedIndex > 1 && string.IsNullOrEmpty((control as TextBox).Text);
+                        UpdateControlValidationInfo(formControl, validationState);
                         break;
                 }
             }
-            return ErrorMessage;
+            return ValidationResultMessage;
         }
 
-        protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
-        {
-            foreach (FormField formField in packetMessage.FormFieldArray)
-            {
-                if (string.IsNullOrEmpty(formField.ControlContent))
-                    continue;
+        //protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
+        //{
+        //    foreach (FormField formField in packetMessage.FormFieldArray)
+        //    {
+        //        if (string.IsNullOrEmpty(formField.ControlContent))
+        //            continue;
 
-                string data = CreateOutpostDataString(formField);
-                if (string.IsNullOrEmpty(data))
-                {
-                    continue;
-                }
-                outpostData.Add(data);
-            }
-            outpostData.Add("#EOF");
-            return outpostData;
-        }
+        //        string data = CreateOutpostDataString(formField);
+        //        if (string.IsNullOrEmpty(data))
+        //        {
+        //            continue;
+        //        }
+        //        outpostData.Add(data);
+        //    }
+        //    outpostData.Add("#EOF");
+        //    return outpostData;
+        //}
 
         public override string CreateOutpostData(ref PacketMessage packetMessage)
         {
-            List<string> outpostData = new List<string>
+            outpostData = new List<string>
             {
                 "!PACF! " + packetMessage.Subject,
                 "# JS:SC-OA-Muni Status (which4)",
@@ -418,43 +295,43 @@ namespace OAMunicipalStatusFormControl
             return CreateOutpostMessageBody(outpostData);
         }
 
-        public override FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines)
-        {
-            FormField[] formFields = CreateEmptyFormFieldsArray();
+        //public override FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines)
+        //{
+        //    FormField[] formFields = CreateEmptyFormFieldsArray();
 
-            foreach (FormField formField in formFields)
-            {
-                (string id, Control control) = GetTagIndex(formField);
+        //    foreach (FormField formField in formFields)
+        //    {
+        //        (string id, Control control) = GetTagIndex(formField);
 
-                if (control is ToggleButtonGroup)
-                {
-                    foreach (RadioButton radioButton in ((ToggleButtonGroup)control).RadioButtonGroup)
-                    {
-                        string radioButtonIndex = GetTagIndex(radioButton);
-                        if ((GetOutpostValue(radioButtonIndex, ref msgLines)?.ToLower()) == "true")
-                        {
-                            formField.ControlContent = radioButton.Name;
-                        }
-                    }
+        //        if (control is ToggleButtonGroup)
+        //        {
+        //            foreach (RadioButton radioButton in ((ToggleButtonGroup)control).RadioButtonGroup)
+        //            {
+        //                string radioButtonIndex = GetTagIndex(radioButton);
+        //                if ((GetOutpostValue(radioButtonIndex, ref msgLines)?.ToLower()) == "true")
+        //                {
+        //                    formField.ControlContent = radioButton.Name;
+        //                }
+        //            }
 
-                }
-                else if (control is CheckBox)
-                {
-                    formField.ControlContent = (GetOutpostValue(id, ref msgLines) == "true" ? "True" : "False");
-                }
-                else if (control is ComboBox comboBox)
-                {
-                    string conboBoxData = GetOutpostValue(id, ref msgLines);
-                    var comboBoxDataSet = conboBoxData.Split(new char[] { '}' }, StringSplitOptions.RemoveEmptyEntries);
-                    formField.ControlContent = comboBoxDataSet[0];
-                }
-                else
-                {
-                    formField.ControlContent = GetOutpostValue(id, ref msgLines);
-                }
-            }
-            return formFields;
-        }
+        //        }
+        //        else if (control is CheckBox)
+        //        {
+        //            formField.ControlContent = (GetOutpostValue(id, ref msgLines) == "true" ? "True" : "False");
+        //        }
+        //        else if (control is ComboBox comboBox)
+        //        {
+        //            string conboBoxData = GetOutpostValue(id, ref msgLines);
+        //            var comboBoxDataSet = conboBoxData.Split(new char[] { '}' }, StringSplitOptions.RemoveEmptyEntries);
+        //            formField.ControlContent = comboBoxDataSet[0];
+        //        }
+        //        else
+        //        {
+        //            formField.ControlContent = GetOutpostValue(id, ref msgLines);
+        //        }
+        //    }
+        //    return formFields;
+        //}
 
         private void eocOpen_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -462,6 +339,11 @@ namespace OAMunicipalStatusFormControl
             {
                 activationLevel.IsEnabled = (sender as ComboBox).SelectedIndex == 1;
             }
+        }
+
+        private void Subject_Changed(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

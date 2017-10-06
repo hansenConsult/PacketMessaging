@@ -78,8 +78,8 @@ namespace CityScanFormControl
 		public string ReplyBy
 		{ get { return GetTextBoxString(replyBy); } set { SetTextBoxString(replyBy, value); } }
 
-		public string City
-		{ get { return GetComboBoxString(city); } set { SetComboBoxString(city, value); } }
+		//public string City
+		//{ get { return GetComboBoxSelectedValuePath(city); } set { SetComboBoxString(city, value); } }
 
 		public string CityOther
 		{ get { return GetTextBoxString(cityOther); } set { SetTextBoxString(cityOther, value); } }
