@@ -24,7 +24,7 @@ namespace PacketMessaging.Services.CommunicationsService
 
 		//Collection<DeviceListEntry> _listOfDevices;
 
-		List<PacketMessage> _packetMessagesReceived = new List<PacketMessage>();
+		public List<PacketMessage> _packetMessagesReceived = new List<PacketMessage>();
 		List<PacketMessage> _packetMessagesToSend = new List<PacketMessage>();
 
         private static readonly Object singletonCreationLock = new Object();
@@ -50,7 +50,7 @@ namespace PacketMessaging.Services.CommunicationsService
 			return _communicationsService;
 		}
 
-        private async void ProcessReceivedMessagesAsync()
+        public async void ProcessReceivedMessagesAsync()
 		{
 			if (_packetMessagesReceived.Count() > 0)
 			{

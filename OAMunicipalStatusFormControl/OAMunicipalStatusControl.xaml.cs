@@ -1,20 +1,6 @@
 ﻿using FormControlBaseClass;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using ToggleButtonGroupControl;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -32,9 +18,22 @@ namespace OAMunicipalStatusFormControl
         FormControlType = FormControlAttribute.FormType.CountyForm)
     ]
 
+    //public class ComboBoxItemConvert : IValueConverter
+    //{
+    //    public object Convert(object value, Type targetType, object parameter, string language)
+    //    {
+    //        return value;
+    //    }
+
+    //    public object ConvertBack(object value, Type targetType, object parameter, string language)
+    //    {
+    //        return value as ComboBoxItem;
+    //    }
+    //}
+
     public sealed partial class OAMunicipalStatusControl : FormControlBase
     {
-        public string[] Municipalities = new string[] {
+        string[] Municipalities = new string[] {
                 "Campbell",
                 "Cupertino",
                 "Gilroy",
@@ -55,13 +54,20 @@ namespace OAMunicipalStatusFormControl
                 "Unincorporated"
         };
 
-        public string[] UnknownYesNo = new string[] {
+        string[] UnknownYesNo = new string[] {
                 "Unknown",
                 "Yes",
                 "No"
         };
 
-        string[] currentSituation = new string[] {
+        string[] ActivationLevel = new string[] {
+                "Unknown",
+                "Monitor",
+                "Minimal",
+                "Full"
+        };
+
+        string[] CurrentSituation = new string[] {
                 "Unknown",
                 "Normal",
                 "Problem",
@@ -77,31 +83,52 @@ namespace OAMunicipalStatusFormControl
             InitializeControls();
 
             ReceivedOrSent = "sent";
-            HowRecevedSent = "packet";
+            HowReceivedSent = "packet";
+
             municipalityName.ItemsSource = Municipalities;
             officeStatus.ItemsSource = UnknownYesNo;
             officeStatus.SelectedIndex = 0;
+
             eocOpen.ItemsSource = UnknownYesNo;
             eocOpen.SelectedIndex = 0;
+            activationLevel.ItemsSource = ActivationLevel;
+            activationLevel.SelectedIndex = 0;
             stateOfEmergency.ItemsSource = UnknownYesNo;
             stateOfEmergency.SelectedIndex = 0;
-            //comboBoxCommunications.ItemsSource = CurrentSituation;
-            //comboBoxCommunications.SelectedIndex = 0;
-            //ObservableCollection<string> currentSituationCollection = new ObservableCollection<string>();
-            //foreach (string comboBoxItem in currentSituation)
-            //{
-            //    currentSituationCollection.Add(comboBoxItem);
-            //}
-            //CurrentSituationCollection.Source = currentSituationCollection;
-            //comboBoxCommunications.SelectedIndex = 0;
-            comboBoxDebris.SelectedValue = "Unknown";
-            comboBoxFlooding.SelectedItem = 0;
-            var items = comboBoxHazmat.Items;
-            var item = items[0];
-        }
 
-        public string[] CurrentSituation
-        { get => currentSituation; }
+            comboBoxCommunications.ItemsSource = CurrentSituation;
+            comboBoxCommunications.SelectedIndex = 0;
+            comboBoxDebris.ItemsSource = CurrentSituation;
+            comboBoxDebris.SelectedIndex = 0;
+            comboBoxFlooding.ItemsSource = CurrentSituation;
+            comboBoxFlooding.SelectedIndex = 0;
+            comboBoxHazmat.ItemsSource = CurrentSituation;
+            comboBoxHazmat.SelectedIndex = 0;
+            comboBoxEmergencyServices.ItemsSource = CurrentSituation;
+            comboBoxEmergencyServices.SelectedIndex = 0;
+            comboBoxCasualties.ItemsSource = CurrentSituation;
+            comboBoxCasualties.SelectedIndex = 0;
+            comboBoxUtilitiesGas.ItemsSource = CurrentSituation;
+            comboBoxUtilitiesGas.SelectedIndex = 0;
+            comboBoxUtilitiesElectric.ItemsSource = CurrentSituation;
+            comboBoxUtilitiesElectric.SelectedIndex = 0;
+            comboBoxInfrastructurePower.ItemsSource = CurrentSituation;
+            comboBoxInfrastructurePower.SelectedIndex = 0;
+            comboBoxInfrastructureWater.ItemsSource = CurrentSituation;
+            comboBoxInfrastructureWater.SelectedIndex = 0;
+            comboBoxInfrastructureSewer.ItemsSource = CurrentSituation;
+            comboBoxInfrastructureSewer.SelectedIndex = 0;
+            comboBoxSearchAndRescue.ItemsSource = CurrentSituation;
+            comboBoxSearchAndRescue.SelectedIndex = 0;
+            comboBoxTransportationsRoads.ItemsSource = CurrentSituation;
+            comboBoxTransportationsRoads.SelectedIndex = 0;
+            comboBoxTransportationsBridges.ItemsSource = CurrentSituation;
+            comboBoxTransportationsBridges.SelectedIndex = 0;
+            comboBoxCivilUnrest.ItemsSource = CurrentSituation;
+            comboBoxCivilUnrest.SelectedIndex = 0;
+            comboBoxAnimalIssues.ItemsSource = CurrentSituation;
+            comboBoxAnimalIssues.SelectedIndex = 0;
+        }
 
         public string SenderMsgNo
         { get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
@@ -127,20 +154,20 @@ namespace OAMunicipalStatusFormControl
         public string ReceivedOrSent
         { get { return receivedOrSent.GetRadioButtonCheckedState(); } set { receivedOrSent.SetRadioButtonCheckedState(value); } }
 
-        public string HowRecevedSent
+        public override string HowReceivedSent
         { get { return howRecevedSent.GetRadioButtonCheckedState(); } set { howRecevedSent.SetRadioButtonCheckedState(value); } }
 
-        public override string OperatorCallsign
-        { get { return GetTextBoxString(operatorCallsign); } set { SetTextBoxString(operatorCallsign, value); } }
+        //public override string OperatorCallsign
+        //{ get { return GetTextBoxString(operatorCallsign); } set { SetTextBoxString(operatorCallsign, value); } }
 
-        public override string OperatorDate
-        { get { return GetTextBoxString(operatorDate); } set { SetTextBoxString(operatorDate, value); } }
+        //public override string OperatorDate
+        //{ get { return GetTextBoxString(operatorDate); } set { SetTextBoxString(operatorDate, value); } }
 
-        public override string OperatorName
-        { get { return GetTextBoxString(operatorName); } set { SetTextBoxString(operatorName, value); } }
+        //public override string OperatorName
+        //{ get { return GetTextBoxString(operatorName); } set { SetTextBoxString(operatorName, value); } }
 
-        public override string OperatorTime
-        { get { return GetTextBoxString(operatorTime); } set { SetTextBoxString(operatorTime, value); } }
+        //public override string OperatorTime
+        //{ get { return GetTextBoxString(operatorTime); } set { SetTextBoxString(operatorTime, value); } }
 
         public string IncidentName
         { get => GetTextBoxString(incidentName); }
@@ -341,10 +368,6 @@ namespace OAMunicipalStatusFormControl
             }
         }
 
-        private void Subject_Changed(object sender, TextChangedEventArgs e)
-        {
-
-        }
     }
 }
 

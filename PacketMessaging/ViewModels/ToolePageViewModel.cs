@@ -14,22 +14,38 @@ namespace PacketMessaging.ViewModels
 		public ToolsPageLogFilePartViewModel SettingsPartViewModel { get; } = new ToolsPageLogFilePartViewModel();
 
 
-		public class ToolsPageLogFilePartViewModel : ViewModelBase
-		{
-			Services.SettingsServices.SettingsService _settings;
+        public class ToolsPageLogFilePartViewModel : ViewModelBase
+        {
+            Services.SettingsServices.SettingsService _settings;
 
-			public ToolsPageLogFilePartViewModel()
-			{
-				if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-				{
-					// designtime
-				}
-				else
-				{
-					_settings = Services.SettingsServices.SettingsService.Instance;
-				}
-			}
+            public ToolsPageLogFilePartViewModel()
+            {
+                if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+                {
+                    // designtime
+                }
+                else
+                {
+                    _settings = Services.SettingsServices.SettingsService.Instance;
+                }
+            }
+        }
+        public class ToolsPageTestReceivePartViewModel : ViewModelBase
+        {
+            Services.SettingsServices.SettingsService _settings;
 
-		}
+            public ToolsPageTestReceivePartViewModel()
+            {
+                if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+                {
+                    // designtime
+                }
+                else
+                {
+                    _settings = Services.SettingsServices.SettingsService.Instance;
+                }
+            }
+        }
+
 	}
 }

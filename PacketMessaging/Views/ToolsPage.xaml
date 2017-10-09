@@ -57,13 +57,23 @@
 				<!--</ScrollViewer>-->
 			</PivotItem>
 
+            <PivotItem x:Name="testReceive" DataContext="{Binding ToolsPageTestReceivePartViewModel}" Header="Test Receive">
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBox x:Name="receivedMessage" Height="auto" AcceptsReturn="True" ScrollViewer.IsVerticalRailEnabled="True" Margin="5,10,5,0"  MinHeight="132" HorizontalContentAlignment="Left" VerticalContentAlignment="Top"/>
+                        <Button x:Name="testReceivedMessage" Content="Test Received Message" HorizontalAlignment="Right" Margin="0,10,5,0" Click="TestReceivedMessage_Click" />
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+
 		</Pivot>
 		
 		<CommandBar x:Name="ButtomCommandBar"
 				RelativePanel.AlignBottomWithPanel="True"
 				RelativePanel.AlignRightWithPanel="True"
 				RelativePanel.AlignLeftWithPanel="True">
-			<AppBarButton Label="Save File" Icon="SaveLocal" Click="AppBarButton_SaveFile" />
+            <AppBarButton x:Name="OpenTestMessageFile" Label="Open File" Icon="OpenFile" Click="AppBarButton_OpenFile"/>
+            <AppBarButton Label="Save File" Icon="SaveLocal" Click="AppBarButton_SaveFile" />
 			<AppBarButton Label="Delete File" Icon="Delete" Click="AppBarButton_DeleteFileAsync" HorizontalAlignment="Right" />
 		</CommandBar>
 

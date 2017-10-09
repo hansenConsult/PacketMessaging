@@ -915,7 +915,67 @@ namespace PacketMessaging.Views
 			return formControl;
 		}
 
-		void FormControl_SubjectChange(object sender, FormEventArgs e)
+        public static FormControlBase CreateFormControlInstanceFromFileName(string fileName)
+        {
+            FormControlBase formControl = null;
+            var files = ViewModels.SharedData.filesInInstalledLocation;
+            if (files == null)
+                return null;
+
+            Type foundType = null;
+            foreach (var file in files.Where(file => file.FileType == ".dll" && file.Name.Contains(fileName)))
+            {
+                try
+                {
+                    Assembly assembly = Assembly.Load(new AssemblyName(file.DisplayName));
+                    foreach (Type classType in assembly.GetTypes())
+                    {
+                        var attrib = classType.GetTypeInfo();
+                        foreach (CustomAttributeData customAttribute in attrib.CustomAttributes.Where(customAttribute => customAttribute.GetType() == typeof(CustomAttributeData)))
+                        {
+                            //if (!(customAttribute is FormControlAttribute))
+                            //    continue;
+                            var namedArguments = customAttribute.NamedArguments;
+                            if (namedArguments.Count == 3)
+                            {
+                                var formControlName = namedArguments[0].TypedValue.Value as string;
+                                //var arg1 = Enum.Parse(typeof(FormControlAttribute.FormType), namedArguments[1].TypedValue.Value.ToString());
+                                //var arg2 = namedArguments[2].TypedValue.Value;
+                                if (formControlName == controlName)
+                                {
+                                    foundType = classType;
+                                    break;
+                                }
+                            }
+                        }
+                        if (foundType != null)
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+                if (foundType != null)
+                    break;
+            }
+
+            if (foundType != null)
+            {
+                try
+                {
+                    formControl = (FormControlBase)Activator.CreateInstance(foundType);
+                }
+                catch (Exception e)
+                {
+                    string message = e.Message;
+                }
+            }
+
+            return formControl;
+        }
+
+        void FormControl_SubjectChange(object sender, FormEventArgs e)
 		{
 			if (e?.SubjectLine?.Length > 0)
 			{

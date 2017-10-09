@@ -25,51 +25,26 @@ namespace ToggleButtonGroupControl
 				//DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
 			}
 
-        //public ToggleButtonGroup(List<RadioButton> radioButtonList, string groupName)
-        //{
-        //    DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
+            //public ToggleButtonGroup(List<RadioButton> radioButtonList, string groupName)
+            //{
+            //    DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
 
-        //    foreach (RadioButton radioButton in radioButtonList)
-        //    {
-        //        if (radioButton.GroupName == groupName)
-        //        {
-        //            radioButtonGroup.Add(radioButton);
-        //            radioButton.IsChecked = false;
-        //        }
-        //    }
-        //    SetBorderBrush(_blackBrush);
-        //}
+            //    foreach (RadioButton radioButton in radioButtonList)
+            //    {
+            //        if (radioButton.GroupName == groupName)
+            //        {
+            //            radioButtonGroup.Add(radioButton);
+            //            radioButton.IsChecked = false;
+            //        }
+            //    }
+            //    SetBorderBrush(_blackBrush);
+            //}
 
-        public IList<RadioButton> RadioButtonGroup
-        { get => _radioButtonGroup; }
+            public IList<RadioButton> RadioButtonGroup
+            { get => _radioButtonGroup; }
 
-        public string CheckedControlName
+            public string CheckedControlName
 			{ get { return GetRadioButtonCheckedState(); } set { SetRadioButtonCheckedState(value); } }
-
-			//public override string Border
-			//{ get; set; }
-			//{ get { return groupName; } set { groupName = value; } }
-			//public Brush BorderBrush
-			//{ get
-			//    {
-			//        return radioButtonGroup[0].BorderBrush;
-			//    }
-			//    set
-			//    {
-			//        foreach (RadioButton radioButton in radioButtonGroup)
-			//        {
-			//            radioButton.BorderBrush = value;
-			//        }
-			//    }
-			//}
-
-			public void SetBorderBrush(Brush brush)
-			{
-				foreach (RadioButton radioButton in _radioButtonGroup)
-				{
-					radioButton.BorderBrush = brush;
-				}
-			}
 
 			public void Initialize(IList<RadioButton> radioButtonList, string groupName)
 			{
@@ -81,7 +56,6 @@ namespace ToggleButtonGroupControl
 						radioButton.IsChecked = false;
 					}
 				}
-				SetBorderBrush(_blackBrush);
 			}
 
 			//delegate string GetRadioButtonChecked(RadioButton radioButton);

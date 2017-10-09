@@ -61,9 +61,6 @@ namespace FormControlBaseClass
 
         protected List<string> outpostData;
 
-        string messageno;
-        string messageDate;
-
         public FormControlBase()
 		{
 		}
@@ -389,10 +386,10 @@ namespace FormControlBaseClass
 		{ get; set; }
 
 		public virtual string MessageNo
-		{ get => messageno; set => messageno = value; }
+		{ get; set; }
         
         public virtual string MsgDate
-        { get => messageDate; set => messageDate = value; }
+        { get; set; }
 
         public virtual string MsgTime
 		{ get; set; }
@@ -406,7 +403,11 @@ namespace FormControlBaseClass
 		public virtual string HandlingOrder
 		{ get; set; }
 
-		public abstract string PacFormName
+        public virtual string HowReceivedSent
+        { get; set; }
+
+
+        public abstract string PacFormName
 		{ get; }
 
 
@@ -473,7 +474,6 @@ namespace FormControlBaseClass
         public (string id, Control control) GetTagIndex(FormField formField)
         {
             Control control = null;
-            string id = "";
             try
             {
                 FormControl formControl = formControlsList.Find(x => x.InputControl.Name == formField.ControlName);
