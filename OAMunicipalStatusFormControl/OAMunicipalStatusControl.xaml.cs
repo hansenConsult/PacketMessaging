@@ -380,6 +380,11 @@ namespace OAMunicipalStatusFormControl
             }
         }
 
+        private void MsgDate_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string text = e.ToString();
+            MsgDate = msgDate.Text;
+        }
     }
 }
 

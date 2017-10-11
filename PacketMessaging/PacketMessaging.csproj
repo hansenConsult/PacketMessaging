@@ -111,6 +111,8 @@
     <Compile Include="Services\CommunicationsService\SerialPort.cs" />
     <Compile Include="Services\CommunicationsService\TNCInterface.cs" />
     <Compile Include="Services\CommunicationsService\Utilities.cs" />
+    <Compile Include="Services\FormsPageService\FormsPageService.cs" />
+    <Compile Include="Services\ToolsPageServices\ToolsPageService.cs" />
     <Compile Include="TNCDevices.cs" />
     <Compile Include="ViewModels\ToolePageViewModel.cs" />
     <Compile Include="ViewModels\FormsPageViewModel.cs" />
@@ -259,6 +261,7 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '15.0' ">
     <VisualStudioVersion>15.0</VisualStudioVersion>
   </PropertyGroup>

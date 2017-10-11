@@ -15,13 +15,25 @@ namespace PacketMessaging.ViewModels
 {
 	public class FormsPageViewModel : ViewModelBase
 	{
-		public FormsPageViewModel()
+        public static FormsPageViewModel _formsPageViewModel { get; } = new FormsPageViewModel();
+        Services.FormsPageService.FormsPageService _formsPageServiceInstance;
+
+        public FormsPageViewModel()
 		{
 			if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
 			{
-				//PacMessage = null;
-			}
+                _formsPageServiceInstance = Services.FormsPageService.FormsPageService.Instance;
+                //PacMessage = null;
+            }
 		}
+
+        public string TestFileName
+        {
+            get { return _formsPageServiceInstance.TestFileName; }
+            set { _formsPageServiceInstance.TestFileName = value; base.RaisePropertyChanged(); }
+        }
+
+
 
         //private PacketMessage _packetMessage = null;
         //public PacketMessage PacMessage { get { return _packetMessage; } set { Set(ref _packetMessage, value); } }

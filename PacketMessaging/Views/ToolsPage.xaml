@@ -6,11 +6,15 @@
 	xmlns:controls="using:Template10.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:data="using:PacketMessaging"
+      xmlns:vm="using:PacketMessaging.ViewModels" 
+
     mc:Ignorable="d">
 
 	<Page.Resources>
 		<CollectionViewSource x:Name="LogFilesCollection"  IsSourceGrouped="False" />
-	</Page.Resources>
+        <CollectionViewSource x:Name="TestFilesCollection"  IsSourceGrouped="False" />
+    </Page.Resources>
 
 	<RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<controls:PageHeader x:Name="pageHeader" Content="Tools Page"
@@ -20,10 +24,11 @@
                              RelativePanel.AlignTopWithPanel="True"  />
 
 		<Pivot x:Name="toolsPagePivot" 
-			   RelativePanel.AlignBottomWithPanel="True"
+			   
                RelativePanel.AlignLeftWithPanel="True"
                RelativePanel.AlignRightWithPanel="True"
                RelativePanel.Below="pageHeader" 
+               RelativePanel.Above="ButtomCommandBar"
 			   SelectionChanged="toolsPagePivot_SelectionChangedAsync" >
 			
 			<!--Log File-->
@@ -56,14 +61,26 @@
 				</RelativePanel>
 				<!--</ScrollViewer>-->
 			</PivotItem>
-
+            <!--Text tools-->
             <PivotItem x:Name="testReceive" DataContext="{Binding ToolsPageTestReceivePartViewModel}" Header="Test Receive">
-                <ScrollViewer>
+                  <StackPanel>
                     <StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                            <TextBlock Text="File Name:" VerticalAlignment="Center"/>
+                            <TextBox x:Name="textBoxFileName"  Width="200"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="5,10"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                            <TextBlock Text="Select a test file:" VerticalAlignment="Center" />
+                            <ComboBox x:Name="comboBoxTestFiles"  Margin="5,10" HorizontalAlignment="Right"
+                                      ItemsSource="{x:Bind TestFilesCollection.View, Mode=OneWay}"
+								      DisplayMemberPath="Name" Width="200"
+								      SelectionChanged="TestFilesComboBox_SelectionChangedAsync" />
+                        </StackPanel>
+                    </StackPanel>
                         <TextBox x:Name="receivedMessage" Height="auto" AcceptsReturn="True" ScrollViewer.IsVerticalRailEnabled="True" Margin="5,10,5,0"  MinHeight="132" HorizontalContentAlignment="Left" VerticalContentAlignment="Top"/>
                         <Button x:Name="testReceivedMessage" Content="Test Received Message" HorizontalAlignment="Right" Margin="0,10,5,0" Click="TestReceivedMessage_Click" />
                     </StackPanel>
-                </ScrollViewer>
             </PivotItem>
 
 		</Pivot>
@@ -73,7 +90,7 @@
 				RelativePanel.AlignRightWithPanel="True"
 				RelativePanel.AlignLeftWithPanel="True">
             <!--Style="{ThemeResource AppBarButtonRevealStyle}"-->
-            <AppBarButton x:Name="OpenTestMessageFile" Label="Open File" Icon="OpenFile" Click="AppBarButton_OpenFile"/>
+            <AppBarButton x:Name="OpenTestMessageFile" Label="Open File" Icon="OpenFile" Click="AppBarButton_OpenFileAsync"/>
             <AppBarButton Label="Save File" Icon="SaveLocal" Click="AppBarButton_SaveFileAsync" />
 			<AppBarButton Label="Delete File" Icon="Delete" Click="AppBarButton_DeleteFileAsync" HorizontalAlignment="Right" />
 		</CommandBar>

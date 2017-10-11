@@ -45,7 +45,27 @@ namespace PacketMessaging.Views
 			logFilesComboBox.SelectedIndex = _selectedFileIndex;
 		}
 
-		private async void toolsPagePivot_SelectionChangedAsync(object sender, SelectionChangedEventArgs e)
+        private async Task UpdateTestFileListAsync()
+        {
+            List<string> fileTypeFilter = new List<string>() { ".txt" };
+            QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypeFilter);
+
+            // Get the files in the user's archive folder
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFileQueryResult results = storageFolder.CreateFileQueryWithOptions(queryOptions);
+            // Iterate over the results
+            IReadOnlyList<StorageFile> files = await results.GetFilesAsync();
+            if (files.Count > 0)
+            {
+                var observableCollection = new ObservableCollection<StorageFile>(files);
+                TestFilesCollection.Source = observableCollection.OrderByDescending(f => f.Name);
+
+                comboBoxTestFiles.SelectedIndex = _selectedFileIndex;
+            }
+        }
+
+
+        private async void toolsPagePivot_SelectionChangedAsync(object sender, SelectionChangedEventArgs e)
 		{
 			_currentPivotItem = (PivotItem)e.AddedItems[0];
 
@@ -57,6 +77,7 @@ namespace PacketMessaging.Views
             else if (_currentPivotItem.Name == "testReceive")
             {
                 OpenTestMessageFile.Visibility = Visibility.Visible;
+                await UpdateTestFileListAsync();
             }
 		}
 
@@ -90,8 +111,48 @@ namespace PacketMessaging.Views
 			}
 		}
 
-        private void AppBarButton_OpenFile(object sender, RoutedEventArgs e)
+        private async void TestFilesComboBox_SelectionChangedAsync(object sender, SelectionChangedEventArgs e)
         {
+            try
+            {
+                _selectedFile = (StorageFile)e.AddedItems[0];
+                receivedMessage.Text = await FileIO.ReadTextAsync(_selectedFile);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                StorageFile fileCopy;
+                try
+                {
+                    // Delete any file copy that for some reason was not deleted
+                    fileCopy = await StorageFile.GetFileFromPathAsync(_selectedFile.Path + "-Copy");
+                    await fileCopy.DeleteAsync();
+                }
+                catch
+                { }
+                // Create a copy of an open log file because it can not be read directly
+                await _selectedFile.CopyAsync(MainPage._MetroLogsFolder, _selectedFile.Name + "-Copy");
+                fileCopy = await StorageFile.GetFileFromPathAsync(_selectedFile.Path + "-Copy");
+                logFileTextBox.Text = await FileIO.ReadTextAsync(fileCopy);
+                await fileCopy.DeleteAsync();
+            }
+            catch (COMException)
+            {
+
+            }
+        }
+
+        private async void AppBarButton_OpenFileAsync(object sender, RoutedEventArgs e)
+        {
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile file = await storageFolder.GetFileAsync(textBoxFileName.Text);
+            if (file != null)
+            {
+                await FileIO.WriteTextAsync(file, receivedMessage.Text);
+            }
+            else
+            {
+                return;
+            }
 
         }
 
@@ -99,37 +160,32 @@ namespace PacketMessaging.Views
 		{
             if (_currentPivotItem.Name == "testReceive")
             {
-                var picker = new FileOpenPicker();
-                picker.ViewMode = PickerViewMode.List;
-                picker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
-                picker.FileTypeFilter.Add(".txt");
-
-                StorageFile file = await picker.PickSingleFileAsync();
+                StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                string fileName = textBoxFileName.Text + ".txt";
+                StorageFile file = await storageFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
                 if (file != null)
                 {
-                    //StorageFile sampleFile = await storageFolder.CreateFileAsync("sample.txt", CreationCollisionOption.ReplaceExisting);
-                    await Windows.Storage.FileIO.WriteTextAsync(file, receivedMessage.Text);
+                    await FileIO.WriteTextAsync(file, receivedMessage.Text);
                 }
                 else
                 {
                     return;
                 }
-
-
-                    //StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-                
             }
         }
 
 		private async void AppBarButton_DeleteFileAsync(object sender, RoutedEventArgs e)
 		{
-			var selection = _selectedFile;
-			logFilesComboBox.SelectedIndex = Math.Max(0, logFilesComboBox.SelectedIndex - 1);
-			_selectedFileIndex = logFilesComboBox.SelectedIndex;
+            if (_currentPivotItem.Name == "testReceive")
+            {
+                logFilesComboBox.SelectedIndex = Math.Max(0, logFilesComboBox.SelectedIndex - 1);
+                _selectedFileIndex = comboBoxTestFiles.SelectedIndex;
+                StorageFile deleteFile = comboBoxTestFiles.SelectedItem as StorageFile;
 
-			await selection.DeleteAsync();
+                await deleteFile.DeleteAsync();
 
-			await UpdateFileListAsync();
+                await UpdateTestFileListAsync();
+            }
 		}
 
         private void TestReceivedMessage_Click(object sender, RoutedEventArgs e)
@@ -139,6 +195,7 @@ namespace PacketMessaging.Views
             {
                 PacketMessage packetMsg = new PacketMessage();
                 packetMsg.MessageSize = 778;
+                packetMsg.MessageBody = receivedMessage.Text;
                 //packetMsg.MessageBody = "Message #1 \r\nDate: Mon, 24 Aug 2015 21:07:37 PDT\r\nFrom: kz6dm @w1xsc.ampr.org\r\nTo: kz6dm\r\nSubject: 6DM - 483_O/R_CityScan_Mountain View Emergency Declared: no\r\n\r\n!PACF!6DM - 483_O/R_CityScan_Mountain View Emergency Declared: no\r\n# CITY-SCAN UPDATE FLASH REPORT \r\n# JS-ver. PR-4.1-3.9, 01/11/15\r\n# FORMFILENAME: city-scan.html\r\nMsgNo: [6DM-483]\r\nD.: [OTHER]\r\nE.: [ROUTINE]\r\n1a.: [Mountain View]\r\n2.: [08/24/2015]\r\n3.: [2028]\r\n4.: [Poul Hansen]\r\n6.: [000-000-0000]\r\n9.: [no]\r\nOpDate: [08/24/2015]\r\nOpTime: [2030]\r\n#EOF\r\n";
 
                 // Message
@@ -266,46 +323,46 @@ namespace PacketMessaging.Views
                 //				";
                 //*/
 
-                packetMsg.MessageBody = @"Message #1 
-Date: Wed, 20 Sep 2017 20:43:47 PDT
-From: kz6dm @w3xsc.ampr.org
-To: kz6dm
-Subject: 6DM-264P_O/R_EOC213RR_Incident Name
+//                packetMsg.MessageBody = @"Message #1 
+//Date: Wed, 20 Sep 2017 20:43:47 PDT
+//From: kz6dm @w3xsc.ampr.org
+//To: kz6dm
+//Subject: 6DM-264P_O/R_EOC213RR_Incident Name
 
-!PACF! 6DM-264P_O/R_EOC213RR_Incident Name
-# JS:EOC Resource Request (which4)
-# JS-ver. PR-4.3-2.8, 09/15/17
-# FORMFILENAME: XSC_EOC-213RR_v1706.html
-1: [6DM-264P]
-6: [true]
-9: [true]
-13: [\nIncident Name]
-14: [09/25/2017]
-15: [16:10]
-16: [\nRequested by]
-17: [\nPrepared by]
-18: [\nApproved by]
-19: [\n1]
-20: [\nDescription]
-21: [\nArrival]
-25: [true]
-26: [\n20]
-27: [\nDelivery to]
-28: [\nLocvation]
-29: [\nSubstitutes]
-32: [true]
-33: [Propane]
-34: [true]
-39: [\nInstructions]
-41: [true]
-43: [true]
-44: [KZ6DM]
-45: [Poul Hansen]
-46: [09/25/2017{odate]
-47: [16:10{otime]
-#EOF
+//!PACF! 6DM-264P_O/R_EOC213RR_Incident Name
+//# JS:EOC Resource Request (which4)
+//# JS-ver. PR-4.3-2.8, 09/15/17
+//# FORMFILENAME: XSC_EOC-213RR_v1706.html
+//1: [6DM-264P]
+//6: [true]
+//9: [true]
+//13: [\nIncident Name]
+//14: [09/25/2017]
+//15: [16:10]
+//16: [\nRequested by]
+//17: [\nPrepared by]
+//18: [\nApproved by]
+//19: [\n1]
+//20: [\nDescription]
+//21: [\nArrival]
+//25: [true]
+//26: [\n20]
+//27: [\nDelivery to]
+//28: [\nLocvation]
+//29: [\nSubstitutes]
+//32: [true]
+//33: [Propane]
+//34: [true]
+//39: [\nInstructions]
+//41: [true]
+//43: [true]
+//44: [KZ6DM]
+//45: [Poul Hansen]
+//46: [09/25/2017{odate]
+//47: [16:10{otime]
+//#EOF
 
-";
+//";
                 Services.CommunicationsService.CommunicationsService communicationService = Services.CommunicationsService.CommunicationsService.CreateInstance();
                 communicationService._packetMessagesReceived.Add(packetMsg);
                 communicationService.ProcessReceivedMessagesAsync();

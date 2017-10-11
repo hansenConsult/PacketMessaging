@@ -765,11 +765,31 @@ namespace PacketMessaging.Views
             {
                 FormControl formControl = _packetForm.FormControlsList.Find(x => x.InputControl.Name == formField.ControlName);
                 Control control = formControl?.InputControl;
+                if (control.Name == "msgDate")
+                {
+                    _packetForm.MsgDate = ((TextBox)control).Text;
+                }
                 if (control.Name == "msgTime")
-                    //_packetForm.MsgTime = ((TextBox)control).Text;
-                    break;
+                {
+                    _packetForm.MsgTime = ((TextBox)control).Text;
+                }
+                if (control.Name == "operatorCallsign")
+                {
+                    _packetForm.OperatorCallsign = ((TextBox)control).Text;
+                }
+                if (control.Name == "operatorName")
+                {
+                    _packetForm.OperatorName = ((TextBox)control).Text;
+                }
+                if (control.Name == "operatorDate")
+                {
+                    _packetForm.OperatorDate = ((TextBox)control).Text;
+                }
+                if (control.Name == "operatorTime")
+                {
+                    _packetForm.OperatorTime = ((TextBox)control).Text;
+                }
             }
-
         }
 
 		//async void CreatePacketForm()
@@ -1079,9 +1099,9 @@ namespace PacketMessaging.Views
 				ViewModels.SettingsPageViewModel.ReturnMessageNumber();	// Use original message number
 
 				FillFormFromPacketMessage();
-                //_packetForm.MsgTime = _packetMessage.FormFieldArray
+                //_packetForm.MsgTime = ViewModels.FormsPageViewModel.
                 _loadMessage = false;
-			}
+            }
             // Printing-related event handlers will never be called if printing
             // is not supported, but it's okay to register for them anyway.
 

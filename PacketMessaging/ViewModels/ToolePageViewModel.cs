@@ -11,8 +11,8 @@ namespace PacketMessaging.ViewModels
 
 	class ToolsPageViewModel : ViewModelBase
 	{
-		public ToolsPageLogFilePartViewModel SettingsPartViewModel { get; } = new ToolsPageLogFilePartViewModel();
-
+		public ToolsPageLogFilePartViewModel toolsPageLogFilePartViewModel { get; } = new ToolsPageLogFilePartViewModel();
+        public ToolsPageTestReceivePartViewModel toolsPageTestReceivePartViewModel { get; } = new ToolsPageTestReceivePartViewModel();
 
         public class ToolsPageLogFilePartViewModel : ViewModelBase
         {

@@ -179,8 +179,9 @@ namespace PacketMessaging.Services.SettingsServices
 			set { _helper.Write(nameof(JNOSAreas), value); }
 		}
 
-#region TNC
-		public int TNCDeviceSelectedIndex
+
+        #region TNC
+        public int TNCDeviceSelectedIndex
 		{
 			get { return _helper.Read<int>(nameof(TNCDeviceSelectedIndex), 0); }
 			set { _helper.Write(nameof(TNCDeviceSelectedIndex), value); }

@@ -152,12 +152,14 @@
                                         <TextBlock Text="Date" VerticalAlignment="Center" Style="{StaticResource MuniStatusFieldTextRequired}"/>
                                         <TextBox Name="msgDate" Text="{x:Bind MsgDate, Mode=TwoWay}" PlaceholderText="mm/dd/yy" 
                                                  Style="{StaticResource MuniStatusTextBox}" 
-                                                 Tag="15,required,Enter the date." VerticalContentAlignment="Center"/>
+                                                 Tag="15,required,Enter the date." VerticalContentAlignment="Center" 
+                                                 TextChanged="MsgDate_TextChanged"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal">
                                         <TextBlock Text="Time" VerticalAlignment="Center" Style="{StaticResource MuniStatusFieldTextRequired}"/>
-                                        <TextBox Name="msgTime" Text="{x:Bind MsgTime, Mode=TwoWay}" PlaceholderText="hhmm" 
+                                        <TextBox Name="msgTime"  PlaceholderText="hhmm" 
                                                  Style="{StaticResource MuniStatusTextBox}" 
+                                                 Text="{x:Bind MsgTime, Mode=TwoWay}"
                                                  Tag="16,required,Enter the time." VerticalContentAlignment="Center"/>
                                     </StackPanel>
                                 </Grid>

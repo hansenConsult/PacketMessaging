@@ -65,6 +65,7 @@ namespace FormControlBaseClass
 
         string _operatorTime;
         string _messageTime;
+        string _msgDate = "";
 
         protected List<string> outpostData;
 
@@ -418,11 +419,10 @@ namespace FormControlBaseClass
         public virtual string MsgDate
         { get; set; }
 
-
         public virtual string MsgTime
-		{ get { return _messageTime; } set { _messageTime = value; NotifyPropertyChanged(); } }
+        { get { return _messageTime; } set { _messageTime = value;  } }
 
-		public virtual string OperatorDate
+        public virtual string OperatorDate
 		{ get; set; }
 
 		public virtual string OperatorTime
