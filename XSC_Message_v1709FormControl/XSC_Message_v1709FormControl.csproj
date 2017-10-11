@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{67C64112-432E-4D39-A5E7-C5AE726275EE}</ProjectGuid>
+    <ProjectGuid>{6EADD99F-A155-4E8A-996B-1446F5CA61A0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OAMunicipalStatusFormControl</RootNamespace>
-    <AssemblyName>OAMunicipalStatusFormControl</AssemblyName>
+    <RootNamespace>XSC_Message_v1709FormControl</RootNamespace>
+    <AssemblyName>XSC_Message_v1709FormControl</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.15063.0</TargetPlatformVersion>
@@ -106,23 +106,28 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ComboBoxItems.cs" />
-    <Compile Include="OAMunicipalStatusControl.xaml.cs">
-      <DependentUpon>OAMunicipalStatusControl.xaml</DependentUpon>
+    <Compile Include="ICS213Control.xaml.cs">
+      <DependentUpon>ICS213Control.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\OAMunicipalStatusFormControl.rd.xml" />
+    <EmbeddedResource Include="Properties\XSC_Message_v1709FormControl.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MetroLog">
+      <Version>1.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.0.1</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.4.0</Version>
     </PackageReference>
+    <PackageReference Include="Template10">
+      <Version>1.1.12</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="OAMunicipalStatusControl.xaml">
+    <Page Include="ICS213Control.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

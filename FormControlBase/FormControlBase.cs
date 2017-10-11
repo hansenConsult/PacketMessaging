@@ -6,6 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using ToggleButtonGroupControl;
+using System.ComponentModel;
 
 namespace FormControlBaseClass
 {
@@ -42,22 +43,28 @@ namespace FormControlBaseClass
 		{ get; set; }
 	}
 
-	public abstract class FormControlBase : UserControl
-	{
-		//private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+	public abstract class FormControlBase : UserControl, INotifyPropertyChanged
 
-		public static SolidColorBrush _redBrush = new SolidColorBrush(Colors.Red);
+    {
+        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static SolidColorBrush _redBrush = new SolidColorBrush(Colors.Red);
 		public static SolidColorBrush _whiteBrush = new SolidColorBrush(Colors.White);
 		public static SolidColorBrush _blackBrush = new SolidColorBrush(Colors.Black);
 		public static SolidColorBrush _lightSalmonBrush = new SolidColorBrush(Colors.LightSalmon);
 
 
 		public event EventHandler<FormEventArgs> EventSubjectChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-		List<RadioButton> radioButtonsList = new List<RadioButton>();
+
+        List<RadioButton> radioButtonsList = new List<RadioButton>();
 		List<FormControl> formControlsList = new List<FormControl>();
         //List<Control> formFieldsList = new List<Control>();
         string validationResultMessage;
+
+        string _operatorTime;
+        string _messageTime;
 
         protected List<string> outpostData;
 
@@ -65,9 +72,29 @@ namespace FormControlBaseClass
 		{
 		}
 
-		//delegate string GetTextBoxText(TextBox name);
-		//string GetText(TextBox name) => name.Text;
-		public string GetTextBlockString(TextBlock textBlock) => textBlock.Text;
+        //event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+        //{
+        //    add
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+
+        //    remove
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //}
+
+        
+        private void NotifyPropertyChanged( String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+        //delegate string GetTextBoxText(TextBox name);
+        //string GetText(TextBox name) => name.Text;
+        public string GetTextBlockString(TextBlock textBlock) => textBlock.Text;
 
 		public void SetTextBlockString(TextBlock textBlock, string text)
 		{
@@ -391,21 +418,27 @@ namespace FormControlBaseClass
         public virtual string MsgDate
         { get; set; }
 
+
         public virtual string MsgTime
-		{ get; set; }
+		{ get { return _messageTime; } set { _messageTime = value; NotifyPropertyChanged(); } }
 
 		public virtual string OperatorDate
 		{ get; set; }
 
 		public virtual string OperatorTime
+		{ get => _operatorTime; set { _operatorTime = value; }}
+
+        public virtual string Severity
+        { get; set; }
+
+        public virtual string HandlingOrder
 		{ get; set; }
 
-		public virtual string HandlingOrder
-		{ get; set; }
+        public virtual string ReceivedOrSent
+        { get; set; }
 
         public virtual string HowReceivedSent
         { get; set; }
-
 
         public abstract string PacFormName
 		{ get; }
@@ -742,7 +775,6 @@ namespace FormControlBaseClass
 				}
 				else if (control is ComboBox comboBox)
 				{
-                    //comboBox.SelectedValue = formField.ControlContent;
                     comboBox.SelectedValue = formField.ControlContent;
                 }
 				else if (control is ToggleButtonGroup toggleButtonGroup)

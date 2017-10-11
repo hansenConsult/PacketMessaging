@@ -71,9 +71,13 @@
                                 <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1,0,0,0">
                                     <StackPanel>
                                         <TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Situation Severity" Foreground="LightSalmon" Margin="5"/>
-                                        <MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required,Indicate Situation Severity."/>
-                                        <RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="EMERGENCY" Checked="Subject_Changed" 
-									        ToolTipService.ToolTip="Life threat" Tag="4">
+                                        <MyNamespace:ToggleButtonGroup x:Name="severity"
+                                                                       CheckedControlName="{x:Bind Severity}" 
+                                                                       Tag="required,Indicate Situation Severity."/>
+                                        <RadioButton x:Name="emergency" GroupName="severity" 
+                                                     Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" 
+                                                     Content="EMERGENCY" Checked="Subject_Changed" 
+									                 ToolTipService.ToolTip="Life threat" Tag="4">
                                         </RadioButton>
                                         <RadioButton x:Name="urgent" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="URGENT" Checked="Subject_Changed"
 									        ToolTipService.ToolTip="Property threat" Tag="5" />
@@ -84,7 +88,9 @@
                                 <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
                                     <StackPanel>
                                         <TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Msg. Handling Order" Foreground="LightSalmon" Margin=" 5"/>
-                                        <MyNamespace:ToggleButtonGroup x:Name="handlingOrder" Tag="required,Indicate Msg. Handling Order."/>
+                                        <MyNamespace:ToggleButtonGroup x:Name="handlingOrder" 
+                                                                       CheckedControlName="{x:Bind HandlingOrder}" 
+                                                                       Tag="required,Indicate Msg. Handling Order."/>
                                         <RadioButton x:Name="immediate" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="IMMEDIATE" Tag="7" Checked="Subject_Changed"/>
                                         <RadioButton x:Name="priority" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="PRIORITY" Tag="8" Checked="Subject_Changed"/>
                                         <RadioButton x:Name="routine" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="ROUTINE" Tag="9" Checked="Subject_Changed"/>
@@ -137,17 +143,22 @@
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0" Orientation="Horizontal" >
                                         <TextBlock Text="Municipality Name/Unincorporated:" Style="{StaticResource MuniStatusFieldTextRequired}"/>
-                                        <ComboBox Name="municipalityName" Width="205" PlaceholderText="SELECT the Municipality" 
+                                        <ComboBox Name="municipalityName" Width="205"  
                                                   Style="{StaticResource MuniStatusComboBox}" SelectedIndex="-1" 
-                                                  SelectionChanged="Subject_Changed" Tag="14,required,Select a Municipality Name." />
+                                                  SelectionChanged="Subject_Changed" 
+                                                  Tag="14,conditionallyrequired,Select a Municipality Name." />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <TextBlock Text="Date" VerticalAlignment="Center" Style="{StaticResource MuniStatusFieldTextRequired}"/>
-                                        <TextBox Name="msgDate" Text="{x:Bind MsgDate, Mode=TwoWay}" PlaceholderText="mm/dd/yy" Style="{StaticResource MuniStatusTextBox}" Tag="15,required,Enter the date." VerticalContentAlignment="Center"/>
+                                        <TextBox Name="msgDate" Text="{x:Bind MsgDate, Mode=TwoWay}" PlaceholderText="mm/dd/yy" 
+                                                 Style="{StaticResource MuniStatusTextBox}" 
+                                                 Tag="15,required,Enter the date." VerticalContentAlignment="Center"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal">
                                         <TextBlock Text="Time" VerticalAlignment="Center" Style="{StaticResource MuniStatusFieldTextRequired}"/>
-                                        <TextBox Name="msgTime" Text="{x:Bind MsgTime, Mode=TwoWay}" PlaceholderText="hhmm" Style="{StaticResource MuniStatusTextBox}" Tag="16,required,Enter the time." VerticalContentAlignment="Center"/>
+                                        <TextBox Name="msgTime" Text="{x:Bind MsgTime, Mode=TwoWay}" PlaceholderText="hhmm" 
+                                                 Style="{StaticResource MuniStatusTextBox}" 
+                                                 Tag="16,required,Enter the time." VerticalContentAlignment="Center"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
@@ -409,7 +420,7 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Border BorderBrush="Black" BorderThickness="1,0,0,1">
                             <StackPanel Orientation="Horizontal">
-                                <MyNamespace:ToggleButtonGroup x:Name="receivedOrSent" />
+                                <MyNamespace:ToggleButtonGroup x:Name="receivedOrSent" CheckedControlName="{x:Bind ReceivedOrSent}" />
                                 <RadioButton Name="received" GroupName="receivedOrSent" Content="Rcv'd"  
                                              MinWidth="70" Margin="5,0,0,0" Padding="8,0,0,0" VerticalContentAlignment="Center" 
                                              VerticalAlignment="Center" HorizontalAlignment="Left" Tag="40"/>
@@ -420,7 +431,7 @@
                         </Border>
                         <Border BorderBrush="Black" BorderThickness="1,0,0,1">
                             <StackPanel Orientation="Horizontal">
-                                <MyNamespace:ToggleButtonGroup x:Name="howRecevedSent" />
+                                <MyNamespace:ToggleButtonGroup x:Name="howRecevedSent" CheckedControlName="{x:Bind HowReceivedSent}"/>
                                 <RadioButton Name="voice" GroupName="howRecevedSent" Content="Voice" MinWidth="75" Width="60" Margin="5,0,0,0" Padding="8,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Center" Tag="42"/>
                                 <RadioButton Name="packet" GroupName="howRecevedSent" Content="Packet" MinWidth="75" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center" Padding="8,0,0,0" HorizontalAlignment="Left" Tag="43"/>
                             </StackPanel>

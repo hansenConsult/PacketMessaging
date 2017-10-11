@@ -1,36 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Search;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using FormControlBaseClass;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace PacketMessaging.Views
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class ToolsPage : Page
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class ToolsPage : Page
 	{
 		StorageFile _selectedFile;
 		private int _selectedFileIndex;
+        PivotItem _currentPivotItem;
 
 		public ToolsPage()
 		{
@@ -55,14 +47,14 @@ namespace PacketMessaging.Views
 
 		private async void toolsPagePivot_SelectionChangedAsync(object sender, SelectionChangedEventArgs e)
 		{
-			PivotItem pivotItem = (PivotItem)e.AddedItems[0];
+			_currentPivotItem = (PivotItem)e.AddedItems[0];
 
-			if (pivotItem.Name == "logFile")
+			if (_currentPivotItem.Name == "logFile")
 			{
                 OpenTestMessageFile.Visibility = Visibility.Collapsed;
                 await UpdateFileListAsync();
 			}
-            else if (pivotItem.Name == "testReceive")
+            else if (_currentPivotItem.Name == "testReceive")
             {
                 OpenTestMessageFile.Visibility = Visibility.Visible;
             }
@@ -103,10 +95,31 @@ namespace PacketMessaging.Views
 
         }
 
-        private void AppBarButton_SaveFile(object sender, RoutedEventArgs e)
+        private async void AppBarButton_SaveFileAsync(object sender, RoutedEventArgs e)
 		{
+            if (_currentPivotItem.Name == "testReceive")
+            {
+                var picker = new FileOpenPicker();
+                picker.ViewMode = PickerViewMode.List;
+                picker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
+                picker.FileTypeFilter.Add(".txt");
 
-		}
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    //StorageFile sampleFile = await storageFolder.CreateFileAsync("sample.txt", CreationCollisionOption.ReplaceExisting);
+                    await Windows.Storage.FileIO.WriteTextAsync(file, receivedMessage.Text);
+                }
+                else
+                {
+                    return;
+                }
+
+
+                    //StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+                
+            }
+        }
 
 		private async void AppBarButton_DeleteFileAsync(object sender, RoutedEventArgs e)
 		{

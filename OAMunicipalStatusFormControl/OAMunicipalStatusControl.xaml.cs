@@ -34,6 +34,7 @@ namespace OAMunicipalStatusFormControl
     public sealed partial class OAMunicipalStatusControl : FormControlBase
     {
         string[] Municipalities = new string[] {
+                "SELECT the Municipality",
                 "Campbell",
                 "Cupertino",
                 "Gilroy",
@@ -86,6 +87,8 @@ namespace OAMunicipalStatusFormControl
             HowReceivedSent = "packet";
 
             municipalityName.ItemsSource = Municipalities;
+            municipalityName.SelectedIndex = 0;
+
             officeStatus.ItemsSource = UnknownYesNo;
             officeStatus.SelectedIndex = 0;
 
@@ -133,29 +136,29 @@ namespace OAMunicipalStatusFormControl
         public string SenderMsgNo
         { get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
 
-        public override string MessageNo
-        { get => GetTextBoxString(messageNo); set => SetTextBoxString(messageNo, value); }
+        //public override string MessageNo
+        //{ get => GetTextBoxString(messageNo); set => SetTextBoxString(messageNo, value); }
 
         public string ReceiverMsgNo
         { get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
 
-        public string Severity
-        { get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
+        //public override string Severity
+        //{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
-        public override string HandlingOrder
-        { get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
+        //public override string HandlingOrder
+        //{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
 
-        public override string MsgDate
-        { get => GetTextBoxString(msgDate); set => SetTextBoxString(msgDate, value); }
+        //public override string MsgDate
+        //{ get => GetTextBoxString(msgDate); set => SetTextBoxString(msgDate, value); }
 
-        public override string MsgTime
-        { get => GetTextBoxString(msgTime); set => SetTextBoxString(msgTime, value); }
+        //public override string MsgTime
+        //{ get => GetTextBoxString(msgTime); set => SetTextBoxString(msgTime, value); }
 
-        public string ReceivedOrSent
-        { get { return receivedOrSent.GetRadioButtonCheckedState(); } set { receivedOrSent.SetRadioButtonCheckedState(value); } }
+        //public string ReceivedOrSent
+        //{ get { return receivedOrSent.GetRadioButtonCheckedState(); } set { receivedOrSent.SetRadioButtonCheckedState(value); } }
 
-        public override string HowReceivedSent
-        { get { return howRecevedSent.GetRadioButtonCheckedState(); } set { howRecevedSent.SetRadioButtonCheckedState(value); } }
+        //public override string HowReceivedSent
+        //{ get { return howRecevedSent.GetRadioButtonCheckedState(); } set { howRecevedSent.SetRadioButtonCheckedState(value); } }
 
         //public override string OperatorCallsign
         //{ get { return GetTextBoxString(operatorCallsign); } set { SetTextBoxString(operatorCallsign, value); } }
@@ -182,6 +185,11 @@ namespace OAMunicipalStatusFormControl
             return (MessageNo + "_" + Severity?.ToUpper()[0] + "/" + HandlingOrder?.ToUpper()[0] + "_OAMuniStat_" + MunicipalityName + '_' + IncidentName);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="formControl"></param>
+        /// <param name="validationState">true - invalid, false - Valid </param>
         void UpdateControlValidationInfo(FormControl formControl, bool validationState)
         {
             if (validationState)
@@ -205,6 +213,10 @@ namespace OAMunicipalStatusFormControl
                 Control control = formControl.InputControl;
                 switch (control.Name)
                 {
+                    case "municipalityName":
+                        validationState = (control as ComboBox).SelectedIndex == 0;
+                        UpdateControlValidationInfo(formControl, validationState);
+                        break;
                     case "eocOpen":
                         validationState = (control as ComboBox).SelectedIndex == 0;
                         UpdateControlValidationInfo(formControl, validationState);

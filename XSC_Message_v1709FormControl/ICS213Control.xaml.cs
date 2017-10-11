@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Controls;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace ICS213FormControl
+namespace XSC_Message_v1709FormControl
 {
 	[FormControl(
 		FormControlName = "Message",
@@ -279,9 +279,9 @@ namespace ICS213FormControl
 			List<string> outpostData = new List<string>();
 
 			outpostData.Add("!PACF! " + packetMessage.Subject);
-			outpostData.Add("# EOC MESSAGE FORM ");
-			outpostData.Add("# JS-ver. PR-4.1-3.1, 01/19/17");
-			outpostData.Add("# FORMFILENAME: Message.html");
+			outpostData.Add("# JS:EOC MESSAGE FORM (which5) ");
+			outpostData.Add("# JS-ver. PR-4.3-4.1, 09/03/17");
+			outpostData.Add("# FORMFILENAME: XSC_Message_v1709.html");
 
 			outpostData = CreateOutpostDataFromFormFields(ref packetMessage, ref outpostData);
 

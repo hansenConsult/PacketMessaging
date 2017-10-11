@@ -72,8 +72,9 @@
 				RelativePanel.AlignBottomWithPanel="True"
 				RelativePanel.AlignRightWithPanel="True"
 				RelativePanel.AlignLeftWithPanel="True">
+            <!--Style="{ThemeResource AppBarButtonRevealStyle}"-->
             <AppBarButton x:Name="OpenTestMessageFile" Label="Open File" Icon="OpenFile" Click="AppBarButton_OpenFile"/>
-            <AppBarButton Label="Save File" Icon="SaveLocal" Click="AppBarButton_SaveFile" />
+            <AppBarButton Label="Save File" Icon="SaveLocal" Click="AppBarButton_SaveFileAsync" />
 			<AppBarButton Label="Delete File" Icon="Delete" Click="AppBarButton_DeleteFileAsync" HorizontalAlignment="Right" />
 		</CommandBar>
 

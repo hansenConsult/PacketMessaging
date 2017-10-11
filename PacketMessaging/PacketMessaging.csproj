@@ -251,6 +251,10 @@
       <Project>{67c64112-432e-4d39-a5e7-c5ae726275ee}</Project>
       <Name>OAMunicipalStatusFormControl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XSC_Message_v1709FormControl\XSC_Message_v1709FormControl.csproj">
+      <Project>{6eadd99f-a155-4e8a-996b-1446f5ca61a0}</Project>
+      <Name>XSC_Message_v1709FormControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

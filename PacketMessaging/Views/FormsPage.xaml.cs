@@ -11,12 +11,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using MetroLog;
 using Windows.UI.Popups;
-using Windows.Devices.Enumeration;
 using Windows.UI.Core;
 using Windows.Foundation;
-using Windows.Devices.SerialCommunication;
-using Windows.ApplicationModel;
-using System.Collections.ObjectModel;
 using Windows.Graphics.Printing;
 using Windows.Graphics.Printing.OptionDetails;
 using Windows.UI.Xaml.Printing;
@@ -764,7 +760,17 @@ namespace PacketMessaging.Views
 			_packetAddressForm.MessageTo = _packetMessage.MessageTo;
 			MessageNumber = _packetMessage.MessageNumber;
 			_packetAddressForm.MessageSubject = _packetMessage.Subject;
-		}
+
+            foreach (FormField formField in _packetMessage.FormFieldArray)
+            {
+                FormControl formControl = _packetForm.FormControlsList.Find(x => x.InputControl.Name == formField.ControlName);
+                Control control = formControl?.InputControl;
+                if (control.Name == "msgTime")
+                    //_packetForm.MsgTime = ((TextBox)control).Text;
+                    break;
+            }
+
+        }
 
 		//async void CreatePacketForm()
 		//{
@@ -941,11 +947,11 @@ namespace PacketMessaging.Views
                                 var formControlName = namedArguments[0].TypedValue.Value as string;
                                 //var arg1 = Enum.Parse(typeof(FormControlAttribute.FormType), namedArguments[1].TypedValue.Value.ToString());
                                 //var arg2 = namedArguments[2].TypedValue.Value;
-                                if (formControlName == controlName)
-                                {
+                                //if (formControlName == controlName)
+                                //{
                                     foundType = classType;
                                     break;
-                                }
+                                //}
                             }
                         }
                         if (foundType != null)
@@ -1056,23 +1062,25 @@ namespace PacketMessaging.Views
             }
 
             if (!_loadMessage)
-			{
-				_packetForm.EventSubjectChanged += FormControl_SubjectChange;
-			}
-			DateTime now = DateTime.Now;
-            _packetForm.MsgDate = $"{now.Month:d2}/{now.Day:d2}/{now.Year - 2000:d2}";
-			_packetForm.MsgTime = $"{now.Hour:d2}{now.Minute:d2}";
-			_packetForm.OperatorDate = $"{now.Month:d2}/{now.Day:d2}/{now.Year - 2000:d2}";
-			_packetForm.OperatorTime = $"{now.Hour:d2}{now.Minute:d2}";
-			_packetForm.OperatorName = ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserName;
-			_packetForm.OperatorCallsign = ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserCallsign;
+            {
+                _packetForm.EventSubjectChanged += FormControl_SubjectChange;
+
+                DateTime now = DateTime.Now;
+                _packetForm.MsgDate = $"{now.Month:d2}/{now.Day:d2}/{now.Year - 2000:d2}";
+                _packetForm.MsgTime = $"{now.Hour:d2}{now.Minute:d2}";
+                _packetForm.OperatorDate = $"{now.Month:d2}/{now.Day:d2}/{now.Year - 2000:d2}";
+                _packetForm.OperatorTime = $"{now.Hour:d2}{now.Minute:d2}";
+                _packetForm.OperatorName = ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserName;
+                _packetForm.OperatorCallsign = ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserCallsign;
+            }
 
 			if (_loadMessage)
 			{
 				ViewModels.SettingsPageViewModel.ReturnMessageNumber();	// Use original message number
 
 				FillFormFromPacketMessage();
-				_loadMessage = false;
+                //_packetForm.MsgTime = _packetMessage.FormFieldArray
+                _loadMessage = false;
 			}
             // Printing-related event handlers will never be called if printing
             // is not supported, but it's okay to register for them anyway.
