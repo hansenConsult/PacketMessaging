@@ -144,7 +144,7 @@ namespace PacketMessaging
             Views.MainPage.LogsFolder = await localFolder.CreateFolderAsync("Logs", CreationCollisionOption.OpenIfExists);
 			Views.MainPage._MetroLogsFolder = await localFolder.CreateFolderAsync("MetroLogs", CreationCollisionOption.OpenIfExists);
 
-			SharedData.filesInInstalledLocation = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFilesAsync();
+			SharedData.filesInInstalledLocation = await Package.Current.InstalledLocation.GetFilesAsync();
 
             sharedData.BbsArray = await BBSDefinitions.OpenAsync(localFolder);  //"ms-appx:///Assets/pdffile.pdf"
             sharedData.TncDeviceArray = await TNCDeviceArray.OpenAsync(localFolder);

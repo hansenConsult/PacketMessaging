@@ -38,7 +38,7 @@
                         <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
                             <StackPanel>
                                 <TextBlock FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" Text="Sender's msg #:"/>
-                                <TextBox x:Name="senderMsgNo"  
+                                <TextBox x:Name="senderMsgNo" Text="{x:Bind SenderMsgNo}"
 										 TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2"  Tag="0"/>
                             </StackPanel>
                         </Border>
@@ -52,7 +52,8 @@
                         <Border Grid.Column="3" BorderBrush="Black" BorderThickness="1,0,0,0">
                             <StackPanel Grid.Column="3">
                                 <TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black"  HorizontalAlignment="Center" Text="Receiver's msg #:"/>
-                                <TextBox x:Name="receiverMsgNo" TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2" Tag="2"/>
+                                <TextBox x:Name="receiverMsgNo" Text="{x:Bind ReceiverMsgNo}"
+                                         TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2" Tag="2"/>
                             </StackPanel>
                         </Border>
                     </Grid>

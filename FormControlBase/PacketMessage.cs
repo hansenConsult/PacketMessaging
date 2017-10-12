@@ -46,6 +46,8 @@ namespace FormControlBaseClass
 
 		private string pacFormNameField;
 
+        private string pacFormTypeField;
+
         private string bBSNameField;
 
         private string tncNameField;
@@ -113,8 +115,21 @@ namespace FormControlBaseClass
 			}
 		}
 
-		/// <remarks/>
-		public string BBSName
+        /// <remarks/>
+        public string PacFormType
+        {
+            get
+            {
+                return this.pacFormTypeField;
+            }
+            set
+            {
+                this.pacFormTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        public string BBSName
         {
             get
             {

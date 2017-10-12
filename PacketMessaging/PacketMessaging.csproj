@@ -78,6 +78,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <EnableGatekeeperAnalysis>false</EnableGatekeeperAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -252,6 +253,10 @@
     <ProjectReference Include="..\OAMunicipalStatusFormControl\OAMunicipalStatusFormControl.csproj">
       <Project>{67c64112-432e-4d39-a5e7-c5ae726275ee}</Project>
       <Name>OAMunicipalStatusFormControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ToggleButtonGroupControl\ToggleButtonGroupControl.csproj">
+      <Project>{7DF8B2F3-22E6-46B8-AB34-77B50BA2307E}</Project>
+      <Name>ToggleButtonGroupControl</Name>
     </ProjectReference>
     <ProjectReference Include="..\XSC_Message_v1709FormControl\XSC_Message_v1709FormControl.csproj">
       <Project>{6eadd99f-a155-4e8a-996b-1446f5ca61a0}</Project>

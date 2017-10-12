@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage;
 using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
+using ToggleButtonGroupControl;
 
 namespace PacketMessaging.Views
 {
@@ -700,7 +701,7 @@ namespace PacketMessaging.Views
 			foreach (PivotItem pivotItem in MyPivot.Items)
 			{
 				string pivotItemName = pivotItem.Name.Replace('_', '-');	// required since city-scan is not a valid PivotItem name
-				if (pivotItemName == _packetMessage.PacFormName)
+				if (pivotItem.Name == _packetMessage.PacFormType || pivotItemName == _packetMessage.PacFormName) // If PacFormType is not set
 				{
 					MyPivot.SelectedIndex = index;
 					//CreatePacketForm();
@@ -739,6 +740,7 @@ namespace PacketMessaging.Views
                 TNCName = _packetAddressForm.MessageTNC,
                 FormFieldArray = _packetForm.CreateFormFieldsInXML(),
                 PacFormName = _packetForm.PacFormName,
+                PacFormType = _packetForm.PacFormType,
                 MessageFrom = _packetAddressForm.MessageFrom,
                 MessageTo = _packetAddressForm.MessageTo,
                 MessageNumber = _packetForm.MessageNo
@@ -764,38 +766,36 @@ namespace PacketMessaging.Views
             foreach (FormField formField in _packetMessage.FormFieldArray)
             {
                 FormControl formControl = _packetForm.FormControlsList.Find(x => x.InputControl.Name == formField.ControlName);
+                if (formControl == null)
+                    continue;
+
                 Control control = formControl?.InputControl;
-                //if (control.Name == "severity")
-                //{
-                //    _packetForm.Severity = ((TextBox)control).Text;
-                //}
-                //if (control.Name == "handlingOrder")
-                //{
-                //    _packetForm.HandlingOrder = ((TextBox)control).Text;
-                //}
-                if (control.Name == "msgDate")
+                switch (control.Name)
                 {
-                    _packetForm.MsgDate = ((TextBox)control).Text;
-                }
-                if (control.Name == "msgTime")
-                {
-                    _packetForm.MsgTime = ((TextBox)control).Text;
-                }
-                if (control.Name == "operatorCallsign")
-                {
-                    _packetForm.OperatorCallsign = ((TextBox)control).Text;
-                }
-                if (control.Name == "operatorName")
-                {
-                    _packetForm.OperatorName = ((TextBox)control).Text;
-                }
-                if (control.Name == "operatorDate")
-                {
-                    _packetForm.OperatorDate = ((TextBox)control).Text;
-                }
-                if (control.Name == "operatorTime")
-                {
-                    _packetForm.OperatorTime = ((TextBox)control).Text;
+                    case "severity":
+                        _packetForm.Severity = ((ToggleButtonGroup)control).CheckedControlName;
+                        break;
+                    case "handlingOrder":
+                        _packetForm.HandlingOrder = ((ToggleButtonGroup)control).CheckedControlName;
+                        break;
+                    case "msgDate":
+                        _packetForm.MsgDate = ((TextBox)control).Text;
+                        break;
+                    case "msgTime":
+                        _packetForm.MsgTime = ((TextBox)control).Text;
+                        break;
+                    case "operatorCallsign":
+                        _packetForm.OperatorCallsign = ((TextBox)control).Text;
+                        break;
+                    case "operatorName":
+                        _packetForm.OperatorName = ((TextBox)control).Text;
+                        break;
+                    case "operatorDate":
+                        _packetForm.OperatorDate = ((TextBox)control).Text;
+                        break;
+                    case "operatorTime":
+                        _packetForm.OperatorTime = ((TextBox)control).Text;
+                        break;
                 }
             }
         }
@@ -956,6 +956,11 @@ namespace PacketMessaging.Views
             if (files == null)
                 return null;
 
+            //string fileName;
+            foreach (var file in files)
+            {
+                string testFileName = file.Name;
+            }
             Type foundType = null;
             foreach (var file in files.Where(file => file.FileType == ".dll" && file.Name.Contains(fileName)))
             {
@@ -1031,8 +1036,9 @@ namespace PacketMessaging.Views
             ViewModels.SettingsPageViewModel.ReturnMessageNumber();
 
 			_packetAddressForm = new SendFormDataControl();
-			string pivotItemName = ((PivotItem)((Pivot)sender).SelectedItem).Name.Replace('_', '-');    // required since city-scan is not a valid PivotItem name
-			_packetForm = CreateFormControlInstance(pivotItemName);
+            //string pivotItemName = ((PivotItem)((Pivot)sender).SelectedItem).Name.Replace('_', '-');    // required since city-scan is not a valid PivotItem name
+            string pivotItemName = ((PivotItem)((Pivot)sender).SelectedItem).Name;
+            _packetForm = CreateFormControlInstance(pivotItemName);
             if (_packetForm == null)
             {
                 MessageDialog messageDialog = new MessageDialog("failed to find packet form");
@@ -1059,7 +1065,7 @@ namespace PacketMessaging.Views
 				Form213Panel.Children.Insert(1, _packetAddressForm);
 				_packetAddressForm.MessageSubject = _packetForm.CreateSubject();
 			}
-			else if (pivotItemName == "city-scan")
+			else if (pivotItemName == "city_scan")
 			{
 				CityScanPanel.Children.Clear();
 				CityScanPanel.Children.Insert(0, _packetForm);
@@ -1074,7 +1080,7 @@ namespace PacketMessaging.Views
             //    LogisticsPanel.Children.Insert(1, _packetAddressForm);
             //    _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
             //}
-            else if (pivotItemName == "EOCResourceRequest")
+            else if (pivotItemName == "XSC_EOC_213RR")
             {
                 ResourceRequestPanel.Children.Clear();
                 ResourceRequestPanel.Children.Insert(0, _packetForm);

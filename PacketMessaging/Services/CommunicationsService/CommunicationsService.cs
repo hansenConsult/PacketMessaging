@@ -69,7 +69,7 @@ namespace PacketMessaging.Services.CommunicationsService
                         // Save the original message for post processing (tab characters are lost in the displayed message)
                         MessageBody = packetMessageOutpost.MessageBody
                     };
-                    string[] msgLines = packetMessageOutpost.MessageBody.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                    string[] msgLines = packetMessageOutpost.MessageBody.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
 
 					bool subjectFound = false;
 					for (int i = 0; i < Math.Min(msgLines.Length, 20); i++)
@@ -105,18 +105,19 @@ namespace PacketMessaging.Services.CommunicationsService
 							formName = formName.Substring(0, formName.Length - html.Length);
 							pktMsg.PacFormName = formName;
 
-							formControl = Views.FormsPage.CreateFormControlInstance(pktMsg.PacFormName);
+							formControl = Views.FormsPage.CreateFormControlInstanceFromFileName(pktMsg.PacFormName);
 							if (formControl == null)
 							{
 								Utilities.ShowMessageDialogAsync($"Form {pktMsg.PacFormName} not found");
 								return;
 							}
-							break;
+                            break;
 						}
 					}
 
-					//pktMsg.MessageNumber = GetMessageNumberPacket();		// Filled in BBS connection
-					pktMsg.MessageNumber = packetMessageOutpost.MessageNumber;
+                    //pktMsg.MessageNumber = GetMessageNumberPacket();		// Filled in BBS connection
+                    pktMsg.PacFormType = formControl.PacFormType;    
+                    pktMsg.MessageNumber = packetMessageOutpost.MessageNumber;
 					pktMsg.FormFieldArray = formControl.ConvertFromOutpost(pktMsg.MessageNumber, ref msgLines);
 					pktMsg.ReceivedTime = packetMessageOutpost.ReceivedTime;
 					pktMsg.CreateFileName();
@@ -127,7 +128,7 @@ namespace PacketMessaging.Services.CommunicationsService
                     LogHelper(LogLevel.Info, $"Message number {pktMsg.MessageNumber} received");
 
                     // If the received message is a delivery confirmation, update receivers message number in the original sent message
-                    if (pktMsg.Subject.Contains("DELIVERED:"))
+                    if (!string.IsNullOrEmpty(pktMsg.Subject) && pktMsg.Subject.Contains("DELIVERED:"))
 					{
 						var formField = pktMsg.FormFieldArray.FirstOrDefault(x => x.ControlName == "messageBody");
 						if (formField.ControlContent.Contains("!LMI!"))

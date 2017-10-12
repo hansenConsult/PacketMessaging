@@ -133,20 +133,20 @@ namespace OAMunicipalStatusFormControl
             comboBoxAnimalIssues.SelectedIndex = 0;
         }
 
-        public string SenderMsgNo
-        { get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
+        //public string SenderMsgNo
+        //{ get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
 
         //public override string MessageNo
         //{ get => GetTextBoxString(messageNo); set => SetTextBoxString(messageNo, value); }
 
-        public string ReceiverMsgNo
-        { get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
+        //public string ReceiverMsgNo
+        //{ get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
 
-        public override string Severity
-        { get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
+        //public override string Severity
+        //{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
-        public override string HandlingOrder
-        { get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
+        //public override string HandlingOrder
+        //{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
 
         //public override string MsgDate
         //{ get => GetTextBoxString(msgDate); set => SetTextBoxString(msgDate, value); }
@@ -176,14 +176,15 @@ namespace OAMunicipalStatusFormControl
         { get => GetTextBoxString(incidentName); }
 
         public string MunicipalityName
-        //{ get => GetComboBoxSelectedValuePath(municipalityName); }
         { get => municipalityName.SelectedItem as string; }
 
         public override string PacFormName => "OAMuniStatus";
 
+        public override string PacFormType => "XSC_OA_MuniStatus";
+
         public override string CreateSubject()
         {
-            return (MessageNo + "_" + Severity?.ToUpper()[0] + "/" + HandlingOrder?.ToUpper()[0] + "_OAMuniStat_" + MunicipalityName + '_' + IncidentName);
+            return (MessageNo + '_' + Severity?.ToUpper()[0] + '/' + HandlingOrder?.ToUpper()[0] + "_OAMuniStat_" + MunicipalityName + '_' + IncidentName);
         }
 
         /// <summary>

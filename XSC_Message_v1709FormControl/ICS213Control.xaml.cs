@@ -41,14 +41,14 @@ namespace XSC_Message_v1709FormControl
 			comboBoxFromICSPosition.ItemsSource = ICSPosition;
 		}
 
-		public string ReceiverMsgNo
+		public override string ReceiverMsgNo
 		{ get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
 
 		public override string MessageNo
 		{ get { return GetTextBoxString(messageNo); }
 			set { SetTextBoxString(messageNo, value); } }
 
-		public string SenderMsgNo
+		public override string SenderMsgNo
 		{ get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
 
 		public override string MsgDate
@@ -131,9 +131,9 @@ namespace XSC_Message_v1709FormControl
 
 		public override string PacFormName => "Message";
 
-		//public override string PacFormName => FormControl.FormControlName = "Message";
+        public override string PacFormType => "Message";
 
-		public override string CreateSubject()
+        public override string CreateSubject()
 		{
 			return (MessageNo + "_" + Severity?.ToUpper()[0] + "/" + HandlingOrder?.ToUpper()[0] + "_ICS213_" + Subject);
 		}

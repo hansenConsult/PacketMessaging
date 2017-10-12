@@ -23,8 +23,7 @@
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"  />
 
-		<Pivot x:Name="toolsPagePivot" 
-			   
+		<Pivot x:Name="toolsPagePivot" 			   
                RelativePanel.AlignLeftWithPanel="True"
                RelativePanel.AlignRightWithPanel="True"
                RelativePanel.Below="pageHeader" 
@@ -56,31 +55,54 @@
 							 ScrollViewer.VerticalScrollBarVisibility="Auto"
 							 AcceptsReturn="True"
 							 TextWrapping="Wrap"
-							 Margin="10,10,10,48"
+							 Margin="10,10,10,10"
 							 />
 				</RelativePanel>
 				<!--</ScrollViewer>-->
 			</PivotItem>
-            <!--Text tools-->
+            
+            <!--Test receive Outpost data-->
             <PivotItem x:Name="testReceive" DataContext="{Binding ToolsPageTestReceivePartViewModel}" Header="Test Receive">
-                  <StackPanel>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
-                            <TextBlock Text="File Name:" VerticalAlignment="Center"/>
-                            <TextBox x:Name="textBoxFileName"  Width="200"
+                  <RelativePanel x:Name="testReceivePanel">
+                    <RelativePanel x:Name="fileNamePanel"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True">
+                        <TextBlock x:Name="fileNameHeader" 
+                                   RelativePanel.LeftOf="textBoxFileName"
+                                   RelativePanel.AlignVerticalCenterWith="textBoxFileName"
+                                   Text="File Name:" />
+                        <TextBox x:Name="textBoxFileName"                                   
+                                 RelativePanel.AlignRightWithPanel="True"
+                                 Width="200"
                                      ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="5,10"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
-                            <TextBlock Text="Select a test file:" VerticalAlignment="Center" />
-                            <ComboBox x:Name="comboBoxTestFiles"  Margin="5,10" HorizontalAlignment="Right"
+                            <TextBlock Text="Select a test file:"
+                                       RelativePanel.LeftOf="comboBoxTestFiles"
+                                       RelativePanel.AlignVerticalCenterWith="comboBoxTestFiles"/>
+                            <ComboBox x:Name="comboBoxTestFiles"  Margin="5,10" 
+                                      RelativePanel.Below="textBoxFileName"
+                                      RelativePanel.AlignRightWithPanel="True"
                                       ItemsSource="{x:Bind TestFilesCollection.View, Mode=OneWay}"
 								      DisplayMemberPath="Name" Width="200"
 								      SelectionChanged="TestFilesComboBox_SelectionChangedAsync" />
-                        </StackPanel>
-                    </StackPanel>
-                        <TextBox x:Name="receivedMessage" Height="auto" AcceptsReturn="True" ScrollViewer.IsVerticalRailEnabled="True" Margin="5,10,5,0"  MinHeight="132" HorizontalContentAlignment="Left" VerticalContentAlignment="Top"/>
-                        <Button x:Name="testReceivedMessage" Content="Test Received Message" HorizontalAlignment="Right" Margin="0,10,5,0" Click="TestReceivedMessage_Click" />
-                    </StackPanel>
+                    </RelativePanel>
+                    <RelativePanel x:Name="messagePanel"
+                                   RelativePanel.Below="fileNamePanel"
+                                   RelativePanel.AlignLeftWithPanel="True"
+                                   RelativePanel.AlignRightWithPanel="True"
+                                   RelativePanel.AlignBottomWithPanel="True">
+                        <TextBox x:Name="receivedMessage" 
+                                 RelativePanel.AlignTopWithPanel="True"
+                                 RelativePanel.AlignLeftWithPanel="True" 
+                                 RelativePanel.AlignRightWithPanel="True"
+                                 RelativePanel.Above="testReceivedMessage"
+                                 AcceptsReturn="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="5,10,5,10"  
+                                  />
+                        <Button x:Name="testReceivedMessage"                                 
+                                RelativePanel.AlignRightWithPanel="True"
+                                RelativePanel.AlignBottomWithPanel="True"
+                                Content="Test Received Message" Margin="0,10,5,10" Click="TestReceivedMessage_Click" />
+                    </RelativePanel>
+                </RelativePanel>
             </PivotItem>
 
 		</Pivot>

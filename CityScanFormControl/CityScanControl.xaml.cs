@@ -10,7 +10,7 @@ using MetroLog;
 namespace CityScanFormControl
 {
 	[FormControl(
-		FormControlName = "city-scan",
+		FormControlName = "city_scan",
 		FormControlMenuName = "XSC City Scan/Flash Report",
 		FormControlType = FormControlAttribute.FormType.CountyForm)
 	]
@@ -51,13 +51,13 @@ namespace CityScanFormControl
 			city.ItemsSource = CountyCityNames;
 		}
 
-		public string ReceiverMsgNo
+		public override string ReceiverMsgNo
 		{ get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
 
 		public override string MessageNo
 		{ get { return GetTextBoxString(messageNo); } set { messageNo.Text = value; } }
 
-		public string SenderMsgNo
+		public override string SenderMsgNo
 		{ get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
 
 		public override string MsgDate
@@ -66,7 +66,7 @@ namespace CityScanFormControl
 		public override string MsgTime
 		{ get { return GetTextBoxString(msgTime); } set { SetTextBoxString(msgTime, value); } }
 
-		public string Severity
+		public override string Severity
 		{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
 		public override string HandlingOrder
@@ -149,9 +149,9 @@ namespace CityScanFormControl
 
 		public override string PacFormName => "city-scan";
 
+        public override string PacFormType => "city_scan";
 
-
-		public override string CreateSubject()
+        public override string CreateSubject()
 		{
 			string cityName = city.SelectedItem as string;
 			if (cityName == "Other")

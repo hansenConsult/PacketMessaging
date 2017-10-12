@@ -108,7 +108,7 @@
 			</PivotItem>-->
 
             <!--  EOCResourceRequest  -->
-            <PivotItem x:Name="EOCResourceRequest" DataContext="{Binding FormsPartViewModel}" Header="EOC Resource Request">
+            <PivotItem x:Name="XSC_EOC_213RR" DataContext="{Binding FormsPartViewModel}" Header="EOC Resource Request">
                 <ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
                     <StackPanel x:Name="ResourceRequestPanel" HorizontalAlignment="Left">

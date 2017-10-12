@@ -35,13 +35,13 @@ namespace PacketMessaging.Views
 		public string MessageBBS
 		{
 			get => messageBBS.Text;
-            set => messageBBS.Text = value;
+            set => messageBBS.Text = value == null ? "" : value;
 		}
 
 		public string MessageTNC
 		{
 			get => messageTNC.Text; 
-			set => messageTNC.Text = value; 
+			set => messageTNC.Text = value == null ? "" : value; 
 		}
 
 		public string MessageFrom

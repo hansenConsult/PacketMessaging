@@ -47,7 +47,9 @@ namespace MessageFormControl
 
 		public override string PacFormName => "SimpleMessage";
 
-		protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
+        public override string PacFormType => "SimpleMessage";
+
+        protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
         {
             foreach (FormField formField in packetMessage.FormFieldArray)
             {

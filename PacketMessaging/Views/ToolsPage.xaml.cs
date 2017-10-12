@@ -205,8 +205,14 @@ namespace PacketMessaging.Views
             if (TestWithoutConnecting)
             {
                 PacketMessage packetMsg = new PacketMessage();
-                packetMsg.MessageSize = 778;
                 packetMsg.MessageBody = receivedMessage.Text;
+                packetMsg.MessageSize = packetMsg.MessageBody.Length;
+                packetMsg.ReceivedTime = DateTime.Now;
+                packetMsg.BBSName = "BBS";
+                packetMsg.TNCName = "TncDevice";
+                packetMsg.MessageNumber = ViewModels.SettingsPageViewModel.GetMessageNumberPacket();
+                packetMsg.Area = "";
+
                 //packetMsg.MessageBody = "Message #1 \r\nDate: Mon, 24 Aug 2015 21:07:37 PDT\r\nFrom: kz6dm @w1xsc.ampr.org\r\nTo: kz6dm\r\nSubject: 6DM - 483_O/R_CityScan_Mountain View Emergency Declared: no\r\n\r\n!PACF!6DM - 483_O/R_CityScan_Mountain View Emergency Declared: no\r\n# CITY-SCAN UPDATE FLASH REPORT \r\n# JS-ver. PR-4.1-3.9, 01/11/15\r\n# FORMFILENAME: city-scan.html\r\nMsgNo: [6DM-483]\r\nD.: [OTHER]\r\nE.: [ROUTINE]\r\n1a.: [Mountain View]\r\n2.: [08/24/2015]\r\n3.: [2028]\r\n4.: [Poul Hansen]\r\n6.: [000-000-0000]\r\n9.: [no]\r\nOpDate: [08/24/2015]\r\nOpTime: [2030]\r\n#EOF\r\n";
 
                 // Message
@@ -334,46 +340,46 @@ namespace PacketMessaging.Views
                 //				";
                 //*/
 
-//                packetMsg.MessageBody = @"Message #1 
-//Date: Wed, 20 Sep 2017 20:43:47 PDT
-//From: kz6dm @w3xsc.ampr.org
-//To: kz6dm
-//Subject: 6DM-264P_O/R_EOC213RR_Incident Name
+                //                packetMsg.MessageBody = @"Message #1 
+                //Date: Wed, 20 Sep 2017 20:43:47 PDT
+                //From: kz6dm @w3xsc.ampr.org
+                //To: kz6dm
+                //Subject: 6DM-264P_O/R_EOC213RR_Incident Name
 
-//!PACF! 6DM-264P_O/R_EOC213RR_Incident Name
-//# JS:EOC Resource Request (which4)
-//# JS-ver. PR-4.3-2.8, 09/15/17
-//# FORMFILENAME: XSC_EOC-213RR_v1706.html
-//1: [6DM-264P]
-//6: [true]
-//9: [true]
-//13: [\nIncident Name]
-//14: [09/25/2017]
-//15: [16:10]
-//16: [\nRequested by]
-//17: [\nPrepared by]
-//18: [\nApproved by]
-//19: [\n1]
-//20: [\nDescription]
-//21: [\nArrival]
-//25: [true]
-//26: [\n20]
-//27: [\nDelivery to]
-//28: [\nLocvation]
-//29: [\nSubstitutes]
-//32: [true]
-//33: [Propane]
-//34: [true]
-//39: [\nInstructions]
-//41: [true]
-//43: [true]
-//44: [KZ6DM]
-//45: [Poul Hansen]
-//46: [09/25/2017{odate]
-//47: [16:10{otime]
-//#EOF
+                //!PACF! 6DM-264P_O/R_EOC213RR_Incident Name
+                //# JS:EOC Resource Request (which4)
+                //# JS-ver. PR-4.3-2.8, 09/15/17
+                //# FORMFILENAME: XSC_EOC-213RR_v1706.html
+                //1: [6DM-264P]
+                //6: [true]
+                //9: [true]
+                //13: [\nIncident Name]
+                //14: [09/25/2017]
+                //15: [16:10]
+                //16: [\nRequested by]
+                //17: [\nPrepared by]
+                //18: [\nApproved by]
+                //19: [\n1]
+                //20: [\nDescription]
+                //21: [\nArrival]
+                //25: [true]
+                //26: [\n20]
+                //27: [\nDelivery to]
+                //28: [\nLocvation]
+                //29: [\nSubstitutes]
+                //32: [true]
+                //33: [Propane]
+                //34: [true]
+                //39: [\nInstructions]
+                //41: [true]
+                //43: [true]
+                //44: [KZ6DM]
+                //45: [Poul Hansen]
+                //46: [09/25/2017{odate]
+                //47: [16:10{otime]
+                //#EOF
 
-//";
+                //";
                 Services.CommunicationsService.CommunicationsService communicationService = Services.CommunicationsService.CommunicationsService.CreateInstance();
                 communicationService._packetMessagesReceived.Add(packetMsg);
                 communicationService.ProcessReceivedMessagesAsync();

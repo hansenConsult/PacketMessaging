@@ -65,7 +65,7 @@ namespace FormControlBaseClass
 
         string _operatorTime;
         string _messageTime;
-        string _msgDate = "";
+        //string _msgDate = "";
 
         protected List<string> outpostData;
 
@@ -353,10 +353,10 @@ namespace FormControlBaseClass
                     continue;
                 }
 
-                if (control.Name == "comboBoxToICSPosition" || control.Name == "textBoxToICSPosition" || control.Name == "comboBoxFromICSPosition" || control.Name == "textBoxFromICSPosition")
-                {
-                    int a = 0;
-                }
+                //if (control.Name == "comboBoxToICSPosition" || control.Name == "textBoxToICSPosition" || control.Name == "comboBoxFromICSPosition" || control.Name == "textBoxFromICSPosition")
+                //{
+                //    int a = 0;
+                //}
                 if (!string.IsNullOrEmpty(tag) && control.IsEnabled && control.Visibility == Visibility.Visible && tag.Contains("required"))
                 {
                     if (control is TextBox textBox)
@@ -404,6 +404,15 @@ namespace FormControlBaseClass
         public string ValidationResultMessage
         { get => validationResultMessage; set => validationResultMessage = value; }
 
+        public virtual string SenderMsgNo
+        { get; set; }
+
+        public virtual string MessageNo
+        { get; set; }
+
+        public virtual string ReceiverMsgNo
+        { get; set; }
+
         public virtual string OperatorCallsign
 		{ get; set; }
 
@@ -413,9 +422,6 @@ namespace FormControlBaseClass
 		public static string DefaultMessageTo
 		{ get; set; }
 
-		public virtual string MessageNo
-		{ get; set; }
-        
         public virtual string MsgDate
         { get; set; }
 
@@ -443,8 +449,10 @@ namespace FormControlBaseClass
         public abstract string PacFormName
 		{ get; }
 
+        public abstract string PacFormType
+        { get; }
 
-		public abstract string CreateSubject();
+        public abstract string CreateSubject();
 
 		public abstract string CreateOutpostData(ref PacketMessage packetMessage);
 
@@ -766,7 +774,7 @@ namespace FormControlBaseClass
 
 				Control control = formControl?.InputControl;
 
-				if (control is null)
+				if (control is null || formField.ControlContent == null)
 					continue;
 
 				if (control is TextBox textBox)

@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 namespace EOC213RRFormControl
 {
 	[FormControl(
-        FormControlName = "EOCResourceRequest",
+        FormControlName = "XSC_EOC_213RR",
         FormControlMenuName = "XSC EOC Resource Request Form",
 		FormControlType = FormControlAttribute.FormType.CountyForm)
 	]
@@ -27,16 +27,16 @@ namespace EOC213RRFormControl
             HowRecevedSent = "packet";
         }
 
-		public string ReceiverMsgNo
+		public override string ReceiverMsgNo
 		{ get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
 
 		public override string MessageNo
 		{ get { return GetTextBoxString(messageNo); } set { SetTextBoxString(messageNo, value); } }
 
-		public string SenderMsgNo
+		public  override string SenderMsgNo
 		{ get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
 
-		public string Severity
+		public override string Severity
 		{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
 		public override string HandlingOrder
@@ -57,7 +57,7 @@ namespace EOC213RRFormControl
         public override string MsgTime
         { get => GetTextBoxString(msgTime); set => SetTextBoxString(msgTime, value); }
 
-        public string ReceivedOrSent
+        public override string ReceivedOrSent
 		{ get { return receivedOrSent.GetRadioButtonCheckedState(); } set { receivedOrSent.SetRadioButtonCheckedState(value); } }
 
 		public string HowRecevedSent
@@ -75,9 +75,11 @@ namespace EOC213RRFormControl
 		public override string OperatorTime
 		{ get { return GetTextBoxString(operatorTime); } set { SetTextBoxString(operatorTime, value); } }
 
-		public override string PacFormName => "EOCResourceRequest";
+		public override string PacFormName => "XSC_EOC-213RR_v1706";
 
-		public override string CreateSubject()
+        public override string PacFormType => "XSC_EOC_213RR";
+
+        public override string CreateSubject()
 		{
 			return (MessageNo + "_" + Severity?.ToUpper()[0] + "/" + HandlingOrder?.ToUpper()[0] + "_EOC213RR_" + IncidentName);
 		}
