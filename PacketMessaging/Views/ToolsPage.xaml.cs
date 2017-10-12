@@ -45,6 +45,11 @@ namespace PacketMessaging.Views
 			logFilesComboBox.SelectedIndex = _selectedFileIndex;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileType">.txt or .log</param>
+        /// <returns></returns>
         private async Task UpdateTestFileListAsync()
         {
             List<string> fileTypeFilter = new List<string>() { ".txt" };
@@ -147,7 +152,7 @@ namespace PacketMessaging.Views
             StorageFile file = await storageFolder.GetFileAsync(textBoxFileName.Text);
             if (file != null)
             {
-                await FileIO.WriteTextAsync(file, receivedMessage.Text);
+                receivedMessage.Text = await FileIO.ReadTextAsync(file);
             }
             else
             {
@@ -178,15 +183,21 @@ namespace PacketMessaging.Views
 		{
             if (_currentPivotItem.Name == "testReceive")
             {
-                logFilesComboBox.SelectedIndex = Math.Max(0, logFilesComboBox.SelectedIndex - 1);
-                _selectedFileIndex = comboBoxTestFiles.SelectedIndex;
                 StorageFile deleteFile = comboBoxTestFiles.SelectedItem as StorageFile;
 
                 await deleteFile.DeleteAsync();
 
                 await UpdateTestFileListAsync();
             }
-		}
+            else
+            {
+                StorageFile deleteFile = logFilesComboBox.SelectedItem as StorageFile;
+
+                await deleteFile.DeleteAsync();
+
+                await UpdateFileListAsync();
+            }
+        }
 
         private void TestReceivedMessage_Click(object sender, RoutedEventArgs e)
         {

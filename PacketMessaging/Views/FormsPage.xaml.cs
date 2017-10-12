@@ -765,6 +765,14 @@ namespace PacketMessaging.Views
             {
                 FormControl formControl = _packetForm.FormControlsList.Find(x => x.InputControl.Name == formField.ControlName);
                 Control control = formControl?.InputControl;
+                //if (control.Name == "severity")
+                //{
+                //    _packetForm.Severity = ((TextBox)control).Text;
+                //}
+                //if (control.Name == "handlingOrder")
+                //{
+                //    _packetForm.HandlingOrder = ((TextBox)control).Text;
+                //}
                 if (control.Name == "msgDate")
                 {
                     _packetForm.MsgDate = ((TextBox)control).Text;

@@ -341,6 +341,7 @@ namespace EOC213RRFormControl
 			return CreateOutpostMessageBody(outpostData);
 		}
 
+
         //public override FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines)
         //{
         //    FormField[] formFields = CreateEmptyFormFieldsArray();
@@ -362,227 +363,227 @@ namespace EOC213RRFormControl
         //    }
         //}
 
-  //      public override FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines)
-		//{
-		//	FormField[] formFields = CreateEmptyFormFieldsArray();
-		//	string radioButtonContent;
-  //          //int index;
-  //          //for (index = 0; index < formFields.Length; index++)
-		//	foreach (FormField formField in formFields)
-		//	{
-  //              //FormField formField = (FormField)formFields.GetValue(index);
-  //              switch (formField.ControlName)
-  //              {
-  //                  //0: [sen-123]
-  //                  case "senderMsgNo":
-  //                      formField.ControlContent = GetOutpostValue("0", ref msgLines);
-  //                      break;
-  //                  //MsgNo: [6DM-150P]
-  //                  case "messageNo":
-  //                      formField.ControlContent = msgNumber;
-  //                      break;
-  //                  //Received msg no: [6DM-150P]
-  //                  case "receiverMsgNo":
-  //                      formField.ControlContent = GetOutpostValue("2", ref msgLines);
-  //                      break;
-  //                  //4.: [OTHER]
-  //                  case "severity":
-  //                      if ((radioButtonContent = GetOutpostValue("4", ref msgLines)?.ToLower()) == "true")
-  //                      {
-  //                          formField.ControlContent = "emergency";
-  //                      }
-  //                      else if (GetOutpostValue("5", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "urgent";
-  //                      }
-  //                      else if (GetOutpostValue("6", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "other";
-  //                      }
-  //                      break;
-  //                  //5.: [ROUTINE]
-  //                  case "handlingOrder":
-  //                      if (GetOutpostValue("7", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "immediate";
-  //                      }
-  //                      else if (GetOutpostValue("8", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "priority";
-  //                      }
-  //                      else if (GetOutpostValue("9", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "routine";
-  //                      }
-  //                      break;
-  //                  //10.: [true]
-  //                  case "reply":
-  //                      if (GetOutpostValue("10", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "replyYes";
-  //                      }
-  //                      else if (GetOutpostValue("12", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "replyNo";
-  //                      }
-  //                      break;
-  //                  //11: [1234]
-  //                  case "replyBy":
-  //                      formField.ControlContent = GetOutpostValue("11", ref msgLines);
-  //                      break;
-  //                  //13: [Incident Name]
-  //                  case "incidentName":
-  //                      formField.ControlContent = GetOutpostValue("13", ref msgLines);
-  //                      break;
-  //                  //14: [Message date]
-  //                  case "msgDate":
-  //                      formField.ControlContent = GetOutpostValue("14", ref msgLines);
-  //                      break;
-  //                  //15: [1917]
-  //                  case "msgTime":
-  //                      formField.ControlContent = GetOutpostValue("15", ref msgLines);
-  //                      break;
-  //                  // 16: [\nRequested by]
-  //                  case "requestedBy":
-  //                      formField.ControlContent = GetOutpostValue("16", ref msgLines);
-  //                      break;
-  //                  // 17: [\nPrepared by]
-  //                  case "preparedBy":
-  //                      formField.ControlContent = GetOutpostValue("17", ref msgLines);
-  //                      break;
-  //                  // 18: [Approved by] 
-  //                  case "approvedBy":
-  //                      formField.ControlContent = GetOutpostValue("18", ref msgLines);
-  //                      break;
-  //                  // 19: [ResourceInfoQuantity1] 
-  //                  case "resourceInfoQuantity1":
-  //                      formField.ControlContent = GetOutpostValue("19", ref msgLines);
-  //                      break;
-  //                  // 20: [ResourceInfoDetailedResourceDesc1] 
-  //                  case "resourceInfoDetailedResourceDesc1":
-  //                      formField.ControlContent = GetOutpostValue("20", ref msgLines);
-  //                      break;
-  //                  // 21: [ResourceInfo Arrival1] 
-  //                  case "resourceInfoArrival1":
-  //                      formField.ControlContent = GetOutpostValue("21", ref msgLines);
-  //                      break;
-  //                  // 29: [ResourceInfo Request Priority1] 
-  //                  case "resourceInfoPriority1":
-  //                      if (GetOutpostValue("22", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "resourceInfoUrgent1";
-  //                      }
-  //                      else if (GetOutpostValue("23", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "resourceInfoRoutine1";
-  //                      }
-  //                      else if (GetOutpostValue("24", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "resourceInfoRoutine1";
-  //                      }
-  //                      else if (GetOutpostValue("25", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "resourceInfoLow1";
-  //                      }
-  //                      break;
-  //                  // 26: [\nCost] 
-  //                  case "resourceInfoCost1":
-  //                      formField.ControlContent = GetOutpostValue("26", ref msgLines);
-  //                      break;
-  //                  // 27: [\nDelivery to] 
-  //                  case "deliveryTo":
-  //                      formField.ControlContent = GetOutpostValue("27", ref msgLines);
-  //                      break;
-  //                  // 28: [\nLocation] 
-  //                  case "deliveryLocation":
-  //                      formField.ControlContent = GetOutpostValue("28", ref msgLines);
-  //                      break;
-  //                  // 29: [\nSubstitutes] 
-  //                  case "substitutes":
-  //                      formField.ControlContent = GetOutpostValue("29", ref msgLines);
-  //                      break;
-  //                  // 30: [true] 
-  //                  case "suppReqEquipmentOperator":
-  //                      formField.ControlContent = GetOutpostValue("30", ref msgLines);
-  //                      break;
-  //                  // 31: [true] 
-  //                  case "suppReqLodinng":
-  //                      formField.ControlContent = GetOutpostValue("31", ref msgLines);
-  //                      break;
-  //                  // 32: [true] 
-  //                  case "suppReqFuel":
-  //                      formField.ControlContent = GetOutpostValue("32", ref msgLines);
-  //                      break;
-  //                  // 33: [Jet] 
-  //                  case "suppReqFuelType":
-  //                      formField.ControlContent = GetOutpostValue("33", ref msgLines);
-  //                      break;
-  //                  // 34: [true] 
-  //                  case "suppReqPower":
-  //                      formField.ControlContent = GetOutpostValue("34", ref msgLines);
-  //                      break;
-  //                  // 35: [true] 
-  //                  case "suppReqMeals":
-  //                      formField.ControlContent = GetOutpostValue("35", ref msgLines);
-  //                      break;
-  //                  // 36: [true] 
-  //                  case "suppReqMaintenance":
-  //                      formField.ControlContent = GetOutpostValue("36", ref msgLines);
-  //                      break;
-  //                  // 37: [true] 
-  //                  case "suppReqWater":
-  //                      formField.ControlContent = GetOutpostValue("37", ref msgLines);
-  //                      break;
-  //                  // 38: [true] 
-  //                  case "suppReqOther":
-  //                      formField.ControlContent = GetOutpostValue("38", ref msgLines);
-  //                      break;
-  //                  // 39: [\nSpecial Instructions] 
-  //                  case "specialInstructions":
-  //                      formField.ControlContent = GetOutpostValue("39", ref msgLines);
-  //                      break;
-  //                  //40. Rec-Sent: [received]
-  //                  case "receivedOrSent":
-  //                      if (GetOutpostValue("40", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "received";
-  //                      }
-  //                      else if (GetOutpostValue("41", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "sent";
-  //                      }
-  //                      break;
-  //                  //Method: [Other]
-  //                  case "howRecevedSent":
-  //                      if (GetOutpostValue("42", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "voice";
-  //                      }
-  //                      else if (GetOutpostValue("43", ref msgLines)?.ToLower() == "true")
-  //                      {
-  //                          formField.ControlContent = "packet";
-  //                      }
-  //                      break;
-  //                  //OpCall: [KZ6DM]
-  //                  case "operatorCallsign":
-  //                      formField.ControlContent = GetOutpostValue("44", ref msgLines);
-  //                      break;
-  //                  //OpName: [Poul Hansen]
-  //                  case "operatorName":
-  //                      formField.ControlContent = GetOutpostValue("45", ref msgLines);
-  //                      break;
-  //                  //OpDate: [02/02/2015]
-  //                  case "operatorDate":
-  //                      formField.ControlContent = GetOutpostValue("46", ref msgLines);
-  //                      break;
-  //                  //OpTime: [1920]
-  //                  case "operatorTime":
-  //                      formField.ControlContent = GetOutpostValue("47", ref msgLines);
-  //                      break;
-  //              }
-  //          }
-  //          return formFields;
-		//}
+        //      public override FormField[] ConvertFromOutpost(string msgNumber, ref string[] msgLines)
+        //{
+        //	FormField[] formFields = CreateEmptyFormFieldsArray();
+        //	string radioButtonContent;
+        //          //int index;
+        //          //for (index = 0; index < formFields.Length; index++)
+        //	foreach (FormField formField in formFields)
+        //	{
+        //              //FormField formField = (FormField)formFields.GetValue(index);
+        //              switch (formField.ControlName)
+        //              {
+        //                  //0: [sen-123]
+        //                  case "senderMsgNo":
+        //                      formField.ControlContent = GetOutpostValue("0", ref msgLines);
+        //                      break;
+        //                  //MsgNo: [6DM-150P]
+        //                  case "messageNo":
+        //                      formField.ControlContent = msgNumber;
+        //                      break;
+        //                  //Received msg no: [6DM-150P]
+        //                  case "receiverMsgNo":
+        //                      formField.ControlContent = GetOutpostValue("2", ref msgLines);
+        //                      break;
+        //                  //4.: [OTHER]
+        //                  case "severity":
+        //                      if ((radioButtonContent = GetOutpostValue("4", ref msgLines)?.ToLower()) == "true")
+        //                      {
+        //                          formField.ControlContent = "emergency";
+        //                      }
+        //                      else if (GetOutpostValue("5", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "urgent";
+        //                      }
+        //                      else if (GetOutpostValue("6", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "other";
+        //                      }
+        //                      break;
+        //                  //5.: [ROUTINE]
+        //                  case "handlingOrder":
+        //                      if (GetOutpostValue("7", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "immediate";
+        //                      }
+        //                      else if (GetOutpostValue("8", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "priority";
+        //                      }
+        //                      else if (GetOutpostValue("9", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "routine";
+        //                      }
+        //                      break;
+        //                  //10.: [true]
+        //                  case "reply":
+        //                      if (GetOutpostValue("10", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "replyYes";
+        //                      }
+        //                      else if (GetOutpostValue("12", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "replyNo";
+        //                      }
+        //                      break;
+        //                  //11: [1234]
+        //                  case "replyBy":
+        //                      formField.ControlContent = GetOutpostValue("11", ref msgLines);
+        //                      break;
+        //                  //13: [Incident Name]
+        //                  case "incidentName":
+        //                      formField.ControlContent = GetOutpostValue("13", ref msgLines);
+        //                      break;
+        //                  //14: [Message date]
+        //                  case "msgDate":
+        //                      formField.ControlContent = GetOutpostValue("14", ref msgLines);
+        //                      break;
+        //                  //15: [1917]
+        //                  case "msgTime":
+        //                      formField.ControlContent = GetOutpostValue("15", ref msgLines);
+        //                      break;
+        //                  // 16: [\nRequested by]
+        //                  case "requestedBy":
+        //                      formField.ControlContent = GetOutpostValue("16", ref msgLines);
+        //                      break;
+        //                  // 17: [\nPrepared by]
+        //                  case "preparedBy":
+        //                      formField.ControlContent = GetOutpostValue("17", ref msgLines);
+        //                      break;
+        //                  // 18: [Approved by] 
+        //                  case "approvedBy":
+        //                      formField.ControlContent = GetOutpostValue("18", ref msgLines);
+        //                      break;
+        //                  // 19: [ResourceInfoQuantity1] 
+        //                  case "resourceInfoQuantity1":
+        //                      formField.ControlContent = GetOutpostValue("19", ref msgLines);
+        //                      break;
+        //                  // 20: [ResourceInfoDetailedResourceDesc1] 
+        //                  case "resourceInfoDetailedResourceDesc1":
+        //                      formField.ControlContent = GetOutpostValue("20", ref msgLines);
+        //                      break;
+        //                  // 21: [ResourceInfo Arrival1] 
+        //                  case "resourceInfoArrival1":
+        //                      formField.ControlContent = GetOutpostValue("21", ref msgLines);
+        //                      break;
+        //                  // 29: [ResourceInfo Request Priority1] 
+        //                  case "resourceInfoPriority1":
+        //                      if (GetOutpostValue("22", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "resourceInfoUrgent1";
+        //                      }
+        //                      else if (GetOutpostValue("23", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "resourceInfoRoutine1";
+        //                      }
+        //                      else if (GetOutpostValue("24", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "resourceInfoRoutine1";
+        //                      }
+        //                      else if (GetOutpostValue("25", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "resourceInfoLow1";
+        //                      }
+        //                      break;
+        //                  // 26: [\nCost] 
+        //                  case "resourceInfoCost1":
+        //                      formField.ControlContent = GetOutpostValue("26", ref msgLines);
+        //                      break;
+        //                  // 27: [\nDelivery to] 
+        //                  case "deliveryTo":
+        //                      formField.ControlContent = GetOutpostValue("27", ref msgLines);
+        //                      break;
+        //                  // 28: [\nLocation] 
+        //                  case "deliveryLocation":
+        //                      formField.ControlContent = GetOutpostValue("28", ref msgLines);
+        //                      break;
+        //                  // 29: [\nSubstitutes] 
+        //                  case "substitutes":
+        //                      formField.ControlContent = GetOutpostValue("29", ref msgLines);
+        //                      break;
+        //                  // 30: [true] 
+        //                  case "suppReqEquipmentOperator":
+        //                      formField.ControlContent = GetOutpostValue("30", ref msgLines);
+        //                      break;
+        //                  // 31: [true] 
+        //                  case "suppReqLodinng":
+        //                      formField.ControlContent = GetOutpostValue("31", ref msgLines);
+        //                      break;
+        //                  // 32: [true] 
+        //                  case "suppReqFuel":
+        //                      formField.ControlContent = GetOutpostValue("32", ref msgLines);
+        //                      break;
+        //                  // 33: [Jet] 
+        //                  case "suppReqFuelType":
+        //                      formField.ControlContent = GetOutpostValue("33", ref msgLines);
+        //                      break;
+        //                  // 34: [true] 
+        //                  case "suppReqPower":
+        //                      formField.ControlContent = GetOutpostValue("34", ref msgLines);
+        //                      break;
+        //                  // 35: [true] 
+        //                  case "suppReqMeals":
+        //                      formField.ControlContent = GetOutpostValue("35", ref msgLines);
+        //                      break;
+        //                  // 36: [true] 
+        //                  case "suppReqMaintenance":
+        //                      formField.ControlContent = GetOutpostValue("36", ref msgLines);
+        //                      break;
+        //                  // 37: [true] 
+        //                  case "suppReqWater":
+        //                      formField.ControlContent = GetOutpostValue("37", ref msgLines);
+        //                      break;
+        //                  // 38: [true] 
+        //                  case "suppReqOther":
+        //                      formField.ControlContent = GetOutpostValue("38", ref msgLines);
+        //                      break;
+        //                  // 39: [\nSpecial Instructions] 
+        //                  case "specialInstructions":
+        //                      formField.ControlContent = GetOutpostValue("39", ref msgLines);
+        //                      break;
+        //                  //40. Rec-Sent: [received]
+        //                  case "receivedOrSent":
+        //                      if (GetOutpostValue("40", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "received";
+        //                      }
+        //                      else if (GetOutpostValue("41", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "sent";
+        //                      }
+        //                      break;
+        //                  //Method: [Other]
+        //                  case "howRecevedSent":
+        //                      if (GetOutpostValue("42", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "voice";
+        //                      }
+        //                      else if (GetOutpostValue("43", ref msgLines)?.ToLower() == "true")
+        //                      {
+        //                          formField.ControlContent = "packet";
+        //                      }
+        //                      break;
+        //                  //OpCall: [KZ6DM]
+        //                  case "operatorCallsign":
+        //                      formField.ControlContent = GetOutpostValue("44", ref msgLines);
+        //                      break;
+        //                  //OpName: [Poul Hansen]
+        //                  case "operatorName":
+        //                      formField.ControlContent = GetOutpostValue("45", ref msgLines);
+        //                      break;
+        //                  //OpDate: [02/02/2015]
+        //                  case "operatorDate":
+        //                      formField.ControlContent = GetOutpostValue("46", ref msgLines);
+        //                      break;
+        //                  //OpTime: [1920]
+        //                  case "operatorTime":
+        //                      formField.ControlContent = GetOutpostValue("47", ref msgLines);
+        //                      break;
+        //              }
+        //          }
+        //          return formFields;
+        //}
 
     }
 }

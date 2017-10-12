@@ -142,11 +142,11 @@ namespace OAMunicipalStatusFormControl
         public string ReceiverMsgNo
         { get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
 
-        //public override string Severity
-        //{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
+        public override string Severity
+        { get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
-        //public override string HandlingOrder
-        //{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
+        public override string HandlingOrder
+        { get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
 
         //public override string MsgDate
         //{ get => GetTextBoxString(msgDate); set => SetTextBoxString(msgDate, value); }
@@ -176,7 +176,8 @@ namespace OAMunicipalStatusFormControl
         { get => GetTextBoxString(incidentName); }
 
         public string MunicipalityName
-        { get => GetComboBoxSelectedValuePath(municipalityName); }
+        //{ get => GetComboBoxSelectedValuePath(municipalityName); }
+        { get => municipalityName.SelectedItem as string; }
 
         public override string PacFormName => "OAMuniStatus";
 
@@ -383,8 +384,9 @@ namespace OAMunicipalStatusFormControl
         private void MsgDate_TextChanged(object sender, TextChangedEventArgs e)
         {
             string text = e.ToString();
-            MsgDate = msgDate.Text;
+            //MsgDate = msgDate.Text;
         }
+
     }
 }
 
