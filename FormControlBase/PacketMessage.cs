@@ -76,6 +76,8 @@ namespace FormControlBaseClass
 
         private bool messageOpenedField = false;
 
+        //private bool messageReadOnlyField = false;
+
         /// <remarks/>
         public string FileName
         {
@@ -311,7 +313,20 @@ namespace FormControlBaseClass
             }
         }
 
-		public double GridWidth
+        /// <remarks/>
+        //public bool MessageReadOnly
+        //{
+        //    get
+        //    {
+        //        return this.messageReadOnlyField;
+        //    }
+        //    set
+        //    {
+        //        this.messageReadOnlyField = value;
+        //    }
+        //}
+
+        public double GridWidth
 		{
 			get { return gridWidthField; }
 			set => gridWidthField = value;

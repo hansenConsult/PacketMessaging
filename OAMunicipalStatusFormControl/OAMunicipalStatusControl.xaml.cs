@@ -12,9 +12,8 @@ namespace OAMunicipalStatusFormControl
     /// 
 
     [FormControl(
-        //FormControlName = "XSC_OA_MuniStatus_v1708",
         FormControlName = "OAMuniStatus",
-        FormControlMenuName = "XSC OA Municopal Status",
+        FormControlMenuName = "OA Municipal Status",
         FormControlType = FormControlAttribute.FormType.CountyForm)
     ]
 

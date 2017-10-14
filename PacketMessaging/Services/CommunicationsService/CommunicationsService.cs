@@ -67,7 +67,8 @@ namespace PacketMessaging.Services.CommunicationsService
                         MessageSize = packetMessageOutpost.MessageSize,
                         Area = packetMessageOutpost.Area,
                         // Save the original message for post processing (tab characters are lost in the displayed message)
-                        MessageBody = packetMessageOutpost.MessageBody
+                        MessageBody = packetMessageOutpost.MessageBody,
+                        //MessageReadOnly = true
                     };
                     string[] msgLines = packetMessageOutpost.MessageBody.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
 
@@ -306,13 +307,13 @@ namespace PacketMessaging.Services.CommunicationsService
 						var operatorTimeField = packetMessage.FormFieldArray.Where(formField => formField.ControlName == "operatorTime").FirstOrDefault();
 						if (operatorTimeField != null)
 							operatorTimeField.ControlContent = $"{now.Hour:d2}{now.Minute:d2}";
-
-						formControl = Views.FormsPage.CreateFormControlInstance(packetMessage.PacFormName);
+                       
+						formControl = Views.FormsPage.CreateFormControlInstance(packetMessage.PacFormType);
 						if (formControl == null)
 						{
 							MessageDialog messageDialog = new MessageDialog($"Form {packetMessage.PacFormName} not found");
 							await messageDialog.ShowAsync();
-							return;
+							continue;
 						}
 
 						packetMessage.MessageBody = formControl.CreateOutpostData(ref packetMessage);

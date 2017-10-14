@@ -62,67 +62,57 @@
                FontFamily="Bahnschrift"
                SelectionChanged="MyPivot_SelectionChangedAsync">
 			<!--Simple Message-->
-			<PivotItem x:Name="SimpleMessage" DataContext="{Binding FormsPartViewModel}" Header="Simple Message">
+			<!--<PivotItem x:Name="SimpleMessage" DataContext="{Binding FormsPartViewModel}" Header="Simple Message">
 				<ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
                     <StackPanel x:Name="messageFormPanel" />
-                    <!--<StackPanel x:Name="PageToPrintFrame"/>-->
+                    --><!--<StackPanel x:Name="PageToPrintFrame"/>--><!--
 
                 </ScrollViewer>
-			</PivotItem>
+			</PivotItem>-->
 
 			<!--  ICEForm213  -->
-			<PivotItem x:Name="Message" DataContext="{Binding FormsPartViewModel}" Header="ICSForm213">
+			<!--<PivotItem x:Name="Message" DataContext="{Binding FormsPartViewModel}" Header="ICSForm213">
 				<ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
 					<StackPanel x:Name="Form213Panel" HorizontalAlignment="Left">
-						<!--Insert form here-->
-						<!--<My213Control:ICS213Control x:Name="ICSForm213" />-->
-						<!--<local:SendFormDataControl x:Name="sendFormData" />-->
+						Insert form here
+						<My213Control:ICS213Control x:Name="ICSForm213" />
+						<local:SendFormDataControl x:Name="sendFormData" />
 					</StackPanel>
 
 				</ScrollViewer>
-			</PivotItem>
+			</PivotItem>-->
 
 			<!--  CityScan  -->
-			<PivotItem x:Name="city_scan" DataContext="{Binding FormsPartViewModel}" Header="City Scan">
-				<ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
-                              VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
+			<!--<PivotItem x:Name="city_scan" DataContext="{Binding FormsPartViewModel}" Header="City Scan">
+				<ScrollViewer Margin="0,12,-12,0" 
+                              VerticalScrollBarVisibility="Auto" Height="auto" >
 					<StackPanel x:Name="CityScanPanel" HorizontalAlignment="Left">
-						<!--Insert form here-->
+						--><!--Insert form here-->
 						<!--<My213Control:ICS213Control x:Name="ICSForm213" />-->
-						<!--<local:SendFormDataControl x:Name="sendFormData" />-->
-					</StackPanel>
-
-				</ScrollViewer>
-			</PivotItem>
-
-			<!--  EOCLogistics  -->
-			<!--<PivotItem x:Name="EOCLogisticsRequest" DataContext="{Binding FormsPartViewModel}" Header="EOC Logistics">
-				<ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
-                              VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
-					<StackPanel x:Name="LogisticsPanel" HorizontalAlignment="Left">
+						<!--<local:SendFormDataControl x:Name="sendFormData" />--><!--
 					</StackPanel>
 
 				</ScrollViewer>
 			</PivotItem>-->
 
             <!--  EOCResourceRequest  -->
-            <PivotItem x:Name="XSC_EOC_213RR" DataContext="{Binding FormsPartViewModel}" Header="EOC Resource Request">
+            <!--<PivotItem x:Name="XSC_EOC_213RR" DataContext="{Binding FormsPartViewModel}" Header="EOC Resource Request">
                 <ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
                     <StackPanel x:Name="ResourceRequestPanel" HorizontalAlignment="Left">
                     </StackPanel>
                 </ScrollViewer>
-            </PivotItem>
+            </PivotItem>-->
             <!--  OAMuniStatus  -->
-            <PivotItem x:Name="OAMuniStatus" DataContext="{Binding FormsPartViewModel}" Header="OA Municipal Status">
+            <!--<PivotItem x:Name="OAMuniStatus" DataContext="{Binding FormsPartViewModel}" Header="OA Municipal Status">
                 <ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">
                     <StackPanel x:Name="OAMuniStatusPanel" HorizontalAlignment="Left">
                     </StackPanel>
                 </ScrollViewer>
-            </PivotItem>
+            </PivotItem>-->
         </Pivot>
         <!--<ScrollViewer Margin="0,12,-12,0" HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" Height="auto" VerticalAlignment="Top">

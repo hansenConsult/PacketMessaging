@@ -25,6 +25,29 @@ using ToggleButtonGroupControl;
 
 namespace PacketMessaging.Views
 {
+    public class FormControlAttributes
+    {
+        public string FormControlName
+        { get; private set; }
+
+        public string FormControlMenuName
+        { get; private set; }
+
+        public FormControlAttribute.FormType FormControlType
+        { get; private set; }
+
+        public StorageFile FormControlFileName
+        { get; set; }
+
+        public FormControlAttributes(string formControlType, string formControlMenuName, FormControlAttribute.FormType formType, StorageFile formControlFileName)
+        {
+            FormControlName = formControlType;
+            FormControlMenuName = formControlMenuName;
+            FormControlType = formType;
+            FormControlFileName = formControlFileName;
+        }
+    }
+
     public enum PhotoSize : byte
     {
         SizeFullPage,
@@ -677,11 +700,23 @@ namespace PacketMessaging.Views
 		//public string MessageTo { get { return messageTo.Text; } set { messageTo.Text = value; } }
 		public string MessageNumber { get { return _packetForm.MessageNo; } set { _packetForm.MessageNo = value; } }
 
-		public FormsPage()
+        private List<FormControlAttributes> _formControlAttributeList;
+
+        public FormsPage()
 		{
 			this.InitializeComponent();
 
 			_SerializationService = Template10.Services.SerializationService.SerializationService.Json;
+
+            _formControlAttributeList = new List<FormControlAttributes>();
+            ScanFormAttributes();
+
+            foreach (FormControlAttributes formControlAttribute in _formControlAttributeList)
+            {
+                PivotItem pivotItem = CreatePivotItem(formControlAttribute);
+                //PivotItem pivotItem = CreatePivotItem(_formControlAttributeList[3]);
+                MyPivot.Items.Add(pivotItem);
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -689,27 +724,101 @@ namespace PacketMessaging.Views
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-			//DeviceListSource.Source = listOfDevices;
-			if (e.Parameter == null)
-				return;
+        {
+            //DeviceListSource.Source = listOfDevices;
+            if (e.Parameter == null)
+                return;
 
-			int index = 0;
-			var packetMessagePath = (string)_SerializationService.Deserialize((string)e.Parameter);
-			_packetMessage = PacketMessage.Open(packetMessagePath);
-			_loadMessage = true;
-			foreach (PivotItem pivotItem in MyPivot.Items)
-			{
-				string pivotItemName = pivotItem.Name.Replace('_', '-');	// required since city-scan is not a valid PivotItem name
-				if (pivotItem.Name == _packetMessage.PacFormType || pivotItemName == _packetMessage.PacFormName) // If PacFormType is not set
-				{
-					MyPivot.SelectedIndex = index;
-					//CreatePacketForm();
-					//FillFormFromPacketMessage();
-					break;
-				}
-				index++;
-			}
+            int index = 0;
+            var packetMessagePath = (string)_SerializationService.Deserialize((string)e.Parameter);
+            _packetMessage = PacketMessage.Open(packetMessagePath);
+            _loadMessage = true;
+            foreach (PivotItem pivotItem in MyPivot.Items)
+            {
+                if (pivotItem.Name == _packetMessage.PacFormType || pivotItem.Name == _packetMessage.PacFormName) // If PacFormType is not set
+                {
+                    MyPivot.SelectedIndex = index;
+                    //CreatePacketForm();
+                    //FillFormFromPacketMessage();
+                    break;
+                }
+                index++;
+            }
+        }
+
+        private PivotItem CreatePivotItem(FormControlAttributes formControlAttributes)
+        {
+            PivotItem pivotItem = new PivotItem();
+            pivotItem.Name = formControlAttributes.FormControlName;
+            pivotItem.Header = formControlAttributes.FormControlMenuName;
+
+            ScrollViewer scrollViewer = new ScrollViewer();
+            scrollViewer.Margin = new Thickness(0, 12, -12, 0);
+            scrollViewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            scrollViewer.Height = double.NaN;
+
+            StackPanel stackpanel = new StackPanel();
+            stackpanel.Name = pivotItem.Name + "Panel";
+            scrollViewer.Content = stackpanel;
+
+            pivotItem.Content = scrollViewer;
+
+            return pivotItem;
+        }
+
+        private void ScanFormAttributes()
+        {
+            var files = ViewModels.SharedData.filesInInstalledLocation;
+            if (files == null)
+                return;
+
+            foreach (StorageFile file in files.Where(file => file.FileType == ".dll" && file.Name.Contains("FormControl.dll")))
+            {
+                try
+                {
+                    Assembly assembly = Assembly.Load(new AssemblyName(file.DisplayName));
+                    foreach (Type classType in assembly.GetTypes())
+                    {
+                        var attrib = classType.GetTypeInfo();
+                        foreach (CustomAttributeData customAttribute in attrib.CustomAttributes.Where(customAttribute => customAttribute.GetType() == typeof(CustomAttributeData)))
+                        {
+                            //if (!(customAttribute is FormControlAttribute))
+                            //    continue;
+                            var namedArguments = customAttribute.NamedArguments;
+                            if (namedArguments.Count == 3)
+                            {
+                                string formControlType = namedArguments[0].TypedValue.Value as string;
+                                FormControlAttribute.FormType FormControlType = (FormControlAttribute.FormType)Enum.Parse(typeof(FormControlAttribute.FormType), namedArguments[1].TypedValue.Value.ToString());
+                                string formControlMenuName = namedArguments[2].TypedValue.Value as string;
+                                FormControlAttributes formControlAttributes = new FormControlAttributes(formControlType, formControlMenuName, FormControlType, file);
+                                _formControlAttributeList.Add(formControlAttributes);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+            // Pick latest file version for each type
+            for (int i = 0; i < _formControlAttributeList.Count; i++)
+            {
+                for (int j = i + 1; j < _formControlAttributeList.Count; j++)
+                {
+                    if (_formControlAttributeList[i].FormControlName == _formControlAttributeList[j].FormControlName)
+                    {
+                        if (_formControlAttributeList[i].FormControlFileName.DateCreated > _formControlAttributeList[j].FormControlFileName.DateCreated)
+                        {
+                            _formControlAttributeList.Remove(_formControlAttributeList[j]);
+                        }
+                        else
+                        {
+                            _formControlAttributeList.Remove(_formControlAttributeList[i]);
+                        }
+                    }
+                }
+            }
         }
 
         public void ScanControls(DependencyObject panelName)
@@ -889,7 +998,7 @@ namespace PacketMessaging.Views
 		//	}
 		//}
 
-		public static FormControlBase CreateFormControlInstance(string controlName)
+		public static FormControlBase CreateFormControlInstance(string controlType)
 		{
 			FormControlBase formControl = null;
 			var files = ViewModels.SharedData.filesInInstalledLocation;
@@ -912,10 +1021,10 @@ namespace PacketMessaging.Views
                             var namedArguments = customAttribute.NamedArguments;
 							if (namedArguments.Count == 3)
 							{
-								var formControlName = namedArguments[0].TypedValue.Value as string;
+								var formControlType = namedArguments[0].TypedValue.Value as string;
                                 //var arg1 = Enum.Parse(typeof(FormControlAttribute.FormType), namedArguments[1].TypedValue.Value.ToString());
                                 //var arg2 = namedArguments[2].TypedValue.Value;
-                                if (formControlName == controlName)
+                                if (formControlType == controlType)
                                 {
 									foundType = classType;
 									break;
@@ -1036,62 +1145,36 @@ namespace PacketMessaging.Views
             ViewModels.SettingsPageViewModel.ReturnMessageNumber();
 
 			_packetAddressForm = new SendFormDataControl();
-            //string pivotItemName = ((PivotItem)((Pivot)sender).SelectedItem).Name.Replace('_', '-');    // required since city-scan is not a valid PivotItem name
-            string pivotItemName = ((PivotItem)((Pivot)sender).SelectedItem).Name;
-            _packetForm = CreateFormControlInstance(pivotItemName);
+            PivotItem pivotItem = (PivotItem)((Pivot)sender).SelectedItem;
+            string pivotItemName = pivotItem.Name;
+            _packetForm = CreateFormControlInstance(pivotItemName); // Should be PacketFormName, since there may be multiple files with same name
             if (_packetForm == null)
             {
-                MessageDialog messageDialog = new MessageDialog("failed to find packet form");
+                MessageDialog messageDialog = new MessageDialog(content: "Failed to find packet form.", title: "Packet Messaging Error");
                 await messageDialog.ShowAsync();
                 return;
             }
 
-			if (!_loadMessage)
-				_packetMessage = new PacketMessage();
+            if (!_loadMessage)
+            {
+                _packetMessage = new PacketMessage();
+            }
 			_packetForm.MessageNo = ViewModels.SettingsPageViewModel.GetMessageNumberPacket();
 
-			//var pivotItem = (PivotItem)((Pivot)sender).SelectedItem;
-			if (pivotItemName == "SimpleMessage")
+            StackPanel stackPanel = ((ScrollViewer)pivotItem.Content).Content as StackPanel;
+
+            if (pivotItemName == "SimpleMessage")
 			{
-                messageFormPanel.Children.Clear();
-                messageFormPanel.Children.Insert(0, _packetAddressForm);
-                messageFormPanel.Children.Insert(1, _packetForm);
+                stackPanel.Children.Clear();
+                stackPanel.Children.Insert(0, _packetAddressForm);
+                stackPanel.Children.Insert(1, _packetForm);
 				_packetAddressForm.MessageSubject = _packetForm.MessageNo + "_O/R_";
 			}
-			else if (pivotItemName == "Message")
-			{
-				Form213Panel.Children.Clear();
-				Form213Panel.Children.Insert(0, _packetForm);
-				Form213Panel.Children.Insert(1, _packetAddressForm);
-				_packetAddressForm.MessageSubject = _packetForm.CreateSubject();
-			}
-			else if (pivotItemName == "city_scan")
-			{
-				CityScanPanel.Children.Clear();
-				CityScanPanel.Children.Insert(0, _packetForm);
-				CityScanPanel.Children.Insert(1, _packetAddressForm);
-				_packetAddressForm.MessageSubject = _packetForm.CreateSubject();
-			}
-            //else if (pivotItemName == "EOCLogisticsRequest")
-            //{
-            //    Form213Panel.Children.Clear();
-            //    LogisticsPanel.Children.Clear();
-            //    LogisticsPanel.Children.Insert(0, _packetForm);
-            //    LogisticsPanel.Children.Insert(1, _packetAddressForm);
-            //    _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
-            //}
-            else if (pivotItemName == "XSC_EOC_213RR")
+            else
             {
-                ResourceRequestPanel.Children.Clear();
-                ResourceRequestPanel.Children.Insert(0, _packetForm);
-                ResourceRequestPanel.Children.Insert(1, _packetAddressForm);
-                _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
-            }
-            else if (pivotItemName == "OAMuniStatus")
-            {
-                OAMuniStatusPanel.Children.Clear();
-                OAMuniStatusPanel.Children.Insert(0, _packetForm);
-                OAMuniStatusPanel.Children.Insert(1, _packetAddressForm);
+                stackPanel.Children.Clear();
+                stackPanel.Children.Insert(0, _packetForm);
+                stackPanel.Children.Insert(1, _packetAddressForm);
                 _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
             }
 

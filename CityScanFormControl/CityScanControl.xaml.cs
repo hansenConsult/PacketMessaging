@@ -11,7 +11,7 @@ namespace CityScanFormControl
 {
 	[FormControl(
 		FormControlName = "city_scan",
-		FormControlMenuName = "XSC City Scan/Flash Report",
+		FormControlMenuName = "City Scan/Flash Report",
 		FormControlType = FormControlAttribute.FormType.CountyForm)
 	]
 	public partial class CityScanControl : FormControlBase
