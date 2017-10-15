@@ -144,8 +144,8 @@ namespace OAMunicipalStatusFormControl
         //public override string Severity
         //{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
-        //public override string HandlingOrder
-        //{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
+        public override string HandlingOrder
+        { get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
 
         //public override string MsgDate
         //{ get => GetTextBoxString(msgDate); set => SetTextBoxString(msgDate, value); }
@@ -175,11 +175,11 @@ namespace OAMunicipalStatusFormControl
         { get => GetTextBoxString(incidentName); }
 
         public string MunicipalityName
-        { get => municipalityName.SelectedItem as string; }
+        { get => (municipalityName.SelectedIndex != 0 ? "" : municipalityName.SelectedItem as string); }
 
-        public override string PacFormName => "OAMuniStatus";
+        public override string PacFormName => "XSC_OA_MuniStatus";
 
-        public override string PacFormType => "XSC_OA_MuniStatus";
+        public override string PacFormType => "OAMuniStatus";
 
         public override string CreateSubject()
         {

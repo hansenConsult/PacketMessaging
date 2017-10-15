@@ -3,6 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using FormControlBaseClass;
+using Windows.UI;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -11,9 +12,12 @@ namespace PacketMessaging.Views
 	public sealed partial class SendFormDataControl : UserControl
 	{
 		List<FormControl> _formFieldsList = new List<FormControl>();
+        public static SolidColorBrush _redBrush = new SolidColorBrush(Colors.Red);
+
+        string _validationResultMessage;
 
 
-		public SendFormDataControl()
+        public SendFormDataControl()
 		{
 			this.InitializeComponent();
 
@@ -84,45 +88,93 @@ namespace PacketMessaging.Views
 			}
 		}
 
-		public bool ValidateForm()
-		{
-			bool result = true;
-			foreach (FormControl formControl in _formFieldsList)
-			{
-				Control control = formControl.InputControl;
+        private void AddToErrorString(string errorText)
+        {
+            _validationResultMessage += ($"\n{errorText}");
+        }
 
-				if (control.Tag?.ToString() == "required")
-				{
-					if (control is TextBox textBox)
-					{
-						if (textBox.Text.Length == 0)
-						{
-							textBox.BorderBrush = FormControlBase._redBrush;
-							result &= false;
-						}
-						else
-						{
-							control.BorderBrush = formControl.BaseBorderColor;
-						}
-					}
-					//else if (control.GetType() == typeof(ComboBox))
-					//{
-					//	if (((ComboBox)control).SelectedIndex < 0)
-					//	{
-					//		control.BorderBrush = FormControlBase._redBrush;
-					//		result &= false;
-					//	}
-					//	else
-					//	{
-					//		control.BorderBrush = FormControlBase._whiteBrush;
-					//	}
-					//}
-				}
-			}
-			return result;
-		}
+        public string ValidateForm(string validationMessage)
+        {
+            _validationResultMessage = validationMessage;
+            foreach (FormControl formControl in _formFieldsList)
+            {
+                Control control = formControl.InputControl;
+                string tag = control.Tag as string;
+                if (!string.IsNullOrEmpty(tag) && control.IsEnabled && tag.Contains("conditionallyrequired"))
+                {
+                    continue;
+                }
 
-		private void MessageTo_TextChanged(object sender, TextChangedEventArgs e)
+                if (!string.IsNullOrEmpty(tag) && control.IsEnabled && control.Visibility == Visibility.Visible && tag.Contains("required"))
+                {
+                    if (control is TextBox textBox)
+                    {
+                        if (textBox.Text.Length == 0)
+                        {
+                            AddToErrorString(FormControlBase.GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
+                        }
+                    }
+                    else if (control is ComboBox comboBox)
+                    {
+                        if (string.IsNullOrEmpty((string)comboBox.SelectionBoxItem))
+                        {
+                            AddToErrorString(FormControlBase.GetTagErrorMessage(control));
+                            control.BorderBrush = _redBrush;
+                        }
+                        else
+                        {
+                            control.BorderBrush = formControl.BaseBorderColor;
+                        }
+                    }
+                }
+            }
+            return _validationResultMessage;
+        }
+
+        //public bool ValidateForm()
+        //{
+        //	bool result = true;
+        //	foreach (FormControl formControl in _formFieldsList)
+        //	{
+        //		Control control = formControl.InputControl;
+
+        //		if (control.Tag?.ToString() == "required")
+        //		{
+        //			if (control is TextBox textBox)
+        //			{
+        //				if (textBox.Text.Length == 0)
+        //				{
+        //					textBox.BorderBrush = FormControlBase._redBrush;
+        //					result &= false;
+        //				}
+        //				else
+        //				{
+        //					control.BorderBrush = formControl.BaseBorderColor;
+        //				}
+        //			}
+        //			//else if (control.GetType() == typeof(ComboBox))
+        //			//{
+        //			//	if (((ComboBox)control).SelectedIndex < 0)
+        //			//	{
+        //			//		control.BorderBrush = FormControlBase._redBrush;
+        //			//		result &= false;
+        //			//	}
+        //			//	else
+        //			//	{
+        //			//		control.BorderBrush = FormControlBase._whiteBrush;
+        //			//	}
+        //			//}
+        //		}
+        //	}
+        //	return result;
+        //}
+
+        private void MessageTo_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			messageTo.Text = AddressBook.GetAddress(messageTo.Text);
 		}

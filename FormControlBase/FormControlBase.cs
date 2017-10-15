@@ -43,15 +43,11 @@ namespace FormControlBaseClass
 		{ get; set; }
 	}
 
-	public abstract class FormControlBase : UserControl, INotifyPropertyChanged
+	public abstract class FormControlBase : FormControlBasics, INotifyPropertyChanged
 
     {
         //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static SolidColorBrush _redBrush = new SolidColorBrush(Colors.Red);
-		public static SolidColorBrush _whiteBrush = new SolidColorBrush(Colors.White);
-		public static SolidColorBrush _blackBrush = new SolidColorBrush(Colors.Black);
-		public static SolidColorBrush _lightSalmonBrush = new SolidColorBrush(Colors.LightSalmon);
 
 
 		public event EventHandler<FormEventArgs> EventSubjectChanged;
@@ -59,9 +55,7 @@ namespace FormControlBaseClass
 
 
         List<RadioButton> radioButtonsList = new List<RadioButton>();
-		List<FormControl> formControlsList = new List<FormControl>();
         //List<Control> formFieldsList = new List<Control>();
-        string validationResultMessage;
 
         string _operatorTime;
         string _messageTime;
@@ -340,63 +334,6 @@ namespace FormControlBaseClass
 			}
 		}
 
-        public virtual string ValidateForm()
-        {
-            validationResultMessage = "";
-            //bool result = true;
-            foreach (FormControl formControl in formControlsList)
-            {
-                Control control = formControl.InputControl;
-                string tag = control.Tag as string;
-                if (!string.IsNullOrEmpty(tag) && control.IsEnabled && tag.Contains("conditionallyrequired"))
-                {
-                    continue;
-                }
-
-                //if (control.Name == "comboBoxToICSPosition" || control.Name == "textBoxToICSPosition" || control.Name == "comboBoxFromICSPosition" || control.Name == "textBoxFromICSPosition")
-                //{
-                //    int a = 0;
-                //}
-                if (!string.IsNullOrEmpty(tag) && control.IsEnabled && control.Visibility == Visibility.Visible && tag.Contains("required"))
-                {
-                    if (control is TextBox textBox)
-                    {
-                        if (textBox.Text.Length == 0)
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                            //result &= false;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
-                    }
-                    else if (control is ComboBox comboBox)
-                    {
-                        if (string.IsNullOrEmpty((string)comboBox.SelectionBoxItem))
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                            control.BorderBrush = _redBrush;
-                            //result &= false;
-                        }
-                        else
-                        {
-                            control.BorderBrush = formControl.BaseBorderColor;
-                        }
-                    }
-                    else if (control is ToggleButtonGroup toggleButtonGroup)
-                    {
-                        if (!toggleButtonGroup.Validate())
-                        {
-                            AddToErrorString(GetTagErrorMessage(control));
-                        }
-                        //result &= ((ToggleButtonGroup)control).Validate();
-                    }
-                }
-            }
-            return validationResultMessage;
-        }
 
         public List<FormControl> FormControlsList
         { get => formControlsList; }
@@ -426,13 +363,13 @@ namespace FormControlBaseClass
         { get; set; }
 
         public virtual string MsgTime
-        { get { return _messageTime; } set { _messageTime = value;  } }
+        { get; set; }
 
         public virtual string OperatorDate
 		{ get; set; }
 
 		public virtual string OperatorTime
-		{ get => _operatorTime; set { _operatorTime = value; }}
+		{ get; set; }
 
         public virtual string Severity
         { get; set; }
@@ -458,6 +395,12 @@ namespace FormControlBaseClass
 
 		protected virtual List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
         {
+            if (packetMessage.FormFieldArray == null)
+            {
+                // This may happen if called from view Outpost Data
+                packetMessage.FormFieldArray = CreateFormFieldsInXML();
+                FillFormFromFormFields(packetMessage.FormFieldArray);
+            }
             foreach (FormField formField in packetMessage.FormFieldArray)
             {
                 if (string.IsNullOrEmpty(formField.ControlContent))
@@ -581,31 +524,7 @@ namespace FormControlBaseClass
             }
         }
 
-        public string GetTagErrorMessage(Control control)
-        {
-            string tag = control.Tag as string;
-            if (string.IsNullOrEmpty(tag))
-                return "";
 
-            string[] tags = tag.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            if (tags.Length == 2 && tags[0] == "required")
-            {
-                return tags[1];
-            }
-            else if (tags.Length == 3)
-            {
-                return tags[2];
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        protected void AddToErrorString(string errorText)
-        {
-            validationResultMessage += ($"\n{errorText}");
-        }
 
 
         public string CreateOutpostDataString(FormField formField)

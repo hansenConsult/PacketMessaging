@@ -69,13 +69,17 @@
 								<Border BorderBrush="Black" BorderThickness="0,0,0,1" Margin="0,0">
 									<StackPanel >
 										<TextBlock Style="{StaticResource LabelFontTNR12B}" Padding="5,0,5,5" Text=" Date:" />
-										<TextBox x:Name="msgDate" TextAlignment="Center" IsReadOnly="True" BorderBrush="White" Margin="2,0,2,2"/>
+										<TextBox x:Name="msgDate" 
+                                                 Text="{x:Bind MsgDate}"
+                                                 TextAlignment="Center" IsReadOnly="True" BorderBrush="White" Margin="2,0,2,2"/>
 									</StackPanel>
 								</Border>
 								<Border BorderBrush="Black" BorderThickness="0,0,0,1">
 									<StackPanel >
 										<TextBlock Style="{StaticResource LabelFontTNR12B}" Padding="5,0,5,5" Text="Time:" />
-										<TextBox x:Name="msgTime" TextAlignment="Center" IsReadOnly="True" BorderBrush="White" Margin="2,0,2,2"/>
+										<TextBox x:Name="msgTime" 
+                                                 Text="{x:Bind MsgTime}"
+                                                 TextAlignment="Center" IsReadOnly="True" BorderBrush="White" Margin="2,0,2,2"/>
 									</StackPanel>
 								</Border>
 								<TextBox x:Name="textBox" Height="1" Text="" BorderThickness="0" Margin="0,1" Width="10"/>
@@ -83,7 +87,7 @@
 							<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
 								<StackPanel>
 									<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Situation Severity" Foreground="LightSalmon" Margin="10"/>
-                                    <MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required,Indicate Situation Severity."/>
+                                    <MyNamespace:ToggleButtonGroup x:Name="severity" CheckedControlName="{x:Bind Severity}" Tag="required,Indicate Situation Severity."/>
 									<RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Padding="4" Content="EMERGENCY" Tag="required," Checked="Subject_Changed" 
 										ToolTipService.ToolTip="Life threat">
 									</RadioButton>
@@ -309,12 +313,12 @@
 						<Border  Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,1,1" >
 							<StackPanel Orientation="Horizontal" Height="34">
 								<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="How received" VerticalAlignment="Center" Margin="5,0,5,0" />
-								<MyNamespace:ToggleButtonGroup x:Name="receivedOrSent"/>
+                                <MyNamespace:ToggleButtonGroup x:Name="receivedOrSent" CheckedControlName="{x:Bind ReceivedOrSent}"/>
 								<RadioButton x:Name="received" GroupName="receivedOrSent" Style="{StaticResource ResourceKey=RadioButtonTNR12B}" Content="or Sent" Padding="5"/>
 								<RadioButton x:Name="sent" GroupName="receivedOrSent" Content="" Margin="-30,0,0,0"/>
 							</StackPanel>
 						</Border>
-						<MyNamespace:ToggleButtonGroup x:Name="howRecevedSent"/>
+                        <MyNamespace:ToggleButtonGroup x:Name="howRecevedSent" CheckedControlName="{x:Bind HowReceivedSent}"/>
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="149*" />
@@ -345,13 +349,17 @@
 						<Border BorderBrush="Black" BorderThickness="0,0,0,1">
 							<StackPanel Orientation="Horizontal" Height="34">
 								<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Operator Call Sign:" VerticalAlignment="Center" Margin="5"/>
-								<TextBox x:Name="operatorCallsign"  BorderBrush="White" HorizontalAlignment="Left" Margin="5,0,0,0" Width="auto"  />
+								<TextBox x:Name="operatorCallsign"  
+                                         Text="{x:Bind OperatorCallsign}" 
+                                         BorderBrush="White" HorizontalAlignment="Left" Margin="5,0,0,0" Width="auto"  />
 							</StackPanel>
 						</Border>
 						<Border BorderBrush="Black" BorderThickness="0,0,0,1" Height="34">
 							<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 								<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Operator Name:"  VerticalAlignment="Center" Margin="5"/>
-								<TextBox x:Name="operatorName"  BorderBrush="White" Margin="5,0,0,0" Width="auto"/>
+								<TextBox x:Name="operatorName"  
+                                         Text="{x:Bind OperatorName}"
+                                         BorderBrush="White" Margin="5,0,0,0" Width="auto"/>
 							</StackPanel>
 						</Border>
 						<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="" Height="33" />
@@ -367,9 +375,13 @@
 									<ColumnDefinition Width="1*"/>
 								</Grid.ColumnDefinitions>
 								<TextBlock Grid.Column="0"  Style="{StaticResource LabelFontTNR12B}" Text="Date:" VerticalAlignment="Center" Margin="5"/>
-								<TextBox Grid.Column="1" x:Name="operatorDate" TextAlignment="Left" BorderBrush="White" Margin="0"/>
+								<TextBox Grid.Column="1" x:Name="operatorDate" 
+                                         Text="{x:Bind OperatorDate}"
+                                         TextAlignment="Left" BorderBrush="White" Margin="0"/>
 								<TextBlock Grid.Column="2" Style="{StaticResource LabelFontTNR12B}" Text=" Time:"  VerticalAlignment="Center"/>
-								<TextBox Grid.Column="3" x:Name="operatorTime" TextAlignment="Left" BorderBrush="White" Margin="0" />
+								<TextBox Grid.Column="3" x:Name="operatorTime" 
+                                         Text="{x:Bind OperatorTime}"
+                                         TextAlignment="Left" BorderBrush="White" Margin="0" />
 							</Grid>
 						</Border>
 					</StackPanel>

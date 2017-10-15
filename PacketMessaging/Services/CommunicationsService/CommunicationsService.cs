@@ -208,7 +208,6 @@ namespace PacketMessaging.Services.CommunicationsService
 
             ViewModels.SharedData sharedData =  ViewModels.SharedData.SharedDataInstance;
 
-            //TNCDevice tncDevice = ViewModels.SharedData._currentTNCDevice;
             TNCDevice tncDevice = sharedData.CurrentTNCDevice;
             if (tncDevice != null)
 			{
@@ -277,12 +276,9 @@ namespace PacketMessaging.Services.CommunicationsService
 						}
 					}
 				}
-				// Collect messages to be sent
-				_packetMessagesToSend.Clear();
-                    //DirectoryInfo diUnsentFolder = new DirectoryInfo(Views.MainPage.unsentMessagesFolder.Path);
-                    //foreach (FileInfo fi in diUnsentFolder.GetFiles())
+				    // Collect messages to be sent
+				    _packetMessagesToSend.Clear();
                     List<string> fileTypeFilter = new List<string>() { ".xml" };
-                    //fileTypeFilter.Add(".xml");
                     QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypeFilter);
 
                     // Get the files in the user's archive folder
@@ -453,5 +449,4 @@ namespace PacketMessaging.Services.CommunicationsService
 		}
 
 	}
-
 }

@@ -11,7 +11,7 @@
              d:DesignHeight="120" d:DesignWidth="300">
 
     <StackPanel x:Name="PrintableArea" Height="auto" RequestedTheme="Light">
-        <TextBox x:Name="messageBody" AcceptsReturn="True" TextWrapping="Wrap" Margin="5" Tag="required"/>
+        <TextBox x:Name="messageBody" AcceptsReturn="True" TextWrapping="Wrap" Margin="5" Tag="0,required"/>
 		<!--<RichTextBox x:Name="messageBody" FontFamily="Courier New" FontSize="12" Height="100" AcceptsReturn="True" AcceptsTab="True" Margin="5" Tag="required">
 			<FlowDocument>
 				<Paragraph>

@@ -22,6 +22,7 @@ using Windows.Storage;
 using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ToggleButtonGroupControl;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace PacketMessaging.Views
 {
@@ -841,7 +842,7 @@ namespace PacketMessaging.Views
 
 
 		// Create a packetMessage from the filled out form
-		public void CreatePacketMessage()
+		private void CreatePacketMessage()
 		{
             _packetMessage = new PacketMessage()
             {
@@ -1163,20 +1164,18 @@ namespace PacketMessaging.Views
 
             StackPanel stackPanel = ((ScrollViewer)pivotItem.Content).Content as StackPanel;
 
+            stackPanel.Children.Clear();
             if (pivotItemName == "SimpleMessage")
 			{
-                stackPanel.Children.Clear();
                 stackPanel.Children.Insert(0, _packetAddressForm);
                 stackPanel.Children.Insert(1, _packetForm);
-				_packetAddressForm.MessageSubject = _packetForm.MessageNo + "_O/R_";
-			}
+            }
             else
             {
-                stackPanel.Children.Clear();
                 stackPanel.Children.Insert(0, _packetForm);
                 stackPanel.Children.Insert(1, _packetAddressForm);
-                _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
             }
+            _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
 
             if (!_loadMessage)
             {
@@ -1215,21 +1214,21 @@ namespace PacketMessaging.Views
 #region SendMessage
 		private async void AppBarSend_ClickAsync(object sender, RoutedEventArgs e)
 		{
-			if (!string.IsNullOrEmpty(_packetForm.ValidateForm()))
-			{
-				MessageDialog messageDialog = new MessageDialog($"Please fill out areas in red.\n{_packetForm.ValidationResultMessage}\nPress \"Send\" again to continue.", "Form Error");
-				await messageDialog.ShowAsync();
+            string validationResult = _packetForm.ValidateForm();
+            validationResult = _packetAddressForm.ValidateForm(validationResult);
+            if (!string.IsNullOrEmpty(validationResult))
+            {
+                //validationResult = "Please fill out the areas in red." + validationResult;
+                validationResult += "\n\nAdd the missing information and press \"Send\" again to continue.";
+                ContentDialog contentDialog = new ContentDialog();
+                contentDialog.Title = "Missing input fields";
+                contentDialog.Content = validationResult;
+                contentDialog.CloseButtonText = "Close";
+                ContentDialogResult result = await contentDialog.ShowAsync();
+                return;
+            }
 
-				return;
-			}
-			if (_packetAddressForm.ValidateForm() == false)
-			{
-				MessageDialog messageDialog = new MessageDialog("Missing BBS name, TNC name or To/From. \nAdd the missing information and press \"Send\" again to continue.", "Form Error");
-				await messageDialog.ShowAsync();
-				return;
-			}
-
-			CreatePacketMessage();
+            CreatePacketMessage();
 			DateTime dateTime = DateTime.Now;
 			_packetMessage.CreateTime = $"{dateTime.Month:d2}/{dateTime.Day:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
 
@@ -1255,6 +1254,30 @@ namespace PacketMessaging.Views
         private async void AppBarPrint_ClickAsync(object sender, RoutedEventArgs e)
         {
             await printHelper.ShowPrintUIAsync();
+        }
+
+        private async void AppBarViewOutpostData_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            CreatePacketMessage();
+
+            if (string.IsNullOrEmpty(_packetMessage.MessageBody))
+            {
+                _packetMessage.MessageBody = _packetForm.CreateOutpostData(ref _packetMessage);
+            }
+            ContentDialog contentDialog = new ContentDialog();
+            contentDialog.Title = "Outpost Message";
+            contentDialog.Content = _packetMessage.MessageBody;
+            contentDialog.CloseButtonText = "Cancel";
+            contentDialog.IsPrimaryButtonEnabled = true;
+            contentDialog.PrimaryButtonText = "Copy";
+            ContentDialogResult result = await contentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                DataPackage dataPackage = new DataPackage();
+                dataPackage.RequestedOperation = DataPackageOperation.Copy;
+                dataPackage.SetText(_packetMessage.MessageBody);
+                Clipboard.SetContent(dataPackage);
+            }            
         }
 
         //private async void appBarOpen_Click(object sender, RoutedEventArgs e)

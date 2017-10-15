@@ -24,26 +24,26 @@ namespace MessageFormControl
             InitializeControls();
 		}
 
-        public override string MessageNo
-        { get;  set; }
+        //public override string MessageNo
+        //{ get;  set; }
 
-        public override string MsgDate
-        { get; set; }
+        //public override string MsgDate
+        //{ get; set; }
 
-        public override string MsgTime
-        { get; set; }
+        //public override string MsgTime
+        //{ get; set; }
 
-        public override string OperatorCallsign
-        { get; set; }
+        //public override string OperatorCallsign
+        //{ get; set; }
 
-        public override string OperatorName
-        { get; set; }
+        //public override string OperatorName
+        //{ get; set; }
 
-        public override string OperatorDate
-        { get; set; }
+        //public override string OperatorDate
+        //{ get; set; }
 
-        public override string OperatorTime
-        { get; set; }
+        //public override string OperatorTime
+        //{ get; set; }
 
 		public override string PacFormName => "SimpleMessage";
 
@@ -112,8 +112,6 @@ namespace MessageFormControl
             return formFields;
         }
 
-		//public override string CreateSubject() => MessageNo + "_O/R_";
-		public override string CreateSubject() => null;
-
+		public override string CreateSubject() => MessageNo + "_O/R_";
 	}
 }

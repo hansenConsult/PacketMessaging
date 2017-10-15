@@ -42,7 +42,8 @@
                         <Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,0,0,0">
                             <StackPanel Grid.Column="2">
                                 <TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black" HorizontalAlignment="Center" Text="Message #:"/>
-                                <TextBox x:Name="messageNo"  IsReadOnly="True"
+                                <TextBox x:Name="messageNo"  
+                                         Text="{x:Bind MessageNo, Mode=TwoWay}"
 										 TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2"  
                                          Tag="1,required,Enter a Message Number." TextChanged="Subject_Changed"/>
                             </StackPanel>
@@ -50,7 +51,8 @@
                         <Border Grid.Column="3" BorderBrush="Black" BorderThickness="1,0,0,0">
                             <StackPanel Grid.Column="3">
                                 <TextBlock  FontSize="8" FontFamily="Arial" FontWeight="Bold" Foreground="Black"  HorizontalAlignment="Center" Text="Receiver's msg #:"/>
-                                <TextBox x:Name="receiverMsgNo" TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2" Tag="2"/>
+                                <TextBox x:Name="receiverMsgNo" 
+                                         TextAlignment="Center" BorderBrush="White" Margin="2,0,2,2" Tag="2"/>
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -65,7 +67,9 @@
                         <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1,0,0,0">
                             <StackPanel >
                                 <TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Situation Severity" Foreground="LightSalmon" Margin="5"/>
-                                <MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required,Indicate Situation Severity."/>
+                                <MyNamespace:ToggleButtonGroup x:Name="severity"
+                                                               CheckedControlName
+                                                               Tag="required,Indicate Situation Severity."/>
                                 <RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="EMERGENCY" Tag="4" Checked="Subject_Changed" 
 									ToolTipService.ToolTip="Life threat"/>
                                 <RadioButton x:Name="urgent" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="URGENT" Tag="5" Checked="Subject_Changed"

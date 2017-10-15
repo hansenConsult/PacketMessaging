@@ -179,7 +179,7 @@ namespace CityScanFormControl
 
 		protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
 		{
-			foreach (FormField formField in packetMessage.FormFieldArray)
+            foreach (FormField formField in packetMessage.FormFieldArray)
 			{
 				if (formField.ControlContent == null || formField.ControlContent.Length == 0)
 					continue;

@@ -51,19 +51,19 @@ namespace ICS213FormControl
 		public override string SenderMsgNo
 		{ get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
 
-		public override string MsgDate
-		{ get { return GetTextBoxString(msgDate); } set { SetTextBoxString(msgDate, value); } }
+        //public override string MsgDate
+        //{ get { return GetTextBoxString(msgDate); } set { SetTextBoxString(msgDate, value); } }
 
-		public override string MsgTime
-		{ get { return GetTextBoxString(msgTime); } set { SetTextBoxString(msgTime, value); } }
+        //public override string MsgTime
+        //{ get { return GetTextBoxString(msgTime); } set { SetTextBoxString(msgTime, value); } }
 
-		public override string Severity
-		{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
+        public override string Severity
+        { get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
-		public override string HandlingOrder
-		{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
+        public override string HandlingOrder
+        { get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
 
-		public string Action
+        public string Action
 		{ get { return action.GetRadioButtonCheckedState(); } set { action.SetRadioButtonCheckedState(value); } }
 
 		public string Reply
@@ -108,26 +108,26 @@ namespace ICS213FormControl
 		public string Message
 		{ get { return (GetTextBoxString(message)); } set { SetTextBoxString(message, value); } }
 
-		public override string ReceivedOrSent
-		{ get { return receivedOrSent.GetRadioButtonCheckedState(); } set { receivedOrSent.SetRadioButtonCheckedState(value); } }
+		//public override string ReceivedOrSent
+		//{ get { return receivedOrSent.GetRadioButtonCheckedState(); } set { receivedOrSent.SetRadioButtonCheckedState(value); } }
 
-		public override string HowReceivedSent
-        { get { return howRecevedSent.GetRadioButtonCheckedState(); } set { howRecevedSent.SetRadioButtonCheckedState(value); } }
+		//public override string HowReceivedSent
+  //      { get { return howRecevedSent.GetRadioButtonCheckedState(); } set { howRecevedSent.SetRadioButtonCheckedState(value); } }
 
 		public string OtherText
 		{ get { return GetTextBoxString(otherText); } set { SetTextBoxString(otherText, value); } }
 
-		public override string OperatorCallsign
-		{ get { return GetTextBoxString(operatorCallsign); } set { SetTextBoxString(operatorCallsign, value); } }
+		//public override string OperatorCallsign
+		//{ get { return GetTextBoxString(operatorCallsign); } set { SetTextBoxString(operatorCallsign, value); } }
 
-		public override string OperatorName
-		{ get { return GetTextBoxString(operatorName); } set { SetTextBoxString(operatorName, value); } }
+		//public override string OperatorName
+		//{ get { return GetTextBoxString(operatorName); } set { SetTextBoxString(operatorName, value); } }
 
-		public override string OperatorDate
-		{ get { return GetTextBoxString(operatorDate); } set { SetTextBoxString(operatorDate, value); } }
+		//public override string OperatorDate
+		//{ get { return GetTextBoxString(operatorDate); } set { SetTextBoxString(operatorDate, value); } }
 
-		public override string OperatorTime
-		{ get { return GetTextBoxString(operatorTime); } set { SetTextBoxString(operatorTime, value); } }
+		//public override string OperatorTime
+		//{ get { return GetTextBoxString(operatorTime); } set { SetTextBoxString(operatorTime, value); } }
 
 		public override string PacFormName => "Message";
 
@@ -140,7 +140,14 @@ namespace ICS213FormControl
 
 		protected override List<string> CreateOutpostDataFromFormFields(ref PacketMessage packetMessage, ref List<string> outpostData)
 		{
-			foreach (FormField formField in packetMessage.FormFieldArray)
+            if (packetMessage.FormFieldArray == null)
+            {
+                // This may happen if called from view Outpost Data
+                packetMessage.FormFieldArray = CreateFormFieldsInXML();
+                FillFormFromFormFields(packetMessage.FormFieldArray);
+            }
+
+            foreach (FormField formField in packetMessage.FormFieldArray)
 			{
 				if (formField.ControlContent == null || formField.ControlContent.Length == 0)
 					continue;
@@ -455,6 +462,5 @@ namespace ICS213FormControl
 					((string)((Button)sender).Content == "List Input"));
 		}
 
-
-	}
+    }
 }

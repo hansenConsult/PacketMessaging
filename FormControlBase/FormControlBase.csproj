@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="FormControl.cs" />
     <Compile Include="FormControlBase.cs" />
+    <Compile Include="FormControlBasics.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="PacketMessage.cs" />
     <Compile Include="PrintHelper.cs" />
