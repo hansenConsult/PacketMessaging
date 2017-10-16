@@ -57,11 +57,11 @@ namespace ICS213FormControl
         //public override string MsgTime
         //{ get { return GetTextBoxString(msgTime); } set { SetTextBoxString(msgTime, value); } }
 
-        public override string Severity
-        { get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
+        //public override string Severity
+        //{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
-        public override string HandlingOrder
-        { get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
+        //public override string HandlingOrder
+        //{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
 
         public string Action
 		{ get { return action.GetRadioButtonCheckedState(); } set { action.SetRadioButtonCheckedState(value); } }

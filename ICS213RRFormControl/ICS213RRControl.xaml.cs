@@ -36,11 +36,11 @@ namespace EOC213RRFormControl
         //public  override string SenderMsgNo
         //{ get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
 
-        public override string Severity
-        { get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
+        //public override string Severity
+        //{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
-        public override string HandlingOrder
-        { get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
+        //public override string HandlingOrder
+        //{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
 
         //public string Reply
         //{ get { return reply.GetRadioButtonCheckedState(); } set { reply.SetRadioButtonCheckedState(value); } }

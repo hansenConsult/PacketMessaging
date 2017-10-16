@@ -44,9 +44,9 @@ namespace XSC_Message_v1709FormControl
 		public override string ReceiverMsgNo
 		{ get { return GetTextBoxString(receiverMsgNo); } set { SetTextBoxString(receiverMsgNo, value); } }
 
-		public override string MessageNo
-		{ get { return GetTextBoxString(messageNo); }
-			set { SetTextBoxString(messageNo, value); } }
+		//public override string MessageNo
+		//{ get { return GetTextBoxString(messageNo); }
+		//	set { SetTextBoxString(messageNo, value); } }
 
 		public override string SenderMsgNo
 		{ get { return GetTextBoxString(senderMsgNo); } set { SetTextBoxString(senderMsgNo, value); } }
@@ -57,11 +57,11 @@ namespace XSC_Message_v1709FormControl
 		public override string MsgTime
 		{ get { return GetTextBoxString(msgTime); } set { SetTextBoxString(msgTime, value); } }
 
-		public override string Severity
-		{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
+		//public override string Severity
+		//{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
-		public override string HandlingOrder
-		{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
+		//public override string HandlingOrder
+		//{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
 
 		public string Action
 		{ get { return action.GetRadioButtonCheckedState(); } set { action.SetRadioButtonCheckedState(value); } }

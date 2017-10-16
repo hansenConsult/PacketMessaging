@@ -715,8 +715,10 @@ namespace PacketMessaging.Views
             foreach (FormControlAttributes formControlAttribute in _formControlAttributeList)
             {
                 PivotItem pivotItem = CreatePivotItem(formControlAttribute);
-                //PivotItem pivotItem = CreatePivotItem(_formControlAttributeList[3]);
-                MyPivot.Items.Add(pivotItem);
+                //if (pivotItem.Name != "Message")
+                //{
+                    MyPivot.Items.Add(pivotItem);
+                //}
             }
         }
 
@@ -809,6 +811,7 @@ namespace PacketMessaging.Views
                 {
                     if (_formControlAttributeList[i].FormControlName == _formControlAttributeList[j].FormControlName)
                     {
+                        // Should be version rather than creation date
                         if (_formControlAttributeList[i].FormControlFileName.DateCreated > _formControlAttributeList[j].FormControlFileName.DateCreated)
                         {
                             _formControlAttributeList.Remove(_formControlAttributeList[j]);
@@ -820,6 +823,35 @@ namespace PacketMessaging.Views
                     }
                 }
             }
+            List<FormControlAttributes> attributeListTypeNone = new List<FormControlAttributes>();
+            List<FormControlAttributes> attributeListTypeCounty = new List<FormControlAttributes>();
+            List<FormControlAttributes> attributeListTypeCity = new List<FormControlAttributes>();
+            List<FormControlAttributes> attributeListTypeHospital = new List<FormControlAttributes>();
+            // Sort by menu type
+            foreach (FormControlAttributes formControlAttributes in _formControlAttributeList)
+            {
+                if (formControlAttributes.FormControlType == FormControlAttribute.FormType.None)
+                {
+                    attributeListTypeNone.Add(formControlAttributes);
+                }
+                else if (formControlAttributes.FormControlType == FormControlAttribute.FormType.CountyForm)
+                {
+                    attributeListTypeCounty.Add(formControlAttributes);
+                }
+                else if (formControlAttributes.FormControlType == FormControlAttribute.FormType.CityForm)
+                {
+                    attributeListTypeCity.Add(formControlAttributes);
+                }
+                else if (formControlAttributes.FormControlType == FormControlAttribute.FormType.HospitalForm)
+                {
+                    attributeListTypeHospital.Add(formControlAttributes);
+                }
+            }
+            _formControlAttributeList.Clear();
+            _formControlAttributeList.AddRange(attributeListTypeNone);
+            _formControlAttributeList.AddRange(attributeListTypeCounty);
+            _formControlAttributeList.AddRange(attributeListTypeCity);
+            _formControlAttributeList.AddRange(attributeListTypeHospital);
         }
 
         public void ScanControls(DependencyObject panelName)
@@ -1066,11 +1098,10 @@ namespace PacketMessaging.Views
             if (files == null)
                 return null;
 
-            //string fileName;
-            foreach (var file in files)
-            {
-                string testFileName = file.Name;
-            }
+            //foreach (var file in files)   // Test
+            //{
+            //    string testFileName = file.Name;
+            //}
             Type foundType = null;
             foreach (var file in files.Where(file => file.FileType == ".dll" && file.Name.Contains(fileName)))
             {
@@ -1170,11 +1201,20 @@ namespace PacketMessaging.Views
                 stackPanel.Children.Insert(0, _packetAddressForm);
                 stackPanel.Children.Insert(1, _packetForm);
             }
+            //else if (pivotItemName == "Message")
+            //{
+            //    Form213Panel.Children.Clear();
+            //    Form213Panel.Children.Insert(0, _packetForm);
+            //    Form213Panel.Children.Insert(1, _packetAddressForm);
+            //    _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
+            //}
+            //else if (pivotItemName != "Message")
             else
             {
                 stackPanel.Children.Insert(0, _packetForm);
                 stackPanel.Children.Insert(1, _packetAddressForm);
             }
+
             _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
 
             if (!_loadMessage)
@@ -1219,11 +1259,13 @@ namespace PacketMessaging.Views
             if (!string.IsNullOrEmpty(validationResult))
             {
                 //validationResult = "Please fill out the areas in red." + validationResult;
-                validationResult += "\n\nAdd the missing information and press \"Send\" again to continue.";
-                ContentDialog contentDialog = new ContentDialog();
-                contentDialog.Title = "Missing input fields";
-                contentDialog.Content = validationResult;
-                contentDialog.CloseButtonText = "Close";
+                validationResult += "\n\nAdd the missing information and press \"Send\" to continue.";
+                ContentDialog contentDialog = new ContentDialog
+                {
+                    Title = "Missing input fields",
+                    Content = validationResult,
+                    CloseButtonText = "Close"
+                };
                 ContentDialogResult result = await contentDialog.ShowAsync();
                 return;
             }
@@ -1232,8 +1274,8 @@ namespace PacketMessaging.Views
 			DateTime dateTime = DateTime.Now;
 			_packetMessage.CreateTime = $"{dateTime.Month:d2}/{dateTime.Day:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
 
-
 			_packetMessage.Save(MainPage.unsentMessagesFolder.Path);
+
 			Services.CommunicationsService.CommunicationsService communicationsService = Services.CommunicationsService.CommunicationsService.CreateInstance();
 			communicationsService.BBSConnectAsync();
 		}
@@ -1264,13 +1306,18 @@ namespace PacketMessaging.Views
             {
                 _packetMessage.MessageBody = _packetForm.CreateOutpostData(ref _packetMessage);
             }
-            ContentDialog contentDialog = new ContentDialog();
-            contentDialog.Title = "Outpost Message";
-            contentDialog.Content = _packetMessage.MessageBody;
-            contentDialog.CloseButtonText = "Cancel";
-            contentDialog.IsPrimaryButtonEnabled = true;
-            contentDialog.PrimaryButtonText = "Copy";
-            ContentDialogResult result = await contentDialog.ShowAsync();
+
+            //outpostDataDialog.Title = "Outpost Message";
+            //outpostDataDialog.Content = _packetMessage.MessageBody;
+            //ContentDialogResult result = await outpostDataDialog.ShowAsync();
+
+            //outpostDataDialog contentDialog = new ContentDialog();
+            outpostDataDialog.Title = "Outpost Message";
+            outpostDataDialog.Content = _packetMessage.MessageBody;
+            outpostDataDialog.CloseButtonText = "Cancel";
+            outpostDataDialog.IsPrimaryButtonEnabled = true;
+            outpostDataDialog.PrimaryButtonText = "Copy";
+            ContentDialogResult result = await outpostDataDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
                 DataPackage dataPackage = new DataPackage();

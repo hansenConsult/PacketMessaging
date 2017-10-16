@@ -29,7 +29,7 @@ namespace PacketMessaging.Services.CommunicationsService
 
         private static readonly Object singletonCreationLock = new Object();
         static volatile CommunicationsService _communicationsService = null;
-		static bool _deviceFound = true;
+		static bool _deviceFound = false;
 
         private CommunicationsService(ILogger log) : base(log)
         {

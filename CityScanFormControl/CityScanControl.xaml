@@ -87,7 +87,8 @@
 								<StackPanel>
 									<TextBlock Style="{StaticResource LabelFontTNR12B}" Foreground="LightSalmon" Margin="5,5"
 										Text="Situation Severity"/>
-									<MyNamespace:ToggleButtonGroup x:Name="severity" Tag="required"/>
+									<MyNamespace:ToggleButtonGroup x:Name="severity" 
+                                                                   Tag="required"/>
 									<RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Content="EMERGENCY" Checked="Subject_Changed" Padding="4,0,0,0">
 										<!--<RadioButton.ToolTip>Life Threat</RadioButton.ToolTip>-->
 									</RadioButton>

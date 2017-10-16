@@ -43,7 +43,7 @@ namespace FormControlBaseClass
 		{ get; set; }
 	}
 
-	public abstract class FormControlBase : FormControlBasics, INotifyPropertyChanged
+	public abstract class FormControlBase : FormControlBasics
 
     {
         //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -751,11 +751,21 @@ namespace FormControlBaseClass
 
 		protected void Subject_Changed(object sender, RoutedEventArgs e)
 		{
-			if (sender is RadioButton radioButton && radioButton.Name == "emergency")
-			{
-    			HandlingOrder = "immediate";
-			}
-			EventHandler<FormEventArgs> OnSubjectChange = EventSubjectChanged;
+            if (sender is RadioButton radioButton)
+            {
+                if (radioButton.Name == "emergency")
+                {
+                    HandlingOrder = "immediate";
+                }
+                foreach (FormControl formControl in formControlsList)
+                {
+                    if (formControl.InputControl is ToggleButtonGroup toggleButtonGroup && toggleButtonGroup.Name == radioButton.GroupName)
+                    {
+                        toggleButtonGroup.CheckedControlName = radioButton.Name;
+                    }
+                }
+            }
+            EventHandler<FormEventArgs> OnSubjectChange = EventSubjectChanged;
             FormEventArgs formEventArgs = new FormEventArgs() { SubjectLine = MessageNo };
 			OnSubjectChange?.Invoke(this, formEventArgs);
 		}

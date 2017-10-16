@@ -144,8 +144,8 @@ namespace OAMunicipalStatusFormControl
         //public override string Severity
         //{ get { return severity.GetRadioButtonCheckedState(); } set { severity.SetRadioButtonCheckedState(value); } }
 
-        public override string HandlingOrder
-        { get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
+        //public override string HandlingOrder
+        //{ get { return handlingOrder.GetRadioButtonCheckedState(); } set { handlingOrder.SetRadioButtonCheckedState(value); } }
 
         //public override string MsgDate
         //{ get => GetTextBoxString(msgDate); set => SetTextBoxString(msgDate, value); }

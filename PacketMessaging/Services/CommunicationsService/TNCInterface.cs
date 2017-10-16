@@ -742,7 +742,9 @@ Disconnect:
 				{
 					log.Fatal($"Connect state: {Enum.Parse(typeof(ConnectState), _connectState.ToString())} Exception: {e.Message}");
 				}
-				//_serialPort.Debug.WriteLine("B\r\n");
+                //_serialPort.Debug.WriteLine("B\r\n");
+                Utilities.ShowMessageDialogAsync("Failed to communicate with the TNC");
+                return;
 			}
 			finally
 			{

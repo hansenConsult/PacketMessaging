@@ -16,6 +16,7 @@ namespace PacketMessaging.ViewModels
 	public class FormsPageViewModel : ViewModelBase
 	{
         public static FormsPageViewModel _formsPageViewModel { get; } = new FormsPageViewModel();
+
         Services.FormsPageService.FormsPageService _formsPageServiceInstance;
 
         public FormsPageViewModel()
@@ -27,13 +28,8 @@ namespace PacketMessaging.ViewModels
             }
 		}
 
-        public string TestFileName
-        {
-            get { return _formsPageServiceInstance.TestFileName; }
-            set { _formsPageServiceInstance.TestFileName = value; base.RaisePropertyChanged(); }
-        }
 
-
+      
 
         //private PacketMessage _packetMessage = null;
         //public PacketMessage PacMessage { get { return _packetMessage; } set { Set(ref _packetMessage, value); } }

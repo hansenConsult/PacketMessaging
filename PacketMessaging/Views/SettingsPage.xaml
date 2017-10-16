@@ -576,7 +576,8 @@
             <!--<Address Book-->
             <!--ItemTemplate="{StaticResource ContactListViewTemplate}"-->
             <PivotItem Header="Address Book">
-                <RelativePanel DataContext="{Binding AddressBookPartViewModel}">
+                <!--DataContext="{Binding AddressBookPartViewModel}"-->
+                <RelativePanel >
                     <ListView ItemsSource="{x:Bind ContactsCVS.View}"
 							  ItemTemplate="{StaticResource ContactListViewTemplate}"
 							  RelativePanel.AlignLeftWithPanel="True"

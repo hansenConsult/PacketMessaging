@@ -20,44 +20,45 @@ namespace ToggleButtonGroupControl
 
 		IList<RadioButton> _radioButtonGroup = new List<RadioButton>();
 
-			static ToggleButtonGroup()
-			{
-				//DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
-			}
+		static ToggleButtonGroup()
+		{
+			//DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
+		}
 
-            //public ToggleButtonGroup(List<RadioButton> radioButtonList, string groupName)
-            //{
-            //    DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
-
-            //    foreach (RadioButton radioButton in radioButtonList)
-            //    {
-            //        if (radioButton.GroupName == groupName)
-            //        {
-            //            radioButtonGroup.Add(radioButton);
-            //            radioButton.IsChecked = false;
-            //        }
-            //    }
-            //    SetBorderBrush(_blackBrush);
-            //}
-
-            public IList<RadioButton> RadioButtonGroup
-            { get => _radioButtonGroup; }
-
-        //public static readonly DependencyProperty
-        //    CheckedControlNameProperty = DependencyProperty.Register("CheckedControlName", typeof(string), 
-        //        typeof(ToggleButtonGroup), new PropertyMetadata(null, new PropertyChangedCallback(OnSelectionChanged)));
-
-        //private static void OnSelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //public ToggleButtonGroup(List<RadioButton> radioButtonList, string groupName)
         //{
-        //    string newval = e.NewValue as string;
+        //    DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleButtonGroup), new FrameworkPropertyMetadata(typeof(ToggleButtonGroup)));
+
+        //    foreach (RadioButton radioButton in radioButtonList)
+        //    {
+        //        if (radioButton.GroupName == groupName)
+        //        {
+        //            radioButtonGroup.Add(radioButton);
+        //            radioButton.IsChecked = false;
+        //        }
+        //    }
+        //    SetBorderBrush(_blackBrush);
         //}
+
+        public IList<RadioButton> RadioButtonGroup
+        { get => _radioButtonGroup; }
+
+        public static readonly DependencyProperty
+            CheckedControlNameProperty = DependencyProperty.Register("CheckedControlName", typeof(string),
+                typeof(ToggleButtonGroup), new PropertyMetadata(null, new PropertyChangedCallback(OnSelectionChanged)));
+
+        private static void OnSelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            string newval = e.NewValue as string;
+            (d as ToggleButtonGroup).SetRadioButtonCheckedState(e.NewValue as string);
+        }
 
         public string CheckedControlName
-        //{
-        //    get { return (string)GetValue(CheckedControlNameProperty); }
-        //    set { SetValue(CheckedControlNameProperty, value); }
-        //}
-        { get { return GetRadioButtonCheckedState(); } set { SetRadioButtonCheckedState(value); } }
+        {
+            get { return (string)GetValue(CheckedControlNameProperty); }
+            set { SetValue(CheckedControlNameProperty, value); }
+        }
+        //{ get { return GetRadioButtonCheckedState(); } set { SetRadioButtonCheckedState(value); } }
 
         public void Initialize(IList<RadioButton> radioButtonList, string groupName)
 			{

@@ -87,7 +87,8 @@
 							<Border Grid.Column="1" BorderBrush="Black" BorderThickness="1,0,0,0">
 								<StackPanel>
 									<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Situation Severity" Foreground="LightSalmon" Margin="10"/>
-                                    <MyNamespace:ToggleButtonGroup x:Name="severity" CheckedControlName="{x:Bind Severity}" Tag="required,Indicate Situation Severity."/>
+                                    <MyNamespace:ToggleButtonGroup x:Name="severity" 
+                                                                   CheckedControlName="{x:Bind Severity, Mode=TwoWay}" Tag="required,Indicate Situation Severity."/>
 									<RadioButton x:Name="emergency" GroupName="severity" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Padding="4" Content="EMERGENCY" Tag="required," Checked="Subject_Changed" 
 										ToolTipService.ToolTip="Life threat">
 									</RadioButton>
@@ -102,7 +103,9 @@
 							<Border Grid.Column="2" BorderBrush="Black" BorderThickness="1,0,0,0">
 								<StackPanel>
 									<TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Msg. Handling Order" Foreground="LightSalmon" Margin=" 10"/>
-                                    <MyNamespace:ToggleButtonGroup x:Name="handlingOrder" Tag="required,Indicate Msg. Handling Order."/>
+                                    <MyNamespace:ToggleButtonGroup x:Name="handlingOrder" 
+                                                                   CheckedControlName="{x:Bind HandlingOrder, Mode=TwoWay}"
+                                                                   Tag="required,Indicate Msg. Handling Order."/>
 									<RadioButton x:Name="immediate" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10, 8" Padding="4" Content="IMMEDIATE" Checked="Subject_Changed">
 										<!--<RadioButton.ToolTip>As soon as possible</RadioButton.ToolTip>-->
 									</RadioButton>

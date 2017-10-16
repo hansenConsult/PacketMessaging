@@ -221,7 +221,7 @@ namespace PacketMessaging
             ObservableCollection<GroupInfoList> groups = new ObservableCollection<GroupInfoList>();
 
             var query = from item in GetContacts()
-                        group item by item.Callsign[0] into g
+                        group item by item.Callsign.Substring(0, 1) into g
                         orderby g.Key
                         select new { GroupName = g.Key, Items = g };
 

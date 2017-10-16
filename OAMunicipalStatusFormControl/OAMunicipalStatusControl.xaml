@@ -90,7 +90,7 @@
                                     <StackPanel>
                                         <TextBlock Style="{StaticResource LabelFontTNR12B}" Text="Msg. Handling Order" Foreground="LightSalmon" Margin=" 5"/>
                                         <MyNamespace:ToggleButtonGroup x:Name="handlingOrder" 
-                                                                       CheckedControlName="{x:Bind HandlingOrder}" 
+                                                                       CheckedControlName="{x:Bind HandlingOrder, Mode=TwoWay}" 
                                                                        Tag="required,Indicate Msg. Handling Order."/>
                                         <RadioButton x:Name="immediate" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="IMMEDIATE" Tag="7" Checked="Subject_Changed"/>
                                         <RadioButton x:Name="priority" GroupName="handlingOrder" Style="{StaticResource RadioButtonTNR12B}" Margin="10,0" Padding="4" Content="PRIORITY" Tag="8" Checked="Subject_Changed"/>
