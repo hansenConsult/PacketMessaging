@@ -58,7 +58,7 @@ namespace PacketMessaging.Views
 		{
 			get => messageTo.Text;
 			//set => messageTo.Text = value;
-            set => messageTo.Text = AddressBook.GetAddress(value);
+            set => messageTo.Text = AddressBook.Instance.GetAddress(value);
 		}
 
 		public string MessageSubject
@@ -176,7 +176,7 @@ namespace PacketMessaging.Views
 
         private void MessageTo_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			messageTo.Text = AddressBook.GetAddress(messageTo.Text);
+			messageTo.Text = AddressBook.Instance.GetAddress(messageTo.Text);
 		}
 	}
 }

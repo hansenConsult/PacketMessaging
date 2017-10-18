@@ -180,7 +180,7 @@ namespace PacketMessaging.Services.SettingsServices
 		}
 
 
-        #region TNC
+#region TNC
         public int TNCDeviceSelectedIndex
 		{
 			get { return _helper.Read<int>(nameof(TNCDeviceSelectedIndex), 0); }

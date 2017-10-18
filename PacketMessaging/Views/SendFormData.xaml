@@ -12,16 +12,43 @@
 
 
     <RelativePanel x:Name="messageInfo"  BorderBrush="Black" BorderThickness="1" Padding="12" RequestedTheme="Light">
-        <TextBlock x:Name="labelBBS" RelativePanel.AlignLeftWithPanel="True"  Text="BBS:" Width="55" Margin="0,8,8,8"/>
-        <TextBox x:Name="messageBBS" RelativePanel.AlignVerticalCenterWith="labelBBS" RelativePanel.RightOf="labelBBS" VerticalContentAlignment="Center" Tag="required,Please select a BBS" BorderThickness="2"  HorizontalAlignment="Left" Width="100"  />
-        <TextBlock x:Name="labelTNC" RelativePanel.AlignVerticalCenterWith="labelBBS" RelativePanel.RightOf="messageBBS"  Text="TNC:" Margin="30,0,0,0" />
-        <TextBox x:Name="messageTNC" RelativePanel.AlignVerticalCenterWith="labelBBS" RelativePanel.RightOf="labelTNC" RelativePanel.AlignRightWithPanel="True" VerticalContentAlignment="Center" Tag="required,Please select a TNC"  BorderThickness="2"  HorizontalAlignment="Stretch"  Margin="12.333,0,12,0"    />
-        <TextBlock x:Name="labelFrom" RelativePanel.AlignVerticalCenterWith="messageFrom" Text="From:" />
-        <TextBox x:Name="messageFrom" RelativePanel.Below="messageBBS" RelativePanel.AlignLeftWith="messageBBS" VerticalContentAlignment="Center" Tag="required,Please fill the From field"  BorderThickness="2"  Margin="0,2,-43,0" Width="100" />
-        <TextBlock x:Name="labelTo" RelativePanel.AlignVerticalCenterWith="labelFrom" RelativePanel.AlignLeftWith="labelTNC" Text="To:" Margin="30,0.6,-0.4,-0.2" VerticalAlignment="Center" HorizontalAlignment="Left" Width="20"/>
-        <TextBox x:Name="messageTo" RelativePanel.AlignVerticalCenterWith="labelFrom" RelativePanel.AlignLeftWith="messageTNC" RelativePanel.AlignRightWithPanel="True"  Tag="required,Please fill the To field" BorderThickness="2"  HorizontalAlignment="Stretch" Margin="12.333,2,12,0" TextChanged="MessageTo_TextChanged"  />
+        <TextBlock x:Name="labelBBS" 
+                   RelativePanel.AlignLeftWithPanel="True"  
+                   Text="BBS:" Width="55" Margin="0,8,8,8"/>
+        <TextBox x:Name="messageBBS" 
+                 RelativePanel.AlignVerticalCenterWith="labelBBS" 
+                 RelativePanel.RightOf="labelBBS" VerticalContentAlignment="Center" 
+                 Tag="required,Please select a BBS" BorderThickness="2" Width="100"  />
+        <TextBlock x:Name="labelTNC" 
+                   RelativePanel.AlignVerticalCenterWith="labelBBS" 
+                   RelativePanel.RightOf="messageBBS"  Text="TNC:" Margin="30,0,0,0" />
+        <TextBox x:Name="messageTNC" 
+                 RelativePanel.AlignVerticalCenterWith="labelBBS" 
+                 RelativePanel.RightOf="labelTNC" 
+                 RelativePanel.AlignRightWithPanel="True" VerticalContentAlignment="Center" 
+                 Tag="required,Please select a TNC"  BorderThickness="2"  
+                 HorizontalAlignment="Stretch"  Margin="12.333,0,12,0"    />
+        <TextBlock x:Name="labelFrom" 
+                   RelativePanel.AlignVerticalCenterWith="messageFrom" Text="From:" />
+        <TextBox x:Name="messageFrom" 
+                 RelativePanel.Below="messageBBS" 
+                 RelativePanel.AlignLeftWith="messageBBS" VerticalContentAlignment="Center" 
+                 Tag="required,Please fill the From field"  BorderThickness="2" Margin="0,2,0,0"  Width="100" />
+        <TextBlock x:Name="labelTo" 
+                   RelativePanel.AlignVerticalCenterWith="labelFrom" 
+                   RelativePanel.AlignLeftWith="labelTNC" Text="To:" Margin="30,0.6,-0.4,-0.2" 
+                   VerticalAlignment="Center" Width="20"/>
+        <TextBox x:Name="messageTo" RelativePanel.AlignVerticalCenterWith="labelFrom" 
+                 RelativePanel.AlignLeftWith="messageTNC" 
+                 RelativePanel.AlignRightWithPanel="True"  
+                 Tag="required,Please fill the To field" BorderThickness="2"  
+                 HorizontalAlignment="Stretch" Margin="12.333,2,12,0" TextChanged="MessageTo_TextChanged"  />
         <TextBlock x:Name="labelSubject" RelativePanel.AlignVerticalCenterWith="messageSubject" Text="Subject:"/>
-        <TextBox x:Name="messageSubject" RelativePanel.Below="messageFrom" RelativePanel.AlignLeftWith="messageBBS" RelativePanel.AlignRightWithPanel="True" VerticalContentAlignment="Center" Tag="required,Please fill out the Subject field" Margin="0,2,12,0"   />
+        <TextBox x:Name="messageSubject" 
+                 RelativePanel.Below="messageFrom" 
+                 RelativePanel.AlignLeftWith="messageBBS" 
+                 RelativePanel.AlignRightWithPanel="True" VerticalContentAlignment="Center" 
+                 Tag="required,Please fill out the Subject field" Margin="0,2,12,0"   />
     </RelativePanel>
 
 </UserControl>

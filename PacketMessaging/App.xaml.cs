@@ -155,7 +155,7 @@ namespace PacketMessaging
             {
                 tacticalCallsignType.TacticalCallsigns = await TacticalCallsigns.OpenAsync(tacticalCallsignType.FileName);
             }
-            await AddressBook.OpenAsync();
+            await AddressBook.Instance.OpenAsync();
 
             NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;

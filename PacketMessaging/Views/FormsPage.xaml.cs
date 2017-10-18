@@ -887,7 +887,7 @@ namespace PacketMessaging.Views
                 MessageTo = _packetAddressForm.MessageTo,
                 MessageNumber = _packetForm.MessageNo
             };
-            AddressBook.AddAddressAsync(_packetMessage.MessageTo);
+            AddressBook.Instance.AddAddressAsync(_packetMessage.MessageTo);
             string subject = _packetForm.CreateSubject();
 			// subject is "null" for Simple Message, otherwise use the form generated subject line
 			_packetMessage.Subject = (subject ?? _packetAddressForm.MessageSubject );

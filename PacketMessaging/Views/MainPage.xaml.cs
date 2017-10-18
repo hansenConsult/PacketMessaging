@@ -145,7 +145,8 @@ namespace PacketMessaging.Views
             string areas = _settings.JNOSAreas;
             SharedData._Areas = areas.Split(new char[] { ',', ' ', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-			AddressBook.CreateAddressBook();
+
+			AddressBook.Instance.CreateAddressBook();
 
 			ObservableCollection<Field> draftsPropertiesList = new ObservableCollection<Field>();
 

@@ -575,10 +575,10 @@
 
             <!--<Address Book-->
             <!--ItemTemplate="{StaticResource ContactListViewTemplate}"-->
-            <PivotItem Header="Address Book">
-                <!--DataContext="{Binding AddressBookPartViewModel}"-->
+            <PivotItem x:Name="pivotItemAddressBook" Header="Address Book"
+                DataContext="{Binding AddressBookPartViewModel}">
                 <RelativePanel >
-                    <ListView ItemsSource="{x:Bind ContactsCVS.View}"
+                    <ListView x:Name="addressBookListView"  ItemsSource="{x:Bind ContactsCVS.View}"
 							  ItemTemplate="{StaticResource ContactListViewTemplate}"
 							  RelativePanel.AlignLeftWithPanel="True"
 							  RelativePanel.AlignRightWithPanel="True"
@@ -640,7 +640,54 @@
 			</PivotItem>
 		</Pivot>
 
-	</RelativePanel>
+        <ContentDialog x:Name="editAddressBookEntryContentDialog" DataContext="AddressBookPartViewModel"
+                       PrimaryButtonText="Save" IsPrimaryButtonEnabled="True"
+                       CloseButtonText="Cancel"
+                       Title="Edit Address Book Entry" Opened="EditAddressBookEntryContentDialog_Opened">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Callsign:" VerticalAlignment="Center" Width="102"/>
+                    <TextBox x:Name="addressBookCallsign" Text="{Binding AddressBookCallsign}" Width="100" Margin="5,2,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Name:" VerticalAlignment="Center" Width="102"/>
+                    <TextBox x:Name="addressBookName" Width="200" Margin="5,2,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Primary BBS:" VerticalAlignment="Center" Width="102"/>
+                    <ComboBox x:Name="addressBookPrimaryBBS" Width="100" Margin="5,2,0,0">
+                        <x:String>W1XSC</x:String>
+                        <x:String>W2XSC</x:String>
+                        <x:String>W3XSC</x:String>
+                        <x:String>W4XSC</x:String>
+                        <x:String>W5XSC</x:String>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Secondary BBS:" VerticalAlignment="Center" Width="102"/>
+                    <ComboBox x:Name="addressBookSecondaryBBS" Width="100" Margin="5,2,0,0">
+                        <x:String>W1XSC</x:String>
+                        <x:String>W2XSC</x:String>
+                        <x:String>W3XSC</x:String>
+                        <x:String>W4XSC</x:String>
+                        <x:String>W5XSC</x:String>
+                    </ComboBox>
+
+                </StackPanel>
+            </StackPanel>
+        </ContentDialog>
+        
+        <CommandBar x:Name="SettingsCommandBar"
+				RelativePanel.AlignBottomWithPanel="True"
+				RelativePanel.AlignRightWithPanel="True"
+				RelativePanel.AlignLeftWithPanel="True">
+            <AppBarButton x:Name="appBarSettingsAdd" Label="Add" Icon="Add" Click="AppBarAdd_ClickAsync" />
+            <AppBarButton x:Name="appBarSettingsEdit" Label="Edit" Icon="Edit" HorizontalAlignment="Right" Click="AppBarEdit_ClickAsync"/>
+            <!--<AppBarButton Label="Send/Receive" Icon="Send" Click="AppBar_SendReceive" />-->
+            <AppBarButton x:Name="appBarsettingsDelete" Label="Delete" Icon="Delete" Click="AppBarDelete_Click" HorizontalAlignment="Right" />
+        </CommandBar>
+
+    </RelativePanel>
 
 </Page>
 

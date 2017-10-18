@@ -16,7 +16,8 @@ namespace PacketMessaging.ViewModels
 		public static IdentityPartViewModel IdentityPartViewModel { get; } = new IdentityPartViewModel();
 		public static PacketSettingsPartViewModel PacketSettingsPartViewModel { get; } = new PacketSettingsPartViewModel();
 		public static TNCPartViewModel TNCPartViewModel { get; } = new TNCPartViewModel();
-		public AboutPartViewModel AboutPartViewModel { get; } = new AboutPartViewModel();
+        public static AddressBookPartViewModel AddressBookPartViewModel { get; } = new AddressBookPartViewModel();
+        public AboutPartViewModel AboutPartViewModel { get; } = new AboutPartViewModel();
 
 		public static string GetMessageNumberPacket() => GetMessageNumber() + "P";
 
@@ -371,7 +372,22 @@ namespace PacketMessaging.ViewModels
 
 	}
 
-	public class AboutPartViewModel : ViewModelBase
+    public class AddressBookPartViewModel : ViewModelBase
+    {
+        Services.SettingsServices.SettingsService _settings;
+
+        string _addressBookCallsign = "KZ6DM";
+
+        public AddressBookPartViewModel()
+        {
+            _settings = Services.SettingsServices.SettingsService.Instance;
+        }
+
+        public string AddressBookCallsign
+        { get => _addressBookCallsign; set { _addressBookCallsign = value; base.RaisePropertyChanged(); } }
+    }
+
+    public class AboutPartViewModel : ViewModelBase
 	{
 		public Uri Logo => Windows.ApplicationModel.Package.Current.Logo;
 

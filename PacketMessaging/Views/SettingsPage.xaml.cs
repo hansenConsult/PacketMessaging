@@ -8,7 +8,6 @@ using Windows.Devices.SerialCommunication;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI.Core;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -18,8 +17,6 @@ using Windows.Devices.Bluetooth;
 using System.Runtime.CompilerServices;
 using System.Linq;
 using Windows.Devices.Bluetooth.Rfcomm;
-using Windows.Networking.Sockets;
-using Template10.Mvvm;
 using PacketMessaging.ViewModels;
 
 namespace PacketMessaging.Views
@@ -170,7 +167,8 @@ namespace PacketMessaging.Views
 			}
 			TacticalCallsignsAreaSource.Source = listOfTacticallsignsArea;
 
-            ContactsCVS.Source = AddressBook.GetContactsGrouped();
+            // Address Book
+            ContactsCVS.Source = AddressBook.Instance.GetContactsGrouped();
 		}
 
 		// LogHelper
@@ -321,7 +319,7 @@ namespace PacketMessaging.Views
 				}
 				tacticalCallsignData.TacticalCallsigns.SaveAsync(tacticalCallsignData.FileName);
 			}
-			AddressBook.CreateAddressBook();
+			AddressBook.Instance.CreateAddressBook();
 		}
 #endregion
 
@@ -1330,7 +1328,102 @@ namespace PacketMessaging.Views
 				//	| _commandsChanged | _promptsChanged;
 			}
 		}
-		#endregion // TNC
+#endregion // TNC
+#region AddressBook
+        private void EditAddressBookEntryContentDialog_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
+        {
 
-	}
+        }
+#endregion // AddressBook
+        private AddressBookEntry GetAddressBookEntryEditData()
+        {
+            AddressBookEntry addressBookEntry = new AddressBookEntry();
+            StackPanel panel = editAddressBookEntryContentDialog.Content as StackPanel;
+            var panels = panel.Children;
+            var subPanels = (panels[0] as StackPanel).Children;
+            addressBookEntry.Callsign = (subPanels[1] as TextBox).Text;
+            subPanels = (panels[1] as StackPanel).Children;
+            addressBookEntry.NameDetail = (subPanels[1] as TextBox).Text;
+            subPanels = (panels[2] as StackPanel).Children;
+            addressBookEntry.BBSPrimary = (subPanels[1] as ComboBox).SelectedItem as string;
+            subPanels = (panels[3] as StackPanel).Children;
+            addressBookEntry.BBSSecondary = (subPanels[1] as ComboBox).SelectedItem as string;
+            return addressBookEntry;
+        }
+
+        private void SetAddressBookEntryEditData(AddressBookEntry addressBookEntry)
+        {
+            StackPanel panel = editAddressBookEntryContentDialog.Content as StackPanel;
+            var panels = panel.Children;
+            var subPanels = (panels[0] as StackPanel).Children;
+            (subPanels[1] as TextBox).Text = addressBookEntry.Callsign;
+            subPanels = (panels[1] as StackPanel).Children;
+            (subPanels[1] as TextBox).Text = addressBookEntry.NameDetail;
+            subPanels = (panels[2] as StackPanel).Children;
+            (subPanels[1] as ComboBox).SelectedItem = addressBookEntry.BBSPrimary;
+            subPanels = (panels[3] as StackPanel).Children;
+            (subPanels[1] as ComboBox).SelectedItem = addressBookEntry.BBSSecondary;
+        }
+
+        private async void AppBarEdit_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            switch ((MyPivot.SelectedItem as PivotItem).Name)
+            {
+                case "pivotItemAddressBook":
+                    AddressBook addressBook = AddressBook.Instance;
+                    AddressBookEntry addressBookEntry = addressBookListView.SelectedItem as AddressBookEntry;
+                    //addressBook.DeleteAddress(addressBookEntry);
+                    SetAddressBookEntryEditData(addressBookEntry);
+                    ContentDialogResult result = await editAddressBookEntryContentDialog.ShowAsync();
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        addressBookEntry = GetAddressBookEntryEditData();
+                        // Add
+                        bool success = addressBook.AddAddressAsync(addressBookEntry);
+                    }
+                    else
+                    {
+                        // AddressBook.Add
+                        addressBook.AddAddressAsync(addressBookEntry);
+                    }
+                    ContactsCVS.Source = addressBook.GetContactsGrouped();
+                    break;
+            }
+        }
+        
+
+        private void AppBarDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void AppBarAdd_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            AddressBookEntry addressBookEntry = null;
+
+            switch ((MyPivot.SelectedItem as PivotItem).Name)
+            {
+                case "pivotItemAddressBook":
+                    AddressBook addressBook = AddressBook.Instance;
+                    //addressBookEntry = addressBookListView.SelectedItem as AddressBookEntry;
+                    //addressBook.DeleteAddress(addressBookEntry);
+                    //SetAddressBookEntryEditData(addressBookEntry);
+                    ContentDialogResult result = await editAddressBookEntryContentDialog.ShowAsync();
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        addressBookEntry = GetAddressBookEntryEditData();
+                        // Add
+                        bool success = addressBook.AddAddressAsync(addressBookEntry);
+                    }
+                    else
+                    {
+                        // AddressBook.Add
+                        addressBook.AddAddressAsync(addressBookEntry);
+                    }
+                    ContactsCVS.Source = addressBook.GetContactsGrouped();
+                    break;
+            }
+
+        }
+    }
 }
