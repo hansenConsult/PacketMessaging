@@ -168,8 +168,6 @@ namespace PacketMessaging.Views
 
 			if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
 			{
-
-
 				ObservableCollection<Field> deletedPropertiesList = new ObservableCollection<Field>();
 
 				viewColumnsDeleted.Source = draftsPropertiesList;

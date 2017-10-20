@@ -77,6 +77,11 @@ namespace PacketMessaging
             }
         }
 
+        public Dictionary<string, AddressBookEntry> AddressBookDictionary
+        {
+            get => _addressDictionary;
+        }
+
         public async Task OpenAsync()
         {
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
@@ -138,12 +143,12 @@ namespace PacketMessaging
                         NameDetail = tacticalCall.AgencyName,
                         BBSPrimary = tacticalCall.PrimaryBBS,
                         BBSSecondary = tacticalCall.SecondaryBBS,
-                        BBSPrimaryActive = tacticalCall.PrimaryBBSActive
+                        BBSPrimaryActive = true // tacticalCall.PrimaryBBSActive
                     };
                     if (tacticalCall.SecondaryBBS.Length == 0 && tacticalCall.SecondaryBBSActive)
                     {
                         tacticalCall.PrimaryBBSActive = true;
-                        tacticalCall.SecondaryBBSActive = false;
+                        //tacticalCall.SecondaryBBSActive = false;
                     }
 
                     string activeBBS = tacticalCall.PrimaryBBSActive ? tacticalCall.PrimaryBBS : tacticalCall.SecondaryBBS;
@@ -171,11 +176,24 @@ namespace PacketMessaging
         //    //entry.Address = entry.Callsign + '@' + activeBBS + ".ampr.org";
         //}
 
+        public string GetBBS(string callsign)
+        {
+            _addressDictionary.TryGetValue(callsign.ToUpper(), out AddressBookEntry entry);
+
+            return (entry == null ? "" : entry.BBSPrimaryActive ? entry.BBSPrimary : entry.BBSSecondary);
+        }
+
         public string GetAddress(string callsign)
         {
             _addressDictionary.TryGetValue(callsign.ToUpper(), out AddressBookEntry entry);
 
-            return (entry == null ? callsign : entry.Address);
+            string address = "";
+            if (entry != null)
+            {
+                string bbs = entry.BBSPrimaryActive ? entry.BBSPrimary : entry.BBSSecondary;
+                address = entry.Callsign + '@' + bbs + "ampr.org";
+            }
+            return address;
         }
 
         private bool ValidateBBS(string bbs)
@@ -190,6 +208,29 @@ namespace PacketMessaging
             {
                 return false;
             }
+        }
+
+        public void UpdateAddressBookEntry(string callsign, bool usePrimaryBBS)
+        {
+            _addressDictionary.TryGetValue(callsign, out AddressBookEntry oldAddressBookEntry);
+            AddressBookEntry entry = new AddressBookEntry()
+            {
+                Callsign = callsign,
+                NameDetail = oldAddressBookEntry.NameDetail,
+                BBSPrimary = oldAddressBookEntry.BBSPrimary,
+                BBSSecondary = oldAddressBookEntry.BBSSecondary,
+                BBSPrimaryActive = usePrimaryBBS
+            };
+            _addressDictionary.Remove(callsign);
+            _addressDictionary.Add(entry.Callsign, entry);
+            SaveAsync();
+        }
+
+        public void UpdateAddressBookEntry(AddressBookEntry addressBookEntry)
+        {
+            _addressDictionary.TryGetValue(addressBookEntry.Callsign, out AddressBookEntry oldAddressBookEntry);
+            _addressDictionary.Remove(oldAddressBookEntry.Callsign);
+            _addressDictionary.Add(addressBookEntry.Callsign, addressBookEntry);
         }
 
         public bool AddAddressAsync(AddressBookEntry addressBookEntry)
@@ -295,6 +336,53 @@ namespace PacketMessaging
             addressBookEntryList?.Remove(addressBookEntry);
             _userAddressBook.AddressEntries = addressBookEntryList.ToArray();
             SaveAsync();
+        }
+
+        public void UpdateForBBSStatusChange(string bbs, bool bbsStatusUp)
+        {
+            List<AddressBookEntry> changedEntries = new List<AddressBookEntry>();
+            foreach (AddressBookEntry entry in _addressDictionary.Values)
+            {
+                if (bbsStatusUp)
+                {
+                    if (!entry.BBSPrimaryActive && entry.BBSPrimary == bbs)
+                    {
+                        entry.BBSPrimaryActive = true;
+                        changedEntries.Add(entry);
+                    }
+                    //else if (entry.BBSPrimaryActive && entry.BBSSecondary == bbs)
+                    //{
+                    //    entry.BBSPrimaryActive = false;
+                    //}
+                }
+                else
+                {
+                    if (entry.BBSPrimaryActive && entry.BBSPrimary == bbs)
+                    {
+                        entry.BBSPrimaryActive = false;
+                        changedEntries.Add(entry);
+                    }
+                }
+            }
+            foreach (AddressBookEntry entry in changedEntries)
+            {
+                _addressDictionary[entry.Callsign] = entry;
+            }
+        }
+
+        public void UsePrimaryBBSForAll()
+        {
+            List<AddressBookEntry> changedEntries = new List<AddressBookEntry>();
+            foreach (AddressBookEntry entry in _addressDictionary.Values)
+            {
+                entry.BBSPrimaryActive = true;
+                changedEntries.Add(entry);
+            }
+            foreach (AddressBookEntry entry in changedEntries)
+            {
+                _addressDictionary[entry.Callsign] = entry;
+            }
+            //CreateAddressBook();
         }
 
         public ObservableCollection<AddressBookEntry> GetContacts()

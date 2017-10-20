@@ -1,13 +1,11 @@
 using System;
-using System.Threading.Tasks;
 using Template10.Common;
 using Template10.Utils;
-using Windows.Storage;
 using Windows.UI.Xaml;
 
 namespace PacketMessaging.Services.SettingsServices
 {
-	public class SettingsService
+    public class SettingsService
 	{
 		public static SettingsService Instance { get; }
 
@@ -22,8 +20,8 @@ namespace PacketMessaging.Services.SettingsServices
 		{
 			_helper = new Template10.Services.SettingsService.SettingsHelper();
 		}
-
-		public bool UseShellBackButton
+#region Settings
+        public bool UseShellBackButton
 		{
 			get { return _helper.Read<bool>(nameof(UseShellBackButton), true); }
 			set
@@ -54,13 +52,42 @@ namespace PacketMessaging.Services.SettingsServices
 			}
 		}
 
-		public string UserCallsign
-		{
-			get { return _helper.Read<string>(nameof(UserCallsign), ""); }
-			set { _helper.Write(nameof(UserCallsign), value.ToString()); }
-		}
+        public bool W1XSCStatusUp
+        {
+            get => _helper.Read(nameof(W1XSCStatusUp), true);
+            set => _helper.Write(nameof(W1XSCStatusUp), value);
+        }
 
-		public bool UseTacticalCallsign
+        public bool W2XSCStatusUp
+        {
+            get => _helper.Read(nameof(W2XSCStatusUp), true);
+            set => _helper.Write(nameof(W2XSCStatusUp), value);
+        }
+
+        public bool W3XSCStatusUp
+        {
+            get => _helper.Read(nameof(W3XSCStatusUp), true);
+            set => _helper.Write(nameof(W3XSCStatusUp), value);
+        }
+        public bool W4XSCStatusUp
+        {
+            get => _helper.Read(nameof(W4XSCStatusUp), true);
+            set => _helper.Write(nameof(W4XSCStatusUp), value);
+        }
+        public bool W5XSCStatusUp
+        {
+            get => _helper.Read<bool>(nameof(W5XSCStatusUp), true);
+            set => _helper.Write(nameof(W5XSCStatusUp), value);
+        }
+#endregion // Settings
+#region Identity
+        public string UserCallsign
+		{
+            get => _helper.Read<string>(nameof(UserCallsign), "");
+            set => _helper.Write(nameof(UserCallsign), value.ToString());
+        }
+
+        public bool UseTacticalCallsign
 		{
 			get { return _helper.Read<bool>(nameof(UseTacticalCallsign), false); }
 			set { _helper.Write(nameof(UseTacticalCallsign), value); }
@@ -143,8 +170,8 @@ namespace PacketMessaging.Services.SettingsServices
 			get { return _helper.Read<bool>(nameof(DisplayIdentityAtStartup), false); }
 			set { _helper.Write(nameof(DisplayIdentityAtStartup), value); }
 		}
-
-		public int MessageNumber
+#endregion // Identity
+        public int MessageNumber
 		{
 			get { return _helper.Read<int>(nameof(MessageNumber), 100); }
 			set { _helper.Write(nameof(MessageNumber), value); }
@@ -160,8 +187,8 @@ namespace PacketMessaging.Services.SettingsServices
 			}
 		}
 
-
-		public int ProfileSelectedIndex
+#region PacketSettings
+        public int ProfileSelectedIndex
 		{
 			get { return _helper.Read<int>(nameof(ProfileSelectedIndex), 0); }
 			set { _helper.Write(nameof(ProfileSelectedIndex), value); }
@@ -178,7 +205,7 @@ namespace PacketMessaging.Services.SettingsServices
 			get { return _helper.Read<string>(nameof(JNOSAreas), "XSCPERM, XSCEVENT"); }
 			set { _helper.Write(nameof(JNOSAreas), value); }
 		}
-
+#endregion
 
 #region TNC
         public int TNCDeviceSelectedIndex
@@ -186,7 +213,6 @@ namespace PacketMessaging.Services.SettingsServices
 			get { return _helper.Read<int>(nameof(TNCDeviceSelectedIndex), 0); }
 			set { _helper.Write(nameof(TNCDeviceSelectedIndex), value); }
 		}
-
 #endregion
 #region MainPage
 		//public double GridViewItemWidth

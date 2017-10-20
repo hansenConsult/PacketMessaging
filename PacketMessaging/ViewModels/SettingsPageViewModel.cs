@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Template10.Mvvm;
 using Windows.Devices.SerialCommunication;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Navigation;
 
 namespace PacketMessaging.ViewModels
 {
@@ -21,7 +22,9 @@ namespace PacketMessaging.ViewModels
 
 		public static string GetMessageNumberPacket() => GetMessageNumber() + "P";
 
-		private static string GetMessageNumber()
+
+
+        private static string GetMessageNumber()
 		{
 			string messageNumber = "100";
 
@@ -69,58 +72,142 @@ namespace PacketMessaging.ViewModels
 			_activeMessageNumber = false;
 		}
 
-	}
+        public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        {
+            //ContactsCVS.Source = AddressBook.Instance.GetContactsGrouped();
+            return base.OnNavigatedToAsync(parameter, mode, state);
+        }
+    }
 
-	public class SettingsPartViewModel : ViewModelBase
-	{
-		Services.SettingsServices.SettingsService _settings;
+    public class SettingsPartViewModel : ViewModelBase
+    {
+        Services.SettingsServices.SettingsService _settings;
 
-		public SettingsPartViewModel()
-		{
-			if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-			{
-				// designtime
-			}
-			else
-			{
-				_settings = Services.SettingsServices.SettingsService.Instance;
-			}
-		}
+        public SettingsPartViewModel()
+        {
+            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
+                // designtime
+            }
+            else
+            {
+                _settings = Services.SettingsServices.SettingsService.Instance;
+            }
+        }
 
-		public bool UseShellBackButton
-		{
-			get { return _settings.UseShellBackButton; }
-			set { _settings.UseShellBackButton = value; base.RaisePropertyChanged(); }
-		}
+        public bool UseShellBackButton
+        {
+            get { return _settings.UseShellBackButton; }
+            set { _settings.UseShellBackButton = value; base.RaisePropertyChanged(); }
+        }
 
-		public bool UseLightThemeButton
-		{
-			get { return _settings.AppTheme.Equals(ApplicationTheme.Light); }
-			set { _settings.AppTheme = value ? ApplicationTheme.Light : ApplicationTheme.Dark; base.RaisePropertyChanged(); }
-		}
+        public bool UseLightThemeButton
+        {
+            get { return _settings.AppTheme.Equals(ApplicationTheme.Light); }
+            set { _settings.AppTheme = value ? ApplicationTheme.Light : ApplicationTheme.Dark; base.RaisePropertyChanged(); }
+        }
 
-		private string _BusyText = "Please wait...";
-		public string BusyText
-		{
-			get { return _BusyText; }
-			set
-			{
-				Set(ref _BusyText, value);
-				_ShowBusyCommand.RaiseCanExecuteChanged();
-			}
-		}
+        private string _BusyText = "Please wait...";
+        public string BusyText
+        {
+            get { return _BusyText; }
+            set
+            {
+                Set(ref _BusyText, value);
+                _ShowBusyCommand.RaiseCanExecuteChanged();
+            }
+        }
 
-		DelegateCommand _ShowBusyCommand;
-		public DelegateCommand ShowBusyCommand
-			=> _ShowBusyCommand ?? (_ShowBusyCommand = new DelegateCommand(async () =>
-			{
-				Views.Busy.SetBusy(true, _BusyText);
-				await Task.Delay(5000);
-				Views.Busy.SetBusy(false);
-			}, () => !string.IsNullOrEmpty(BusyText)));
-	}
+        DelegateCommand _ShowBusyCommand;
+        public DelegateCommand ShowBusyCommand
+            => _ShowBusyCommand ?? (_ShowBusyCommand = new DelegateCommand(async () =>
+            {
+                Views.Busy.SetBusy(true, _BusyText);
+                await Task.Delay(5000);
+                Views.Busy.SetBusy(false);
+            }, () => !string.IsNullOrEmpty(BusyText)));
 
-	public class IdentityPartViewModel : ViewModelBase
+        public bool W1XSCStatusUp
+        {
+            get
+            {
+                bool temp = _settings.W1XSCStatusUp;
+                AddressBook.Instance.UpdateForBBSStatusChange("W1XSC", temp);
+                return temp;
+            }
+            set
+            {
+                _settings.W1XSCStatusUp = value;
+                base.RaisePropertyChanged();
+                AddressBook.Instance.UpdateForBBSStatusChange("W1XSC", W1XSCStatusUp);
+            }
+        }
+
+        public bool W2XSCStatusUp
+        {
+            get
+            {
+                bool temp = _settings.W2XSCStatusUp;
+                AddressBook.Instance.UpdateForBBSStatusChange("W2XSC", temp);
+                return temp;
+            }
+            set
+            {
+                _settings.W2XSCStatusUp = value;
+                base.RaisePropertyChanged();
+                AddressBook.Instance.UpdateForBBSStatusChange("W2XSC", W2XSCStatusUp);
+            }
+        }
+
+        public bool W3XSCStatusUp
+        {
+            get
+            {
+                bool temp = _settings.W3XSCStatusUp;
+                AddressBook.Instance.UpdateForBBSStatusChange("W3XSC", temp);
+                return temp;
+            }
+            set
+            {
+                _settings.W3XSCStatusUp = value;
+                base.RaisePropertyChanged();
+                AddressBook.Instance.UpdateForBBSStatusChange("W3XSC", W3XSCStatusUp);
+            }
+        }
+
+        public bool W4XSCStatusUp
+        {
+            get
+            {
+                bool temp = _settings.W4XSCStatusUp;
+                AddressBook.Instance.UpdateForBBSStatusChange("W4XSC", temp);
+                return temp;
+            }
+            set
+            {
+                _settings.W4XSCStatusUp = value;
+                base.RaisePropertyChanged();
+                AddressBook.Instance.UpdateForBBSStatusChange("W4XSC", W4XSCStatusUp);
+            }
+        }
+        public bool W5XSCStatusUp
+        {
+            get
+            {
+                bool temp = _settings.W5XSCStatusUp;
+                AddressBook.Instance.UpdateForBBSStatusChange("W5XSC", temp);
+                return temp;
+            }
+            set
+            {
+                _settings.W5XSCStatusUp = value;
+                base.RaisePropertyChanged();
+                AddressBook.Instance.UpdateForBBSStatusChange("W5XSC", W5XSCStatusUp);
+            }
+        }
+    }
+
+    public class IdentityPartViewModel : ViewModelBase
 	{
 		Services.SettingsServices.SettingsService _settings;
 
