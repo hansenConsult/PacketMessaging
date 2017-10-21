@@ -4,6 +4,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using FormControlBaseClass;
 using Windows.UI;
+using PacketMessaging;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -34,6 +35,8 @@ namespace PacketMessaging.Views
 			{
 				MessageFrom = ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserCallsign;
 			}
+            string bbs = AddressBook.Instance.GetBBS(MessageFrom);
+            MessageBBS = string.IsNullOrEmpty(bbs) ? MessageBBS : bbs;
 		}
 
 		public string MessageBBS
@@ -57,7 +60,6 @@ namespace PacketMessaging.Views
 		public string MessageTo
 		{
 			get => messageTo.Text;
-			//set => messageTo.Text = value;
             set => messageTo.Text = AddressBook.Instance.GetAddress(value);
 		}
 

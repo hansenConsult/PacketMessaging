@@ -8,6 +8,7 @@
       xmlns:controls="using:Template10.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:PacketMessaging.Views"
+      xmlns:converters="using:PacketMessaging.Converters"
 	  xmlns:data="using:PacketMessaging"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:PacketMessaging.ViewModels" 
@@ -17,7 +18,7 @@
 	<Page.Resources>
 		<local:VisibilityConverter x:Key="VisibilityConverter"/>
 
-		<CollectionViewSource x:Name="BBSDataCollection"  IsSourceGrouped="False" />
+        <CollectionViewSource x:Name="BBSDataCollection"  IsSourceGrouped="False" />
 		<CollectionViewSource x:Name="ProfilesCollection"  IsSourceGrouped="False"  />
 		<DataTemplate x:Name="ProfilesDataTemplate" x:DataType="data:Profile">
 			<TextBlock Text="{x:Bind Name}" />
@@ -85,12 +86,12 @@
                            x:Phase="1"
                            Style="{ThemeResource BodyTextBlockStyle}"
                            Margin="12,6,0,6"/>
-				<ToggleSwitch Grid.Column="2"
+				<ToggleSwitch x:Name="bbsToggle" Grid.Column="2"
                            Grid.Row="1"
                            IsOn="{x:Bind BBSPrimaryActive, Mode=TwoWay}"
                            OffContent="Secondary BBS"
                            OnContent="Primary BBS"
-							Visibility="{x:Bind BBSPrimary, Converter={StaticResource VisibilityConverter}}"
+						   Visibility="{x:Bind BBSPrimary, Converter={StaticResource VisibilityConverter}}"
                            Margin="30,0,0,0" Toggled="ToggleSwitch_Toggled" />
 			</Grid>
         </DataTemplate>
@@ -302,7 +303,7 @@
 									 BorderThickness="2" 
 									 Width="58" 
 									 Margin="5,1,0,1" Padding="10,3,12,5" />
-							<TextBlock Grid.Column="0" Grid.Row="4" x:Name="labelTacticalPrimary"
+							<!--<TextBlock Grid.Column="0" Grid.Row="4" x:Name="labelTacticalPrimary"
 									   VerticalAlignment="Center" 
 									Text="Primary:" />
 							<TextBox Grid.Column="1" Grid.Row="4" x:Name="textBoxTacticalPrimary"
@@ -329,7 +330,7 @@
 									Content="Make All Primary"  
 									VerticalAlignment="Stretch"
 									Margin="20,10,0,0" 
-									Click="ButtonSetAllPrimary_Click"/>
+									Click="ButtonSetAllPrimary_Click"/>-->
 							<ToggleSwitch Grid.Column="0" Grid.Row="7" x:Name="toggleDisplayIdentityAtStartup" Header="Display on Start" 
 										  IsOn="{Binding DisplayIdentityAtStartup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 						</Grid>
@@ -710,8 +711,8 @@
 				RelativePanel.AlignLeftWithPanel="True">
             <AppBarButton x:Name="appBarSettingsAdd" Label="Add" Icon="Add" Click="AppBarAdd_ClickAsync" />
             <AppBarButton x:Name="appBarSettingsEdit" Label="Edit" Icon="Edit" HorizontalAlignment="Right" Click="AppBarEdit_ClickAsync"/>
-            <AppBarButton x:Name="appBarSettingsSave" Icon="Save" Click="AppBarSave_ClickAsync" />
-            <AppBarButton x:Name="appBarsettingsDelete" Label="Delete" Icon="Delete" Click="AppBarDelete_ClickAsync" HorizontalAlignment="Right" />
+            <AppBarButton x:Name="appBarSettingsSave" Icon="Save" Click="AppBarSave_Click" />
+            <AppBarButton x:Name="appBarsettingsDelete" Label="Delete" Icon="Delete" Click="AppBarDelete_Click" HorizontalAlignment="Right" />
         </CommandBar>
 
     </RelativePanel>

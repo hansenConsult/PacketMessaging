@@ -38,27 +38,30 @@ namespace PacketMessaging
 
         private Dictionary<string, AddressBookEntry> _addressDictionary;
         private const string addressBookFileName = "addressBook.xml";
-        private AddressBook _userAddressBook;
 
         private AddressBookEntry[] _addressEntriesField;
+        private AddressBookEntry[] _userAddressEntriesField;
 
         private static volatile AddressBook _instance;
         private static object _syncRoot = new Object();
 
+        private AddressBook() { }
 
         /// <remarks/>
         [XmlElement("AddressEntry")]
 		public AddressBookEntry[] AddressEntries
 		{
-			get
-			{
-				return this._addressEntriesField;
-			}
-			set
-			{
-				this._addressEntriesField = value;
-			}
+			get => _addressEntriesField;
+			set => _addressEntriesField = value;
 		}
+
+        /// <remarks/>
+        [XmlElement("AddressEntry")]
+        public AddressBookEntry[] UserAddressEntries
+        {
+            get => _userAddressEntriesField;
+            set => _userAddressEntriesField = value;
+        }
 
         public static AddressBook Instance
         {
@@ -94,8 +97,13 @@ namespace PacketMessaging
                 StorageFile file = await localFolder.GetFileAsync(addressBookFileName);
                 using (FileStream reader = new FileStream(file.Path, FileMode.Open))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(AddressBook));
-                    _userAddressBook = (AddressBook)serializer.Deserialize(reader);
+                    if (UserAddressEntries == null)
+                    {
+                        UserAddressEntries = new AddressBookEntry[0];
+                    }
+
+                    XmlSerializer serializer = new XmlSerializer(typeof(AddressBookEntry[]));
+                    UserAddressEntries = (AddressBookEntry[])serializer.Deserialize(reader);
                 }
             }
             catch (FileNotFoundException e)
@@ -111,14 +119,17 @@ namespace PacketMessaging
 
         public async void SaveAsync()
         {
+            if (UserAddressEntries == null || UserAddressEntries.Length == 0)
+                return;
+
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
             try
             {
                 StorageFile file = await localFolder.CreateFileAsync(addressBookFileName, CreationCollisionOption.ReplaceExisting);
                 using (StreamWriter writer = new StreamWriter(new FileStream(file.Path, FileMode.OpenOrCreate)))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(AddressBook));
-                    serializer.Serialize(writer, _userAddressBook);
+                    XmlSerializer serializer = new XmlSerializer(typeof(AddressBookEntry[]));
+                    serializer.Serialize(writer, UserAddressEntries);
                 }
             }
             catch (Exception e)
@@ -159,12 +170,16 @@ namespace PacketMessaging
                     }
                 }
             }
-            // Add user address book
-            if (_userAddressBook != null && _userAddressBook.AddressEntries != null)
+            // Add user enries to the dictionary
+            if (UserAddressEntries != null)
             {
-                foreach (var entry in _userAddressBook.AddressEntries)
+                foreach (var entry in UserAddressEntries)
                 {
-                    _addressDictionary.Add(entry.Callsign, entry);
+                    _addressDictionary.TryGetValue(entry.Callsign, out AddressBookEntry newEntry);
+                    if (newEntry == null)
+                    {
+                        _addressDictionary.Add(entry.Callsign, entry);
+                    }
                 }
             }
         }
@@ -213,16 +228,7 @@ namespace PacketMessaging
         public void UpdateAddressBookEntry(string callsign, bool usePrimaryBBS)
         {
             _addressDictionary.TryGetValue(callsign, out AddressBookEntry oldAddressBookEntry);
-            AddressBookEntry entry = new AddressBookEntry()
-            {
-                Callsign = callsign,
-                NameDetail = oldAddressBookEntry.NameDetail,
-                BBSPrimary = oldAddressBookEntry.BBSPrimary,
-                BBSSecondary = oldAddressBookEntry.BBSSecondary,
-                BBSPrimaryActive = usePrimaryBBS
-            };
-            _addressDictionary.Remove(callsign);
-            _addressDictionary.Add(entry.Callsign, entry);
+            oldAddressBookEntry.BBSPrimaryActive = usePrimaryBBS;
             SaveAsync();
         }
 
@@ -241,7 +247,7 @@ namespace PacketMessaging
                 return false;
 
             _addressDictionary.TryGetValue(addressBookEntry.Callsign, out AddressBookEntry oldAddressBookEntry);
-            if (oldAddressBookEntry != null)
+            if (oldAddressBookEntry == null)
             {
                 string temp = addressBookEntry.Address.Substring(index + 1);
                 temp = temp.ToLower();
@@ -256,28 +262,15 @@ namespace PacketMessaging
                 if (!result)
                     return false;
 
-                AddressBookEntry entry = new AddressBookEntry()
-                {
-                    Callsign = addressBookEntry.Callsign,
-                    NameDetail = addressBookEntry.NameDetail,
-                    BBSPrimary = addressBookEntry.BBSPrimary,
-                    BBSSecondary = addressBookEntry.BBSSecondary,
-                    BBSPrimaryActive = addressBookEntry.BBSPrimaryActive
-                };
-                _addressDictionary.Remove(entry.Callsign);
-                _addressDictionary.Add(entry.Callsign, entry);
+                _addressDictionary.Add(addressBookEntry.Callsign, addressBookEntry);
                 // Insert in userAddressBook
-                if (_userAddressBook.AddressEntries == null)
+                if (UserAddressEntries == null)
                 {
-                    AddressBookEntry[] addressEntries = new AddressBookEntry[0];
-                    //_userAddressBook = new AddressBook()
-                    //{
-                    _userAddressBook.AddressEntries = addressEntries;
-                    //};
+                    UserAddressEntries = new AddressBookEntry[0];
                 }
-                var addressBookEntryList = _userAddressBook.AddressEntries.ToList();
-                addressBookEntryList.Add(entry);
-                _userAddressBook.AddressEntries = addressBookEntryList.ToArray();
+                var addressBookEntryList = UserAddressEntries.ToList();
+                addressBookEntryList.Add(addressBookEntry);
+                UserAddressEntries = addressBookEntryList.ToArray();
                 SaveAsync();
             }
             return true;
@@ -315,27 +308,27 @@ namespace PacketMessaging
                 };
                 _addressDictionary.Add(callsign, entry);
                 // Insert in userAddressBook
-                if (_userAddressBook == null)
+                if (UserAddressEntries == null)
                 {
-                    AddressBookEntry[] addressEntries = new AddressBookEntry[1];
-                    _userAddressBook = new AddressBook()
-                    {
-                        AddressEntries = addressEntries
-                    };                
+                    UserAddressEntries = new AddressBookEntry[0];
                 }
-                var addressBookEntryList = _userAddressBook.AddressEntries.ToList();
+                var addressBookEntryList = UserAddressEntries.ToList();
                 addressBookEntryList.Add(entry);
-                _userAddressBook.AddressEntries = addressBookEntryList.ToArray();
+                UserAddressEntries = addressBookEntryList.ToArray();
                 SaveAsync();
             }
         }
 
         public void DeleteAddress(AddressBookEntry addressBookEntry)
         {
-            var addressBookEntryList = _userAddressBook?.AddressEntries.ToList();
-            addressBookEntryList?.Remove(addressBookEntry);
-            _userAddressBook.AddressEntries = addressBookEntryList.ToArray();
-            SaveAsync();
+            if (UserAddressEntries != null)
+            {
+                var addressBookEntryList = UserAddressEntries.ToList();
+                addressBookEntryList?.Remove(addressBookEntry);
+                UserAddressEntries = addressBookEntryList.ToArray();
+                SaveAsync();
+            }
+            _addressDictionary.Remove(addressBookEntry.Callsign);
         }
 
         public void UpdateForBBSStatusChange(string bbs, bool bbsStatusUp)
@@ -395,6 +388,7 @@ namespace PacketMessaging
             }
             return contacts;
         }
+
         public ObservableCollection<GroupInfoList> GetContactsGrouped()
         {
             ObservableCollection<GroupInfoList> groups = new ObservableCollection<GroupInfoList>();

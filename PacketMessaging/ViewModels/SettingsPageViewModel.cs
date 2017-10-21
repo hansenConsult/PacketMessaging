@@ -72,11 +72,6 @@ namespace PacketMessaging.ViewModels
 			_activeMessageNumber = false;
 		}
 
-        public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
-        {
-            //ContactsCVS.Source = AddressBook.Instance.GetContactsGrouped();
-            return base.OnNavigatedToAsync(parameter, mode, state);
-        }
     }
 
     public class SettingsPartViewModel : ViewModelBase

@@ -927,7 +927,7 @@ namespace PacketMessaging.Views
                         _packetForm.MsgTime = ((TextBox)control).Text;
                         break;
                     case "operatorCallsign":
-                        _packetForm.OperatorCallsign = ((TextBox)control).Text;
+                        _packetForm.OperatorCallsign = (control as TextBox).Text;
                         break;
                     case "operatorName":
                         _packetForm.OperatorName = ((TextBox)control).Text;

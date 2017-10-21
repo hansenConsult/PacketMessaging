@@ -1393,39 +1393,21 @@ namespace PacketMessaging.Views
                     {
                         addressBookEntry = GetAddressBookEntryEditData();
                         bool success = addressBook.AddAddressAsync(addressBookEntry);
+                        ContactsCVS.Source = addressBook.GetContactsGrouped();
                     }
-                    //else
-                    //{
-                    //    // AddressBook.Add
-                    //    addressBook.AddAddressAsync(addressBookEntry);
-                    //}
-                    ContactsCVS.Source = addressBook.GetContactsGrouped();
                     break;
             }
         }
-        
 
-        private async void AppBarDelete_ClickAsync(object sender, RoutedEventArgs e)
+
+        private void AppBarDelete_Click(object sender, RoutedEventArgs e)
         {
             switch ((MyPivot.SelectedItem as PivotItem).Name)
             {
                 case "pivotItemAddressBook":
                     AddressBook addressBook = AddressBook.Instance;
                     AddressBookEntry addressBookEntry = addressBookListView.SelectedItem as AddressBookEntry;
-                    SetAddressBookEntryEditData(addressBookEntry);
-                    editAddressBookEntryContentDialog.PrimaryButtonText = "Delete";
-                    ContentDialogResult result = await editAddressBookEntryContentDialog.ShowAsync();
-                    if (result == ContentDialogResult.Primary)
-                    {
-                        addressBookEntry = GetAddressBookEntryEditData();
-                        // Add
-                        bool success = addressBook.AddAddressAsync(addressBookEntry);
-                    }
-                    //else
-                    //{
-                    //    // AddressBook.Add
-                    //    addressBook.AddAddressAsync(addressBookEntry);
-                    //}
+                    addressBook.DeleteAddress(addressBookEntry);
                     ContactsCVS.Source = addressBook.GetContactsGrouped();
                     break;
             }
@@ -1436,10 +1418,21 @@ namespace PacketMessaging.Views
         {
             AddressBookEntry addressBookEntry = null;
 
+
             switch ((MyPivot.SelectedItem as PivotItem).Name)
             {
                 case "pivotItemAddressBook":
                     AddressBook addressBook = AddressBook.Instance;
+                    AddressBookEntry emptyEntry = new AddressBookEntry()
+                    {
+                        Callsign = "",
+                        NameDetail = "",
+                        BBSPrimary = "",
+                        BBSSecondary = "",
+                        BBSPrimaryActive = true
+                    };
+                    SetAddressBookEntryEditData(emptyEntry);
+                    editAddressBookEntryContentDialog.Title = "Add Address Book Entry";
                     editAddressBookEntryContentDialog.PrimaryButtonText = "Add";
                     ContentDialogResult result = await editAddressBookEntryContentDialog.ShowAsync();
                     if (result == ContentDialogResult.Primary)
@@ -1447,18 +1440,13 @@ namespace PacketMessaging.Views
                         addressBookEntry = GetAddressBookEntryEditData();
                         bool success = addressBook.AddAddressAsync(addressBookEntry);
                     }
-                    else
-                    {
-                        // AddressBook.Add
-                        //addressBook.AddAddressAsync(addressBookEntry);
-                    }
                     ContactsCVS.Source = addressBook.GetContactsGrouped();
                     break;
             }
 
         }
 
-        private async void AppBarSave_ClickAsync(object sender, RoutedEventArgs e)
+        private void AppBarSave_Click(object sender, RoutedEventArgs e)
         {
             switch ((MyPivot.SelectedItem as PivotItem).Name)
             {
@@ -1469,17 +1457,23 @@ namespace PacketMessaging.Views
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
-        {
-            AddressBook addressBook = AddressBook.Instance;
+        {            
+            if (sender is ToggleSwitch)
+            {
+                ToggleSwitch toggleSwitch = sender as ToggleSwitch;
+                if (toggleSwitch.IsHitTestVisible && !(toggleSwitch.FocusState == FocusState.Unfocused))
+                {
+                    AddressBook addressBook = AddressBook.Instance;
 
-            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
-            Grid parent = toggleSwitch.Parent as Grid;
-            string callsign = (parent.Children[1] as TextBlock).Text;
-            if (string.IsNullOrEmpty(callsign))
-                return;
+                    Grid parent = toggleSwitch.Parent as Grid;
+                    string callsign = (parent.Children[1] as TextBlock).Text;
+                    if (string.IsNullOrEmpty(callsign))
+                        return;
 
-            addressBook.UpdateAddressBookEntry(callsign, toggleSwitch.IsOn);
-            ContactsCVS.Source = addressBook.GetContactsGrouped();
+                    addressBook.UpdateAddressBookEntry(callsign, toggleSwitch.IsOn);
+                    ContactsCVS.Source = addressBook.GetContactsGrouped();
+                }
+            }
         }
     }
 }
