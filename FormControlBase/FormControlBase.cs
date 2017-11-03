@@ -57,8 +57,8 @@ namespace FormControlBaseClass
         List<RadioButton> radioButtonsList = new List<RadioButton>();
         //List<Control> formFieldsList = new List<Control>();
 
-        string _operatorTime;
-        string _messageTime;
+        //string _operatorTime;
+        //string _messageTime;
         //string _msgDate = "";
 
         protected List<string> outpostData;
@@ -293,7 +293,8 @@ namespace FormControlBaseClass
 				{
 					ScanControls(control);
 				}
-				else if (control is TextBox || control is ComboBox || control is CheckBox || control is ToggleButtonGroup)
+				else if (control is TextBox || control is AutoSuggestBox || control is ComboBox 
+											|| control is CheckBox || control is ToggleButtonGroup)
 				{
 					FormControl formControl = new FormControl((Control)control);
 					formControlsList.Add(formControl);
@@ -317,6 +318,10 @@ namespace FormControlBaseClass
 				if (control is TextBox)
 				{
 					//((TextBox)control).Text = "";
+					control.BorderBrush = formControl.BaseBorderColor;
+				}
+				else if (control is AutoSuggestBox)
+				{
 					control.BorderBrush = formControl.BaseBorderColor;
 				}
 				else if (control is ComboBox)
@@ -447,7 +452,7 @@ namespace FormControlBaseClass
                     var comboBoxDataSet = conboBoxData.Split(new char[] { '}' }, StringSplitOptions.RemoveEmptyEntries);
                     formField.ControlContent = comboBoxDataSet[0];
                 }
-                else
+                else    // TextBox or AutoSuggestBox
                 {
                     formField.ControlContent = GetOutpostValue(id, ref msgLines);
                 }
@@ -664,7 +669,11 @@ namespace FormControlBaseClass
 					//	}
 					//}
 				}
-                else if (formControlsList[i].InputControl is ComboBox comboBox)
+				else if (formControlsList[i].InputControl is AutoSuggestBox autoSuggestBox)
+				{
+					formField.ControlContent = autoSuggestBox.Text;
+				}
+				else if (formControlsList[i].InputControl is ComboBox comboBox)
                 {
 					formField.ControlContent = GetComboBoxSelectedItem(comboBox);
 				}
@@ -699,6 +708,10 @@ namespace FormControlBaseClass
 				if (control is TextBox textBox)
 				{
                     textBox.Text = formField.ControlContent;
+				}
+				else if (control is AutoSuggestBox autoSuggsetBox)
+				{
+					autoSuggsetBox.Text = formField.ControlContent;
 				}
 				else if (control is ComboBox comboBox)
 				{
@@ -806,7 +819,6 @@ namespace FormControlBaseClass
 				}
 			}
 			convertedLine = sb.ToString();
-			//Console.WriteLine(convertedLine);
 
 			return convertedLine;
 		}

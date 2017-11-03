@@ -4,13 +4,12 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using FormControlBaseClass;
 using Windows.UI;
-using PacketMessaging;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace PacketMessaging.Views
 {
-	public sealed partial class SendFormDataControl : UserControl
+    public sealed partial class SendFormDataControl : UserControl
 	{
 		List<FormControl> _formFieldsList = new List<FormControl>();
         public static SolidColorBrush _redBrush = new SolidColorBrush(Colors.Red);
@@ -87,6 +86,11 @@ namespace PacketMessaging.Views
                     FormControl formControl = new FormControl(control as Control);
                     _formFieldsList.Add(formControl);
 				}
+				else if (control is AutoSuggestBox autoSuggestBox)
+				{
+					FormControl formControl = new FormControl(control as Control);
+					_formFieldsList.Add(formControl);
+				}
 			}
 		}
 
@@ -113,7 +117,7 @@ namespace PacketMessaging.Views
                     {
                         if (textBox.Text.Length == 0)
                         {
-                            AddToErrorString(FormControlBase.GetTagErrorMessage(control));
+                            AddToErrorString(FormControlBasics.GetTagErrorMessage(control));
                             control.BorderBrush = _redBrush;
                         }
                         else
@@ -121,7 +125,19 @@ namespace PacketMessaging.Views
                             control.BorderBrush = formControl.BaseBorderColor;
                         }
                     }
-                    else if (control is ComboBox comboBox)
+					else if (control is AutoSuggestBox autosuggestBox)
+					{
+						if (autosuggestBox.Text.Length == 0)
+						{
+							AddToErrorString(FormControlBase.GetTagErrorMessage(control));
+							control.BorderBrush = _redBrush;
+						}
+						else
+						{
+							control.BorderBrush = formControl.BaseBorderColor;
+						}
+					}
+					else if (control is ComboBox comboBox)
                     {
                         if (string.IsNullOrEmpty((string)comboBox.SelectionBoxItem))
                         {
@@ -176,9 +192,30 @@ namespace PacketMessaging.Views
         //	return result;
         //}
 
-        private void MessageTo_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			messageTo.Text = AddressBook.Instance.GetAddress(messageTo.Text);
-		}
-	}
+
+        private void MessageTo_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            sender.Text = args.SelectedItem.ToString();
+        }
+
+        private void MessageTo_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            {
+                // Only get results when it was a user typing, 
+                // otherwise assume the value got filled in by TextMemberPath 
+                // or the handler for SuggestionChosen.
+                if (string.IsNullOrEmpty(messageTo.Text))
+                {
+					sender.ItemsSource = null;
+					return;
+				}
+
+                if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+                {
+                    //Set the ItemsSource to be your filtered dataset
+                    sender.ItemsSource = AddressBook.Instance.GetAddressItems(messageTo.Text);
+                }
+            }
+        }
+    }
 }

@@ -12,6 +12,11 @@
 
 
     <RelativePanel x:Name="messageInfo"  BorderBrush="Black" BorderThickness="1" Padding="12" RequestedTheme="Light">
+		<!--<RelativePanel.Resources>
+			<Style  TargetType="AutoSuggestBox">
+				<Setter Property="BorderBrush" Value="Red"/>
+			</Style>
+		</RelativePanel.Resources>-->
         <TextBlock x:Name="labelBBS" 
                    RelativePanel.AlignLeftWithPanel="True"  
                    Text="BBS:" Width="55" Margin="0,8,8,8"/>
@@ -38,11 +43,18 @@
                    RelativePanel.AlignVerticalCenterWith="labelFrom" 
                    RelativePanel.AlignLeftWith="labelTNC" Text="To:" Margin="30,0.6,-0.4,-0.2" 
                    VerticalAlignment="Center" Width="20"/>
-        <TextBox x:Name="messageTo" RelativePanel.AlignVerticalCenterWith="labelFrom" 
+        <AutoSuggestBox x:Name="messageTo" RelativePanel.AlignVerticalCenterWith="labelFrom" 
+						RelativePanel.AlignLeftWith="messageTNC" 
+						RelativePanel.AlignRightWithPanel="True"  
+					    Tag="required,Please fill the To field" BorderThickness="5"  
+                        HorizontalAlignment="Stretch" Margin="12.333,2,12,0" 
+                        TextChanged="MessageTo_TextChanged"
+                        SuggestionChosen="MessageTo_SuggestionChosen"/>
+        <!--<TextBox x:Name="messageTo" RelativePanel.AlignVerticalCenterWith="labelFrom" 
                  RelativePanel.AlignLeftWith="messageTNC" 
                  RelativePanel.AlignRightWithPanel="True"  
                  Tag="required,Please fill the To field" BorderThickness="2"  
-                 HorizontalAlignment="Stretch" Margin="12.333,2,12,0" TextChanged="MessageTo_TextChanged"  />
+                 HorizontalAlignment="Stretch" Margin="12.333,2,12,0" TextChanged="MessageTo_TextChanged"  />-->
         <TextBlock x:Name="labelSubject" RelativePanel.AlignVerticalCenterWith="messageSubject" Text="Subject:"/>
         <TextBox x:Name="messageSubject" 
                  RelativePanel.Below="messageFrom" 

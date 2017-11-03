@@ -26,7 +26,7 @@
 					<ColumnDefinition Width="30"/>
 					<ColumnDefinition Width="120" />
 					<ColumnDefinition  Width="120"/>
-					<ColumnDefinition  Width="1*"/>
+					<ColumnDefinition  Width="1*" MinWidth="60"/>
 					<ColumnDefinition Width="110" />
 					<ColumnDefinition Width="70" />
 					<ColumnDefinition Width="70" />
@@ -38,7 +38,7 @@
 					<TextBlock Grid.Column="1" Text="{x:Bind ReceivedTime, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center"  />
 				</Border>
 				<TextBlock Grid.Column="2" Text="{x:Bind JNOSDate, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center"  />
-				<Border Grid.Column="3" Background="LightGray">
+				<Border Grid.Column="3" Background="LightGray" >
 					<TextBlock Grid.Column="3" Text="{x:Bind Subject}"  Margin="5,0,0,0" />
 				</Border>
 				<TextBlock Grid.Column="4" Text="{x:Bind MessageNumber}" HorizontalAlignment="Center"  />
@@ -244,7 +244,7 @@
 								</Border>
 								<TextBlock Grid.Column="2" Text="Sent Time" FontSize="17" HorizontalAlignment="Center"  />
 								<Border Grid.Column="3" Background="LightGray">
-									<TextBlock Grid.Column="3" Text="Subject"  />
+									<TextBlock Grid.Column="3" Text="Subject" />
 								</Border>
 								<TextBlock Grid.Column="4" Text="Msg. No." FontSize="17" HorizontalAlignment="Center" Margin="0,0,0,0"/>
 								<TextBlock Grid.Column="5" Text="To" FontSize="17" HorizontalAlignment="Center" />
@@ -454,6 +454,10 @@
 				</ScrollViewer>
 			</PivotItem>
 
+			<!--Test-->
+			<PivotItem x:Name="Test" Header="Test Layout">
+				
+			</PivotItem>
 		</Pivot>
 
 		<CommandBar x:Name="ButtomCommandBar"

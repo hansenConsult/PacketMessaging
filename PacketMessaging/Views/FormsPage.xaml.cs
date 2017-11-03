@@ -865,7 +865,7 @@ namespace PacketMessaging.Views
 				{
 					ScanControls(control);
 				}
-				else if (control is TextBox || control is ComboBox || control is CheckBox)
+				else if (control is TextBox || control is AutoSuggestBox || control is ComboBox || control is CheckBox)
 				{
 					_formFieldsList.Add((Control)control);
 				}

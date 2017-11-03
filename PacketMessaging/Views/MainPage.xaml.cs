@@ -108,9 +108,14 @@ namespace PacketMessaging.Views
                 {
                     item.Tag = _deletedMessagesFolder;
                 }
-            }
+				else if (item.Name == "Test")
+				{
+					item.Tag = _deletedMessagesFolder;
+				}
 
-            SharedData sharedData = SharedData.SharedDataInstance;
+			}
+
+			SharedData sharedData = SharedData.SharedDataInstance;
 
             sharedData.CurrentProfile = null;
             foreach (Profile profile in sharedData.ProfileArray.Profiles)
@@ -542,8 +547,12 @@ namespace PacketMessaging.Views
                         await file?.MoveAsync(_deletedMessagesFolder);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+					var file = await folder.CreateFileAsync(packetMessage.FileName, CreationCollisionOption.OpenIfExists);
+					await file?.DeleteAsync();
+
+					string s = ex.ToString();
                     continue;
                 }
             }

@@ -48,25 +48,24 @@
 
         <!-- When using x:Bind, you need to set x:DataType -->
         <DataTemplate x:Name="ContactListViewTemplate" x:DataType="data:AddressBookEntry">
-            <Grid>
+            <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Ellipse x:Name="Ellipse"
                          Grid.RowSpan="2"
-                         Width ="32"
-                         Height="32"
-                         Margin="6"
+                         Width ="25"
+                         Height="25"
                          VerticalAlignment="Center"
                          HorizontalAlignment="Center"
                          Fill="LightGray"/>
-                <TextBlock Grid.Column="1"
+				<TextBlock Grid.Column="1" Grid.Row="0"
                            Text="{x:Bind Callsign}" 
                            x:Phase="1"  
                            Style="{ThemeResource BaseTextBlockStyle}"
@@ -75,8 +74,8 @@
                             Grid.Row="1"
                             VerticalAlignment="Center"
                             Text="{x:Bind Address}" 
-                            MaxLines="1"
-                            x:Phase="2"
+                            MaxLines="2"
+                            x:Phase="1"
                             Style="{ThemeResource BodyTextBlockStyle}"
                             Margin="12,0,0,6"/>
                 <TextBlock Grid.Column="2"
@@ -92,7 +91,7 @@
                            OffContent="Secondary BBS"
                            OnContent="Primary BBS"
 						   Visibility="{x:Bind BBSPrimary, Converter={StaticResource VisibilityConverter}}"
-                           Margin="30,0,0,0" Toggled="ToggleSwitch_Toggled" />
+                           Margin="20,0,0,0" Toggled="ToggleSwitch_Toggled" />
 			</Grid>
         </DataTemplate>
 
@@ -614,7 +613,6 @@
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               SelectionMode="Single"
                               ShowsScrollingPlaceholders="True"
-                              Width="auto"
                               >
                         <ListView.GroupStyle>
                             <GroupStyle >

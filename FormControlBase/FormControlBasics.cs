@@ -79,7 +79,19 @@ namespace FormControlBaseClass
                             control.BorderBrush = formControl.BaseBorderColor;
                         }
                     }
-                    else if (control is ComboBox comboBox)
+					else if (control is AutoSuggestBox autoSuggestBox)
+					{
+						if (autoSuggestBox.Text.Length == 0)
+						{
+							AddToErrorString(GetTagErrorMessage(control));
+							control.BorderBrush = _redBrush;
+						}
+						else
+						{
+							control.BorderBrush = formControl.BaseBorderColor;
+						}
+					}
+					else if (control is ComboBox comboBox)
                     {
                         if (string.IsNullOrEmpty((string)comboBox.SelectionBoxItem))
                         {
