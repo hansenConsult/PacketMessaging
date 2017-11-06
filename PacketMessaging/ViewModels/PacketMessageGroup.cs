@@ -54,9 +54,10 @@ rootGrid.Children.Add(lv);
 		public string Header { get; set; }
 		public string HeaderShort { get; set; }
 		public GridLength Width { get; set; }
+		public double MinWidth { get; set; }
 		public string WidthAsString { get; set; }
 
-		public Field(string propertyName, string fieldHeader, string headerShort, string fieldWidth)
+		public Field(string propertyName, string fieldHeader, string headerShort, string fieldWidth, double minWidth = 0)
 		{
 			PropertyName = propertyName;
 			Header = fieldHeader;
@@ -65,6 +66,7 @@ rootGrid.Children.Add(lv);
 				Width = new GridLength(Convert.ToDouble(fieldWidth.TrimEnd(new char[] { '*' })), GridUnitType.Star);
 			else
 				Width = new GridLength(Convert.ToDouble(fieldWidth));
+			MinWidth = minWidth;
 			WidthAsString = fieldWidth;
 		}
 	}
@@ -126,7 +128,8 @@ rootGrid.Children.Add(lv);
 	public class Subject : Field
 	{
 		public Subject(string fieldWidth) : base(nameof(Subject), "Subject", "Subject", fieldWidth) { }
-		public Subject(string headerShort, string fieldWidth) : base(nameof(Subject), "Subject", headerShort, fieldWidth) { }
+		public Subject(string fieldWidth, double minWidth = 0) : base(nameof(Subject), "Subject", "Subject", fieldWidth, minWidth) { }
+		public Subject(string headerShort, string fieldWidth, double minWidth = 0) : base(nameof(Subject), "Subject", headerShort, fieldWidth, minWidth) { }
 	}
 
 }

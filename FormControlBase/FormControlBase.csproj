@@ -122,8 +122,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converters\" />
-    <Folder Include="System\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

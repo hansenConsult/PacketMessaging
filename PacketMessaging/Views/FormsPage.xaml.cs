@@ -905,6 +905,7 @@ namespace PacketMessaging.Views
 			MessageNumber = _packetMessage.MessageNumber;
 			_packetAddressForm.MessageSubject = _packetMessage.Subject;
 
+			// Below is a workaround for missing event when a field changes
             foreach (FormField formField in _packetMessage.FormFieldArray)
             {
                 FormControl formControl = _packetForm.FormControlsList.Find(x => x.InputControl.Name == formField.ControlName);
@@ -938,6 +939,8 @@ namespace PacketMessaging.Views
                     case "operatorTime":
                         _packetForm.OperatorTime = ((TextBox)control).Text;
                         break;
+					case null:
+						continue;
                 }
             }
         }
@@ -1200,7 +1203,10 @@ namespace PacketMessaging.Views
 			{
                 stackPanel.Children.Insert(0, _packetAddressForm);
                 stackPanel.Children.Insert(1, _packetForm);
-            }
+
+				_packetAddressForm.MessageSubject = $"{_packetForm.MessageNo}_O/R_";
+
+			}
             //else if (pivotItemName == "Message")
             //{
             //    Form213Panel.Children.Clear();
@@ -1213,9 +1219,9 @@ namespace PacketMessaging.Views
             {
                 stackPanel.Children.Insert(0, _packetForm);
                 stackPanel.Children.Insert(1, _packetAddressForm);
-            }
 
-            _packetAddressForm.MessageSubject = _packetForm.CreateSubject();
+				_packetAddressForm.MessageSubject = _packetForm.CreateSubject();
+			}
 
             if (!_loadMessage)
             {

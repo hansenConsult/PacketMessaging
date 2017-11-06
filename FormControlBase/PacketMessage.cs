@@ -76,8 +76,6 @@ namespace FormControlBaseClass
 
         private bool messageOpenedField = false;
 
-        //private bool messageReadOnlyField = false;
-
         /// <remarks/>
         public string FileName
         {
@@ -272,9 +270,9 @@ namespace FormControlBaseClass
                 this.messageSubjectField = value;
             }
         }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("FormField", IsNullable = false)]
+		
+		/// <remarks/>
+		[System.Xml.Serialization.XmlArrayItemAttribute("FormField", IsNullable = false)]
         public FormField[] FormFieldArray
         {
             get

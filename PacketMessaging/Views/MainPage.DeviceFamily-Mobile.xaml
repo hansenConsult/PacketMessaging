@@ -14,8 +14,8 @@
 	  >
 
 	<Page.Resources>
-		<local:AreaConverter x:Key="Converter1"/>
-		<local:DateTimeConverter x:Key="DatetimeConverter"/>
+        <local:AreaConverter x:Key="Converter1"/>
+        <local:DateTimeConverter x:Key="DatetimeConverter"/>
 
 		<CollectionViewSource x:Name="listViewProperties"  IsSourceGrouped="False" />
 		<CollectionViewSource x:Name="viewColumnsDeleted"  IsSourceGrouped="False" />

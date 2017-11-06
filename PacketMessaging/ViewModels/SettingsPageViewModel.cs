@@ -6,6 +6,7 @@ using Template10.Mvvm;
 using Windows.Devices.SerialCommunication;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
+//using PacketMessaging.Models;
 
 namespace PacketMessaging.ViewModels
 {

@@ -18,6 +18,8 @@ using System.Runtime.CompilerServices;
 using System.Linq;
 using Windows.Devices.Bluetooth.Rfcomm;
 using PacketMessaging.ViewModels;
+//using PacketMessaging.Models;
+using PacketMessaging.Converters;
 
 namespace PacketMessaging.Views
 {

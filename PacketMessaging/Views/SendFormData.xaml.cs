@@ -59,7 +59,8 @@ namespace PacketMessaging.Views
 		public string MessageTo
 		{
 			get => messageTo.Text;
-            set => messageTo.Text = AddressBook.Instance.GetAddress(value);
+			//set => messageTo.Text = AddressBook.Instance.GetAddress(value);
+			set => messageTo.Text = value;
 		}
 
 		public string MessageSubject

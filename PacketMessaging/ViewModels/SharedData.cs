@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Template10.Mvvm;
 using Windows.Foundation;
 using Windows.Storage;
+//using PacketMessaging.Models;
 
 namespace PacketMessaging.ViewModels
 {

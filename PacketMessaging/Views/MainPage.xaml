@@ -23,10 +23,10 @@
 		<DataTemplate x:Name="InboxListViewTemplate" x:DataType="data:PacketMessage">
 			<Grid x:Name="nameInboxTemplate" >
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="30"/>
+					<ColumnDefinition Width="40"/>
 					<ColumnDefinition Width="120" />
-					<ColumnDefinition  Width="120"/>
-					<ColumnDefinition  Width="1*" MinWidth="60"/>
+					<ColumnDefinition Width="120"/>
+					<ColumnDefinition Width="1*" MinWidth="60"/>
 					<ColumnDefinition Width="110" />
 					<ColumnDefinition Width="70" />
 					<ColumnDefinition Width="70" />
@@ -38,8 +38,8 @@
 					<TextBlock Grid.Column="1" Text="{x:Bind ReceivedTime, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center"  />
 				</Border>
 				<TextBlock Grid.Column="2" Text="{x:Bind JNOSDate, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center"  />
-				<Border Grid.Column="3" Background="LightGray" >
-					<TextBlock Grid.Column="3" Text="{x:Bind Subject}"  Margin="5,0,0,0" />
+				<Border Grid.Column="3" Background="LightGray"  >
+                    <TextBlock Grid.Column="3" Text="{x:Bind Subject}" Width="1024" Margin="5,0,0,0" />
 				</Border>
 				<TextBlock Grid.Column="4" Text="{x:Bind MessageNumber}" HorizontalAlignment="Center"  />
 				<TextBlock Grid.Column="5" Text="{x:Bind MessageTo}" Margin="5,0,0,0" />
@@ -53,7 +53,7 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="120"/>
 					<ColumnDefinition Width="120" />
-					<ColumnDefinition Width="1*"/>
+					<ColumnDefinition Width="1*" MinWidth="60"/>
 					<ColumnDefinition Width="110" />
 					<ColumnDefinition Width="70"/>
 					<ColumnDefinition Width="70" />
@@ -62,7 +62,7 @@
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Column="0" Text="{x:Bind ReceivedTime, Converter={StaticResource DatetimeConverter}}"  HorizontalAlignment="Center" />
 				<TextBlock Grid.Column="1" Text="{x:Bind SentTime, Converter={StaticResource DatetimeConverter}}"  HorizontalAlignment="Center" />
-				<TextBlock Grid.Column="2" Text="{x:Bind Subject}"  Margin="5,0,0,0" />
+                <TextBlock Grid.Column="2" Text="{x:Bind Subject}" Width="1024" Margin="5,0,0,0" />
 				<TextBlock Grid.Column="3" Text="{x:Bind MessageNumber}" HorizontalAlignment="Center" />
 				<TextBlock Grid.Column="4" Text="{x:Bind MessageTo}"  Margin="5,0,0,0"/>
 				<TextBlock Grid.Column="5" Text="{x:Bind MessageFrom}"  Margin="5,0,0,0" />
@@ -94,14 +94,14 @@
 			<Grid >
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="120"/>
-					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" MinWidth="60"/>
 					<ColumnDefinition Width="110" />
 					<ColumnDefinition Width="100" />
 					<ColumnDefinition Width="70" />
 					<ColumnDefinition Width="60" />
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Column="0" Text="{x:Bind CreateTime}" HorizontalAlignment="Center"  />
-				<TextBlock Grid.Column="1" Text="{x:Bind Subject}" HorizontalAlignment="Center" />
+				<TextBlock Grid.Column="1" Text="{x:Bind Subject}" Width="1024" HorizontalAlignment="Left" />
 				<TextBlock Grid.Column="2" Text="{x:Bind MessageNumber}" HorizontalAlignment="Center"  />
 				<TextBlock Grid.Column="3" Text="{x:Bind MessageTo}" Margin="5,0,0,0" />
 				<TextBlock Grid.Column="4" Text="{x:Bind MessageFrom}" Margin="5,0,0,0"  />
@@ -131,8 +131,8 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="20"/>
 					<ColumnDefinition Width="120" />
-					<ColumnDefinition  Width="120"/>
-					<ColumnDefinition  Width="1*"/>
+					<ColumnDefinition Width="120"/>
+					<ColumnDefinition Width="1*" MinWidth="60"/>
 					<ColumnDefinition Width="110" />
 					<ColumnDefinition Width="70" />
 					<ColumnDefinition Width="70" />
@@ -142,7 +142,7 @@
 				<TextBlock Grid.Column="0" Text="{x:Bind Area, Converter={StaticResource Converter1}}" HorizontalAlignment="Center"/>
 				<TextBlock Grid.Column="1" Text="{x:Bind ReceivedTime, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center"  />
 				<TextBlock Grid.Column="2" Text="{x:Bind CreateTime}" HorizontalAlignment="Center"  />
-				<TextBlock Grid.Column="3" Text="{x:Bind Subject}"  Margin="5,0,0,0" />
+				<TextBlock Grid.Column="3" Text="{x:Bind Subject}" Width="1024" Margin="5,0,0,0" />
 				<TextBlock Grid.Column="4" Text="{x:Bind MessageNumber}" HorizontalAlignment="Center"  />
 				<TextBlock Grid.Column="5" Text="{x:Bind MessageTo}" Margin="5,0,0,0" />
 				<TextBlock Grid.Column="6" Text="{x:Bind MessageFrom}" Margin="5,0,0,0"  />
@@ -226,9 +226,9 @@
 							  DoubleTapped="ListBox_DoubleTapped" 
 							  SelectionChanged="ListView_SelectionChanged" >
 						<ListView.Header>
-							<Grid x:Name="InBoxListViewHeader" Margin="12,0,12,0">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="30"/>
+                            <Grid x:Name="InBoxListViewHeader" Margin="12,0,12,0">
+                                <Grid.ColumnDefinitions>
+									<ColumnDefinition Width="40"/>
 									<ColumnDefinition Width="120" />
 									<ColumnDefinition Width="120"/>
 									<ColumnDefinition Width="1*" MinWidth="60"/>
@@ -244,10 +244,10 @@
 								</Border>
 								<TextBlock Grid.Column="2" Text="Sent Time" FontSize="17" HorizontalAlignment="Center"  />
 								<Border Grid.Column="3" Background="LightGray">
-									<TextBlock Grid.Column="3" Text="Subject" />
+                                    <TextBlock Grid.Column="3" Text="Subject" FontSize="17"/>
 								</Border>
 								<TextBlock Grid.Column="4" Text="Msg. No." FontSize="17" HorizontalAlignment="Center" Margin="0,0,0,0"/>
-								<TextBlock Grid.Column="5" Text="To" FontSize="17" HorizontalAlignment="Center" />
+								<TextBlock Grid.Column="5" Text="To " FontSize="17" HorizontalAlignment="Center" />
 								<TextBlock Grid.Column="6" Text="From" FontSize="17" HorizontalAlignment="Center"  />
 								<TextBlock Grid.Column="7" Text="BBS" FontSize="17" HorizontalAlignment="Center"/>
 								<TextBlock Grid.Column="8" Text="Size" FontSize="17" HorizontalAlignment="Center" />
@@ -298,8 +298,7 @@
 			<!--  Outbox  -->
 			<PivotItem x:Name="Outbox" 
                        Header="Outbox" Padding="0">
-				<ScrollViewer Margin="0,0,-12,0" 
-							  HorizontalScrollBarVisibility="Visible"
+				<ScrollViewer Margin="0,0,-12,0" Width="auto"
 							  VerticalScrollBarVisibility="Auto">
 					<ListView x:Name="listViewOutBox" 
 							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
@@ -333,7 +332,7 @@
 			<!--  Drafts  -->
 			<PivotItem x:Name="Drafts" 
                        Header="Drafts" Padding="0">
-				<!--<ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">-->
+				<ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">
 					<ListView x:Name="listViewDrafts" 
 							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
 							  ItemTemplate="{StaticResource DraftsListViewTemplate}"
@@ -352,7 +351,7 @@
 									<ColumnDefinition Width="60" />
 								</Grid.ColumnDefinitions>
 								<TextBlock Grid.Column="0" Text="Create Time" FontSize="17" HorizontalAlignment="Center" DoubleTapped="TextBlock_DoubleTapped"  />
-								<TextBlock Grid.Column="1" Text="Subject" FontSize="17" HorizontalAlignment="Center" DoubleTapped="TextBlock_DoubleTapped"  />
+								<TextBlock Grid.Column="1" Text="Subject" FontSize="17" HorizontalAlignment="Left" DoubleTapped="TextBlock_DoubleTapped"  />
 								<TextBlock Grid.Column="2" Text="Number" FontSize="17" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped"  />
 								<TextBlock Grid.Column="3" Text="To" FontSize="17" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped" />
 								<TextBlock Grid.Column="4" Text="From" FontSize="17" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped"  />
@@ -360,7 +359,7 @@
 							</Grid>
 						</ListView.Header>
 					</ListView>
-				<!--</ScrollViewer>-->
+				</ScrollViewer>
 			</PivotItem>
 
 			<!--  Archived Items  -->
@@ -455,9 +454,15 @@
 			</PivotItem>
 
 			<!--Test-->
-			<PivotItem x:Name="Test" Header="Test Layout">
-				
-			</PivotItem>
+			<PivotItem x:Name="testDataGrid" Header="Test Layout">
+                <!--<dataGrid:DataGrid x:Name="dataGridControl" ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
+                                   SelectionChanged="dataGridControl_SelectionChanged">
+                    <dataGrid:DataGrid.Columns>
+                        <dataGrid:DataGridTextColumn Width="120" Header="Create Time"/>
+                        <dataGrid:DataGridTextColumn Width="120" Header="Subject"/>
+                    </dataGrid:DataGrid.Columns>
+                </dataGrid:DataGrid>-->
+            </PivotItem>
 		</Pivot>
 
 		<CommandBar x:Name="ButtomCommandBar"

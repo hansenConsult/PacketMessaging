@@ -108,7 +108,7 @@ namespace PacketMessaging.Views
                 {
                     item.Tag = _deletedMessagesFolder;
                 }
-				else if (item.Name == "Test")
+				else if (item.Name == "testDataGrid")
 				{
 					item.Tag = _deletedMessagesFolder;
 				}
@@ -157,7 +157,7 @@ namespace PacketMessaging.Views
 
 			_packetMessageViewListDrafts = new PacketMessageViewList();
 			_packetMessageViewListDrafts.Add(new CreateTime("120"));
-			_packetMessageViewListDrafts.Add(new Subject("1*"));
+			_packetMessageViewListDrafts.Add(new Subject("1*", 60));
 			_packetMessageViewListDrafts.Add(new MessageNumber("Number", "110"));
 			_packetMessageViewListDrafts.Add(new MessageTo("70"));
 			_packetMessageViewListDrafts.Add(new MessageFrom("70"));
@@ -351,6 +351,12 @@ namespace PacketMessaging.Views
 				//}
 				//else
 				//{
+				if (packetMessageViewList.MessageViewList[i].PropertyName == "Subject")
+				{
+					string subjectLine = "<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{Binding " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + "}\" Width=\"1024\"" + $" MinWidth=\"{ packetMessageViewList.MessageViewList[i].MinWidth}\"/>";
+					header.Append("<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{Binding " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + "}\" Width=\"1024\"" + $" MinWidth=\"{ packetMessageViewList.MessageViewList[i].MinWidth}\"/>");
+				}
+				else
 					header.Append("<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{Binding " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + "}\" HorizontalAlignment=\"Center\"/>");
 				//}
 			}
@@ -422,14 +428,18 @@ namespace PacketMessaging.Views
 						{
 							columnDefinition = new ColumnDefinition()
 							{
-								Width = _packetMessageViewListDeleted.MessageViewList[i].Width
+								Width = _packetMessageViewListDeleted.MessageViewList[i].Width,
+								MinWidth = _packetMessageViewListDeleted.MessageViewList[i].MinWidth
 							};
 							header.ColumnDefinitions.Add(columnDefinition);
 							TextBlock columnTextBlock = new TextBlock();
 							header.Children.Add(columnTextBlock);
 							columnTextBlock.Text = _packetMessageViewListDeleted.MessageViewList[i].HeaderShort;
 							columnTextBlock.FontSize = 17;
-							columnTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+							if (columnTextBlock.Text == "Subject")
+								columnTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
+							else
+								columnTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
 							columnTextBlock.Tag = _packetMessageViewListDeleted.MessageViewList[i].PropertyName;
 							columnTextBlock.AddHandler(DoubleTappedEvent, new DoubleTappedEventHandler(TextBlock_DoubleTapped), true);
 							Grid.SetColumn(columnTextBlock, i);
@@ -641,5 +651,6 @@ namespace PacketMessaging.Views
 		{
 			RefreshListView();
 		}
+
 	}
 }

@@ -6,7 +6,7 @@
     xmlns:local="using:PacketMessaging.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:MyBaseNamespace="using:FormControlBasics"
+    xmlns:MyBaseNamespace="using:FormControlBaseClass"
     mc:Ignorable="d"
     d:DesignWidth="554.333" Height="130">
 

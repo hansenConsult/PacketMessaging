@@ -35,7 +35,7 @@ namespace PacketMessaging
 	[XmlRoot(Namespace = "", IsNullable = false)]
     public sealed class AddressBook
 	{
-        private static ILogger log = LogManagerFactory.DefaultLogManager.GetLogger<BBSDefinitions>();
+        private static ILogger log = LogManagerFactory.DefaultLogManager.GetLogger<AddressBook>();
 
         private Dictionary<string, AddressBookEntry> _addressDictionary;
         private const string addressBookFileName = "addressBook.xml";
