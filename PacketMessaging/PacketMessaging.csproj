@@ -98,10 +98,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BackgroundTransfer.cs" />
     <Compile Include="BBSData.cs" />
     <Compile Include="Converters\AddressConverter.cs" />
-    <Compile Include="GroupInfoList.cs" />
+    <Compile Include="Converters\AreaConverter.cs" />
+    <Compile Include="Models\BackgroundTransfer.cs" />
+    <Compile Include="Models\distributionlists.cs" />
+    <Compile Include="Models\GroupInfoList.cs" />
     <Compile Include="profiles.cs" />
     <Compile Include="Services\CommunicationsService\BluetoothManager.cs" />
     <Compile Include="Services\CommunicationsService\CommunicationsService.cs" />
@@ -119,7 +121,6 @@
     <Compile Include="ViewModels\PacketMessageGroup.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\SharedData.cs" />
-    <Compile Include="Views\AreaConverter.cs" />
     <Compile Include="Views\DeviceListEntry.cs" />
     <Compile Include="Views\FormsPage.xaml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -278,9 +279,7 @@
       <Version>1.1.12</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '15.0' ">
     <VisualStudioVersion>15.0</VisualStudioVersion>
   </PropertyGroup>

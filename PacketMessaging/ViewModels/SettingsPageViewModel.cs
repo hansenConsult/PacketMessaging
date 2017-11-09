@@ -6,7 +6,7 @@ using Template10.Mvvm;
 using Windows.Devices.SerialCommunication;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
-//using PacketMessaging.Models;
+using PacketMessaging.Models;
 
 namespace PacketMessaging.ViewModels
 {
@@ -19,7 +19,8 @@ namespace PacketMessaging.ViewModels
 		public static PacketSettingsPartViewModel PacketSettingsPartViewModel { get; } = new PacketSettingsPartViewModel();
 		public static TNCPartViewModel TNCPartViewModel { get; } = new TNCPartViewModel();
         public static AddressBookPartViewModel AddressBookPartViewModel { get; } = new AddressBookPartViewModel();
-        public AboutPartViewModel AboutPartViewModel { get; } = new AboutPartViewModel();
+		public DistributionListsPartViewModel distributionListsPartViewModel { get; } = new DistributionListsPartViewModel();
+		public AboutPartViewModel AboutPartViewModel { get; } = new AboutPartViewModel();
 
 		public static string GetMessageNumberPacket() => GetMessageNumber() + "P";
 
@@ -470,7 +471,26 @@ namespace PacketMessaging.ViewModels
         { get => _addressBookCallsign; set { _addressBookCallsign = value; base.RaisePropertyChanged(); } }
     }
 
-    public class AboutPartViewModel : ViewModelBase
+	public class DistributionListsPartViewModel : ViewModelBase
+	{
+		Services.SettingsServices.SettingsService _settings;
+
+		DistributionListArray distributionLists = DistributionListArray.Instance;
+
+
+		public DistributionListsPartViewModel()
+		{
+			_settings = Services.SettingsServices.SettingsService.Instance;
+		}
+
+		public string DistributionListName
+		{ get => _settings.DistributionListName; set { _settings.DistributionListName = value; base.RaisePropertyChanged(); } }
+
+		public string DistributionListItems
+		{ get => _settings.DistributionListItems; set { _settings.DistributionListItems = value; base.RaisePropertyChanged(); } }
+	}
+
+	public class AboutPartViewModel : ViewModelBase
 	{
 		public Uri Logo => Windows.ApplicationModel.Package.Current.Logo;
 

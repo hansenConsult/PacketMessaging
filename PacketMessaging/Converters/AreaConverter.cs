@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using FormControlBaseClass;
 
-namespace PacketMessaging.Views
+//namespace PacketMessaging.Views
+namespace PacketMessaging.Converters
 {
 	public sealed class AreaConverter : IValueConverter
 	{

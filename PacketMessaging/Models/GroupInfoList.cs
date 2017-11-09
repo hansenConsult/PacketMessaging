@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PacketMessaging
+namespace PacketMessaging.Models
 {
     public class GroupInfoList : List<object>
     {

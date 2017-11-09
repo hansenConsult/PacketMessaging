@@ -11,7 +11,7 @@ using Windows.Storage;
 using Windows.Web;
 using MetroLog;
 
-namespace PacketMessaging
+namespace PacketMessaging.Models
 {
     public class BackgroundTransfer : IDisposable
     {

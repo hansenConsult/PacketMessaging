@@ -1,6 +1,5 @@
 ﻿{
   "dependencies": {
-    "MetroLog": "1.0.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "6.0.1",
     "System.ValueTuple": "4.4.0"
   },

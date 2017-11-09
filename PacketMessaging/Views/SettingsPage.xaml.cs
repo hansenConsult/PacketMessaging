@@ -18,7 +18,7 @@ using System.Runtime.CompilerServices;
 using System.Linq;
 using Windows.Devices.Bluetooth.Rfcomm;
 using PacketMessaging.ViewModels;
-//using PacketMessaging.Models;
+using PacketMessaging.Models;
 using PacketMessaging.Converters;
 
 namespace PacketMessaging.Views
@@ -87,7 +87,6 @@ namespace PacketMessaging.Views
 		//bool _isTNCAppBarSaveEnabled = false;
 		//string _comPort;
 		//Visibility _isBluetoothDevicesVisible = Visibility.Collapsed;
-
 
 		public SettingsPage()
 		{
@@ -168,6 +167,10 @@ namespace PacketMessaging.Views
 				listOfTacticallsignsArea.Add(callsignData);
 			}
 			TacticalCallsignsAreaSource.Source = listOfTacticallsignsArea;
+
+			distributionListName.ItemsSource = DistributionListArray.Instance.GetDistributionLists();
+			distributionListAddItem.IsEnabled = false;
+			distributionListItems.IsReadOnly = true;
 		}
 
 		// LogHelper
@@ -1329,26 +1332,99 @@ namespace PacketMessaging.Views
         {
 
         }
-        #endregion // AddressBook
+		#endregion // AddressBook
+#region Distribution List
+		enum DistributionListState
+		{
+			None,
+			Edit,
+			Add,
+			Delete
+		}
+		DistributionListState _distributionListState = DistributionListState.None;
 
-        // Event handling
-        private void MyPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (MyPivot.SelectedIndex == 0)
-            {
-                SettingsCommandBar.Visibility = Visibility.Collapsed;
-            }
-            if ((MyPivot.SelectedItem as PivotItem).Name == "pivotItemAddressBook")
-            {
-                ContactsCVS.Source = AddressBook.Instance.GetContactsGrouped();
-                appBarSettingsSave.Visibility = Visibility.Collapsed;
-                SettingsCommandBar.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                SettingsCommandBar.Visibility = Visibility.Collapsed;
-            }
+		private void DistributionListName_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+		{
+			sender.Text = args.SelectedItem.ToString();
+		}
 
+		private void DistributionListName_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+		{
+			// Only get results when it was a user typing, 
+			// otherwise assume the value got filled in by TextMemberPath 
+			// or the handler for SuggestionChosen.
+			if (string.IsNullOrEmpty(distributionListName.Text))
+			{
+				sender.ItemsSource = null;
+				return;
+			}
+			if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+			{
+				//Set the ItemsSource to be your filtered dataset
+				sender.ItemsSource = DistributionListArray.Instance.GetDistributionListNames(distributionListName.Text);
+				if ((sender.ItemsSource as List<string>).Count == 1)
+				{
+					//SettingsPageViewModel.distributionListsPartViewModel.DistributionListName = DistributionListArray.Instance.ArrayOfDistributionLists[0].DistributionListName;
+					distributionListItems.Text = DistributionListArray.Instance.ArrayOfDistributionLists[0].DistributionListItems;
+					//SettingsPageViewModel.distributionListsPartViewModel.DistributionListItems = DistributionListArray.Instance.ArrayOfDistributionLists[0].DistributionListItems;
+				}
+				//sender.ItemsSource = distributionListArray.GetDistributionListNames(distributionListName.Text);
+			}
+		}
+
+		private void DistributionListAddItem_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+		{
+			sender.Text = args.SelectedItem.ToString();
+			if (string.IsNullOrEmpty(distributionListItems.Text))
+			{
+				distributionListItems.Text = $"{sender.Text}";
+			}
+			else
+			{
+				distributionListItems.Text += $", {sender.Text}";
+			}
+		}
+
+		private void DistributionListAddItem_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+		{
+			// Only get results when it was a user typing, 
+			// otherwise assume the value got filled in by TextMemberPath 
+			// or the handler for SuggestionChosen.
+			if (string.IsNullOrEmpty(distributionListAddItem.Text))
+			{
+				sender.ItemsSource = null;
+				return;
+			}
+
+			if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+			{
+				//Set the ItemsSource to be your filtered dataset
+				sender.ItemsSource = AddressBook.Instance.GetAddressNames(distributionListAddItem.Text);
+			}
+		}
+#endregion
+		// Event handling
+		private void MyPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			switch ((MyPivot.SelectedItem as PivotItem).Name)
+			{
+				case "pivotItemAddressBook":
+					ContactsCVS.Source = AddressBook.Instance.GetContactsGrouped();
+					appBarSettingsSave.Visibility = Visibility.Collapsed;
+					SettingsCommandBar.Visibility = Visibility.Visible;
+					break;
+				case "pivotItemDistributionLists":
+					//ContactsCVS.Source = AddressBook.Instance.GetContactsGrouped();
+					appBarSettingsSave.Visibility = Visibility.Visible;
+					appBarSettingsSave.IsEnabled = false;
+					appBarSettingsEdit.Visibility = Visibility.Visible;
+					appBarsettingsDelete.Visibility = Visibility.Visible;
+					SettingsCommandBar.Visibility = Visibility.Visible;
+					break;
+				default:
+					SettingsCommandBar.Visibility = Visibility.Collapsed;
+					break;
+			}
         }
 
         private AddressBookEntry GetAddressBookEntryEditData()
@@ -1386,20 +1462,27 @@ namespace PacketMessaging.Views
             switch ((MyPivot.SelectedItem as PivotItem).Name)
             {
                 case "pivotItemAddressBook":
-                    AddressBook addressBook = AddressBook.Instance;
                     AddressBookEntry addressBookEntry = addressBookListView.SelectedItem as AddressBookEntry;
                     SetAddressBookEntryEditData(addressBookEntry);
                     editAddressBookEntryContentDialog.PrimaryButtonText = "Save";
                     ContentDialogResult result = await editAddressBookEntryContentDialog.ShowAsync();
                     if (result == ContentDialogResult.Primary)
                     {
-                        addressBookEntry = GetAddressBookEntryEditData();
+						AddressBook addressBook = AddressBook.Instance;
+						addressBookEntry = GetAddressBookEntryEditData();
                         bool success = addressBook.AddAddressAsync(addressBookEntry);
                         ContactsCVS.Source = addressBook.GetContactsGrouped();
                     }
                     break;
-            }
-        }
+				case "pivotItemDistributionLists":
+					_distributionListState = DistributionListState.Edit;
+					distributionListAddItem.IsEnabled = true;
+					distributionListItems.IsReadOnly = false;
+					appBarSettingsSave.IsEnabled = true;
+					break;
+
+			}
+		}
 
 
         private void AppBarDelete_Click(object sender, RoutedEventArgs e)
@@ -1412,14 +1495,18 @@ namespace PacketMessaging.Views
                     addressBook.DeleteAddress(addressBookEntry);
                     ContactsCVS.Source = addressBook.GetContactsGrouped();
                     break;
+				case "pivotItemDistributionLists":
+					_distributionListState = DistributionListState.Delete;
+					appBarSettingsSave.IsEnabled = true;
+					DistributionListArray distributionLists = DistributionListArray.Instance;
+					//DistributionListsItem distributionListsItem = addressBookListView.SelectedItem as DistributionListsItem;
+					break;
             }
-
         }
 
         private async void AppBarAdd_ClickAsync(object sender, RoutedEventArgs e)
         {
             AddressBookEntry addressBookEntry = null;
-
 
             switch ((MyPivot.SelectedItem as PivotItem).Name)
             {
@@ -1444,17 +1531,45 @@ namespace PacketMessaging.Views
                     }
                     ContactsCVS.Source = addressBook.GetContactsGrouped();
                     break;
-            }
+				case "pivotItemDistributionLists":
+					_distributionListState = DistributionListState.Add;
+					appBarSettingsSave.IsEnabled = true;
+					distributionListAddItem.IsEnabled = true;
+					distributionListItems.IsReadOnly = false;
+					break;
+			}
 
-        }
+		}
 
-        private void AppBarSave_Click(object sender, RoutedEventArgs e)
+        private async void AppBarSave_ClickAsync(object sender, RoutedEventArgs e)
         {
             switch ((MyPivot.SelectedItem as PivotItem).Name)
             {
                 case "pivotItemAddressBook":
                     break;
-            }
+				case "pivotItemDistributionLists":
+					if (_distributionListState == DistributionListState.Add)
+					{
+						// Must not exist
+					} else if (_distributionListState == DistributionListState.Edit)
+					{
+						// Must exist
+					}
+						distributionListAddItem.IsEnabled = false;
+					distributionListItems.IsReadOnly = true;
+					DistributionList distributionList = new DistributionList()
+					{
+						DistributionListName = distributionListName.Text,
+						DistributionListItems = distributionListItems.Text
+					};
+
+					var listOfDiostributionLists = DistributionListArray.Instance.ArrayOfDistributionLists.ToList();
+					listOfDiostributionLists.Add(distributionList);
+					DistributionListArray.Instance.ArrayOfDistributionLists = listOfDiostributionLists.ToArray();
+					await DistributionListArray.Instance.SaveAsync();
+					appBarSettingsSave.IsEnabled = false;
+					break;
+			}
 
         }
 
@@ -1477,5 +1592,6 @@ namespace PacketMessaging.Views
                 }
             }
         }
-    }
+
+	}
 }

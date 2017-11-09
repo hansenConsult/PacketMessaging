@@ -11,12 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using FormControlBaseClass;
 using Windows.Storage;
-using System.Diagnostics;
 using MetroLog;
 using Windows.Storage.Search;
 using Windows.Data.Pdf;
@@ -24,13 +22,13 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Media.Ocr;
 using Windows.Graphics.Imaging;
-using Windows.Foundation;
 using Windows.Globalization;
 using System.Text;
+using PacketMessaging.Models;
 
 namespace PacketMessaging
 {
-    public class TacticalCallsignData
+	public class TacticalCallsignData
     {
         private string fileNameField;
 

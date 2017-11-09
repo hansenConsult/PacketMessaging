@@ -214,7 +214,21 @@ namespace PacketMessaging.Services.SettingsServices
 			set { _helper.Write(nameof(TNCDeviceSelectedIndex), value); }
 		}
 #endregion
-#region MainPage
+#region Distribution Lists
+		public string DistributionListName
+		{
+			get { return _helper.Read(nameof(DistributionListName), ""); }
+			set { _helper.Write(nameof(DistributionListName), value); }
+		}
+
+		public string DistributionListItems
+		{
+			get { return _helper.Read(nameof(DistributionListItems), ""); }
+			set { _helper.Write(nameof(DistributionListItems), value); }
+		}
+
+		#endregion
+		#region MainPage
 		//public double GridViewItemWidth
 		//{
 		//	get { return _helper.Read(nameof(GridViewItemWidth), 218.0); }

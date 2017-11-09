@@ -9,13 +9,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:PacketMessaging.Views"
       xmlns:data="using:PacketMessaging"
+      xmlns:models="using:PacketMessaging.Models"
+      xmlns:converters="using:PacketMessaging.Converters"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:PacketMessaging.ViewModels" 
 	  mc:Ignorable="d" 
 	  d:DesignHeight="800">
 
 	<Page.Resources>
-		<local:VisibilityConverter x:Key="VisibilityConverter"/>
+		<converters:VisibilityConverter x:Key="VisibilityConverter"/>
 
         <CollectionViewSource x:Name="BBSDataCollection"  IsSourceGrouped="False" />
 		<CollectionViewSource x:Name="ProfilesCollection"  IsSourceGrouped="False"  />
@@ -38,7 +40,7 @@
 		<CollectionViewSource x:Name="StopBitsListSource" IsSourceGrouped="False"/>
 		<CollectionViewSource x:Name="HandshakesListSource" IsSourceGrouped="False"/>
 
-		<local:ComboBoxItemConverter x:Key="CBIConverter"/>
+		<converters:ComboBoxItemConverter x:Key="CBIConverter"/>
 
 		<CollectionViewSource x:Name="TacticalCallsignsAreaSource" IsSourceGrouped="False"/>
 		<CollectionViewSource x:Name="TacticalCallsignsSource"  IsSourceGrouped="False" />
@@ -616,7 +618,7 @@
                         <ListView.GroupStyle>
                             <GroupStyle >
                                 <GroupStyle.HeaderTemplate>
-                                    <DataTemplate x:DataType="data:GroupInfoList">
+                                    <DataTemplate x:DataType="models:GroupInfoList">
                                         <TextBlock Text="{x:Bind Key}" 
                                                 Style="{ThemeResource TitleTextBlockStyle}"/>
                                     </DataTemplate>
@@ -624,6 +626,22 @@
                             </GroupStyle>
                         </ListView.GroupStyle>
                     </ListView>
+                </RelativePanel>
+            </PivotItem>
+            
+            <!--Distribution Lists-->
+            <PivotItem x:Name="pivotItemDistributionLists" Header="Distribution Lists">
+                <RelativePanel DataContext="{Binding distributionListsPartViewModel}">
+                    <AutoSuggestBox x:Name="distributionListName" Text="{Binding DistributionListName, Mode=TwoWay}" Header="List Name:" Margin="5,10,0,0"
+                                    TextChanged="DistributionListName_TextChanged"
+                                    SuggestionChosen="DistributionListName_SuggestionChosen" MinWidth="120"/>
+                    <TextBox x:Name="distributionListItems" Text="{Binding DistributionListItems,Mode=TwoWay}"
+                             Header="Distribution List" AcceptsReturn="True" Margin="5,10,0,0"
+                             RelativePanel.Below="distributionListName"/>
+                    <AutoSuggestBox x:Name="distributionListAddItem" Header="Add to Distribution List" Margin="5,10,0,0"
+                                    RelativePanel.Below="distributionListItems"
+                                    TextChanged="DistributionListAddItem_TextChanged"
+                                    SuggestionChosen="DistributionListAddItem_SuggestionChosen"/>
                 </RelativePanel>
             </PivotItem>
             
@@ -667,12 +685,12 @@
 
         <ContentDialog x:Name="editAddressBookEntryContentDialog" DataContext="AddressBookPartViewModel"
                        PrimaryButtonText="Save" IsPrimaryButtonEnabled="True"
-                       CloseButtonText="Cancel"
+                       CloseButtonText="Cancel" 
                        Title="Edit Address Book Entry" Opened="EditAddressBookEntryContentDialog_Opened">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Callsign:" VerticalAlignment="Center" Width="102"/>
-                    <TextBox x:Name="addressBookCallsign" Text="{Binding AddressBookCallsign}" Width="100" Margin="5,2,0,0"/>
+                    <TextBox x:Name="addressBookCallsign" Text="{Binding AddressBookCallsign}" Width="115" Margin="5,2,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Name:" VerticalAlignment="Center" Width="102"/>
@@ -680,7 +698,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Primary BBS:" VerticalAlignment="Center" Width="102"/>
-                    <ComboBox x:Name="addressBookPrimaryBBS" Width="100" Margin="5,2,0,0">
+                    <ComboBox x:Name="addressBookPrimaryBBS" Width="115" Margin="5,2,0,0">
                         <x:String>W1XSC</x:String>
                         <x:String>W2XSC</x:String>
                         <x:String>W3XSC</x:String>
@@ -690,7 +708,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Secondary BBS:" VerticalAlignment="Center" Width="102"/>
-                    <ComboBox x:Name="addressBookSecondaryBBS" Width="100" Margin="5,2,0,0">
+                    <ComboBox x:Name="addressBookSecondaryBBS" Width="115" Margin="5,2,0,0">
                         <x:String>W1XSC</x:String>
                         <x:String>W2XSC</x:String>
                         <x:String>W3XSC</x:String>
@@ -708,7 +726,7 @@
 				RelativePanel.AlignLeftWithPanel="True">
             <AppBarButton x:Name="appBarSettingsAdd" Label="Add" Icon="Add" Click="AppBarAdd_ClickAsync" />
             <AppBarButton x:Name="appBarSettingsEdit" Label="Edit" Icon="Edit" HorizontalAlignment="Right" Click="AppBarEdit_ClickAsync"/>
-            <AppBarButton x:Name="appBarSettingsSave" Icon="Save" Click="AppBarSave_Click" />
+            <AppBarButton x:Name="appBarSettingsSave" Icon="Save" Click="AppBarSave_ClickAsync" />
             <AppBarButton x:Name="appBarsettingsDelete" Label="Delete" Icon="Delete" Click="AppBarDelete_Click" HorizontalAlignment="Right" />
         </CommandBar>
 

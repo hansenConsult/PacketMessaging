@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DistributionLists >
+  <DistributionListArray>
+    <DistributionList Name="list1">
+      <DistributionListItem AddressBookEntry="KZ6DM"/>
+      <DistributionListItem AddressBookEntry="MTVEOC"/>
+      <DistributionListItem AddressBookEntry="HOSDOC"/>
+    </DistributionList>
+    <DistributionList Name="list2">
+      <DistributionListItem AddressBookEntry="HOSMTV"/>
+      <DistributionListItem AddressBookEntry="MTVSMV"/>
+      <DistributionListItem AddressBookEntry="MTVDDQ"/>
+    </DistributionList>
+  </DistributionListArray>
+</DistributionLists>

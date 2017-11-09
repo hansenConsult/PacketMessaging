@@ -8,14 +8,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:PacketMessaging.Views"
       xmlns:data="using:FormControlBaseClass"
+      xmlns:converters="using:PacketMessaging.Converters"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:PacketMessaging.ViewModels" 
 	  mc:Ignorable="d" SizeChanged="Page_SizeChanged" 
 	  >
 
 	<Page.Resources>
-        <local:AreaConverter x:Key="Converter1"/>
-        <local:DateTimeConverter x:Key="DatetimeConverter"/>
+        <converters:AreaConverter x:Key="Converter1"/>
+        <converters:DateTimeConverter x:Key="DatetimeConverter"/>
 
 		<CollectionViewSource x:Name="listViewProperties"  IsSourceGrouped="False" />
 		<CollectionViewSource x:Name="viewColumnsDeleted"  IsSourceGrouped="False" />

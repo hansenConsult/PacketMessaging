@@ -1,30 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using PacketMessaging.Services.SettingsServices;
 using MetroLog;
 using Template10.Controls;
 using MetroLog.Targets;
 using PacketMessaging.ViewModels;
+using PacketMessaging.Models;
 
 namespace PacketMessaging
 {
-    sealed partial class App : Template10.Common.BootStrapper
+	sealed partial class App : Template10.Common.BootStrapper
     {
         public static Dictionary<string, TacticalCallsignData> _tacticalCallsignDataDictionary;
 
@@ -156,6 +146,8 @@ namespace PacketMessaging
                 tacticalCallsignType.TacticalCallsigns = await TacticalCallsigns.OpenAsync(tacticalCallsignType.FileName);
             }
             await AddressBook.Instance.OpenAsync();
+
+			await DistributionListArray.Instance.OpenAsync();
 
             NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;
