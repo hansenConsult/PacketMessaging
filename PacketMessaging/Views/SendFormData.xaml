@@ -43,7 +43,7 @@
                    RelativePanel.AlignVerticalCenterWith="labelFrom" 
                    RelativePanel.AlignLeftWith="labelTNC" Text="To:" Margin="30,0.6,-0.4,-0.2" 
                    VerticalAlignment="Center" Width="20"/>
-        <AutoSuggestBox x:Name="messageTo" Width="auto"
+        <AutoSuggestBox x:Name="messageTo"
                         RelativePanel.AlignVerticalCenterWith="labelFrom" 
 						RelativePanel.AlignLeftWith="messageTNC" 
                         RelativePanel.LeftOf="toSelection"

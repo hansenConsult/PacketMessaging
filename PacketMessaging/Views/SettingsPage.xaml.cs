@@ -1415,7 +1415,7 @@ namespace PacketMessaging.Views
 				case "pivotItemDistributionLists":
 					//ContactsCVS.Source = AddressBook.Instance.GetContactsGrouped();
 					appBarSettingsSave.Visibility = Visibility.Visible;
-					appBarSettingsSave.IsEnabled = false;
+					appBarSettingsSave.IsEnabled = DistributionListArray.Instance.DataChanged;
 					appBarSettingsEdit.Visibility = Visibility.Visible;
 					appBarsettingsDelete.Visibility = Visibility.Visible;
 					SettingsCommandBar.Visibility = Visibility.Visible;
@@ -1538,7 +1538,6 @@ namespace PacketMessaging.Views
 					distributionListItems.IsReadOnly = false;
 					break;
 			}
-
 		}
 
         private async void AppBarSave_ClickAsync(object sender, RoutedEventArgs e)
@@ -1553,8 +1552,7 @@ namespace PacketMessaging.Views
 						// Must not exist
 						if (DistributionListArray.Instance.DistributionListsDict.TryGetValue(distributionListName.Text, out string items))
 						{
-							var messageDialog = new MessageDialog("The Distribution List already exists.", "DistributionList List Error");
-							await messageDialog.ShowAsync();
+							Utilities.ShowMessageDialogAsync("The Distribution List already exists.", "DistributionList List Error");
 							return;
 						}
 						DistributionList list = new DistributionList()
@@ -1569,8 +1567,7 @@ namespace PacketMessaging.Views
 						// Must exist
 						if (!DistributionListArray.Instance.DistributionListsDict.TryGetValue(distributionListName.Text, out string items))
 						{
-							var messageDialog = new MessageDialog("The Distribution List does not exist.", "DistributionList List Error");
-							await messageDialog.ShowAsync();
+							Utilities.ShowMessageDialogAsync("The Distribution List does not exist.", "DistributionList List Error");
 							return;
 						}
 						DistributionList list = new DistributionList()

@@ -559,7 +559,7 @@ namespace PacketMessaging.Services.CommunicationsService
 				catch (Exception e)
 				{
 					LogHelper(LogLevel.Error, $"{e.Message}");
-					Utilities.ShowMessageDialogAsync("Failed setting up the TNC");
+					await Utilities.ShowMessageDialogAsync("Failed setting up the TNC");
 					_serialPort.Dispose();
 					return;
 				}

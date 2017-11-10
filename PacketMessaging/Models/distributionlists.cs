@@ -42,6 +42,8 @@ namespace PacketMessaging.Models
 		private static volatile DistributionListArray _instance;
 		private static object _syncRoot = new Object();
 
+		private bool _dataChanged = false;
+
 
 		private DistributionListArray()
 		{
@@ -58,6 +60,9 @@ namespace PacketMessaging.Models
 
 		public Dictionary<string, string> DistributionListsDict
 		{ get => _distributionListsDict; }
+
+		public bool DataChanged
+		{ get => _dataChanged; }
 
 		public static DistributionListArray Instance
 		{
@@ -125,54 +130,56 @@ namespace PacketMessaging.Models
 			ArrayOfDistributionLists = listOfDistributionLists.ToArray();
 
 			UpdateDictionary();
+			_dataChanged = true;
 		}
 
 		public void UpdateDistributionList(DistributionList list)
 		{
 			RemoveDistributionList(list.DistributionListName);
 			AddDistributionList(list);
+
+			UpdateDictionary();
+			_dataChanged = true;
 		}
 
 		public void RemoveDistributionList(string distributionListName)
 		{
-			DistributionList removeList = null;
+			List<DistributionList> listOfDistributionLists = ArrayOfDistributionLists.ToList();
 			foreach (DistributionList list in ArrayOfDistributionLists)
 			{
 				if (list.DistributionListName == distributionListName)
 				{
-					removeList = list;
+					listOfDistributionLists.Remove(list);
 					break;
 				}
 			}
-			List<DistributionList> listOfDistributionLists = ArrayOfDistributionLists.ToList();
-			listOfDistributionLists.Remove(removeList);
 			ArrayOfDistributionLists = listOfDistributionLists.ToArray();
 
 			UpdateDictionary();
+			_dataChanged = true;
 		}
 
 		private void UpdateDictionary()
 		{
 			_distributionListsDict = new Dictionary<string, string>();
-			DistributionList duplicateList = null;
+			List<DistributionList> listOfDistributionLists = ArrayOfDistributionLists.ToList();
 			foreach (DistributionList list in ArrayOfDistributionLists)
 			{
 				try
 				{
+					if (string.IsNullOrEmpty(list.DistributionListName))
+						throw new Exception();
+
 					_distributionListsDict.Add(list.DistributionListName, list.DistributionListItems);
 				}
 				catch
 				{
-					duplicateList = list;
+					listOfDistributionLists.Remove(list);
+					_dataChanged = true;
 					continue;
 				}
 			}
-			if (duplicateList != null)
-			{
-				List<DistributionList> listOfDistributionLists = ArrayOfDistributionLists.ToList();
-				listOfDistributionLists.Remove(duplicateList);
-				ArrayOfDistributionLists = listOfDistributionLists.ToArray();
-			}
+			ArrayOfDistributionLists = listOfDistributionLists.ToArray();
 		}
 
 		public async Task OpenAsync()
@@ -234,6 +241,7 @@ namespace PacketMessaging.Models
 				return;
 			}
 			UpdateDictionary();
+			_dataChanged = false;
 		}
 
 	}

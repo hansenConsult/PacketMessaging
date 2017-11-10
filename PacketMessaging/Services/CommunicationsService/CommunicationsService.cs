@@ -110,7 +110,7 @@ namespace PacketMessaging.Services.CommunicationsService
 							formControl = Views.FormsPage.CreateFormControlInstanceFromFileName(pktMsg.PacFormName);
 							if (formControl == null)
 							{
-								Utilities.ShowMessageDialogAsync($"Form {pktMsg.PacFormName} not found");
+								await Utilities.ShowMessageDialogAsync($"Form {pktMsg.PacFormName} not found");
 								return;
 							}
                             break;

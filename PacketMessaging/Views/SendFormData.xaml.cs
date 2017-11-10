@@ -37,6 +37,8 @@ namespace PacketMessaging.Views
 			}
             string bbs = AddressBook.Instance.GetBBS(MessageFrom);
             MessageBBS = string.IsNullOrEmpty(bbs) ? MessageBBS : bbs;
+
+			toSelection.IsOn = true;
 		}
 
 		public string MessageBBS
@@ -215,8 +217,11 @@ namespace PacketMessaging.Views
                 if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
                 {
                     //Set the ItemsSource to be your filtered dataset
-                    sender.ItemsSource = AddressBook.Instance.GetAddressItems(messageTo.Text);
-                }
+					if (toSelection.IsOn)
+						sender.ItemsSource = AddressBook.Instance.GetAddressItems(messageTo.Text);
+					else
+						sender.ItemsSource = DistributionListArray.Instance.GetDistributionListNames(messageTo.Text);
+				}
             }
         }
     }

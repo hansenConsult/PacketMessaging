@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls;
 
 namespace PacketMessaging.Services.CommunicationsService
 {
@@ -30,20 +31,32 @@ namespace PacketMessaging.Services.CommunicationsService
 		/// </summary>
 		public static async void NotifyDeviceNotConnectedAsync()
 		{
-			MessageDialog messageDialog = new MessageDialog("Device is not connected, please select a plugged in device to try the scenario again");
-			await messageDialog.ShowAsync();
+			await ShowMessageDialogAsync("Device is not connected, please select a plugged in device to try the scenario again");
 		}
 
-		public static async void ShowMessageDialogAsync(string dialogMessage)
+		public static async Task ShowMessageDialogAsync(string dialogMessage)
 		{
-			MessageDialog messageDialog = new MessageDialog(dialogMessage);
-			await messageDialog.ShowAsync();
+			ContentDialog contentDialog = new ContentDialog()
+			{
+				Title = "Packet Message",
+				Content = dialogMessage,
+				CloseButtonText = "Close"
+			};
+			await contentDialog.ShowAsync();
+
+			//MessageDialog messageDialog = new MessageDialog(dialogMessage);
+			//await messageDialog.ShowAsync();
 		}
 
 		public static async void ShowMessageDialogAsync(string dialogMessage, string title)
 		{
-			MessageDialog messageDialog = new MessageDialog(dialogMessage, title);
-			await messageDialog.ShowAsync();
-		}
+			ContentDialog contentDialog = new ContentDialog()
+			{ 
+				Title = title,
+				Content = dialogMessage,
+				CloseButtonText = "Close"
+			};
+		await contentDialog.ShowAsync();
 	}
+}
 }

@@ -384,7 +384,7 @@ namespace PacketMessaging.Services.CommunicationsService
 			}
 			else
 			{
-				Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
+				await Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
 			}
 		}
 
