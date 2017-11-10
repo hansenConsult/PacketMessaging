@@ -48,7 +48,7 @@
         <CollectionViewSource x:Name="ContactsCVS"  IsSourceGrouped="True" />
 
         <!-- When using x:Bind, you need to set x:DataType -->
-        <DataTemplate x:Name="ContactListViewTemplate" x:DataType="data:AddressBookEntry">
+        <DataTemplate x:Name="ContactListViewTemplate" x:DataType="models:AddressBookEntry">
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -635,9 +635,9 @@
                     <AutoSuggestBox x:Name="distributionListName" Text="{Binding DistributionListName, Mode=TwoWay}" Header="List Name:" Margin="5,10,0,0"
                                     TextChanged="DistributionListName_TextChanged"
                                     SuggestionChosen="DistributionListName_SuggestionChosen" MinWidth="120"/>
-                    <TextBox x:Name="distributionListItems" Text="{Binding DistributionListItems,Mode=TwoWay}"
+                    <TextBox x:Name="distributionListItems" Text="{Binding DistributionListItems, Mode=OneWay}"
                              Header="Distribution List" AcceptsReturn="True" Margin="5,10,0,0"
-                             RelativePanel.Below="distributionListName"/>
+                             RelativePanel.Below="distributionListName" IsTabStop="False"/>
                     <AutoSuggestBox x:Name="distributionListAddItem" Header="Add to Distribution List" Margin="5,10,0,0"
                                     RelativePanel.Below="distributionListItems"
                                     TextChanged="DistributionListAddItem_TextChanged"

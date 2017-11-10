@@ -484,10 +484,26 @@ namespace PacketMessaging.ViewModels
 		}
 
 		public string DistributionListName
-		{ get => _settings.DistributionListName; set { _settings.DistributionListName = value; base.RaisePropertyChanged(); } }
+		{
+			get => _settings.DistributionListName;
+			set
+			{
+				if (distributionLists.DistributionListsDict.ContainsKey(DistributionListName))
+				{
+					//DistributionListItems = distributionLists.DistributionListsDict[DistributionListName];
+					_settings.DistributionListName = value; base.RaisePropertyChanged();
+				}
+			}
+		}
 
+		private string _distributionListItems;
 		public string DistributionListItems
-		{ get => _settings.DistributionListItems; set { _settings.DistributionListItems = value; base.RaisePropertyChanged(); } }
+		{
+			get => _distributionListItems;
+			set => _distributionListItems = value;
+			//get => _settings.DistributionListItems;
+			//set { _settings.DistributionListItems = value; base.RaisePropertyChanged(); }
+		}
 	}
 
 	public class AboutPartViewModel : ViewModelBase

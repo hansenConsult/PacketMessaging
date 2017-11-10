@@ -34,6 +34,7 @@ namespace PacketMessaging.Models
 	{
 		private static ILogger log = LogManagerFactory.DefaultLogManager.GetLogger<DistributionListArray>();
 
+		private Dictionary<string, string> _distributionListsDict;
 		private const string distributionListsFileName = "DistributionLists.xml";
 
 		private DistributionList[] _distributionListArrayField;
@@ -55,6 +56,9 @@ namespace PacketMessaging.Models
 			set => _distributionListArrayField = value;
 		}
 
+		public Dictionary<string, string> DistributionListsDict
+		{ get => _distributionListsDict; }
+
 		public static DistributionListArray Instance
 		{
 			get
@@ -71,7 +75,7 @@ namespace PacketMessaging.Models
 			}
 		}
 
-		public List<string> GetDistributionListNames(string partialName)
+		public List<string> GetDistributionListNames(string partialName = null)
 		{
 			if (ArrayOfDistributionLists == null || ArrayOfDistributionLists.Length == 0)
 				return null;
@@ -80,7 +84,7 @@ namespace PacketMessaging.Models
 
 			foreach (DistributionList item in ArrayOfDistributionLists)
 			{
-				if (item.DistributionListName.ToUpper().StartsWith(partialName.ToUpper()))
+				if (string.IsNullOrEmpty(partialName) || item.DistributionListName.ToUpper().StartsWith(partialName.ToUpper()))
 				{
 					matches.Add(item.DistributionListName);
 				}
@@ -114,6 +118,63 @@ namespace PacketMessaging.Models
 
 		}
 
+		public void AddDistributionList(DistributionList list)
+		{
+			List<DistributionList> listOfDistributionLists = ArrayOfDistributionLists.ToList();
+			listOfDistributionLists.Add(list);
+			ArrayOfDistributionLists = listOfDistributionLists.ToArray();
+
+			UpdateDictionary();
+		}
+
+		public void UpdateDistributionList(DistributionList list)
+		{
+			RemoveDistributionList(list.DistributionListName);
+			AddDistributionList(list);
+		}
+
+		public void RemoveDistributionList(string distributionListName)
+		{
+			DistributionList removeList = null;
+			foreach (DistributionList list in ArrayOfDistributionLists)
+			{
+				if (list.DistributionListName == distributionListName)
+				{
+					removeList = list;
+					break;
+				}
+			}
+			List<DistributionList> listOfDistributionLists = ArrayOfDistributionLists.ToList();
+			listOfDistributionLists.Remove(removeList);
+			ArrayOfDistributionLists = listOfDistributionLists.ToArray();
+
+			UpdateDictionary();
+		}
+
+		private void UpdateDictionary()
+		{
+			_distributionListsDict = new Dictionary<string, string>();
+			DistributionList duplicateList = null;
+			foreach (DistributionList list in ArrayOfDistributionLists)
+			{
+				try
+				{
+					_distributionListsDict.Add(list.DistributionListName, list.DistributionListItems);
+				}
+				catch
+				{
+					duplicateList = list;
+					continue;
+				}
+			}
+			if (duplicateList != null)
+			{
+				List<DistributionList> listOfDistributionLists = ArrayOfDistributionLists.ToList();
+				listOfDistributionLists.Remove(duplicateList);
+				ArrayOfDistributionLists = listOfDistributionLists.ToArray();
+			}
+		}
+
 		public async Task OpenAsync()
 		{
 			StorageFolder localFolder = ApplicationData.Current.LocalFolder;
@@ -141,12 +202,15 @@ namespace PacketMessaging.Models
 			catch (FileNotFoundException e)
 			{
 				log.Error($"Open Distribution List file failed: {e.Message}");
+				return;
 			}
 
 			catch (Exception e)
 			{
 				log.Error($"Error opening file {file?.Path + distributionListsFileName}, {e}");
+				return;
 			}
+			UpdateDictionary();
 		}
 
 		public async Task SaveAsync()
@@ -167,7 +231,9 @@ namespace PacketMessaging.Models
 			catch (Exception e)
 			{
 				log.Error($"Error saving {distributionListsFileName}, {e}");
+				return;
 			}
+			UpdateDictionary();
 		}
 
 	}

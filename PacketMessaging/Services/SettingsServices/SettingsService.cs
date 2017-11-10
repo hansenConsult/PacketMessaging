@@ -221,12 +221,6 @@ namespace PacketMessaging.Services.SettingsServices
 			set { _helper.Write(nameof(DistributionListName), value); }
 		}
 
-		public string DistributionListItems
-		{
-			get { return _helper.Read(nameof(DistributionListItems), ""); }
-			set { _helper.Write(nameof(DistributionListItems), value); }
-		}
-
 		#endregion
 		#region MainPage
 		//public double GridViewItemWidth

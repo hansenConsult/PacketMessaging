@@ -12,7 +12,7 @@
 
 
     <RelativePanel x:Name="messageInfo"  BorderBrush="Black" BorderThickness="1" Padding="12" RequestedTheme="Light">
-		<!--<RelativePanel.Resources>
+        <!--<RelativePanel.Resources>
 			<Style  TargetType="AutoSuggestBox">
 				<Setter Property="BorderBrush" Value="Red"/>
 			</Style>
@@ -43,13 +43,20 @@
                    RelativePanel.AlignVerticalCenterWith="labelFrom" 
                    RelativePanel.AlignLeftWith="labelTNC" Text="To:" Margin="30,0.6,-0.4,-0.2" 
                    VerticalAlignment="Center" Width="20"/>
-        <AutoSuggestBox x:Name="messageTo" RelativePanel.AlignVerticalCenterWith="labelFrom" 
+        <AutoSuggestBox x:Name="messageTo" Width="auto"
+                        RelativePanel.AlignVerticalCenterWith="labelFrom" 
 						RelativePanel.AlignLeftWith="messageTNC" 
-						RelativePanel.AlignRightWithPanel="True"  
+                        RelativePanel.LeftOf="toSelection"
 					    Tag="required,Please fill the To field" BorderThickness="5"  
-                        HorizontalAlignment="Stretch" Margin="12.333,2,12,0" 
+                        Margin="12.6,1.8,0,-0.2" 
                         TextChanged="MessageTo_TextChanged"
-                        SuggestionChosen="MessageTo_SuggestionChosen"/>
+                        SuggestionChosen="MessageTo_SuggestionChosen" VerticalAlignment="Center" />
+        <ToggleSwitch x:Name="toSelection" Margin="12,-3,12,2" 
+                      RelativePanel.AlignRightWithPanel="True"
+                      RelativePanel.Below="messageTNC"
+                      Header=""
+                      OffContent="Distribution List" OnContent="Individuals" Height="32" HorizontalAlignment="Right" Padding="0,-3,0,0"
+                      />
         <!--<TextBox x:Name="messageTo" RelativePanel.AlignVerticalCenterWith="labelFrom" 
                  RelativePanel.AlignLeftWith="messageTNC" 
                  RelativePanel.AlignRightWithPanel="True"  

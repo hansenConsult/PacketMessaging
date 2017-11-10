@@ -20,6 +20,7 @@ using Windows.Devices.Bluetooth.Rfcomm;
 using PacketMessaging.ViewModels;
 using PacketMessaging.Models;
 using PacketMessaging.Converters;
+using Windows.UI.Popups;
 
 namespace PacketMessaging.Views
 {
@@ -1346,6 +1347,7 @@ namespace PacketMessaging.Views
 		private void DistributionListName_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
 		{
 			sender.Text = args.SelectedItem.ToString();
+			distributionListItems.Text = DistributionListArray.Instance.DistributionListsDict[sender.Text];
 		}
 
 		private void DistributionListName_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -1355,34 +1357,31 @@ namespace PacketMessaging.Views
 			// or the handler for SuggestionChosen.
 			if (string.IsNullOrEmpty(distributionListName.Text))
 			{
-				sender.ItemsSource = null;
+				sender.ItemsSource = DistributionListArray.Instance.GetDistributionListNames();
 				return;
 			}
 			if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
 			{
 				//Set the ItemsSource to be your filtered dataset
 				sender.ItemsSource = DistributionListArray.Instance.GetDistributionListNames(distributionListName.Text);
-				if ((sender.ItemsSource as List<string>).Count == 1)
-				{
-					//SettingsPageViewModel.distributionListsPartViewModel.DistributionListName = DistributionListArray.Instance.ArrayOfDistributionLists[0].DistributionListName;
-					distributionListItems.Text = DistributionListArray.Instance.ArrayOfDistributionLists[0].DistributionListItems;
-					//SettingsPageViewModel.distributionListsPartViewModel.DistributionListItems = DistributionListArray.Instance.ArrayOfDistributionLists[0].DistributionListItems;
-				}
-				//sender.ItemsSource = distributionListArray.GetDistributionListNames(distributionListName.Text);
 			}
 		}
 
 		private void DistributionListAddItem_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
 		{
 			sender.Text = args.SelectedItem.ToString();
-			if (string.IsNullOrEmpty(distributionListItems.Text))
+			if (!distributionListItems.Text.Contains(sender.Text))
 			{
-				distributionListItems.Text = $"{sender.Text}";
+				if (string.IsNullOrEmpty(distributionListItems.Text))
+				{
+					distributionListItems.Text = $"{sender.Text}";
+				}
+				else
+				{
+					distributionListItems.Text += $", {sender.Text}";
+				}
 			}
-			else
-			{
-				distributionListItems.Text += $", {sender.Text}";
-			}
+			sender.Text = "";
 		}
 
 		private void DistributionListAddItem_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -1498,8 +1497,7 @@ namespace PacketMessaging.Views
 				case "pivotItemDistributionLists":
 					_distributionListState = DistributionListState.Delete;
 					appBarSettingsSave.IsEnabled = true;
-					DistributionListArray distributionLists = DistributionListArray.Instance;
-					//DistributionListsItem distributionListsItem = addressBookListView.SelectedItem as DistributionListsItem;
+					DistributionListArray.Instance.RemoveDistributionList(distributionListName.Text);
 					break;
             }
         }
@@ -1533,6 +1531,8 @@ namespace PacketMessaging.Views
                     break;
 				case "pivotItemDistributionLists":
 					_distributionListState = DistributionListState.Add;
+					distributionListName.Text = "";
+					distributionListItems.Text = "";
 					appBarSettingsSave.IsEnabled = true;
 					distributionListAddItem.IsEnabled = true;
 					distributionListItems.IsReadOnly = false;
@@ -1551,23 +1551,47 @@ namespace PacketMessaging.Views
 					if (_distributionListState == DistributionListState.Add)
 					{
 						// Must not exist
-					} else if (_distributionListState == DistributionListState.Edit)
+						if (DistributionListArray.Instance.DistributionListsDict.TryGetValue(distributionListName.Text, out string items))
+						{
+							var messageDialog = new MessageDialog("The Distribution List already exists.", "DistributionList List Error");
+							await messageDialog.ShowAsync();
+							return;
+						}
+						DistributionList list = new DistributionList()
+						{
+							DistributionListName = distributionListName.Text,
+							DistributionListItems = distributionListItems.Text
+						};
+						DistributionListArray.Instance.AddDistributionList(list);
+					}
+					else if (_distributionListState == DistributionListState.Edit)
 					{
 						// Must exist
+						if (!DistributionListArray.Instance.DistributionListsDict.TryGetValue(distributionListName.Text, out string items))
+						{
+							var messageDialog = new MessageDialog("The Distribution List does not exist.", "DistributionList List Error");
+							await messageDialog.ShowAsync();
+							return;
+						}
+						DistributionList list = new DistributionList()
+						{
+							DistributionListName = distributionListName.Text,
+							DistributionListItems = distributionListItems.Text
+						};
+						DistributionListArray.Instance.UpdateDistributionList(list);
 					}
-						distributionListAddItem.IsEnabled = false;
-					distributionListItems.IsReadOnly = true;
-					DistributionList distributionList = new DistributionList()
+					else if (_distributionListState == DistributionListState.Delete)
 					{
-						DistributionListName = distributionListName.Text,
-						DistributionListItems = distributionListItems.Text
-					};
-
-					var listOfDiostributionLists = DistributionListArray.Instance.ArrayOfDistributionLists.ToList();
-					listOfDiostributionLists.Add(distributionList);
-					DistributionListArray.Instance.ArrayOfDistributionLists = listOfDiostributionLists.ToArray();
+						DistributionListArray.Instance.RemoveDistributionList(distributionListName.Text);
+						distributionListName.Text = "";
+						distributionListItems.Text = "";
+					}
 					await DistributionListArray.Instance.SaveAsync();
+
+					_distributionListState = DistributionListState.None;
 					appBarSettingsSave.IsEnabled = false;
+					distributionListAddItem.IsEnabled = false;
+					distributionListItems.IsReadOnly = true;
 					break;
 			}
 

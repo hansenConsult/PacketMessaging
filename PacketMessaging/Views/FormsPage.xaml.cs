@@ -23,6 +23,7 @@ using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ToggleButtonGroupControl;
 using Windows.ApplicationModel.DataTransfer;
+using PacketMessaging.Models;
 
 namespace PacketMessaging.Views
 {
