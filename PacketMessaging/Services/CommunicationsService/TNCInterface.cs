@@ -8,7 +8,7 @@ using MetroLog;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using System.Runtime.CompilerServices;
-//using PacketMessaging.Models;
+using PacketMessaging.Models;
 
 namespace PacketMessaging.Services.CommunicationsService
 {

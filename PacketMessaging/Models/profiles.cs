@@ -17,7 +17,7 @@ using System.Diagnostics;
 using Windows.Storage;
 using MetroLog;
 
-namespace PacketMessaging
+namespace PacketMessaging.Models
 {
 
 	// 

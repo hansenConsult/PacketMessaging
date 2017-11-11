@@ -21,11 +21,11 @@
 
         <CollectionViewSource x:Name="BBSDataCollection"  IsSourceGrouped="False" />
 		<CollectionViewSource x:Name="ProfilesCollection"  IsSourceGrouped="False"  />
-		<DataTemplate x:Name="ProfilesDataTemplate" x:DataType="data:Profile">
+		<DataTemplate x:Name="ProfilesDataTemplate" x:DataType="models:Profile">
 			<TextBlock Text="{x:Bind Name}" />
 		</DataTemplate>
 		<CollectionViewSource x:Name="DeviceListSource" IsSourceGrouped="False" />
-		<DataTemplate x:Name="TNCDataTemplate" x:DataType="data:TNCDevice" >
+		<DataTemplate x:Name="TNCDataTemplate" x:DataType="models:TNCDevice" >
 			<TextBlock Text="{x:Bind Name}" />
 		</DataTemplate>
 

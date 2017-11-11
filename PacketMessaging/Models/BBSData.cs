@@ -18,7 +18,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using MetroLog;
 
-namespace PacketMessaging
+namespace PacketMessaging.Models
 {
 
     // 

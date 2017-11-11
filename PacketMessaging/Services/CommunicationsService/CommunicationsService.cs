@@ -2,19 +2,16 @@
 using MessageFormControl;
 using MetroLog;
 using PacketMessaging.Views;
-//using PacketMessaging.Models;
+using PacketMessaging.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Windows.ApplicationModel.Email;
 using Windows.Devices.Bluetooth.Rfcomm;
 using Windows.Devices.Enumeration;
 using Windows.Networking.Sockets;
 using Windows.Storage;
 using Windows.Storage.Search;
-using Windows.Storage.Streams;
 using Windows.UI.Popups;
 
 namespace PacketMessaging.Services.CommunicationsService

@@ -26,7 +26,7 @@ using Windows.Globalization;
 using System.Text;
 using PacketMessaging.Models;
 
-namespace PacketMessaging
+namespace PacketMessaging.Models
 {
 	public class TacticalCallsignData
     {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using PacketMessaging.Views;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-//using PacketMessaging.Models;
+using PacketMessaging.Models;
 
 namespace PacketMessaging.Services.CommunicationsService
 {

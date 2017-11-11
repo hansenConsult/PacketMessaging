@@ -98,13 +98,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BBSData.cs" />
+    <Compile Include="Models\BBSData.cs" />
     <Compile Include="Converters\AddressConverter.cs" />
     <Compile Include="Converters\AreaConverter.cs" />
     <Compile Include="Models\BackgroundTransfer.cs" />
     <Compile Include="Models\distributionlists.cs" />
     <Compile Include="Models\GroupInfoList.cs" />
-    <Compile Include="profiles.cs" />
+    <Compile Include="Models\profiles.cs" />
     <Compile Include="Services\CommunicationsService\BluetoothManager.cs" />
     <Compile Include="Services\CommunicationsService\CommunicationsService.cs" />
     <Compile Include="Services\CommunicationsService\CommunicationsServiceBase.cs" />
@@ -114,7 +114,7 @@
     <Compile Include="Services\CommunicationsService\Utilities.cs" />
     <Compile Include="Services\FormsPageService\FormsPageService.cs" />
     <Compile Include="Services\ToolsPageServices\ToolsPageService.cs" />
-    <Compile Include="TNCDevices.cs" />
+    <Compile Include="Models\TNCDevices.cs" />
     <Compile Include="ViewModels\ToolePageViewModel.cs" />
     <Compile Include="ViewModels\FormsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
@@ -125,7 +125,7 @@
     <Compile Include="Views\FormsPage.xaml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SettingsServices\SettingsService.cs" />
-    <Compile Include="TacticalCallsigns.cs" />
+    <Compile Include="Models\TacticalCallsigns.cs" />
     <Compile Include="Views\Busy.xaml.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
