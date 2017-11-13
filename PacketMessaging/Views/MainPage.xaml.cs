@@ -37,7 +37,7 @@ namespace PacketMessaging.Views
 		Template10.Services.SerializationService.ISerializationService _SerializationService;
         Services.SettingsServices.SettingsService _settings;
 
-        public static StorageFolder unsentMessagesFolder = null;
+        public static StorageFolder _unsentMessagesFolder = null;
         public static StorageFolder _sentMessagesFolder = null;
         public static StorageFolder receivedMessagesFolder = null;
         public static StorageFolder _draftMessagesFolder = null;
@@ -48,15 +48,19 @@ namespace PacketMessaging.Views
 
 		ListView _currentListView = null;
 		GridView _currentGridView = null;
+		PacketMessageViewList _packetMessageListViewColumDefinitionsInBox;
+		PacketMessageViewList _packetMessageListViewColumDefinitionsSent;
+		PacketMessageViewList _packetMessageListViewColumDefinitionsOutBox;
 		PacketMessageViewList _packetMessageViewListDrafts;
+		PacketMessageViewList _packetMessageListViewColumDefinitionsArchive;
 		PacketMessageViewList _packetMessageViewListDeleted;
 		string _sortOnPropertyName;
 		SortDirection _sortDirection = SortDirection.Ascending;
 
 		public static MainPage Current;
 
-		public double _gridViewItemWidth
-		{ get => 218; }
+		bool _calledOnce = false;
+
 
 		//PacketMessage _selectedMessage = null;
 		List<PacketMessage> _selectedMessages = new List<PacketMessage>();
@@ -74,37 +78,32 @@ namespace PacketMessaging.Views
 
 			log.Info("");
 			log.Info("Initializing Packet Messaging Application");
-            foreach (PivotItem item in MyPivot.Items)
-            {
-                if (item.Name == "InBox")
-                {
-                    item.Tag = receivedMessagesFolder;
-                }
-                else if (item.Name == "Sent")
-                {
-                    item.Tag = _sentMessagesFolder;
-                }
-                else if (item.Name == "Outbox")
-                {
-                    item.Tag = unsentMessagesFolder;
-                }
-                else if (item.Name == "Drafts")
-                {
-                    item.Tag = _draftMessagesFolder;
-                }
-                else if (item.Name == "Archive")
-                {
-                    item.Tag = _archivedMessagesFolder;
-                }
-                else if (item.Name == "Deleted")
-                {
-                    item.Tag = _deletedMessagesFolder;
-                }
-				else if (item.Name == "testDataGrid")
+			foreach (PivotItem item in MyPivot.Items)
+			{
+				switch (item.Name)
 				{
-					item.Tag = _deletedMessagesFolder;
+					case "InBox":
+						item.Tag = receivedMessagesFolder;
+						break;
+					case "Sent":
+						item.Tag = _sentMessagesFolder;
+						break;
+					case "OutBox":
+						item.Tag = _unsentMessagesFolder;
+						break;
+					case "Drafts":
+						item.Tag = _draftMessagesFolder;
+						break;
+					case "Archive":
+						item.Tag = _archivedMessagesFolder;
+						break;
+					case "Deleted":
+						item.Tag = _deletedMessagesFolder;
+						break;
+					case "testDataGrid":
+						item.Tag = _deletedMessagesFolder;
+						break;
 				}
-
 			}
 
 			SharedData sharedData = SharedData.SharedDataInstance;
@@ -147,21 +146,68 @@ namespace PacketMessaging.Views
 
 			ObservableCollection<Field> draftsPropertiesList = new ObservableCollection<Field>();
 
+			_packetMessageListViewColumDefinitionsInBox = new PacketMessageViewList();
+			_packetMessageListViewColumDefinitionsInBox.Add(new Area("40"));
+			_packetMessageListViewColumDefinitionsInBox.Add(new ReceivedTime("120"));
+			_packetMessageListViewColumDefinitionsInBox.Add(new JNOSDate("120"));
+			_packetMessageListViewColumDefinitionsInBox.Add(new Subject("1*", 60));
+			_packetMessageListViewColumDefinitionsInBox.Add(new MessageNumber("110"));
+			_packetMessageListViewColumDefinitionsInBox.Add(new MessageTo("70"));
+			_packetMessageListViewColumDefinitionsInBox.Add(new MessageFrom("70"));
+			_packetMessageListViewColumDefinitionsInBox.Add(new BBSName("60"));
+			_packetMessageListViewColumDefinitionsInBox.Add(new MessageSize("40"));
+
+			_packetMessageListViewColumDefinitionsSent = new PacketMessageViewList();
+			_packetMessageListViewColumDefinitionsSent.Add(new ReceivedTime("120"));
+			_packetMessageListViewColumDefinitionsSent.Add(new SentTime("120"));
+			_packetMessageListViewColumDefinitionsSent.Add(new Subject("1*", 60));
+			_packetMessageListViewColumDefinitionsSent.Add(new MessageNumber("110"));
+			_packetMessageListViewColumDefinitionsSent.Add(new MessageTo("70"));
+			_packetMessageListViewColumDefinitionsSent.Add(new MessageFrom("70"));
+			_packetMessageListViewColumDefinitionsSent.Add(new BBSName("60"));
+			_packetMessageListViewColumDefinitionsSent.Add(new MessageSize("40"));
+
+			_packetMessageListViewColumDefinitionsOutBox = new PacketMessageViewList();
+			_packetMessageListViewColumDefinitionsOutBox.Add(new CreateTime("120"));
+			_packetMessageListViewColumDefinitionsOutBox.Add(new Subject("1*", 60));
+			_packetMessageListViewColumDefinitionsOutBox.Add(new MessageNumber("110"));
+			_packetMessageListViewColumDefinitionsOutBox.Add(new MessageTo("70"));
+			_packetMessageListViewColumDefinitionsOutBox.Add(new MessageFrom("70"));
+			_packetMessageListViewColumDefinitionsOutBox.Add(new BBSName("60"));
+			_packetMessageListViewColumDefinitionsOutBox.Add(new MessageSize("40"));
+
 			_packetMessageViewListDrafts = new PacketMessageViewList();
 			_packetMessageViewListDrafts.Add(new CreateTime("120"));
 			_packetMessageViewListDrafts.Add(new Subject("1*", 60));
-			_packetMessageViewListDrafts.Add(new MessageNumber("Number", "110"));
+			_packetMessageViewListDrafts.Add(new MessageNumber("110"));
 			_packetMessageViewListDrafts.Add(new MessageTo("70"));
 			_packetMessageViewListDrafts.Add(new MessageFrom("70"));
 			_packetMessageViewListDrafts.Add(new BBSName("60"));
+
+			_packetMessageListViewColumDefinitionsArchive = new PacketMessageViewList();
+			_packetMessageListViewColumDefinitionsArchive.Add(new Area("40"));
+			_packetMessageListViewColumDefinitionsArchive.Add(new ReceivedTime("120"));
+			_packetMessageListViewColumDefinitionsArchive.Add(new CreateTime("120"));
+			_packetMessageListViewColumDefinitionsArchive.Add(new Subject("1*", 60));
+			_packetMessageListViewColumDefinitionsArchive.Add(new MessageNumber("110"));
+			_packetMessageListViewColumDefinitionsArchive.Add(new MessageTo("70"));
+			_packetMessageListViewColumDefinitionsArchive.Add(new MessageFrom("70"));
+			_packetMessageListViewColumDefinitionsArchive.Add(new BBSName("60"));
+			_packetMessageListViewColumDefinitionsArchive.Add(new MessageSize("40"));
+
+			_packetMessageViewListDeleted = new PacketMessageViewList();
+			_packetMessageViewListDeleted.Add(new CreateTime("120"));
+			_packetMessageViewListDeleted.Add(new Subject("1*", 60));
+			_packetMessageViewListDeleted.Add(new MessageNumber("110"));
+			_packetMessageViewListDeleted.Add(new MessageTo("70"));
+			_packetMessageViewListDeleted.Add(new MessageFrom("70"));
+			_packetMessageViewListDeleted.Add(new BBSName("60"));
 
 			foreach (Field field in _packetMessageViewListDrafts.MessageViewList)
 			{
 				draftsPropertiesList.Add(field);
 			}
 			listViewProperties.Source = draftsPropertiesList;
-
-			_packetMessageViewListDeleted = _packetMessageViewListDrafts;
 
 			if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
 			{
@@ -269,37 +315,6 @@ namespace PacketMessaging.Views
 			RefreshListViewAsync((PivotItem)MyPivot.Items[index]);
         }
 
-		public async Task CreateGridHeaderAsync(PacketMessageViewList packetMessageViewList)
-		{
-			if (packetMessageViewList == null)
-				return;
-
-			StringBuilder header=new StringBuilder(@"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">");
-			//StringBuilder header = new StringBuilder(@"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml"">");
-			//StringBuilder header = new StringBuilder();
-			header.Append(@"<Grid Margin=""12,0,12,0""><Grid.ColumnDefinitions>");
-			foreach (var field in packetMessageViewList.MessageViewList)
-			{
-				header.Append(@"<ColumnDefinition Width=""" + $"{field.Width}" + @"""/>");
-			}
-			header.Append("</Grid.ColumnDefinitions>");
-			for (int i = 0; i < packetMessageViewList.MessageViewList.Count; i++)
-			{
-				if (packetMessageViewList.MessageViewList[i].WidthAsString.Contains("*"))
-					header.Append(@"<TextBlock Grid.Column=""" + $"{i}" + @""" Text=""" + $"{packetMessageViewList.MessageViewList[i].HeaderShort}" + @""" FontSize=""17"" HorizontalAlignment=""Left"" DoubleTapped=""TextBlock_DoubleTapped""/>");
-				else
-					header.Append(@"<TextBlock DoubleTapped=""TextBlock_DoubleTapped"" Grid.Column=""" + $"{i}" + @""" Text=""" + $"{packetMessageViewList.MessageViewList[i].HeaderShort}" + @""" FontSize=""17"" HorizontalAlignment=""Center""/>");
-			}
-			header.Append("</Grid>");
-			header.Append("</DataTemplate>");
-			string headerString = header.ToString();
-
-			StringReader reader = new StringReader(headerString);
-			var template = XamlReader.Load(await reader.ReadToEndAsync());
-			listViewDrafts.HeaderTemplate = template as DataTemplate;
-			//listViewDrafts.Header = template;
-		}
-
 		public sealed class DateTimeConverter : IValueConverter
 		{
 			object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
@@ -318,18 +333,40 @@ namespace PacketMessaging.Views
 				throw new NotImplementedException();
 			}
 		}
-
-		public async Task CreateGridItemTemplateAsync(PacketMessageViewList packetMessageViewList)
+/*
+		StringReader reader = new StringReader(
+			@"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
+				<Ellipse Width=""300.5"" Height=""200"" Fill=""Red""/>
+			</DataTemplate>");
+		var template = XamlReader.Load(await reader.ReadToEndAsync());
+		ListView lv = new ListView();
+		lv.ItemTemplate = template as DataTemplate;
+		ObservableCollection<int> coll = new ObservableCollection<int>();
+		for (int i = 0; i< 20; i++)
+		{
+			coll.Add(i);
+		}
+		lv.ItemsSource = coll;
+		rootGrid.Children.Add(lv);
+*/
+		public async Task CreateGridItemTemplateAsync(ListView listView, PacketMessageViewList packetMessageViewList)
 		{
 			if (packetMessageViewList == null)
 				return;
 
 			StringBuilder header = new StringBuilder();
 			header.Append("<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"");
+			header.Append(" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"");
+			header.Append(" xmlns:converters=\"using:PacketMessaging.Converters\"");
+			//header.Append(" xmlns:data=\"using:FormControlBaseClass\"");
+			//header.Append(" x:DataType=\"data:PacketMessage\"");
 			//header.Append(" xmlns:data=\"using:FormControlBaseClass\"");
 			//header.Append(" Name=\"DeletedListViewTemplate\"");
 			header.Append(">");
-			header.Append("<Grid ><Grid.ColumnDefinitions>");
+			//header.Append(" <Resources>");
+			//header.Append(" <converters:DateTimeConverter x:Key=\"DatetimeConverter\"/>");
+			//header.Append(" </Resources>");
+			header.Append("<Grid><Grid.ColumnDefinitions>");
 			foreach (var field in packetMessageViewList.MessageViewList)
 			{
 				header.Append("<ColumnDefinition Width=\"" + $"{field.WidthAsString}" + "\"/>");
@@ -337,33 +374,30 @@ namespace PacketMessaging.Views
 			header.Append("</Grid.ColumnDefinitions>");
 			for (int i = 0; i < packetMessageViewList.MessageViewList.Count; i++)
 			{
-				//if (packetMessageViewList.MessageViewList[i].PropertyName.Contains("Time"))
-				//{
-				//	header.Append("<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{Binding " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + ", Converter={ DatetimeConverter}}\" HorizontalAlignment=\"Center\"/>");
-				//}
-				//else
-				//{
+				if (packetMessageViewList.MessageViewList[i].PropertyName == "ReceivedTime"
+						|| packetMessageViewList.MessageViewList[i].PropertyName == "JNOSDate")
+				{
+					//header.Append("<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{Binding " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + ", Converter={StaticResource DatetimeConverter}}\" HorizontalAlignment=\"Center\"/>");
+					header.Append("<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{Binding " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + "}\" HorizontalAlignment=\"Center\"/>");
+				}
+				else
 				if (packetMessageViewList.MessageViewList[i].PropertyName == "Subject")
 				{
-					string subjectLine = "<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{Binding " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + "}\" Width=\"1024\"" + $" MinWidth=\"{ packetMessageViewList.MessageViewList[i].MinWidth}\"/>";
+					//string subjectLine = "<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{x:Bind " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + "}\" Width=\"1024\"" + $" MinWidth=\"{ packetMessageViewList.MessageViewList[i].MinWidth}\"/>";
 					header.Append("<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{Binding " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + "}\" Width=\"1024\"" + $" MinWidth=\"{ packetMessageViewList.MessageViewList[i].MinWidth}\"/>");
 				}
 				else
+				{ 
 					header.Append("<TextBlock Grid.Column=\"" + $"{i}" + "\" Text=\"{Binding " + $"{packetMessageViewList.MessageViewList[i].PropertyName}" + "}\" HorizontalAlignment=\"Center\"/>");
-				//}
+				}
 			}
 			header.Append("</Grid>");
 			header.Append("</DataTemplate>");
 			string headerString = header.ToString();
 
-			//headerString = @"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
-   //<Ellipse Width=""300.5"" Height=""200"" Fill=""Red""/>
-   //</DataTemplate>";
-
-
 			StringReader reader = new StringReader(headerString);
 			var template = XamlReader.Load(await reader.ReadToEndAsync());
-			listViewDeletedItems.ItemTemplate = template as DataTemplate;
+			listView.ItemTemplate = template as DataTemplate;
 		}
 
 		private void ListBox_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
@@ -378,6 +412,37 @@ namespace PacketMessaging.Views
 
 		//public delegate void DoubleTappedEventHandler(object sender, DoubleTappedRoutedEventArgs e);
 
+		private void CreateListViewHeader(ListView listView, PacketMessageViewList packetMessageViewList)
+		{
+			if (!packetMessageViewList.ListViewHeaderCreated)
+			{
+				packetMessageViewList.ListViewHeaderCreated = true;
+
+				Grid header = (Grid)listView.Header;
+
+				for (int i = 0; i < packetMessageViewList.MessageViewList.Count; i++)
+				{
+					ColumnDefinition columnDefinition = new ColumnDefinition()
+					{
+						Width = packetMessageViewList.MessageViewList[i].Width,
+						MinWidth = packetMessageViewList.MessageViewList[i].MinWidth
+					};
+					header.ColumnDefinitions.Add(columnDefinition);
+					TextBlock columnTextBlock = new TextBlock();
+					header.Children.Add(columnTextBlock);   // Not sure what this does
+					columnTextBlock.Text = packetMessageViewList.MessageViewList[i].HeaderShort;
+					columnTextBlock.FontSize = 17;
+					if (columnTextBlock.Text == "Subject")
+						columnTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
+					else
+						columnTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+					columnTextBlock.Tag = packetMessageViewList.MessageViewList[i].PropertyName;
+					columnTextBlock.AddHandler(DoubleTappedEvent, new DoubleTappedEventHandler(TextBlock_DoubleTapped), true);
+					Grid.SetColumn(columnTextBlock, i);
+				}
+			}
+		}
+
 		private async void MyPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			_selectedMessages?.Clear();
@@ -386,72 +451,72 @@ namespace PacketMessaging.Views
 
 			if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
 			{
-				PacketMessageViewList messageViewList = null;
 				switch (pivotItem.Name)
 				{
 					case "InBox":
 						_currentListView = listViewInBox;
+						CreateListViewHeader(_currentListView, _packetMessageListViewColumDefinitionsInBox);
+						await CreateGridItemTemplateAsync(_currentListView, _packetMessageListViewColumDefinitionsInBox);
 						break;
 
 					case "Sent":
 						_currentListView = listViewSentItems;
+						CreateListViewHeader(_currentListView, _packetMessageListViewColumDefinitionsSent);
+						await CreateGridItemTemplateAsync(_currentListView, _packetMessageListViewColumDefinitionsSent);
 						break;
 
 					case "OutBox":
 						_currentListView = listViewOutBox;
+						CreateListViewHeader(_currentListView, _packetMessageListViewColumDefinitionsOutBox);
+						await CreateGridItemTemplateAsync(_currentListView, _packetMessageListViewColumDefinitionsOutBox);
 						break;
 
 					case "Drafts":
 						_currentListView = listViewDrafts;
-						messageViewList = _packetMessageViewListDrafts;
+						CreateListViewHeader(_currentListView, _packetMessageViewListDrafts);
+						await CreateGridItemTemplateAsync(_currentListView, _packetMessageViewListDrafts);
+
 						break;
 
 					case "Archive":
 						_currentListView = listViewArchivedItems;
+						CreateListViewHeader(_currentListView, _packetMessageListViewColumDefinitionsArchive);
+						await CreateGridItemTemplateAsync(_currentListView, _packetMessageListViewColumDefinitionsArchive);
 						break;
 
 					case "Deleted":
 						_currentListView = listViewDeletedItems;
-						Grid header = (Grid)listViewDeletedItems.Header;
-						//UIElementCollection columns = header.Children;
-
-						ColumnDefinition columnDefinition;
-						for (int i = 0; i < _packetMessageViewListDeleted.MessageViewList.Count; i++)
-						{
-							columnDefinition = new ColumnDefinition()
-							{
-								Width = _packetMessageViewListDeleted.MessageViewList[i].Width,
-								MinWidth = _packetMessageViewListDeleted.MessageViewList[i].MinWidth
-							};
-							header.ColumnDefinitions.Add(columnDefinition);
-							TextBlock columnTextBlock = new TextBlock();
-							header.Children.Add(columnTextBlock);
-							columnTextBlock.Text = _packetMessageViewListDeleted.MessageViewList[i].HeaderShort;
-							columnTextBlock.FontSize = 17;
-							if (columnTextBlock.Text == "Subject")
-								columnTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
-							else
-								columnTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
-							columnTextBlock.Tag = _packetMessageViewListDeleted.MessageViewList[i].PropertyName;
-							columnTextBlock.AddHandler(DoubleTappedEvent, new DoubleTappedEventHandler(TextBlock_DoubleTapped), true);
-							Grid.SetColumn(columnTextBlock, i);
-						}
-
-						//DataTemplate itemTemplate = new DataTemplate();
-						//itemTemplate.LoadContent();
-						////DataTemplate itemTemplate = listViewDeletedItems.ItemTemplate;
-						//itemTemplate.;
-						//for (int i = 0; i < _packetMessageViewListDeleted.MessageViewList.Count; i++)
+						CreateListViewHeader(_currentListView, _packetMessageViewListDeleted);
+						//if (!_calledOnce)
 						//{
-						//	columnDefinition = new ColumnDefinition()
+						//	_calledOnce = true;
+						//Grid header = (Grid)listViewDeletedItems.Header;
+						////UIElementCollection columns = header.Children;
+
+						//ColumnDefinition columnDefinition;
+						//	for (int i = 0; i < _packetMessageViewListDeleted.MessageViewList.Count; i++)
 						//	{
-						//		Width = _packetMessageViewListDeleted.MessageViewList[i].Width
-						//	};
-						//	itemTemplate.ColumnDefinitions.Add(columnDefinition);
-						//	TextBlock columnTextBlock = new TextBlock();
-						//	itemTemplate.Children.Add(columnTextBlock);
+						//		columnDefinition = new ColumnDefinition()
+						//		{
+						//			Width = _packetMessageViewListDeleted.MessageViewList[i].Width,
+						//			MinWidth = _packetMessageViewListDeleted.MessageViewList[i].MinWidth
+						//		};
+						//		header.ColumnDefinitions.Add(columnDefinition);
+						//		TextBlock columnTextBlock = new TextBlock();
+						//		header.Children.Add(columnTextBlock);
+						//		columnTextBlock.Text = _packetMessageViewListDeleted.MessageViewList[i].HeaderShort;
+						//		columnTextBlock.FontSize = 17;
+						//		if (columnTextBlock.Text == "Subject")
+						//			columnTextBlock.HorizontalAlignment = HorizontalAlignment.Left;
+						//		else
+						//			columnTextBlock.HorizontalAlignment = HorizontalAlignment.Center;
+						//		columnTextBlock.Tag = _packetMessageViewListDeleted.MessageViewList[i].PropertyName;
+						//		columnTextBlock.AddHandler(DoubleTappedEvent, new DoubleTappedEventHandler(TextBlock_DoubleTapped), true);
+						//		Grid.SetColumn(columnTextBlock, i);
+						//	}
 						//}
-						await CreateGridItemTemplateAsync(_packetMessageViewListDeleted);
+
+						await CreateGridItemTemplateAsync(_currentListView, _packetMessageViewListDeleted);
 						break;
 				}
 				//await CreateGridHeaderAsync(messageViewList);

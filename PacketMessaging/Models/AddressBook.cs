@@ -65,6 +65,9 @@ namespace PacketMessaging.Models
             set => _userAddressEntriesField = value;
         }
 
+		public string UserBBS
+		{ get; set; }
+
         public static AddressBook Instance
         {
             get
@@ -77,7 +80,6 @@ namespace PacketMessaging.Models
                             _instance = new AddressBook();
                     }
                 }
-
                 return _instance;
             }
         }
@@ -200,20 +202,53 @@ namespace PacketMessaging.Models
             return (entry == null ? "" : entry.BBSPrimaryActive ? entry.BBSPrimary : entry.BBSSecondary);
         }
 
-        public string GetAddress(string callsign)
+		public string GetAddress(string callsign)
         {
             _addressDictionary.TryGetValue(callsign.ToUpper(), out AddressBookEntry entry);
-
-            string address = "";
             if (entry != null)
             {
                 string bbs = entry.BBSPrimaryActive ? entry.BBSPrimary : entry.BBSSecondary;
-                address = entry.Callsign + '@' + bbs + "ampr.org";
-            }
-            return address;
+				if (!string.IsNullOrEmpty(bbs))
+				{
+					if (!string.IsNullOrEmpty(UserBBS))
+					{
+						if (UserBBS == bbs)
+						{
+							return entry.Callsign;
+						}
+						else
+						{
+							return entry.Callsign + '@' + bbs;
+						}
+					}
+					else
+					{
+						return entry.Callsign + '@' + bbs + "ampr.org";
+					}
+				}
+				else
+				{
+					return entry.Callsign;
+				}
+			}
+            return null;
         }
 
-        public List<string> GetAddressItems(string partialAddress)
+		public List<string> GetCallsigns(string partialCallsign)
+		{
+			List<string> matches = new List<string>();
+
+			foreach (var key in _addressDictionary.Keys)
+			{
+				if (key.StartsWith(partialCallsign.ToUpper()))
+				{
+					matches.Add(key);
+				}
+			}
+			return matches;
+		}
+
+		public List<string> GetAddressItems(string partialAddress)
         {
             List<string> matches = new List<string>();
 
@@ -272,25 +307,25 @@ namespace PacketMessaging.Models
         public bool AddAddressAsync(AddressBookEntry addressBookEntry)
         {
             // Validate entries
-            int index = addressBookEntry.Address.IndexOf('@');
+            int index = addressBookEntry.Callsign.IndexOf('@');
             if (index < 0)
                 return false;
 
             _addressDictionary.TryGetValue(addressBookEntry.Callsign, out AddressBookEntry oldAddressBookEntry);
             if (oldAddressBookEntry == null)
             {
-                string temp = addressBookEntry.Address.Substring(index + 1);
+                string temp = addressBookEntry.Callsign.Substring(index + 1);
                 temp = temp.ToLower();
                 index = temp.IndexOf('.');
                 if (index < 0)
                     return false;
 
-                temp = temp.Substring(0, index);
-                bool result = ValidateBBS(temp);        // BBS in address
-                result &= ValidateBBS(addressBookEntry.BBSPrimary.ToLower());       // Primary BBS
-                //result &= ValidateBBS(addressBookEntry.BBSSecondary.ToLower());     // Secondary BBS can be undefined
-                if (!result)
-                    return false;
+                //temp = temp.Substring(0, index);
+                //bool result = ValidateBBS(temp);        // BBS in address
+                //result &= ValidateBBS(addressBookEntry.BBSPrimary.ToLower());       // Primary BBS
+                ////result &= ValidateBBS(addressBookEntry.BBSSecondary.ToLower());     // Secondary BBS can be undefined
+                //if (!result)
+                //    return false;
 
                 _addressDictionary.Add(addressBookEntry.Callsign, addressBookEntry);
                 // Insert in userAddressBook
@@ -302,9 +337,13 @@ namespace PacketMessaging.Models
                 addressBookEntryList.Add(addressBookEntry);
                 UserAddressEntries = addressBookEntryList.ToArray();
                 SaveAsync();
-            }
-            return true;
-        }
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 
         public void AddAddressAsync(string address, string bbsPrimary = "", string bbsSecondary = "", bool primaryActive = true)
         {
@@ -557,13 +596,13 @@ namespace PacketMessaging.Models
             get
             {
                 string retval;
-                if (BBSPrimary == null || BBSPrimary.Length == 0)
+                if (string.IsNullOrEmpty(BBSPrimary))
                 {
-                    retval = NameDetail;
+                    retval = Callsign;
                 }
                 else
                 {
-                    retval = Callsign + '@' + (BBSPrimaryActive ? BBSPrimary : BBSSecondary) + ".ampr.org";
+					retval = Callsign + '@' + (BBSPrimaryActive ? BBSPrimary : BBSSecondary);// + ".ampr.org";
                 }
                 return retval;
             }

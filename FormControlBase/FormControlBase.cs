@@ -46,7 +46,9 @@ namespace FormControlBaseClass
 	public abstract class FormControlBase : FormControlBasics
 
     {
-        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		//private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
 
 
 
@@ -340,7 +342,17 @@ namespace FormControlBaseClass
 		}
 
 
-        public List<FormControl> FormControlsList
+		// Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty OperatorCallsignProperty =
+			DependencyProperty.Register("OperatorCallsign", typeof(string), typeof(FormControlBase), null);
+
+		public virtual string OperatorCallsign
+		{
+			get { return (string)GetValue(OperatorCallsignProperty); }
+			set { SetValue(OperatorCallsignProperty, value); }
+		}
+
+		public List<FormControl> FormControlsList
         { get => formControlsList; }
 
         public string ValidationResultMessage
@@ -355,8 +367,8 @@ namespace FormControlBaseClass
         public virtual string ReceiverMsgNo
         { get; set; }
 
-        public virtual string OperatorCallsign
-		{ get; set; }
+  //      public virtual string OperatorCallsign
+		//{ get; set; }
 
 		public virtual string OperatorName
 		{ get; set; }

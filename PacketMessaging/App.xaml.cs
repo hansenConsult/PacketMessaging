@@ -125,7 +125,7 @@ namespace PacketMessaging
 
             //long-running startup tasks go here
             StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-            Views.MainPage.unsentMessagesFolder = await localFolder.CreateFolderAsync("UnsentMessages", CreationCollisionOption.OpenIfExists);
+            Views.MainPage._unsentMessagesFolder = await localFolder.CreateFolderAsync("UnsentMessages", CreationCollisionOption.OpenIfExists);
             Views.MainPage._sentMessagesFolder = await localFolder.CreateFolderAsync("SentMessages", CreationCollisionOption.OpenIfExists);
             Views.MainPage.receivedMessagesFolder = await localFolder.CreateFolderAsync("ReceivedMessages", CreationCollisionOption.OpenIfExists);
             Views.MainPage._draftMessagesFolder = await localFolder.CreateFolderAsync("DraftMessages", CreationCollisionOption.OpenIfExists);

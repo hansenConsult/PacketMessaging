@@ -906,8 +906,11 @@ namespace PacketMessaging.Views
 			MessageNumber = _packetMessage.MessageNumber;
 			_packetAddressForm.MessageSubject = _packetMessage.Subject;
 
+
+			//string opcall = _packetForm.OperatorCallsign;//test
+
 			// Below is a workaround for missing event when a field changes
-            foreach (FormField formField in _packetMessage.FormFieldArray)
+			foreach (FormField formField in _packetMessage.FormFieldArray)
             {
                 FormControl formControl = _packetForm.FormControlsList.Find(x => x.InputControl.Name == formField.ControlName);
                 if (formControl == null)
@@ -1281,7 +1284,7 @@ namespace PacketMessaging.Views
 			DateTime dateTime = DateTime.Now;
 			_packetMessage.CreateTime = $"{dateTime.Month:d2}/{dateTime.Day:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
 
-			_packetMessage.Save(MainPage.unsentMessagesFolder.Path);
+			_packetMessage.Save(MainPage._unsentMessagesFolder.Path);
 
 			Services.CommunicationsService.CommunicationsService communicationsService = Services.CommunicationsService.CommunicationsService.CreateInstance();
 			communicationsService.BBSConnectAsync();

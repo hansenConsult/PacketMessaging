@@ -97,7 +97,7 @@
 					<ColumnDefinition Width="120"/>
 					<ColumnDefinition Width="1*" MinWidth="60"/>
 					<ColumnDefinition Width="110" />
-					<ColumnDefinition Width="100" />
+					<ColumnDefinition Width="70" />
 					<ColumnDefinition Width="70" />
 					<ColumnDefinition Width="60" />
 				</Grid.ColumnDefinitions>
@@ -130,7 +130,7 @@
 		<DataTemplate x:Name="ArchivedItemsListViewTemplate" x:DataType="data:PacketMessage">
 			<Grid >
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="20"/>
+					<ColumnDefinition Width="40"/>
 					<ColumnDefinition Width="120" />
 					<ColumnDefinition Width="120"/>
 					<ColumnDefinition Width="1*" MinWidth="60"/>
@@ -217,18 +217,18 @@
 			     >
 
 			<!--  Inbox  -->
-			<PivotItem x:Name="InBox"  Header="Inbox" >
+            <!--ItemTemplate="{StaticResource InboxListViewTemplate}"-->
+            <PivotItem x:Name="InBox"  Header="Inbox" >
 				<ScrollViewer Margin="0,0,0,0" HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" >
 					<ListView x:Name="listViewInBox" 
 							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
-							  ItemTemplate="{StaticResource InboxListViewTemplate}"
 							  SelectionMode="Extended" 
 							  DoubleTapped="ListBox_DoubleTapped" 
 							  SelectionChanged="ListView_SelectionChanged" >
 						<ListView.Header>
                             <Grid x:Name="InBoxListViewHeader" Margin="12,0,12,0">
-                                <Grid.ColumnDefinitions>
+                                <!--<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="40"/>
 									<ColumnDefinition Width="120" />
 									<ColumnDefinition Width="120"/>
@@ -251,7 +251,7 @@
 								<TextBlock Grid.Column="5" Text="To " FontSize="17" HorizontalAlignment="Center" />
 								<TextBlock Grid.Column="6" Text="From" FontSize="17" HorizontalAlignment="Center"  />
 								<TextBlock Grid.Column="7" Text="BBS" FontSize="17" HorizontalAlignment="Center"/>
-								<TextBlock Grid.Column="8" Text="Size" FontSize="17" HorizontalAlignment="Center" />
+								<TextBlock Grid.Column="8" Text="Size" FontSize="17" HorizontalAlignment="Center" />-->
 							</Grid>
 
 						</ListView.Header>
@@ -260,11 +260,11 @@
 			</PivotItem>
 
 			<!--  Sent Items  -->
-			<PivotItem x:Name="Sent" Header="Sent Items" >
+            <!--ItemTemplate="{StaticResource SentItemsListViewTemplate}"-->
+            <PivotItem x:Name="Sent" Header="Sent Items" >
 				<!--<ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">-->
 					<ListView x:Name="listViewSentItems" 
 							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
-							  ItemTemplate="{StaticResource SentItemsListViewTemplate}"  
 							  ScrollViewer.VerticalScrollBarVisibility="Auto"
 							  Margin="0,0,0,48"
 							  SelectionMode="Extended" 
@@ -272,7 +272,7 @@
 							  SelectionChanged="ListView_SelectionChanged">
 						<ListView.Header>
 							<Grid Margin="12,0,12,0">
-								<Grid.ColumnDefinitions>
+								<!--<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="120" />
 									<ColumnDefinition Width="120" />
 									<ColumnDefinition Width="1*" MinWidth="60"/>
@@ -289,7 +289,7 @@
 								<TextBlock Grid.Column="4" Text="To" FontSize="17" HorizontalAlignment="Center"/>
 								<TextBlock Grid.Column="5" Text="From" FontSize="17"  HorizontalAlignment="Center" />
 								<TextBlock Grid.Column="6" Text="BBS" FontSize="17" HorizontalAlignment="Center" />
-								<TextBlock Grid.Column="7" Text="Size" FontSize="17" HorizontalAlignment="Center"/>
+								<TextBlock Grid.Column="7" Text="Size" FontSize="17" HorizontalAlignment="Center"/>-->
 							</Grid>
 						</ListView.Header>
 					</ListView>
@@ -297,7 +297,7 @@
 			</PivotItem>
 
 			<!--  Outbox  -->
-			<PivotItem x:Name="Outbox" 
+			<PivotItem x:Name="OutBox" 
                        Header="Outbox" Padding="0">
 				<ScrollViewer Margin="0,0,-12,0" Width="auto"
 							  VerticalScrollBarVisibility="Auto">
@@ -308,7 +308,7 @@
 							  >
 						<ListView.Header>
 							<Grid Margin="12,0,12,0">
-								<Grid.ColumnDefinitions>
+								<!--<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="120"/>
 									<ColumnDefinition Width="1*" MinWidth="60" />
 									<ColumnDefinition Width="110"/>
@@ -323,7 +323,7 @@
 								<TextBlock Grid.Column="3" Text="To"   Margin="10,0,0,0"/>
 								<TextBlock Grid.Column="4" Text="From"   Margin="10,0,0,0" />
 								<TextBlock Grid.Column="5" Text="BBS"   HorizontalAlignment="Center"  Margin="10,0,0,0"/>
-								<TextBlock Grid.Column="6" Text="Size"   HorizontalAlignment="Center"/>
+								<TextBlock Grid.Column="6" Text="Size"   HorizontalAlignment="Center"/>-->
 							</Grid>
 						</ListView.Header>
 					</ListView>
@@ -331,19 +331,19 @@
 			</PivotItem>
 
 			<!--  Drafts  -->
-			<PivotItem x:Name="Drafts" 
+            <!--ItemTemplate="{StaticResource DraftsListViewTemplate}"-->
+            <PivotItem x:Name="Drafts" 
                        Header="Drafts" Padding="0">
 				<ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">
 					<ListView x:Name="listViewDrafts" 
 							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
-							  ItemTemplate="{StaticResource DraftsListViewTemplate}"
-							  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
 							  SelectionMode="Extended" 
 							  DoubleTapped="ListBox_DoubleTapped" 
 							  SelectionChanged="ListView_SelectionChanged">
 						<ListView.Header>
 							<Grid Margin="12,0,12,0">
-								<Grid.ColumnDefinitions>
+								<!--<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="120"/>
 									<ColumnDefinition Width="1*" />
 									<ColumnDefinition Width="110" />
@@ -352,11 +352,11 @@
 									<ColumnDefinition Width="60" />
 								</Grid.ColumnDefinitions>
 								<TextBlock Grid.Column="0" Text="Create Time" FontSize="17" HorizontalAlignment="Center" DoubleTapped="TextBlock_DoubleTapped"  />
-								<TextBlock Grid.Column="1" Text="Subject" FontSize="17" HorizontalAlignment="Left" DoubleTapped="TextBlock_DoubleTapped"  />
+                                <TextBlock Grid.Column="1" Text="Subject" FontSize="17" HorizontalAlignment="Left" Tag="Subject" DoubleTapped="TextBlock_DoubleTapped"  />
 								<TextBlock Grid.Column="2" Text="Number" FontSize="17" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped"  />
 								<TextBlock Grid.Column="3" Text="To" FontSize="17" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped" />
 								<TextBlock Grid.Column="4" Text="From" FontSize="17" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped"  />
-								<TextBlock Grid.Column="5" Text="BBS" FontSize="17" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped" />
+								<TextBlock Grid.Column="5" Text="BBS" FontSize="17" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped" />-->
 							</Grid>
 						</ListView.Header>
 					</ListView>
@@ -374,8 +374,8 @@
 							  SelectionChanged="ListView_SelectionChanged">
 						<ListView.Header>
 							<Grid Margin="12,0,12,0" >
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="30"/>
+								<!--<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="40"/>
 									<ColumnDefinition Width="120" />
 									<ColumnDefinition  Width="120"/>
 									<ColumnDefinition  Width="1*" MinWidth="60"/>
@@ -393,7 +393,7 @@
 								<TextBlock Grid.Column="5" Text="To" FontSize="17" HorizontalAlignment="Center" />
 								<TextBlock Grid.Column="6" Text="From" FontSize="17" HorizontalAlignment="Center"  />
 								<TextBlock Grid.Column="7" Text="BBS" FontSize="17" HorizontalAlignment="Center" />
-								<TextBlock Grid.Column="8" Text="Size" FontSize="17" HorizontalAlignment="Center" />
+								<TextBlock Grid.Column="8" Text="Size" FontSize="17" HorizontalAlignment="Center" />-->
 							</Grid>
 						</ListView.Header>
 					</ListView>
@@ -433,20 +433,6 @@
 						</ListView.ItemTemplate>-->
 						<ListView.Header>
 							<Grid x:Name="listViewDeletedHeader" Margin="12,0,12,0">
-								<!--<Grid.ColumnDefinitions>
-									<ColumnDefinition  Width="120"/>
-									<ColumnDefinition  Width="1*" MinWidth="60"/>
-									<ColumnDefinition Width="110" />
-									<ColumnDefinition Width="70" />
-									<ColumnDefinition Width="70" />
-									<ColumnDefinition Width="60" />
-								</Grid.ColumnDefinitions>-->
-								<!--<TextBlock Grid.Column="0" />
-								<TextBlock Grid.Column="1" />
-								<TextBlock Grid.Column="2" />
-								<TextBlock Grid.Column="3" />
-								<TextBlock Grid.Column="4" />
-								<TextBlock Grid.Column="5" />-->
 
 							</Grid>
 						</ListView.Header>
@@ -455,15 +441,15 @@
 			</PivotItem>
 
 			<!--Test-->
-			<PivotItem x:Name="testDataGrid" Header="Test Layout">
-                <!--<dataGrid:DataGrid x:Name="dataGridControl" ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
+			<!--<PivotItem x:Name="testDataGrid" Header="Test Layout">
+                <dataGrid:DataGrid x:Name="dataGridControl" ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
                                    SelectionChanged="dataGridControl_SelectionChanged">
                     <dataGrid:DataGrid.Columns>
                         <dataGrid:DataGridTextColumn Width="120" Header="Create Time"/>
                         <dataGrid:DataGridTextColumn Width="120" Header="Subject"/>
                     </dataGrid:DataGrid.Columns>
-                </dataGrid:DataGrid>-->
-            </PivotItem>
+                </dataGrid:DataGrid>
+            </PivotItem>-->
 		</Pivot>
 
 		<CommandBar x:Name="ButtomCommandBar"

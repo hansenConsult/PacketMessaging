@@ -399,7 +399,7 @@
                     <StackPanel Orientation="Horizontal" BorderBrush="Black" BorderThickness="1,0,0,1">
                         <TextBlock Text="Call:"  Margin="5,0,0,0" VerticalAlignment="Center" Padding="0,0,0,1"/>
                         <TextBox Name="operatorCallsign" 
-                                 Text="{x:Bind OperatorCallsign}"
+                                 Text="{x:Bind OperatorCallsign, Mode=TwoWay}"
                                  Margin="0"  BorderBrush="White" Tag="44"/>
                         <TextBlock Text="Name:"  Margin="5,0,0,0" VerticalAlignment="Center" Padding="0,0,0,1" />
                         <TextBox Name="operatorName" 

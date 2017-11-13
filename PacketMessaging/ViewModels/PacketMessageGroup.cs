@@ -15,19 +15,22 @@ namespace PacketMessaging.ViewModels
 	[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
 	public class PacketMessageViewList
 	{
-		List<Field> messageViewList;
+		List<Field> _messageViewList;
 
 		[System.Xml.Serialization.XmlArrayItemAttribute("FormField", IsNullable = false)]
-		public List<Field> MessageViewList => messageViewList;
+		public List<Field> MessageViewList => _messageViewList;
+
+		public bool ListViewHeaderCreated
+		{ get; set; }
 
 		public PacketMessageViewList()
 		{
-			messageViewList = new List<Field>();
+			_messageViewList = new List<Field>();
 		}
 
 		public void Add(Field field)
 		{
-			messageViewList.Add(field);
+			_messageViewList.Add(field);
 		}
 
 		/*
@@ -84,12 +87,12 @@ rootGrid.Children.Add(lv);
 
 	public class JNOSDate : Field
 	{
-		public JNOSDate(string fieldWidth) : base(nameof(JNOSDate), "JNOSTime", "JNOSTime", fieldWidth) { }
+		public JNOSDate(string fieldWidth) : base(nameof(JNOSDate), "Sent Time", "Sent Time", fieldWidth) { }
 	}
 
 	public class SentTime : Field
 	{
-		public SentTime(string fieldWidth) : base(nameof(SentTime), "Sent", "Sent", fieldWidth) { }
+		public SentTime(string fieldWidth) : base(nameof(SentTime), "Sent", "Sent Time", fieldWidth) { }
 	}
 
 	public class CreateTime : Field
@@ -106,7 +109,7 @@ rootGrid.Children.Add(lv);
 
 	public class MessageNumber : Field
 	{
-		public MessageNumber(string fieldWidth) : base(nameof(MessageNumber), "Msg Number", "Msg Number", fieldWidth) { }
+		public MessageNumber(string fieldWidth) : base(nameof(MessageNumber), "Msg Number", "Msg. No.", fieldWidth) { }
 		public MessageNumber(string headerShort, string fieldWidth) : base(nameof(MessageNumber), "Msg Number", headerShort, fieldWidth) { }
 	}
 

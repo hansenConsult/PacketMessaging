@@ -18,6 +18,7 @@
 
 	<Page.Resources>
 		<converters:VisibilityConverter x:Key="VisibilityConverter"/>
+        <!--<converters:BBSToggleEnabled x:Key="BBSToggleEnabled"/>-->
 
         <CollectionViewSource x:Name="BBSDataCollection"  IsSourceGrouped="False" />
 		<CollectionViewSource x:Name="ProfilesCollection"  IsSourceGrouped="False"  />
@@ -66,7 +67,7 @@
                          VerticalAlignment="Center"
                          HorizontalAlignment="Center"
                          Fill="LightGray"/>
-				<TextBlock Grid.Column="1" Grid.Row="0"
+				<TextBlock Grid.Column="1" Grid.Row="0" 
                            Text="{x:Bind Callsign}" 
                            x:Phase="1"  
                            Style="{ThemeResource BaseTextBlockStyle}"
@@ -635,11 +636,11 @@
                     <AutoSuggestBox x:Name="distributionListName" Text="{Binding DistributionListName, Mode=TwoWay}" Header="List Name:" Margin="5,10,0,0"
                                     TextChanged="DistributionListName_TextChanged"
                                     SuggestionChosen="DistributionListName_SuggestionChosen" MinWidth="120"/>
-                    <TextBox x:Name="distributionListItems" Text="{Binding DistributionListItems, Mode=OneWay}"
-                             Header="Distribution List" AcceptsReturn="True" Margin="5,10,0,0"
+                    <TextBox x:Name="distributionListItems" Text="{Binding DistributionListItems, Mode=TwoWay}"
+                             Header="Distribution List" Margin="5,10,0,0"
                              RelativePanel.Below="distributionListName" IsTabStop="False"/>
                     <AutoSuggestBox x:Name="distributionListAddItem" Header="Add to Distribution List" Margin="5,10,0,0"
-                                    RelativePanel.Below="distributionListItems"
+                                    RelativePanel.Below="distributionListItems"                                    
                                     TextChanged="DistributionListAddItem_TextChanged"
                                     SuggestionChosen="DistributionListAddItem_SuggestionChosen"/>
                 </RelativePanel>
@@ -689,15 +690,16 @@
                        Title="Edit Address Book Entry" Opened="EditAddressBookEntryContentDialog_Opened">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Callsign:" VerticalAlignment="Center" Width="102"/>
-                    <TextBox x:Name="addressBookCallsign" Text="{Binding AddressBookCallsign}" Width="115" Margin="5,2,0,0"/>
+                    <TextBlock Text="Callsign or E-Mail:" VerticalAlignment="Center" Width="120"/>
+                    <TextBox x:Name="addressBookCallsign" 
+                             Text="{Binding AddressBookCallsign}" Width="200" Margin="5,2,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Name:" VerticalAlignment="Center" Width="102"/>
+                    <TextBlock Text="Name:" VerticalAlignment="Center" Width="120"/>
                     <TextBox x:Name="addressBookName" Width="200" Margin="5,2,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Primary BBS:" VerticalAlignment="Center" Width="102"/>
+                    <TextBlock Text="Primary BBS:" VerticalAlignment="Center" Width="120"/>
                     <ComboBox x:Name="addressBookPrimaryBBS" Width="115" Margin="5,2,0,0">
                         <x:String>W1XSC</x:String>
                         <x:String>W2XSC</x:String>
@@ -707,7 +709,7 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Secondary BBS:" VerticalAlignment="Center" Width="102"/>
+                    <TextBlock Text="Secondary BBS:" VerticalAlignment="Center" Width="120"/>
                     <ComboBox x:Name="addressBookSecondaryBBS" Width="115" Margin="5,2,0,0">
                         <x:String>W1XSC</x:String>
                         <x:String>W2XSC</x:String>

@@ -55,7 +55,8 @@
                       RelativePanel.AlignRightWithPanel="True"
                       RelativePanel.Below="messageTNC"
                       Header=""
-                      OffContent="Distribution List" OnContent="Individuals" Height="32" HorizontalAlignment="Right" Padding="0,-3,0,0"
+                      OffContent="Distribution List" OnContent="Individuals" Height="32" 
+                      HorizontalAlignment="Right" Padding="0,-3,0,0"
                       />
         <!--<TextBox x:Name="messageTo" RelativePanel.AlignVerticalCenterWith="labelFrom" 
                  RelativePanel.AlignLeftWith="messageTNC" 

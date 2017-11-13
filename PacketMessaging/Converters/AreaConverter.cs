@@ -69,21 +69,32 @@ namespace PacketMessaging.Converters
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
         {
-            parameter = (string)value;
-            int length = ((string)value).Length;
-            if (length > 0)
-                return Windows.UI.Xaml.Visibility.Visible;
+			if (string.IsNullOrEmpty(value as string))
+				return Windows.UI.Xaml.Visibility.Collapsed;
             else
-                return Windows.UI.Xaml.Visibility.Collapsed;
-        }
+				return Windows.UI.Xaml.Visibility.Visible;
+		}
 
-        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language)
+		object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class ComportComparer : IComparer<string>
+	//public sealed class BBSToggleEnabled : IValueConverter
+	//{
+	//	object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
+	//	{
+	//		return true;
+	//	}
+
+	//	object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language)
+	//	{
+	//		throw new NotImplementedException();
+	//	}
+	//}
+
+	public class ComportComparer : IComparer<string>
     {
         int IComparer<string>.Compare(string x, string y)
         {

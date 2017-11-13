@@ -56,7 +56,7 @@ namespace PacketMessaging.Views
 		public string MessageFrom
 		{
 			get => messageFrom.Text;
-			set => messageFrom.Text = value;
+			set => messageFrom.Text = value == null ? "" : value;
 		}
 
 		public string MessageTo
@@ -199,7 +199,23 @@ namespace PacketMessaging.Views
 
         private void MessageTo_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            sender.Text = args.SelectedItem.ToString();
+			AddressBook.Instance.UserBBS = messageBBS.Text;
+
+			
+			if (!toSelection.IsOn)
+			{
+				// Distribution list selected
+				string[] listItems = DistributionListArray.Instance.GetDistributionListItems(args.SelectedItem.ToString());
+				sender.Text = AddressBook.Instance.GetAddress(listItems[0]);
+				for (int i = 1; i < listItems.Length; i++)
+				{
+					sender.Text += $", {AddressBook.Instance.GetAddress(listItems[i])}";
+				}
+			}
+			else
+			{
+				sender.Text = AddressBook.Instance.GetAddress(args.SelectedItem.ToString());
+			}
         }
 
         private void MessageTo_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -218,7 +234,7 @@ namespace PacketMessaging.Views
                 {
                     //Set the ItemsSource to be your filtered dataset
 					if (toSelection.IsOn)
-						sender.ItemsSource = AddressBook.Instance.GetAddressItems(messageTo.Text);
+						sender.ItemsSource = AddressBook.Instance.GetCallsigns(messageTo.Text);
 					else
 						sender.ItemsSource = DistributionListArray.Instance.GetDistributionListNames(messageTo.Text);
 				}

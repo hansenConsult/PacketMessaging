@@ -1375,6 +1375,7 @@ namespace PacketMessaging.Views
 				if (string.IsNullOrEmpty(distributionListItems.Text))
 				{
 					distributionListItems.Text = $"{sender.Text}";
+					//DistributionListItems.Text = $"{sender.Text}";
 				}
 				else
 				{
@@ -1526,7 +1527,11 @@ namespace PacketMessaging.Views
                     {
                         addressBookEntry = GetAddressBookEntryEditData();
                         bool success = addressBook.AddAddressAsync(addressBookEntry);
-                    }
+						if (!success)
+						{
+							await Utilities.ShowMessageDialogAsync("Error adding a new address book entry.");
+						}
+					}
                     ContactsCVS.Source = addressBook.GetContactsGrouped();
                     break;
 				case "pivotItemDistributionLists":

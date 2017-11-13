@@ -280,7 +280,7 @@ namespace PacketMessaging.Services.CommunicationsService
                     QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypeFilter);
 
                     // Get the files in the user's archive folder
-                    StorageFileQueryResult results = MainPage.unsentMessagesFolder.CreateFileQueryWithOptions(queryOptions);
+                    StorageFileQueryResult results = MainPage._unsentMessagesFolder.CreateFileQueryWithOptions(queryOptions);
                     // Iterate over the results
                     IReadOnlyList<StorageFile> files = await results.GetFilesAsync();
                     foreach (StorageFile file in files)
@@ -313,7 +313,7 @@ namespace PacketMessaging.Services.CommunicationsService
 						packetMessage.MessageBody = formControl.CreateOutpostData(ref packetMessage);
 						packetMessage.MessageSize = packetMessage.Size;
 						// Save updated message
-						packetMessage.Save(MainPage.unsentMessagesFolder.Path);
+						packetMessage.Save(MainPage._unsentMessagesFolder.Path);
 
 						_packetMessagesToSend.Add(packetMessage);
 					}
@@ -422,7 +422,7 @@ namespace PacketMessaging.Services.CommunicationsService
 					{
                         LogHelper(LogLevel.Info, $"Message number {packetMsg.MessageNumber} Sent");
 
-						var file = await MainPage.unsentMessagesFolder.CreateFileAsync(packetMsg.FileName, CreationCollisionOption.OpenIfExists);
+						var file = await MainPage._unsentMessagesFolder.CreateFileAsync(packetMsg.FileName, CreationCollisionOption.OpenIfExists);
 						await file.DeleteAsync();
 
 						// Do a save to ensure that updates from tncInterface.BBSConnect are saved

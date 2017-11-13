@@ -221,7 +221,7 @@ namespace PacketMessaging.Services.SettingsServices
 			set { _helper.Write(nameof(DistributionListName), value); }
 		}
 
-		#endregion
+#endregion
 		#region MainPage
 		//public double GridViewItemWidth
 		//{

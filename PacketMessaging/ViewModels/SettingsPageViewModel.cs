@@ -485,12 +485,17 @@ namespace PacketMessaging.ViewModels
 
 		public string DistributionListName
 		{
-			get => _settings.DistributionListName;
+			get
+			{
+				string temp = _settings.DistributionListName;
+				DistributionListItems = distributionLists.DistributionListsDict[temp];
+				return _settings.DistributionListName;
+			}
 			set
 			{
-				if (distributionLists.DistributionListsDict.ContainsKey(DistributionListName))
+				if (distributionLists.DistributionListsDict.ContainsKey(value))
 				{
-					//DistributionListItems = distributionLists.DistributionListsDict[DistributionListName];
+					DistributionListItems = distributionLists.DistributionListsDict[value];
 					_settings.DistributionListName = value; base.RaisePropertyChanged();
 				}
 			}
