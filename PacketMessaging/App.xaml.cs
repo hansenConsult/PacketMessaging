@@ -63,8 +63,8 @@ namespace PacketMessaging
                 AreaName = "Local Mountain View",
                 FileName = "MTVTacticalCallsigns.xml",
                 StartString = "Packet Tactical Call List",
-                BulletinFileName = "http://www.k6mtv.org/emergency_plan_09_23_15.pdf"
-            };
+                BulletinFileName = "http://www.k6mtv.org/emergency_plan_06-21-17.pdf"
+			};
             _tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
 
             tacticalCallsignData = new TacticalCallsignData()
@@ -76,14 +76,14 @@ namespace PacketMessaging
             };
             _tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
 
-			tacticalCallsignData = new TacticalCallsignData()
-			{
-				AreaName = "Other",
-				FileName = "OtherTacticalCallsigns.xml",
-				StartString = "",
-				BulletinFileName = ""
-			};
-			_tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
+			//tacticalCallsignData = new TacticalCallsignData()
+			//{
+			//	AreaName = "Other",
+			//	FileName = "OtherTacticalCallsigns.xml",
+			//	StartString = "",
+			//	BulletinFileName = ""
+			//};
+			//_tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
 
 			tacticalCallsignData = new TacticalCallsignData()
             {

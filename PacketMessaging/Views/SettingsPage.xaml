@@ -67,7 +67,7 @@
                          VerticalAlignment="Center"
                          HorizontalAlignment="Center"
                          Fill="LightGray"/>
-				<TextBlock Grid.Column="1" Grid.Row="0" 
+                <TextBlock Grid.Column="1" Grid.Row="0" 
                            Text="{x:Bind Callsign}" 
                            x:Phase="1"  
                            Style="{ThemeResource BaseTextBlockStyle}"
@@ -87,16 +87,15 @@
                            x:Phase="1"
                            Style="{ThemeResource BodyTextBlockStyle}"
                            Margin="12,6,0,6"/>
-				<ToggleSwitch x:Name="bbsToggle" Grid.Column="2"
+                <ToggleSwitch x:Name="bbsToggle" Grid.Column="2"
                            Grid.Row="1"
                            IsOn="{x:Bind BBSPrimaryActive, Mode=TwoWay}"
                            OffContent="Secondary BBS"
                            OnContent="Primary BBS"
 						   Visibility="{x:Bind BBSPrimary, Converter={StaticResource VisibilityConverter}}"
                            Margin="20,0,0,0" Toggled="ToggleSwitch_Toggled" />
-			</Grid>
+            </Grid>
         </DataTemplate>
-
     </Page.Resources>
 
 	<Page.DataContext>
@@ -352,11 +351,11 @@
 							<RelativePanel x:Name="panelProfileSelection" Margin="18">
 								<TextBlock x:Name="labelProfile"  Text="Profile:" Margin="0,0,5,0" 
 										RelativePanel.AlignVerticalCenterWithPanel="True"/>
-								<ComboBox x:Name="comboBoxProfiles"  Width="300"
+                                <!--SelectedIndex="{Binding ProfileSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
+                                <ComboBox x:Name="comboBoxProfiles"  Width="300"
 										RelativePanel.RightOf="labelProfile"
 										ItemTemplate="{StaticResource  ProfilesDataTemplate}"
 										ItemsSource="{x:Bind ProfilesCollection.View, Mode=OneWay}"
-										SelectedIndex="{Binding ProfileSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 										VerticalAlignment="Center" SelectionChanged="ComboBoxProfiles_SelectionChanged"   />
 								<TextBox x:Name="textBoxNewProfileName" Width="300"
 										RelativePanel.RightOf="labelProfile"
@@ -418,7 +417,7 @@
 			</PivotItem>
 
 			<!-- TNC -->
-			<PivotItem DataContext="{Binding TNCPartViewModel}" Header="TNC" Padding="0">
+            <PivotItem x:Name="pivotTNC" DataContext="{Binding TNCPartViewModel}" Header="TNC" Padding="0">
 				<RelativePanel Margin="-12,0,-12,0" >
 					<!--<ScrollViewer Name="scrollViewerTNC"
 								  RelativePanel.AlignTopWithPanel="True"
@@ -426,6 +425,7 @@
 								  Margin="0,0,0,0" VerticalScrollBarVisibility="Auto" Width="auto">-->
 						<SplitView  IsPaneOpen="True" OpenPaneLength="200" HorizontalAlignment="Left" Height="auto"  VerticalAlignment="Top" DisplayMode="Inline">
 						<SplitView.Pane >
+                            <StackPanel>
 							<ListBox x:Name="ConnectDevices"  Width="auto"  Height="auto"  Background="LightGray"
 									 ItemsSource="{x:Bind DeviceListSource.View}" 
 									 ItemTemplate="{StaticResource  TNCDataTemplate}"
@@ -433,7 +433,10 @@
 									 SelectionChanged="ConnectDevices_SelectionChanged"
 								>
 							</ListBox>
-							<!--<ListView x:Name="tncDeviceList" Width="100"/>-->
+                            <TextBox x:Name="newTNCDeviceName" Header="New Device Name" 
+                                     Margin="5,58,5,0" Visibility="Collapsed"/>
+                            </StackPanel>
+                            <!--<ListView x:Name="tncDeviceList" Width="100"/>-->
 						</SplitView.Pane>
 						<SplitView.Content>
 							<Pivot x:Name="PivotTNC" Margin="12,0,12,0" >
@@ -451,13 +454,13 @@
 												<RowDefinition />
 												<RowDefinition Height="auto"/>
 										</Grid.RowDefinitions>
-										<TextBlock Grid.Column="0" Grid.Row="0" Text="Pre connect commands"/>
-										<TextBlock Grid.Column="2" Grid.Row="0" Text="Post Connect Commands"/>
-										<TextBox Grid.Column="0" Grid.Row="1" x:Name="textBoxInitCommandsPre" 
-												 AcceptsReturn="True" 
+										<!--<TextBlock Grid.Column="0" Grid.Row="0" Text="Pre connect commands"/>-->
+										<!--<TextBlock Grid.Column="2" Grid.Row="0" Text="Post Connect Commands"/>-->
+										<TextBox Grid.Column="0" Grid.Row="0" x:Name="textBoxInitCommandsPre" 
+												 AcceptsReturn="True" Header="Pre Connect Commands"
 												 TextChanged="textBoxInitCommandsPre_TextChanged" />
-										<TextBox Grid.Column="2" Grid.Row="1" x:Name="textBoxInitCommandsPost" 
-												 AcceptsReturn="True" 
+										<TextBox Grid.Column="2" Grid.Row="0" x:Name="textBoxInitCommandsPost" 
+												 AcceptsReturn="True" Header="Post Connect Commands"
 												 Margin="0,0,2,0"
 												 TextChanged="textBoxInitCommandsPost_TextChanged"  />
 									</Grid>
@@ -576,7 +579,7 @@
 									<TextBlock Grid.Column="0" Grid.Row="0" Text="Mycall:" VerticalAlignment="Center"/>
 									<TextBox Grid.Column="1" Grid.Row="0" x:Name="textBoxCommandsMyCall" Margin="0,2" />
 									<TextBlock Grid.Column="0" Grid.Row="1" Text="Connect:" VerticalAlignment="Center" />
-											<TextBox Grid.Column="1" Grid.Row="1" x:Name="textBoxCommandsConnect" Margin="0,2" Text="{x:Bind TNCCommandsConnect, Mode=TwoWay}" />
+									<TextBox Grid.Column="1" Grid.Row="1" x:Name="textBoxCommandsConnect" Margin="0,2" Text="{x:Bind TNCCommandsConnect, Mode=TwoWay}" />
 									<TextBlock Grid.Column="0" Grid.Row="2" Text="Retry:" VerticalAlignment="Center" />
 									<TextBox Grid.Column="1" Grid.Row="2" x:Name="textBoxCommandsRetry" Margin="0,2"  />
 									<TextBlock Grid.Column="0" Grid.Row="3" Text="Convers Mode:" VerticalAlignment="Center" />
@@ -589,7 +592,7 @@
 					</SplitView.Content>
 				</SplitView>
 					<!--</ScrollViewer>-->
-					<CommandBar x:Name="ButtomCommandBar"
+					<!--<CommandBar x:Name="ButtomCommandBar"
 							RelativePanel.AlignBottomWithPanel="True"
 							RelativePanel.AlignRightWithPanel="True"
 							RelativePanel.AlignLeftWithPanel="True">
@@ -598,7 +601,7 @@
 
 								Click="appBarSaveTNC_ClickAsync" />
 						<AppBarButton x:Name="appBarDelete" Label="Delete TNC" Icon="Delete" HorizontalAlignment="Right" />
-					</CommandBar>
+					</CommandBar>-->
 				</RelativePanel>
 			</PivotItem>
 
@@ -728,7 +731,7 @@
 				RelativePanel.AlignLeftWithPanel="True">
             <AppBarButton x:Name="appBarSettingsAdd" Label="Add" Icon="Add" Click="AppBarAdd_ClickAsync" />
             <AppBarButton x:Name="appBarSettingsEdit" Label="Edit" Icon="Edit" HorizontalAlignment="Right" Click="AppBarEdit_ClickAsync"/>
-            <AppBarButton x:Name="appBarSettingsSave" Icon="Save" Click="AppBarSave_ClickAsync" />
+            <AppBarButton x:Name="appBarSettingsSave" Label="Save" Icon="Save" Click="AppBarSave_ClickAsync" />
             <AppBarButton x:Name="appBarsettingsDelete" Label="Delete" Icon="Delete" Click="AppBarDelete_Click" HorizontalAlignment="Right" />
         </CommandBar>
 

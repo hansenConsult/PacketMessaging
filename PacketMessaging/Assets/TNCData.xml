@@ -18,4 +18,10 @@
     <InitCommands Precommands="NEWMODE ON&#xA;8BITCONV ON&#xA;BEACON EVERY 0&#xA;SLOTTIME 10&#xD;&#xA;PERSIST 63&#xA;PPERSIST ON&#xA;PACLEN 128&#xD;&#xA;MAXFRAME 1&#xD;&#xA;FRACK 6&#xA;RETRY 8&#xA;RESPTIME 5&#xA;CHECK 30&#xD;&#xA;TXDELAY 40&#xA;XFLOW OFF&#xA;SENDPAC $05&#xA;CR OFF&#xD;&#xA;PACTIME AFTER 2&#xA;CPACTIME ON&#xA;LOCATION EVERY 0" Postcommands="SENDPAC $0D&#xA;CR ON&#xD;&#xA;PACTIME AFTER 10&#xA;CPACTIME OFF&#xA;" />
     <CommPort IsBluetooth="false" Comport="COM5" Baudrate="9600" Databits="8" Parity="None" Stopbits="One" Flowcontrol="RequestToSend" />
   </Device>
+  <Device Name="E-Mail" Selected="false">
+    <Prompts Command="" Timeout="" Connected="" Disconnected="" />
+    <Commands MyCall="" Connect="" Retry="" Conversmode="" Datetime="" />
+    <InitCommands Precommands="" Postcommands="" />
+    <CommPort IsBluetooth="false" BluetoothName="" DeviceId="" Comport="" Baudrate="9600" Databits="8" Parity="None" Stopbits="One" Flowcontrol="RequestToSend" />
+  </Device>
 </TNCDeviceArray>

@@ -476,14 +476,13 @@ namespace PacketMessaging.Services.CommunicationsService
 					{
 						_serialDevice =  EventHandlerForDevice.Current.Device;
 
-						_serialDevice.BaudRate = _tncDevice.CommPort.Baudrate;
-						_serialDevice.StopBits = _tncDevice.CommPort.Stopbits;
+						_serialDevice.BaudRate = (uint)_tncDevice.CommPort?.Baudrate;
+						_serialDevice.StopBits = (SerialStopBitCount)_tncDevice.CommPort?.Stopbits;
 						_serialDevice.DataBits = Convert.ToUInt16(_tncDevice.CommPort.Databits);
-						_serialDevice.Parity = _tncDevice.CommPort.Parity;
-						_serialDevice.Handshake = _tncDevice.CommPort.Flowcontrol;
+						_serialDevice.Parity = (SerialParity)_tncDevice.CommPort?.Parity;
+						_serialDevice.Handshake = (SerialHandshake)_tncDevice.CommPort.Flowcontrol;
 						_serialDevice.ReadTimeout = new TimeSpan(0, 0, 0, 5, 0);
 						_serialDevice.WriteTimeout = new TimeSpan(0, 0, 0, 5, 0);
-						_serialDevice.Handshake = _tncDevice.CommPort.Flowcontrol;
 
 						ResetReadCancellationTokenSource();
 						ResetWriteCancellationTokenSource();

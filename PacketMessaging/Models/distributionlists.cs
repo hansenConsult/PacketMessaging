@@ -48,6 +48,7 @@ namespace PacketMessaging.Models
 		private DistributionListArray()
 		{
 			_distributionListArrayField = new DistributionList[0];
+			_distributionListsDict = new Dictionary<string, string>();
 		}
 
 		/// <remarks/>

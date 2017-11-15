@@ -35,8 +35,16 @@ namespace PacketMessaging.Views
 			{
 				MessageFrom = ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserCallsign;
 			}
-            string bbs = AddressBook.Instance.GetBBS(MessageFrom);
-            MessageBBS = string.IsNullOrEmpty(bbs) ? MessageBBS : bbs;
+			if (MessageTNC == "E-Mail")
+			{
+				MessageBBS = "";
+				messageBBS.Tag = "";
+			}
+			else
+			{
+				string bbs = AddressBook.Instance.GetBBS(MessageFrom);
+				MessageBBS = string.IsNullOrEmpty(bbs) ? MessageBBS : bbs;
+			}
 
 			toSelection.IsOn = true;
 		}

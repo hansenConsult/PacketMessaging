@@ -89,6 +89,8 @@ namespace PacketMessaging.Views
 		//string _comPort;
 		//Visibility _isBluetoothDevicesVisible = Visibility.Collapsed;
 
+		static ObservableCollection<Profile> _profileCollection;
+
 		public SettingsPage()
 		{
 			InitializeComponent();
@@ -112,14 +114,20 @@ namespace PacketMessaging.Views
 			DeviceListSource.Source = tncDeviceCollection;
 			comboBoxTNCs.SelectedValue = sharedData.CurrentTNCDevice;
 
-			ObservableCollection<Profile> profileCollection = new ObservableCollection<Profile>();
+			Profile selectedProfile = null;
+			_profileCollection = new ObservableCollection<Profile>();
 			foreach (Profile profile in sharedData.ProfileArray?.Profiles)
 			{
-				profileCollection.Add(profile);
+				if (profile.Selected)
+				{
+					selectedProfile = profile;
+				}
+				_profileCollection.Add(profile);
 			}
-			ProfilesCollection.Source = profileCollection;
+			ProfilesCollection.Source = _profileCollection;
+			comboBoxProfiles.SelectedItem = selectedProfile;
 
-            // Serial ports
+			// Serial ports
 			listOfDevices = new ObservableCollection<DeviceListEntry>();
             _listOfSerialDevices = new List<SerialDevice>();
             CollectionOfSerialDevices = new ObservableCollection<SerialDevice>();
@@ -159,7 +167,7 @@ namespace PacketMessaging.Views
 				comboBoxFlowControl.Items.Add(item);
 			}
 
-			appBarSaveTNC.IsEnabled = false;
+			appBarSettingsSave.IsEnabled = false;
 
 			// Identity initialization
 			listOfTacticallsignsArea = new ObservableCollection<TacticalCallsignData>();
@@ -218,13 +226,13 @@ namespace PacketMessaging.Views
 			//ComPortListSource.Source = CollectionOfSerialDevices;
 
 			dataPath.Text = ApplicationData.Current.LocalFolder.Path;
-			comboBoxBBS.SelectedValue = sharedData.CurrentBBS;
-			comboBoxTNCs.SelectedValue = sharedData.CurrentTNCDevice;
+			//comboBoxBBS.SelectedValue = sharedData.CurrentBBS;
+			//comboBoxTNCs.SelectedValue = sharedData.CurrentTNCDevice;
 			//ViewModels.SettingsPageViewModel.TNCPartViewModel.TNCChanged = false;
-            if (MyPivot.SelectedIndex == 0)
-            {
-                SettingsCommandBar.Visibility = Visibility.Collapsed;
-            }
+            //if (MyPivot.SelectedIndex == 0)
+            //{
+            //    SettingsCommandBar.Visibility = Visibility.Collapsed;
+            //}
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs eventArgs)
@@ -329,48 +337,63 @@ namespace PacketMessaging.Views
 
         private void ComboBoxBBS_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var selectedBBS = (BBSData)e.AddedItems[0];
-			sharedData.CurrentBBS = selectedBBS;
-			//ViewModels.SharedData._currentProfile.BBS = selectedBBS.Name;
-			textBoxDescription.Text = selectedBBS.Description;
-			textBoxFrequency1.Text = selectedBBS.Frequency1;
-			textBoxFrequency2.Text = selectedBBS.Frequency2;
-            if (sharedData.CurrentProfile.BBS != selectedBBS.Name)
-            {
-                _bbsChanged = true;
-            }
-            else
-            {
-                _bbsChanged = false;
-            }
-			profileSave.IsEnabled = _bbsChanged | _tncChanged | _defaultToChanged;
+			if (e.AddedItems.Count > 0)
+			{
+				var selectedBBS = (BBSData)e.AddedItems[0];
+				sharedData.CurrentBBS = selectedBBS;
+				//ViewModels.SharedData._currentProfile.BBS = selectedBBS.Name;
+				textBoxDescription.Text = selectedBBS.Description;
+				textBoxFrequency1.Text = selectedBBS.Frequency1;
+				textBoxFrequency2.Text = selectedBBS.Frequency2;
+				if (sharedData.CurrentProfile.BBS != selectedBBS.Name)
+				{
+					_bbsChanged = true;
+				}
+				else
+				{
+					_bbsChanged = false;
+				}
+				profileSave.IsEnabled = _bbsChanged | _tncChanged | _defaultToChanged;
+			}
+			else
+			{
+				textBoxDescription.Text = "";
+				textBoxFrequency1.Text = "";
+				textBoxFrequency2.Text = "";
+			}
 		}
 
 		private void ComboBoxTNCs_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var selectedTNCDexice = (TNCDevice)e.AddedItems[0];
-			sharedData.CurrentTNCDevice = selectedTNCDexice;
-			//ViewModels.SharedData._currentProfile.TNC = selectedTNCDexice.Name;
-			if (sharedData.CurrentProfile.TNC != selectedTNCDexice.Name)
+			if (e.AddedItems.Count > 0)
 			{
-                _defaultToChanged = true;
+				var selectedTNCDevice = (TNCDevice)e.AddedItems[0];
+				if (string.IsNullOrEmpty(selectedTNCDevice.Prompts.Command))
+				{
+					comboBoxBBS.SelectedIndex = -1;
+				}
+				if (sharedData.CurrentProfile.TNC != selectedTNCDevice.Name)
+				{
+					_tncChanged = true;
+				}
+				else
+				{
+					_tncChanged = false;
+				}
+				profileSave.IsEnabled = _bbsChanged | _tncChanged | _defaultToChanged;
+				sharedData.CurrentTNCDevice = selectedTNCDevice;
 			}
-            else
-            {
-                _defaultToChanged = false;
-            }
-			profileSave.IsEnabled = _bbsChanged | _tncChanged | _defaultToChanged;
 		}
 
-        private void TextBoxTo_TextChanged(object sender, TextChangedEventArgs e)
+		private void TextBoxTo_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sharedData.CurrentProfile.SendTo != ((TextBox)sender).Text)
             {
-                _tncChanged = true;
+				_defaultToChanged = true;
             }
             else
             {
-                _tncChanged = false;
+				_defaultToChanged = false;
             }
             profileSave.IsEnabled = _bbsChanged | _tncChanged | _defaultToChanged;
         }
@@ -442,7 +465,15 @@ namespace PacketMessaging.Views
 
 			sharedData.ProfileArray.Save(ApplicationData.Current.LocalFolder.Path);
 
-            _bbsChanged = false;
+			_profileCollection = new ObservableCollection<Profile>();
+			foreach (Profile prof in sharedData.ProfileArray.Profiles)
+			{
+				_profileCollection.Add(prof);
+			}
+			ProfilesCollection.Source = _profileCollection;
+
+
+			_bbsChanged = false;
             _tncChanged = false;
             _defaultToChanged = false;
             profileSave.IsEnabled = false;
@@ -505,8 +536,17 @@ namespace PacketMessaging.Views
 			comboBoxProfiles.SelectedIndex = Math.Max(index - 1, 0);
 			profileSave.IsEnabled = true;
 		}
-#endregion
-#region TNC
+		#endregion
+		#region TNC
+		enum TNCState
+		{
+			None,
+			Edit,
+			Add,
+			Delete
+		}
+		TNCState _tncState = TNCState.None;
+
 		private void ClearDeviceEntries()
 		{
 			listOfDevices.Clear();
@@ -842,6 +882,100 @@ namespace PacketMessaging.Views
 			}
 		}
 
+		private void ResetTNCDeviceChanged()
+		{
+			_bluetoothOnChanged = false;
+			_comPortChanged = false;
+			_comNameChanged = false;
+			_comportBaudRateChanged = false;
+			_databitsChanged = false;
+			_stopbitsChanged = false;
+			_parityChanged = false;
+			_handshakeChanged = false;
+			_comportSettingsChanged = false;
+			_initCommandsPreChanged = false;
+			_initCommandsPostChanged = false;
+			_initCommandsChanged = false;
+			_commandsConnectChanged = false;
+			_commandsChanged = false;
+			_promptsCommandChanged = false;
+			_promptsTimeoutChanged = false;
+			_promptsConnectedChanged = false;
+			_promptsDisconnectedChanged = false;
+			_promptsChanged = false;
+		}
+
+		private void NewTNCDevice()
+		{
+			//TNCDevice tncDevice = new TNCDevice();
+
+			ConnectDevices.Visibility = Visibility.Collapsed;
+			newTNCDeviceName.Visibility = Visibility.Visible;
+
+			textBoxInitCommandsPre.Text = "";
+			textBoxInitCommandsPost.Text = "";
+
+			//SerialDevice serialDevice = null;
+			//UseBluetooth = tncDevice.CommPort.IsBluetooth;
+			toggleSwitchBluetooth.IsOn = false;
+			SetComportComboBoxVisibility();
+
+			if (CollectionOfBluetoothDevices.Count > 0)
+			{
+				comboBoxComName.SelectedItem = CollectionOfBluetoothDevices[0];
+			}
+
+			if (CollectionOfSerialDevices.Count > 0)
+			{
+				comboBoxComPort.SelectedItem = CollectionOfSerialDevices[0];
+			}
+
+			comboBoxBaudRate.SelectedItem = 9600;
+			comboBoxDatabits.SelectedItem = 8;
+
+
+			int i = 0;
+			var values = Enum.GetValues(typeof(SerialParity));
+			for (; i < values.Length; i++)
+			{
+				if ((SerialParity)values.GetValue(i) == SerialParity.None) break;
+			}
+			comboBoxParity.SelectedIndex = i;
+			//ViewModels.SettingsPageViewModel.TNCPartViewModel.SelectedParity = tncDevice.CommPort.Parity;
+
+			values = Enum.GetValues(typeof(SerialStopBitCount));
+			for (i = 0; i < values.Length; i++)
+			{
+				if ((SerialStopBitCount)values.GetValue(i) == SerialStopBitCount.One) break;
+			}
+			comboBoxStopBits.SelectedIndex = i;
+
+			//ViewModels.SettingsPageViewModel.TNCPartViewModel.SelectedStopBits = tncDevice.CommPort.Stopbits;
+			values = Enum.GetValues(typeof(SerialHandshake));
+			for (i = 0; i < values.Length; i++)
+			{
+				if ((SerialHandshake)values.GetValue(i) == SerialHandshake.RequestToSend)
+				{
+					break;
+				}
+			}
+			comboBoxFlowControl.SelectedIndex = i;
+
+			//TNCPromptsCommand = tncDevice.Prompts.Command;
+			//TNCPromptsTimeout = tncDevice.Prompts.Timeout;
+			textBoxPrompsCommand.Text = "";
+			textBoxPromptsTimeout.Text = "";
+			textBoxPromptsConnected.Text = "";
+			textBoxPromptsDisconnected.Text = "";
+
+			//TNCCommandsConnect = tncDevice.Commands.Connect;
+			textBoxCommandsConnect.Text = "";
+			textBoxCommandsConversMode.Text = "";
+			textBoxCommandsMyCall.Text = "";
+			textBoxCommandsRetry.Text = "";
+			textBoxCommandsDateTime.Text = "";
+		}
+
 		private void ConnectDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //if ((PivotItem)PivotTNC.SelectedItem == null)
@@ -866,8 +1000,8 @@ namespace PacketMessaging.Views
 
 				//SerialDevice serialDevice = null;
 				//UseBluetooth = tncDevice.CommPort.IsBluetooth;
-				toggleSwitchBluetooth.IsOn = tncDevice.CommPort.IsBluetooth;
-				SetComboBoxVisicility();
+				toggleSwitchBluetooth.IsOn = (bool)tncDevice.CommPort?.IsBluetooth;
+				SetComportComboBoxVisibility();
 
 				foreach (DeviceInformation deviceInfo in CollectionOfBluetoothDevices)
 				{
@@ -900,7 +1034,7 @@ namespace PacketMessaging.Views
                     comboBoxParity.SelectedIndex = i;
                     //ViewModels.SettingsPageViewModel.TNCPartViewModel.SelectedParity = tncDevice.CommPort.Parity;
 
-                    values = Enum.GetValues(typeof(SerialHandshake));
+                    values = Enum.GetValues(typeof(SerialStopBitCount));
                     for (i = 0; i < values.Length; i++)
                     {
                         if ((SerialStopBitCount)values.GetValue(i) == tncDevice.CommPort.Stopbits) break;
@@ -939,10 +1073,8 @@ namespace PacketMessaging.Views
             }
         }
 
-		private void TNCSaveAsCurrent()
+		private void UpdateTNCFromUI(TNCDevice tncDevice)
 		{
-			TNCDevice tncDevice = sharedData.CurrentTNCDevice;
-
 			if (_initCommandsChanged)
 			{
 				tncDevice.InitCommands.Precommands = textBoxInitCommandsPre.Text;
@@ -952,8 +1084,11 @@ namespace PacketMessaging.Views
 			if (_comportSettingsChanged)
 			{
 				tncDevice.CommPort.IsBluetooth = toggleSwitchBluetooth.IsOn;
-				tncDevice.CommPort.BluetoothName = comboBoxComName.SelectedValue as string;
-				tncDevice.CommPort.DeviceId = ((DeviceInformation)comboBoxComName.SelectedItem)?.Id as string;
+				if (tncDevice.CommPort.IsBluetooth)
+				{
+					tncDevice.CommPort.BluetoothName = comboBoxComName.SelectedValue as string;
+					tncDevice.CommPort.DeviceId = ((DeviceInformation)comboBoxComName.SelectedItem)?.Id as string;
+				}
 				tncDevice.CommPort.Comport = comboBoxComPort.SelectedValue as string;
 				tncDevice.CommPort.Baudrate = (uint)comboBoxBaudRate.SelectedValue;
 				tncDevice.CommPort.Databits = (ushort)comboBoxDatabits.SelectedValue;
@@ -978,12 +1113,20 @@ namespace PacketMessaging.Views
 				tncDevice.Commands.Retry = textBoxCommandsRetry.Text;
 				tncDevice.Commands.Datetime = textBoxCommandsDateTime.Text;
 			}
+		}
+
+		private void TNCSaveAsCurrent()
+		{
+			if (_tncState == TNCState.Add)		// New setting have been created but not saved
+				return;
+
+			TNCDevice tncDevice = sharedData.CurrentTNCDevice;
+
+			UpdateTNCFromUI(sharedData.CurrentTNCDevice);
         }
 
 		private async void appBarSaveTNC_ClickAsync(object sender, RoutedEventArgs e)
 		{
-			appBarSaveTNC.IsEnabled = false;
-
 			TNCSaveAsCurrent();
 			for (int i = 0; i < sharedData.TncDeviceArray.TNCDevices.Length; i++)
 			{
@@ -1016,6 +1159,7 @@ namespace PacketMessaging.Views
 
 			await sharedData.TncDeviceArray.SaveAsync();
 			sharedData.SavedTNCDevice = new TNCDevice(sharedData.CurrentTNCDevice);
+			appBarSettingsSave.IsEnabled = false;
 		}
 
 		//public bool IsTNCAppBarSaveEnabled
@@ -1034,7 +1178,7 @@ namespace PacketMessaging.Views
 		//{
 		//	get => ShowBluetoothDevices == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
 		//}
-		private void SetComboBoxVisicility()
+		private void SetComportComboBoxVisibility()
 		{
 			if (toggleSwitchBluetooth.IsOn)
 			{
@@ -1075,13 +1219,13 @@ namespace PacketMessaging.Views
 			_comportSettingsChanged = _bluetoothOnChanged | _comNameChanged | _comPortChanged | _comportBaudRateChanged
 					| _databitsChanged | _stopbitsChanged | _parityChanged | _handshakeChanged;
 
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
 		private void comboBoxComPort_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (!toggleSwitchBluetooth.IsOn && sharedData.SavedTNCDevice.CommPort.Comport != (string)((ComboBox)sender).SelectedValue)
+			if (e.AddedItems.Count > 0 && !toggleSwitchBluetooth.IsOn && sharedData.SavedTNCDevice.CommPort.Comport != (string)((ComboBox)sender).SelectedValue)
 			{
 				_comPortChanged = true;
 			}
@@ -1090,13 +1234,13 @@ namespace PacketMessaging.Views
 				_comPortChanged = false;
 			}
 			_comportSettingsChanged = _bluetoothOnChanged | _comNameChanged | _comPortChanged | _comportBaudRateChanged;
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 				| _commandsChanged | _promptsChanged;
 		}
 
 		private void comboBoxComName_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (toggleSwitchBluetooth.IsOn && sharedData.SavedTNCDevice.CommPort.BluetoothName != (string)((ComboBox)sender).SelectedValue)
+			if (e.AddedItems.Count > 0 && toggleSwitchBluetooth.IsOn && sharedData.SavedTNCDevice.CommPort.BluetoothName != (string)((ComboBox)sender).SelectedValue)
 			{
 				_comNameChanged = true;
 			}
@@ -1107,13 +1251,15 @@ namespace PacketMessaging.Views
 			_comportSettingsChanged = _bluetoothOnChanged | _comNameChanged | _comPortChanged | _comportBaudRateChanged
 					| _databitsChanged | _stopbitsChanged | _parityChanged | _handshakeChanged;
 
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
 		private void comboBoxBaudRate_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (sharedData.SavedTNCDevice.CommPort.Baudrate != (uint)((ComboBox)sender).SelectedValue)
+			var temp = e.AddedItems;
+			//if (sharedData.SavedTNCDevice.CommPort.Baudrate != (uint)((ComboBox)sender).SelectedValue)
+			if (e.AddedItems.Count > 0 && sharedData.SavedTNCDevice.CommPort.Baudrate != (uint)e.AddedItems[0])
 				_comportBaudRateChanged = true;
 			else
 				_comportBaudRateChanged = false;
@@ -1121,13 +1267,13 @@ namespace PacketMessaging.Views
 			_comportSettingsChanged = _bluetoothOnChanged | _comNameChanged | _comPortChanged | _comportBaudRateChanged
 					| _databitsChanged | _stopbitsChanged | _parityChanged | _handshakeChanged;
 
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
 		private void comboBoxDatabits_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (sharedData.SavedTNCDevice.CommPort.Databits != (ushort)((ComboBox)sender).SelectedValue)
+			if (e.AddedItems.Count > 0 && sharedData.SavedTNCDevice.CommPort.Databits != (ushort)e.AddedItems[0])
 			{
 				_databitsChanged = true;
 			}
@@ -1138,7 +1284,7 @@ namespace PacketMessaging.Views
 			_comportSettingsChanged = _bluetoothOnChanged | _comNameChanged | _comPortChanged | _comportBaudRateChanged
 					| _databitsChanged | _stopbitsChanged | _parityChanged | _handshakeChanged;
 
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
@@ -1155,7 +1301,7 @@ namespace PacketMessaging.Views
 			_comportSettingsChanged = _bluetoothOnChanged | _comNameChanged | _comPortChanged | _comportBaudRateChanged
 					| _databitsChanged | _stopbitsChanged | _parityChanged | _handshakeChanged;
 
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
@@ -1172,7 +1318,7 @@ namespace PacketMessaging.Views
 			_comportSettingsChanged = _bluetoothOnChanged | _comNameChanged | _comPortChanged | _comportBaudRateChanged
 					| _databitsChanged | _stopbitsChanged | _parityChanged | _handshakeChanged;
 
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
@@ -1189,7 +1335,7 @@ namespace PacketMessaging.Views
 			_comportSettingsChanged = _bluetoothOnChanged | _comNameChanged | _comPortChanged | _comportBaudRateChanged
 					| _databitsChanged | _stopbitsChanged | _parityChanged | _handshakeChanged;
 
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
@@ -1205,7 +1351,7 @@ namespace PacketMessaging.Views
 			}
 			_initCommandsChanged = _initCommandsPreChanged | _initCommandsPostChanged;
 
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
@@ -1221,7 +1367,7 @@ namespace PacketMessaging.Views
 			}
 			_initCommandsChanged = _initCommandsPreChanged | _initCommandsPostChanged;
 
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
@@ -1242,7 +1388,7 @@ namespace PacketMessaging.Views
 				_promptsChanged = _promptsCommandChanged | _promptsTimeoutChanged | _promptsConnectedChanged 
 						| _promptsDisconnectedChanged;
 
-				appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+				appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 						| _commandsChanged | _promptsChanged;
 			}
 		}
@@ -1262,7 +1408,7 @@ namespace PacketMessaging.Views
 					_promptsTimeoutChanged = false;
 				}
 				_promptsChanged = _promptsCommandChanged | _promptsTimeoutChanged | _promptsConnectedChanged | _promptsDisconnectedChanged;
-				appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+				appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 						| _commandsChanged | _promptsChanged;
 			}
 		}
@@ -1292,7 +1438,7 @@ namespace PacketMessaging.Views
 				_promptsConnectedChanged = false;
 			}
 			_promptsChanged = _promptsCommandChanged | _promptsTimeoutChanged | _promptsConnectedChanged | _promptsDisconnectedChanged;
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
@@ -1307,7 +1453,7 @@ namespace PacketMessaging.Views
 				_promptsDisconnectedChanged = false;
 			}
 			_promptsChanged = _promptsCommandChanged | _promptsTimeoutChanged | _promptsConnectedChanged | _promptsDisconnectedChanged;
-			appBarSaveTNC.IsEnabled = _comportSettingsChanged | _initCommandsChanged
+			appBarSettingsSave.IsEnabled = _comportSettingsChanged | _initCommandsChanged
 					| _commandsChanged | _promptsChanged;
 		}
 
@@ -1408,6 +1554,15 @@ namespace PacketMessaging.Views
 		{
 			switch ((MyPivot.SelectedItem as PivotItem).Name)
 			{
+				case "pivotTNC":
+					ResetTNCDeviceChanged();
+					appBarSettingsSave.Visibility = Visibility.Visible;
+					appBarSettingsSave.IsEnabled = false;
+					appBarSettingsAdd.Visibility = Visibility.Visible;
+					appBarSettingsEdit.Visibility = Visibility.Visible;
+					appBarsettingsDelete.Visibility = Visibility.Visible;
+					SettingsCommandBar.Visibility = Visibility.Visible;
+					break;
 				case "pivotItemAddressBook":
 					ContactsCVS.Source = AddressBook.Instance.GetContactsGrouped();
 					appBarSettingsSave.Visibility = Visibility.Collapsed;
@@ -1509,6 +1664,10 @@ namespace PacketMessaging.Views
 
             switch ((MyPivot.SelectedItem as PivotItem).Name)
             {
+				case "pivotTNC":
+					_tncState = TNCState.Add;
+					NewTNCDevice();
+					break;
                 case "pivotItemAddressBook":
                     AddressBook addressBook = AddressBook.Instance;
                     AddressBookEntry emptyEntry = new AddressBookEntry()
@@ -1549,7 +1708,34 @@ namespace PacketMessaging.Views
         {
             switch ((MyPivot.SelectedItem as PivotItem).Name)
             {
-                case "pivotItemAddressBook":
+				case "pivotTNC":
+					if (_tncState == TNCState.Add)
+					{
+						string tncDeviceName = newTNCDeviceName.Text;
+						if (string.IsNullOrEmpty(tncDeviceName))
+						{
+							Utilities.ShowMessageDialogAsync("The new TNC Device must have a name.", "Add TNC Device error");
+							return;
+						}
+						TNCDevice tncDevice = new TNCDevice();
+						tncDevice.Name = tncDeviceName;
+						UpdateTNCFromUI(tncDevice);       // Fill the new TNCDevice with data
+						// Add to existing array
+						List<TNCDevice> tncDeviceList = sharedData.TncDeviceArray.TNCDevices.ToList();
+						tncDeviceList.Add(tncDevice);
+						sharedData.TncDeviceArray.TNCDevices = tncDeviceList.ToArray();
+						await sharedData.TncDeviceArray.SaveAsync();
+					}
+					ConnectDevices.Visibility = Visibility.Visible;
+					newTNCDeviceName.Visibility = Visibility.Collapsed;
+
+					ResetTNCDeviceChanged();
+
+					appBarSettingsSave.IsEnabled = false;
+
+					_tncState = TNCState.None;
+					break;
+				case "pivotItemAddressBook":
                     break;
 				case "pivotItemDistributionLists":
 					if (_distributionListState == DistributionListState.Add)

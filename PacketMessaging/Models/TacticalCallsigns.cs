@@ -161,7 +161,7 @@ namespace PacketMessaging.Models
                 if (storageItem == null)
                 {
                     TacticalCallsignData tacticalCallsignData = App._tacticalCallsignDataDictionary[fileName];
-                    tacticalCallsigns = await CreateFromBulletinAsync(tacticalCallsignData);
+					tacticalCallsigns = null;// await CreateFromBulletinAsync(tacticalCallsignData); Exception here
                     if (tacticalCallsigns == null)
                     {
                         // Copy from data folder
@@ -198,9 +198,9 @@ namespace PacketMessaging.Models
                     }
                 }
             }
-            catch (Exception )
+            catch (Exception ex)
             {
-                log.Warn($"Failed to open {fileName}");
+                log.Warn($"Failed to open {fileName}. {ex.Message}");
             }
 
             return tacticalCallsigns;

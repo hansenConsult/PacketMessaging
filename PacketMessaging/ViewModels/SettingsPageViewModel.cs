@@ -488,7 +488,10 @@ namespace PacketMessaging.ViewModels
 			get
 			{
 				string temp = _settings.DistributionListName;
-				DistributionListItems = distributionLists.DistributionListsDict[temp];
+				if (distributionLists.DistributionListsDict.ContainsKey(temp))
+				{
+					DistributionListItems = distributionLists.DistributionListsDict[temp];
+				}
 				return _settings.DistributionListName;
 			}
 			set

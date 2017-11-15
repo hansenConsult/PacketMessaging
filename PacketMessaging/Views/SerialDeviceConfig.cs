@@ -22,15 +22,15 @@ namespace PacketMessaging.Views
 
     public class DeviceConfiguration
     {
-		public uint BaudRate = ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort.Baudrate;
+		public uint BaudRate = (uint)ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort?.Baudrate;
 
-        public SerialParity Parity = ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort.Parity;
+        public SerialParity Parity = (SerialParity)ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort?.Parity;
 
-        public SerialStopBitCount StopBits = ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort.Stopbits;
+        public SerialStopBitCount StopBits = (SerialStopBitCount)ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort?.Stopbits;
 
-        public UInt16 DataBits = ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort.Databits;
+        public UInt16 DataBits = (UInt16)ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort?.Databits;
 
-        public SerialHandshake Handshake = ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort.Flowcontrol;
+        public SerialHandshake Handshake = (SerialHandshake)ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort?.Flowcontrol;
 
         public const Boolean BreakSignalState_false = false;
         public const Boolean BreakSignalState_true = true;

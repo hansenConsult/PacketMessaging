@@ -227,37 +227,69 @@ namespace PacketMessaging.Models
 
 		public TNCDevice()
 		{
-
+			Name = "";
+			Prompts = new TNCDevicePrompts()
+			{
+				Command = "",
+				Connected = "",
+				Disconnected = "",
+				Timeout = ""
+			};
+			Commands = new TNCDeviceCommands()
+			{
+				Connect = "",
+				Conversmode = "",
+				Datetime = "",
+				MyCall = "",
+				Retry = ""
+			};
+			InitCommands = new TNCDeviceInitCommands()
+			{
+				Precommands = "",
+				Postcommands = ""
+			};
+			CommPort = new TNCDeviceCommPort()
+			{
+				IsBluetooth = false,
+				BluetoothName = "",
+				DeviceId = "",
+				Comport = "",
+				Baudrate = 9600,
+				Databits = 8,
+				Parity = SerialParity.None,
+				Stopbits = SerialStopBitCount.One,
+				Flowcontrol = SerialHandshake.RequestToSend
+			};
 		}
 
 		public TNCDevice(TNCDevice tncDevice)
 		{
 			Prompts = new TNCDevicePrompts()
 			{
-				Command = tncDevice.Prompts.Command,
-				Connected = tncDevice.Prompts.Connected,
-				Disconnected = tncDevice.Prompts.Disconnected,
-				Timeout = tncDevice.Prompts.Timeout
+				Command = tncDevice.Prompts?.Command,
+				Connected = tncDevice.Prompts?.Connected,
+				Disconnected = tncDevice.Prompts?.Disconnected,
+				Timeout = tncDevice.Prompts?.Timeout
 			};
 			Commands = new TNCDeviceCommands()
 			{
-				Connect = tncDevice.Commands.Connect,
-				Conversmode = tncDevice.Commands.Conversmode,
-				Datetime = tncDevice.Commands.Datetime,
-				MyCall = tncDevice.Commands.MyCall,
-				Retry = tncDevice.Commands.Retry
+				Connect = tncDevice.Commands?.Connect,
+				Conversmode = tncDevice.Commands?.Conversmode,
+				Datetime = tncDevice.Commands?.Datetime,
+				MyCall = tncDevice.Commands?.MyCall,
+				Retry = tncDevice.Commands?.Retry
 			};
 			InitCommands = new TNCDeviceInitCommands()
 			{
-				Precommands = tncDevice.InitCommands.Precommands,
-				Postcommands = tncDevice.InitCommands.Postcommands
+				Precommands = tncDevice.InitCommands?.Precommands,
+				Postcommands = tncDevice.InitCommands?.Postcommands
 			};
 			CommPort = new TNCDeviceCommPort()
 			{
 				IsBluetooth = tncDevice.CommPort.IsBluetooth,
-				BluetoothName = tncDevice.CommPort.BluetoothName,
-				DeviceId = tncDevice.CommPort.DeviceId,
-				Comport = tncDevice.CommPort.Comport,
+				BluetoothName = tncDevice.CommPort?.BluetoothName,
+				DeviceId = tncDevice.CommPort?.DeviceId,
+				Comport = tncDevice.CommPort?.Comport,
 				Baudrate = tncDevice.CommPort.Baudrate,
 				Databits = tncDevice.CommPort.Databits,
 				Parity = tncDevice.CommPort.Parity,
@@ -342,7 +374,11 @@ namespace PacketMessaging.Models
                 this.disconnectedField = value;
             }
         }
-    }
+
+		public TNCDevicePrompts()
+		{
+		}
+	}
 
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]

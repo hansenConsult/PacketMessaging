@@ -223,7 +223,24 @@ namespace PacketMessaging.Models
 					}
 					else
 					{
-						return entry.Callsign + '@' + bbs + "ampr.org";
+						int index = entry.Callsign.IndexOf('@');
+						if (index > 0)
+						{
+							string bbsCallsign = entry.Callsign.Substring(index + 1, 5);
+							if (bbsCallsign == "W1XSC" || bbsCallsign == "W2XSC" || bbsCallsign == "W3XSC" || bbsCallsign == "W4XSC" || bbsCallsign == "W5XSC")
+							{
+								return entry.Callsign + '@' + bbs + ".ampr.org";
+							}
+							else
+							{
+								return entry.Callsign;
+							}
+						}
+						else
+						{
+							// Have a BBS but is sending via e-mail
+							return entry.Callsign + '@' + bbs + ".ampr.org";
+						}
 					}
 				}
 				else
@@ -306,19 +323,26 @@ namespace PacketMessaging.Models
 
         public bool AddAddressAsync(AddressBookEntry addressBookEntry)
         {
-            // Validate entries
-            int index = addressBookEntry.Callsign.IndexOf('@');
-            if (index < 0)
-                return false;
+			// Validate entries
+			// If @ check if BBS. If BBS remove BBS and rely on primary/secondary. If not BBS save whole address.
+			int index = addressBookEntry.Callsign.IndexOf('@');
+			if (index > 0)
+			{
+				string bbsCallsign = addressBookEntry.Callsign.Substring(index + 1, 5);
+				if (bbsCallsign == "W1XSC" || bbsCallsign == "W2XSC" || bbsCallsign == "W3XSC" || bbsCallsign == "W4XSC" || bbsCallsign == "W5XSC")
+				{
+					addressBookEntry.Callsign = addressBookEntry.Callsign.Substring(0, index);
+				}
+			}
 
-            _addressDictionary.TryGetValue(addressBookEntry.Callsign, out AddressBookEntry oldAddressBookEntry);
+			_addressDictionary.TryGetValue(addressBookEntry.Callsign, out AddressBookEntry oldAddressBookEntry);
             if (oldAddressBookEntry == null)
             {
-                string temp = addressBookEntry.Callsign.Substring(index + 1);
-                temp = temp.ToLower();
-                index = temp.IndexOf('.');
-                if (index < 0)
-                    return false;
+                //string temp = addressBookEntry.Callsign.Substring(index + 1);
+                //temp = temp.ToLower();
+                //index = temp.IndexOf('.');
+                //if (index < 0)
+                //    return false;
 
                 //temp = temp.Substring(0, index);
                 //bool result = ValidateBBS(temp);        // BBS in address

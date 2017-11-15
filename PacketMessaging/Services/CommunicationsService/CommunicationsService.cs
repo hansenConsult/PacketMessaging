@@ -213,7 +213,7 @@ namespace PacketMessaging.Services.CommunicationsService
 				if (bbs != null)
 				{
 					// Do we use a bluetooth device?
-					if (sharedData.CurrentTNCDevice.CommPort.IsBluetooth)
+					if ((bool)sharedData.CurrentTNCDevice.CommPort?.IsBluetooth)
 					{
 						RfcommDeviceService service = null;
 						try
