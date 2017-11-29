@@ -11,6 +11,7 @@
       xmlns:converters="using:PacketMessaging.Converters"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:PacketMessaging.ViewModels"
+      xmlns:localControls="using:PacketMessaging.Controls.GridSplitter"
 	  mc:Ignorable="d" >
 
 	<Page.Resources>
@@ -27,7 +28,7 @@
 					<ColumnDefinition Width="40"/>
 					<ColumnDefinition Width="120" />
 					<ColumnDefinition Width="120"/>
-					<ColumnDefinition Width="1*" MinWidth="60"/>
+					<ColumnDefinition Width="1*" MinWidth="70"/>
 					<ColumnDefinition Width="110" />
 					<ColumnDefinition Width="70" />
 					<ColumnDefinition Width="70" />
@@ -35,19 +36,14 @@
 					<ColumnDefinition Width="40" />
 				</Grid.ColumnDefinitions>
 				<TextBlock Grid.Column="0" Text="{x:Bind Area, Converter={StaticResource Converter1}}" HorizontalAlignment="Center"/>
-				<Border Grid.Column="1" Background="LightGray">
-					<TextBlock Grid.Column="1" Text="{x:Bind ReceivedTime, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center"  />
-                    <!--<TextBlock Grid.Column="1" Text="{Binding ReceivedTime, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center"  />-->
-                </Border>
+				<TextBlock Grid.Column="1" Text="{x:Bind ReceivedTime, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center"  />
 				<TextBlock Grid.Column="2" Text="{x:Bind JNOSDate, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center"  />
-				<Border Grid.Column="3" Background="LightGray"  >
-                    <TextBlock Grid.Column="3" Text="{x:Bind Subject}" Width="1024" Margin="5,0,0,0" />
-				</Border>
+                <TextBlock Grid.Column="3" Text="{x:Bind Subject}" Width="1024" Padding="5,0,5,0" />
 				<TextBlock Grid.Column="4" Text="{x:Bind MessageNumber}" HorizontalAlignment="Center"  />
-				<TextBlock Grid.Column="5" Text="{x:Bind MessageTo}" Margin="5,0,0,0" />
-				<TextBlock Grid.Column="6" Text="{x:Bind MessageFrom}" Margin="5,0,0,0"  />
-				<TextBlock Grid.Column="7" Text="{x:Bind BBSName}" HorizontalAlignment="Center" />
-				<TextBlock Grid.Column="8" Text="{x:Bind Size}" HorizontalAlignment="Right" />
+                <TextBlock Grid.Column="5" Text="{x:Bind MessageTo}" Padding="5,0,5,0" />
+                <TextBlock Grid.Column="6" Text="{x:Bind MessageFrom}" Padding="5,0,5,0" />
+                <TextBlock Grid.Column="7" Text="{x:Bind BBSName}" HorizontalAlignment="Center" Padding="5,0,5,0" />
+                <TextBlock Grid.Column="8" Text="{x:Bind Size}" HorizontalAlignment="Right" Padding="5,0,5,0" />
 			</Grid>
 		</DataTemplate>
 		<DataTemplate x:Name="SentItemsListViewTemplate" x:DataType="data:PacketMessage">
@@ -55,7 +51,7 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="120"/>
 					<ColumnDefinition Width="120" />
-					<ColumnDefinition Width="1*" MinWidth="60"/>
+					<ColumnDefinition Width="1*" MinWidth="70"/>
 					<ColumnDefinition Width="110" />
 					<ColumnDefinition Width="70"/>
 					<ColumnDefinition Width="70" />
@@ -76,7 +72,7 @@
 			<Grid Width="auto">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="120"/>
-					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" MinWidth="70"/>
 					<ColumnDefinition Width="110"/>
 					<ColumnDefinition Width="70"/>
 					<ColumnDefinition Width="70" />
@@ -92,7 +88,7 @@
 				<TextBlock Grid.Column="6" Text="{x:Bind Size}"  HorizontalAlignment="Right"/>
 			</Grid>
 		</DataTemplate>
-		<DataTemplate x:Name="DraftsListViewTemplate" x:DataType="data:PacketMessage">
+		<!--<DataTemplate x:Name="DraftsListViewTemplate" x:DataType="data:PacketMessage">
 			<Grid >
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="120"/>
@@ -109,7 +105,7 @@
 				<TextBlock Grid.Column="4" Text="{x:Bind MessageFrom}" Margin="5,0,0,0"  />
 				<TextBlock Grid.Column="5" Text="{x:Bind BBSName}" HorizontalAlignment="Center" />
 			</Grid>
-		</DataTemplate>
+		</DataTemplate>-->
 		<!--<DataTemplate x:Name="DeletedListViewTemplate" >
 			<Grid Width="auto">
 				<Grid.ColumnDefinitions>
@@ -134,7 +130,7 @@
 					<ColumnDefinition Width="40"/>
 					<ColumnDefinition Width="120" />
 					<ColumnDefinition Width="120"/>
-					<ColumnDefinition Width="1*" MinWidth="60"/>
+					<ColumnDefinition Width="1*" MinWidth="70"/>
 					<ColumnDefinition Width="110" />
 					<ColumnDefinition Width="70" />
 					<ColumnDefinition Width="70" />
@@ -219,45 +215,178 @@
 
 			<!--  Inbox  -->
             <PivotItem x:Name="InBox"  Header="Inbox" >
-				<ScrollViewer Margin="0,0,0,0" HorizontalContentAlignment="Left"
+				<ScrollViewer HorizontalContentAlignment="Left"
                               VerticalScrollBarVisibility="Auto" >
-					<ListView x:Name="listViewInBox" 
+                    <StackPanel>
+                        <Grid x:Name="InBoxListViewHeader" Margin="12,0,12,0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="1*" MinWidth="70"/>
+                                <ColumnDefinition Width="110" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="40" />
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1,1,1,1">
+                                <TextBlock Grid.Column="0" Text="Area" FontSize="17"  Margin="0,5,0,0" HorizontalAlignment="Center" />
+                            </Border>
+                            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                <TextBlock Grid.Column="1" Text="Received Time" FontSize="17" Margin="0,5,0,0" Tag="ReceivedTime" HorizontalAlignment="Center" DoubleTapped="TextBlock_DoubleTapped" />
+                            </Border>
+                            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                <TextBlock Grid.Column="2" Text="Sent Time" FontSize="17" Padding="0,5,0,0" HorizontalAlignment="Center"   DoubleTapped="TextBlock_DoubleTapped" />
+                            </Border>
+                            <Border Grid.Column="3" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                <TextBlock Grid.Column="3" Text="Subject" FontSize="17" Padding="5,5,0,0"  DoubleTapped="TextBlock_DoubleTapped"/>
+                            </Border>
+                            <Border Grid.Column="4" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                <TextBlock Grid.Column="4" Text="Msg. No." Width="110" FontSize="17" TextAlignment="Center" Padding="0,5,0,0" Tag="MessageNumber" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped"/>
+                            </Border>
+                            <Border Grid.Column="5" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                <TextBlock Grid.Column="5" Text="To " FontSize="17" Padding="0,5,0,0" HorizontalAlignment="Center" DoubleTapped="TextBlock_DoubleTapped" />
+                            </Border>
+                            <Border Grid.Column="6" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                <TextBlock Grid.Column="6" Text="From" FontSize="17" Padding="0,5,0,0" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped" />
+                            </Border>
+                            <Border Grid.Column="7" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                <TextBlock Grid.Column="7" Text="BBS" FontSize="17" Padding="0,5,0,0" HorizontalAlignment="Center"  DoubleTapped="TextBlock_DoubleTapped"/>
+                            </Border>
+                            <Border Grid.Column="8" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                <TextBlock Grid.Column="8" Text="Size" FontSize="17" Padding="0,5,0,0" HorizontalAlignment="Center" DoubleTapped="TextBlock_DoubleTapped" />
+                            </Border>
+
+
+                            <!--Column Grid Splitter-->
+                            <localControls:GridSplitter
+                                Grid.Column="1"
+                                Margin="-5,0,0,0"
+                                Width="10"
+                                Opacity="0"
+                                GripperCursor="Default"
+                                HorizontalAlignment="Left"
+                                ResizeDirection="Auto"
+                                ResizeBehavior="BasedOnAlignment"
+                                CursorBehavior="ChangeOnSplitterHover"
+                                >
+                                <!--<localControls:GridSplitter.Element>
+                                    <Grid>
+                                        <TextBlock HorizontalAlignment="Center" 
+                                                   IsHitTestVisible="False"
+                                                   VerticalAlignment="Center" />
+                                    </Grid>
+                                </localControls:GridSplitter.Element>-->
+                            </localControls:GridSplitter>
+                            <localControls:GridSplitter
+                                Grid.Column="2"
+                                Margin="-5,0,0,0"
+                                Opacity="0"
+                                Width="10"
+                                HorizontalAlignment="Left"
+                                ResizeBehavior="BasedOnAlignment"
+                                />
+                            <localControls:GridSplitter
+                                Grid.Column="3"
+                                Margin="-5,0,5,0"
+                                Opacity="0"
+                                Width="11"
+                                HorizontalAlignment="Left"
+                                ResizeBehavior="PreviousAndCurrent"
+                                />
+                            <localControls:GridSplitter
+                                Grid.Column="4"
+                                Margin="-5,0,5,0"
+                                Opacity="0"
+                                Width="11"
+                                HorizontalAlignment="Left"
+                                ResizeBehavior="PreviousAndCurrent"
+                                />
+                            <localControls:GridSplitter
+                                Grid.Column="5"
+                                Margin="-5,0,5,0"
+                                Opacity="0"
+                                Width="11"
+                                HorizontalAlignment="Left"
+                                />
+                            <localControls:GridSplitter
+                                Grid.Column="6"
+                                Margin="-5,0,5,0"
+                                Opacity="0"
+                                Width="11"
+                                HorizontalAlignment="Left"
+                                ResizeBehavior="PreviousAndCurrent"
+                                />
+                            <localControls:GridSplitter
+                                Grid.Column="7"
+                                Margin="-5,0,5,0"
+                                Opacity="0"
+                                Width="11"
+                                HorizontalAlignment="Left"
+                                ResizeBehavior="PreviousAndCurrent"
+                                />
+                            <localControls:GridSplitter
+                                Grid.Column="8"
+                                Margin="-5,0,5,0"
+                                Opacity="0"
+                                Width="11"
+                                HorizontalAlignment="Left"
+                                />
+                        </Grid>
+
+                        <ListView x:Name="listViewInBox" 
 							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
                               ItemTemplate="{StaticResource InboxListViewTemplate}"
                               SelectionMode="Extended" 
 							  DoubleTapped="ListBox_DoubleTapped" 
 							  SelectionChanged="ListView_SelectionChanged" >
-						<ListView.Header>
-                            <Grid x:Name="InBoxListViewHeader" Margin="12,0,12,0">
-                                <!--<Grid.ColumnDefinitions>
+                        <!--<ListView.Header>
+                            <Grid x:Name="InBoxListViewHeader" Margin="12,0,12,0" PointerExited="ListViewHeader_PointerExited">
+                                <Grid.ColumnDefinitions>
 									<ColumnDefinition Width="40"/>
 									<ColumnDefinition Width="120" />
 									<ColumnDefinition Width="120"/>
-									<ColumnDefinition Width="1*" MinWidth="60"/>
+									<ColumnDefinition Width="1*" MinWidth="70"/>
 									<ColumnDefinition Width="110" />
 									<ColumnDefinition Width="70" />
 									<ColumnDefinition Width="70" />
 									<ColumnDefinition Width="60" />
 									<ColumnDefinition Width="40" />
 								</Grid.ColumnDefinitions>
-								<TextBlock Grid.Column="0" Text="Area" FontSize="17"  HorizontalAlignment="Center"/>
-								<Border Grid.Column="1" Background="LightGray">
-									<TextBlock Grid.Column="1" Text="Received Time" HorizontalAlignment="Center" FontSize="17"  />
+                                <Border Grid.Column="0" BorderBrush="Black" BorderThickness="1,1,1,1">
+                                    <TextBlock Grid.Column="0" Text="Area" FontSize="17"  HorizontalAlignment="Center" PointerMoved="TextBlock_PointerMoved"/>
+                                </Border>
+								<Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                    <TextBlock Grid.Column="1" Text="Received Time" HorizontalAlignment="Center" FontSize="17" PointerMoved="TextBlock_PointerMoved" />
 								</Border>
-								<TextBlock Grid.Column="2" Text="Sent Time" FontSize="17" HorizontalAlignment="Center"  />
-								<Border Grid.Column="3" Background="LightGray">
-                                    <TextBlock Grid.Column="3" Text="Subject" FontSize="17"/>
+                                <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                    <TextBlock Grid.Column="2" Text="Sent Time" FontSize="17" HorizontalAlignment="Center"  PointerMoved="TextBlock_PointerMoved" />
+                                </Border>
+                                <Border Grid.Column="3" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                    <TextBlock Grid.Column="3" Text="Subject" FontSize="17" Padding="5,0,0,0" PointerMoved="TextBlock_PointerMoved"/>
 								</Border>
-								<TextBlock Grid.Column="4" Text="Msg. No." FontSize="17" HorizontalAlignment="Center" Margin="0,0,0,0"/>
-								<TextBlock Grid.Column="5" Text="To " FontSize="17" HorizontalAlignment="Center" />
-								<TextBlock Grid.Column="6" Text="From" FontSize="17" HorizontalAlignment="Center"  />
-								<TextBlock Grid.Column="7" Text="BBS" FontSize="17" HorizontalAlignment="Center"/>
-								<TextBlock Grid.Column="8" Text="Size" FontSize="17" HorizontalAlignment="Center" />-->
-							</Grid>
+                                <Border Grid.Column="4" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                    <TextBlock Grid.Column="4" Text="Msg. No." FontSize="17" HorizontalAlignment="Center" PointerMoved="TextBlock_PointerMoved"/>
+                                </Border>
+                                <Border Grid.Column="5" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                    <TextBlock Grid.Column="5" Text="To " FontSize="17" HorizontalAlignment="Center" PointerMoved="TextBlock_PointerMoved" />
+                                </Border>
+                                <Border Grid.Column="6" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                    <TextBlock Grid.Column="6" Text="From" FontSize="17" HorizontalAlignment="Center" PointerMoved="TextBlock_PointerMoved" />
+                                </Border>
+                                <Border Grid.Column="7" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                    <TextBlock Grid.Column="7" Text="BBS" FontSize="17" HorizontalAlignment="Center" PointerMoved="TextBlock_PointerMoved"/>
+                                </Border>
+                                <Border Grid.Column="8" BorderBrush="Black" BorderThickness="0,1,1,1">
+                                    <TextBlock Grid.Column="8" Text="Size" FontSize="17" HorizontalAlignment="Center" PointerMoved="TextBlock_PointerMoved" />
+                                </Border>
+                            </Grid>
 
-						</ListView.Header>
+						</ListView.Header>-->
 					</ListView>
-				</ScrollViewer>
+                    </StackPanel>
+                </ScrollViewer>
 			</PivotItem>
 
 			<!--  Sent Items  -->
@@ -272,7 +401,7 @@
 							  DoubleTapped="ListBox_DoubleTapped" 
 							  SelectionChanged="ListView_SelectionChanged">
 						<ListView.Header>
-							<Grid Margin="12,0,12,0">
+                            <Grid Margin="12,0,12,0" >
 								<!--<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="120" />
 									<ColumnDefinition Width="120" />
@@ -300,7 +429,7 @@
 			<!--  Outbox  -->
 			<PivotItem x:Name="OutBox" 
                        Header="Outbox" Padding="0">
-				<ScrollViewer Margin="0,0,-12,0" Width="auto"
+				<ScrollViewer Margin="0,0,0,0" Width="auto"
 							  VerticalScrollBarVisibility="Auto">
 					<ListView x:Name="listViewOutBox" 
 							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
@@ -308,7 +437,7 @@
 							  SelectionMode="Extended" DoubleTapped="ListBox_DoubleTapped" SelectionChanged="ListView_SelectionChanged" 
 							  >
 						<ListView.Header>
-							<Grid Margin="12,0,12,0">
+                            <Grid Margin="12,0,12,0" >
 								<!--<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="120"/>
 									<ColumnDefinition Width="1*" MinWidth="60" />
@@ -335,7 +464,7 @@
             <!--ItemTemplate="{StaticResource DraftsListViewTemplate}"-->
             <PivotItem x:Name="Drafts" 
                        Header="Drafts" Padding="0">
-				<ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">
+				<ScrollViewer Margin="0,0,0,48" VerticalScrollBarVisibility="Auto">
 					<ListView x:Name="listViewDrafts" 
 							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -343,7 +472,7 @@
 							  DoubleTapped="ListBox_DoubleTapped" 
 							  SelectionChanged="ListView_SelectionChanged">
 						<ListView.Header>
-							<Grid Margin="12,0,12,0">
+                            <Grid Margin="12,0,12,0">
 								<!--<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="120"/>
 									<ColumnDefinition Width="1*" />
@@ -374,7 +503,7 @@
 							  SelectionMode="Extended" DoubleTapped="ListBox_DoubleTapped" 
 							  SelectionChanged="ListView_SelectionChanged">
 						<ListView.Header>
-							<Grid Margin="12,0,12,0" >
+                            <Grid Margin="12,0,12,0" >
 								<!--<Grid.ColumnDefinitions>
 									<ColumnDefinition Width="40"/>
 									<ColumnDefinition Width="120" />
@@ -405,10 +534,11 @@
 			<!--ItemTemplate="{StaticResource DeletedListViewTemplate}"-->
 			<PivotItem x:Name="Deleted" 
                        Header="Deleted Items" Padding="0">
-				<ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">
+				<!--<ScrollViewer Margin="0,0,0,0" VerticalScrollBarVisibility="Auto">-->
 					<ListView x:Name="listViewDeletedItems" 
 							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
-							  SelectionMode="Extended" 
+							  SelectionMode="Extended" Margin="0,0,0,48"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
 							  DoubleTapped="ListBox_DoubleTapped" 
 							  SelectionChanged="ListView_SelectionChanged">
 						<!--<ListView.ItemTemplate>
@@ -422,7 +552,7 @@
 										<ColumnDefinition Width="70" />
 										<ColumnDefinition Width="60" />
 									</Grid.ColumnDefinitions>
-									<TextBlock Grid.Column="0" Text="{Binding CreateTime, Converter={StaticResource DatetimeConverter}}" HorizontalAlignment="Center" />
+									<TextBlock Grid.Column="0" Text="{Binding CreateTime}" HorizontalAlignment="Center" />
 									<TextBlock Grid.Column="1" Text="{Binding Subject}"  Margin="5,0,0,0" />
 									<TextBlock Grid.Column="2" Text="{Binding MessageNumber}"  HorizontalAlignment="Center" />
 									<TextBlock Grid.Column="3" Text="{Binding MessageTo}"  Margin="5,0,0,0"/>
@@ -432,23 +562,21 @@
 							</DataTemplate>
 						</ListView.ItemTemplate>-->
 						<ListView.Header>
-							<Grid x:Name="listViewDeletedHeader" Margin="12,0,12,0">
+                            <Grid x:Name="listViewDeletedHeader" Margin="12,0,12,0" >
 
 							</Grid>
 						</ListView.Header>
 					</ListView>
-				</ScrollViewer>
+				<!--</ScrollViewer>-->
 			</PivotItem>
 
 			<!--Test-->
-			<!--<PivotItem x:Name="testDataGrid" Header="Test Layout">
-                <dataGrid:DataGrid x:Name="dataGridControl" ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
-                                   SelectionChanged="dataGridControl_SelectionChanged">
-                    <dataGrid:DataGrid.Columns>
-                        <dataGrid:DataGridTextColumn Width="120" Header="Create Time"/>
-                        <dataGrid:DataGridTextColumn Width="120" Header="Subject"/>
-                    </dataGrid:DataGrid.Columns>
-                </dataGrid:DataGrid>
+			<!--<PivotItem x:Name="test" Header="Test Layout">
+                <ListView x:Name="listViewTest"
+                          >
+                    <ColumnDefinition Width="110">
+                    </ColumnDefinition>
+                </ListView>
             </PivotItem>-->
 		</Pivot>
 

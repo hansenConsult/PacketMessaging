@@ -248,7 +248,13 @@ namespace PacketMessaging.Models
 					return entry.Callsign;
 				}
 			}
-            return null;
+			else
+			{
+				_addressDictionary.TryGetValue(callsign, out entry);
+				if (entry != null)
+					return entry.Callsign;
+			}
+			return null;
         }
 
 		public List<string> GetCallsigns(string partialCallsign)
@@ -257,7 +263,7 @@ namespace PacketMessaging.Models
 
 			foreach (var key in _addressDictionary.Keys)
 			{
-				if (key.StartsWith(partialCallsign.ToUpper()))
+				if (key.StartsWith(partialCallsign.ToUpper()) || key.StartsWith(partialCallsign))
 				{
 					matches.Add(key);
 				}

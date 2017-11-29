@@ -94,6 +94,12 @@
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\GridSplitter\GridSplitter.cs" />
+    <Compile Include="Controls\GridSplitter\GridSplitter.Data.cs" />
+    <Compile Include="Controls\GridSplitter\GridSplitter.Events.cs" />
+    <Compile Include="Controls\GridSplitter\GridSplitter.Helper.cs" />
+    <Compile Include="Controls\GridSplitter\GridSplitter.Options.cs" />
+    <Compile Include="Controls\GridSplitter\GripperHoverWrapper.cs" />
     <Compile Include="Models\AddressBook.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -179,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\GridSplitter\GridSplitter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Custom.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -270,7 +280,7 @@
       <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.1</Version>
+      <Version>6.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.4.0</Version>

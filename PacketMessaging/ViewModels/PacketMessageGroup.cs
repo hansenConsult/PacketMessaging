@@ -13,22 +13,22 @@ namespace PacketMessaging.ViewModels
 {
 	[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
 	[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-	public class PacketMessageViewList
+	public class ListViewColumns
 	{
-		List<Field> _messageViewList;
+		List<ColumnDescriptionBase> _messageViewList;
 
 		[System.Xml.Serialization.XmlArrayItemAttribute("FormField", IsNullable = false)]
-		public List<Field> MessageViewList => _messageViewList;
+		public List<ColumnDescriptionBase> MessageViewList => _messageViewList;
 
 		public bool ListViewHeaderCreated
 		{ get; set; }
 
-		public PacketMessageViewList()
+		public ListViewColumns()
 		{
-			_messageViewList = new List<Field>();
+			_messageViewList = new List<ColumnDescriptionBase>();
 		}
 
-		public void Add(Field field)
+		public void Add(ColumnDescriptionBase field)
 		{
 			_messageViewList.Add(field);
 		}
@@ -51,88 +51,97 @@ rootGrid.Children.Add(lv);
 */
 	}
 
-	public class Field
+	public class ColumnDescriptionBase
 	{
 		public string PropertyName { get; set; }
 		public string Header { get; set; }
 		public string HeaderShort { get; set; }
-		public GridLength Width { get; set; }
-		public double MinWidth { get; set; }
+
+		public GridLength Width
+		{ get ; set; }
+
+		public double MinWidth
+		{ get; set; }
+
 		public string WidthAsString { get; set; }
 
-		public Field(string propertyName, string fieldHeader, string headerShort, string fieldWidth, double minWidth = 0)
+		public ColumnDefinition HeaderColumnDefinition
+		{ get; set; }
+
+		public ColumnDescriptionBase(string propertyName, string header, string headerShort, string width, double minWidth = 0)
 		{
 			PropertyName = propertyName;
-			Header = fieldHeader;
+			Header = header;
 			HeaderShort = headerShort;
-			if (fieldWidth.EndsWith("*"))
-				Width = new GridLength(Convert.ToDouble(fieldWidth.TrimEnd(new char[] { '*' })), GridUnitType.Star);
+			if (width.EndsWith("*"))
+			{
+				Width = new GridLength(Convert.ToDouble(width.TrimEnd(new char[] { '*' })), GridUnitType.Star);
+			}
 			else
-				Width = new GridLength(Convert.ToDouble(fieldWidth));
+				Width = new GridLength(Convert.ToDouble(width));
 			MinWidth = minWidth;
-			WidthAsString = fieldWidth;
+			WidthAsString = width;
 		}
 	}
-	public class Area : Field
+	public class Area : ColumnDescriptionBase
 	{
-		public Area(string fieldWidth) : base(nameof(Area), "Area", "Area", fieldWidth) { }
+		public Area(string width) : base(nameof(Area), header: "Area", headerShort: "Area", width: width) { }
 
 		public Area(string headerShort, string fieldWidth) : base(nameof(Area), "Area", headerShort, fieldWidth) { }
 	}
 
-	public class BBSName : Field
+	public class BBS : ColumnDescriptionBase
 	{
-		public BBSName(string fieldWidth) : base(nameof(BBSName), "BBS", "BBS", fieldWidth) { }
+		public BBS(string fieldWidth) : base(nameof(BBS), "BBS", "BBS", fieldWidth) { }
 	}
 
-	public class JNOSDate : Field
+	public class JNOSDate : ColumnDescriptionBase
 	{
 		public JNOSDate(string fieldWidth) : base(nameof(JNOSDate), "Sent Time", "Sent Time", fieldWidth) { }
 	}
 
-	public class SentTime : Field
+	public class SentTime : ColumnDescriptionBase
 	{
 		public SentTime(string fieldWidth) : base(nameof(SentTime), "Sent", "Sent Time", fieldWidth) { }
 	}
 
-	public class CreateTime : Field
+	public class CreateTime : ColumnDescriptionBase
 	{
 		public CreateTime(string fieldWidth) : base(nameof(CreateTime), "Create Time", "Create Time", fieldWidth) { }
 		public CreateTime(string headerShort, string fieldWidth) : base(nameof(CreateTime), "Create Time", headerShort, fieldWidth) { }
 	}
 
-	public class ReceivedTime : Field
+	public class ReceivedTime : ColumnDescriptionBase
 	{
 		public ReceivedTime(string fieldWidth) : base(nameof(ReceivedTime), "Received Time", "Received Time", fieldWidth) { }
 		public ReceivedTime(string headerShort, string fieldWidth) : base(nameof(ReceivedTime), "Received Time", headerShort, fieldWidth) { }
 	}
 
-	public class MessageNumber : Field
+	public class MessageNumber : ColumnDescriptionBase
 	{
 		public MessageNumber(string fieldWidth) : base(nameof(MessageNumber), "Msg Number", "Msg. No.", fieldWidth) { }
 		public MessageNumber(string headerShort, string fieldWidth) : base(nameof(MessageNumber), "Msg Number", headerShort, fieldWidth) { }
 	}
 
-	public class MessageFrom : Field
+	public class MessageFrom : ColumnDescriptionBase
 	{
 		public MessageFrom(string fieldWidth) : base(nameof(MessageFrom), "From", "From", fieldWidth) { }
 	}
 
-	public class MessageTo : Field
+	public class MessageTo : ColumnDescriptionBase
 	{
 		public MessageTo(string fieldWidth) : base(nameof(MessageTo), "To", "To", fieldWidth) { }
 	}
 
-	public class MessageSize : Field
+	public class MessageSize : ColumnDescriptionBase
 	{
 		public MessageSize(string fieldWidth) : base(nameof(MessageSize), "Size", "Size", fieldWidth) { }
 	}
 
-	public class Subject : Field
+	public class Subject : ColumnDescriptionBase
 	{
-		public Subject(string fieldWidth) : base(nameof(Subject), "Subject", "Subject", fieldWidth) { }
-		public Subject(string fieldWidth, double minWidth = 0) : base(nameof(Subject), "Subject", "Subject", fieldWidth, minWidth) { }
-		public Subject(string headerShort, string fieldWidth, double minWidth = 0) : base(nameof(Subject), "Subject", headerShort, fieldWidth, minWidth) { }
+		public Subject(string width, double minWidth = 0) : base(nameof(Subject), "Subject", "Subject", width, minWidth) { }
+		public Subject(string headerShort, string width, double minWidth = 0) : base(nameof(Subject), "Subject", headerShort, width, minWidth) { }
 	}
 
 }
