@@ -124,7 +124,7 @@
     <Compile Include="ViewModels\ToolePageViewModel.cs" />
     <Compile Include="ViewModels\FormsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="ViewModels\PacketMessageGroup.cs" />
+    <Compile Include="Models\PacketMessageGroup.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\SharedData.cs" />
     <Compile Include="Views\DeviceListEntry.cs" />

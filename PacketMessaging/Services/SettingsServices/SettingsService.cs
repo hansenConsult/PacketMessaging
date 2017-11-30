@@ -2,6 +2,7 @@ using System;
 using Template10.Common;
 using Template10.Utils;
 using Windows.UI.Xaml;
+using PacketMessaging.Views;
 
 namespace PacketMessaging.Services.SettingsServices
 {
@@ -222,13 +223,13 @@ namespace PacketMessaging.Services.SettingsServices
 		}
 
 #endregion
-		#region MainPage
-		//public double GridViewItemWidth
-		//{
-		//	get { return _helper.Read(nameof(GridViewItemWidth), 218.0); }
-		//	set { _helper.Write(nameof(GridViewItemWidth), value); }
-		//}
-		#endregion
+#region MainPage
+		public MainPage.SortDirection SortOrder
+		{
+			get { return _helper.Read(nameof(SortOrder), MainPage.SortDirection.Ascending); }
+			set { _helper.Write(nameof(SortOrder), value); }
+		}
+#endregion
 	}
 }
 

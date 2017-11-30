@@ -9,6 +9,7 @@ using System.IO;
 using Windows.Storage;
 using FormControlBaseClass;
 using System.Collections.ObjectModel;
+using PacketMessaging.Views;
 
 namespace PacketMessaging.ViewModels
 {
@@ -39,6 +40,11 @@ namespace PacketMessaging.ViewModels
 		//	set { _settings.GridViewItemWidth = value; base.RaisePropertyChanged(); }
 		//}
 
+		public MainPage.SortDirection SortOrder
+		{
+			get { return _settings.SortOrder; }
+			set { _settings.SortOrder = value; base.RaisePropertyChanged(); }
+		}
 
 
 
@@ -74,15 +80,16 @@ namespace PacketMessaging.ViewModels
             await Task.CompletedTask;
         }
 
-        //public void GotoSettings() =>
-        //	NavigationService.Navigate(typeof(Views.SettingsPage), 0);
+		//public void GotoSettings() =>
+		//	NavigationService.Navigate(typeof(Views.SettingsPage), 0);
 
-        //public void GotoForms() =>
-        //	NavigationService.Navigate(typeof(Views.FormsPage), 1);
+		//public void GotoForms() =>
+		//	NavigationService.Navigate(typeof(Views.FormsPage), 1);
 
-        //public void GotoAbout() =>
-        //	NavigationService.Navigate(typeof(Views.SettingsPage), 2);
+		//public void GotoAbout() =>
+		//	NavigationService.Navigate(typeof(Views.SettingsPage), 2);
 
-    }
+
+	}
 }
 

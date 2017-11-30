@@ -44,20 +44,20 @@ namespace PacketMessaging.Views
 		Template10.Services.SerializationService.ISerializationService _SerializationService;
         Services.SettingsServices.SettingsService _settings;
 
-		public class ListViewParameters
-		{
-			public ListView PivotListView
-			{ get; set; }
+		//public class ListViewParameters
+		//{
+		//	public ListView PivotListView
+		//	{ get; set; }
 
-			public ListViewColumns ColumnDefinitions
-			{ get; set; }
+		//	public ListViewColumns ColumnDefinitions
+		//	{ get; set; }
 
-			public ListViewParameters(ListView listView, ListViewColumns listViewColumns)
-			{
-				PivotListView = listView;
-				ColumnDefinitions = listViewColumns;
-			}
-		}
+		//	public ListViewParameters(ListView listView, ListViewColumns listViewColumns)
+		//	{
+		//		PivotListView = listView;
+		//		ColumnDefinitions = listViewColumns;
+		//	}
+		//}
 		Dictionary<string, ListViewParameters> _listViewDefinitionsDict = new Dictionary<string, ListViewParameters>();
 
         public static StorageFolder _unsentMessagesFolder = null;
@@ -78,7 +78,7 @@ namespace PacketMessaging.Views
 		ListViewColumns _listViewColumDefinitionsArchive;
 		ListViewColumns _listViewColumnDefinitionsDeleted;
 		string _sortOnPropertyName;
-		SortDirection _sortDirection = SortDirection.Ascending;
+		public SortDirection _sortDirection = SortDirection.Ascending;
 
 		public static MainPage Current;
 
@@ -89,19 +89,19 @@ namespace PacketMessaging.Views
 			SetFieldWidthLeft,
 			SetFieldWidthRight
 		}
-		PointerState _pointerState;
-		double _FieldWidthRefPoint;
-		ColumnDefinitionCollection _columnDefinitions;
-		int _columnIndex = 0;
+		//PointerState _pointerState;
+		//double _FieldWidthRefPoint;
+		//ColumnDefinitionCollection _columnDefinitions;
+		//int _columnIndex = 0;
 
 		//PacketMessage _selectedMessage = null;
 		List<PacketMessage> _selectedMessages = new List<PacketMessage>();
 
-		public Dictionary<string, ListViewParameters> ListViewDefinitionsDict
-		{ get => _listViewDefinitionsDict; }
+		//public Dictionary<string, ListViewParameters> ListViewDefinitionsDict
+		//{ get => _listViewDefinitionsDict; }
 
-		public ListView CurrentListView
-		{ get => _currentListView; }
+		//public ListView CurrentListView
+		//{ get => _currentListView; }
 
 		public MainPage()
         {
@@ -185,70 +185,82 @@ namespace PacketMessaging.Views
 
 			ObservableCollection<ColumnDescriptionBase> draftsPropertiesList = new ObservableCollection<ColumnDescriptionBase>();
 
-			_listViewColumDefinitionsInBox = new ListViewColumns();
-			_listViewColumDefinitionsInBox.Add(new Area("40"));
-			_listViewColumDefinitionsInBox.Add(new ReceivedTime("120"));
-			_listViewColumDefinitionsInBox.Add(new JNOSDate("120"));
-			_listViewColumDefinitionsInBox.Add(new Subject("1*", 70));
-			_listViewColumDefinitionsInBox.Add(new MessageNumber("110"));
-			_listViewColumDefinitionsInBox.Add(new MessageTo("70"));
-			_listViewColumDefinitionsInBox.Add(new MessageFrom("70"));
-			_listViewColumDefinitionsInBox.Add(new BBS("60"));
-			_listViewColumDefinitionsInBox.Add(new MessageSize("40"));
+			_listViewColumDefinitionsInBox = new ListViewColumns(9);
+			_listViewColumDefinitionsInBox.ListViewColumnsArray[0] = new Area("40");
+			_listViewColumDefinitionsInBox.ListViewColumnsArray[1] = new ReceivedTime();
+			_listViewColumDefinitionsInBox.ListViewColumnsArray[2] = new JNOSDate("120");
+			_listViewColumDefinitionsInBox.ListViewColumnsArray[3] = new Subject("1*", 70);
+			_listViewColumDefinitionsInBox.ListViewColumnsArray[4] = new MessageNumber("110");
+			_listViewColumDefinitionsInBox.ListViewColumnsArray[5] = new MessageTo("70");
+			_listViewColumDefinitionsInBox.ListViewColumnsArray[6] = new MessageFrom("70");
+			_listViewColumDefinitionsInBox.ListViewColumnsArray[7] = new BBS("60");
+			_listViewColumDefinitionsInBox.ListViewColumnsArray[7] = new MessageSize("40");
+			_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
+			_listViewColumDefinitionsInBox.SortPropertyName = nameof(ReceivedTime);
 			_listViewDefinitionsDict.Add(listViewInBox.Name, new ListViewParameters(listViewInBox, _listViewColumDefinitionsInBox));
 
-			_listViewColumDefinitionsSent = new ListViewColumns();
-			_listViewColumDefinitionsSent.Add(new ReceivedTime("120"));
-			_listViewColumDefinitionsSent.Add(new SentTime("120"));
-			_listViewColumDefinitionsSent.Add(new Subject("1*", 70));
-			_listViewColumDefinitionsSent.Add(new MessageNumber("110"));
-			_listViewColumDefinitionsSent.Add(new MessageTo("70"));
-			_listViewColumDefinitionsSent.Add(new MessageFrom("70"));
-			_listViewColumDefinitionsSent.Add(new BBS("60"));
-			_listViewColumDefinitionsSent.Add(new MessageSize("40"));
+			_listViewColumDefinitionsSent = new ListViewColumns(8);
+			_listViewColumDefinitionsSent.ListViewColumnsArray[0] = new ReceivedTime("120");
+			_listViewColumDefinitionsSent.ListViewColumnsArray[1] = new SentTime("120");
+			_listViewColumDefinitionsSent.ListViewColumnsArray[2] = new Subject("1*", 70);
+			_listViewColumDefinitionsSent.ListViewColumnsArray[3] = new MessageNumber("110");
+			_listViewColumDefinitionsSent.ListViewColumnsArray[4] = new MessageTo("70");
+			_listViewColumDefinitionsSent.ListViewColumnsArray[5] = new MessageFrom("70");
+			_listViewColumDefinitionsSent.ListViewColumnsArray[6] = new BBS("60");
+			_listViewColumDefinitionsSent.ListViewColumnsArray[7] = new MessageSize("40");
+			_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
+			_listViewColumDefinitionsInBox.SortPropertyName = nameof(SentTime);
 			_listViewDefinitionsDict.Add(listViewSentItems.Name, new ListViewParameters(listViewSentItems, _listViewColumDefinitionsSent));
 
-			_listViewColumDefinitionsOutBox = new ListViewColumns();
-			_listViewColumDefinitionsOutBox.Add(new CreateTime("120"));
-			_listViewColumDefinitionsOutBox.Add(new Subject("1*", 70));
-			_listViewColumDefinitionsOutBox.Add(new MessageNumber("110"));
-			_listViewColumDefinitionsOutBox.Add(new MessageTo("70"));
-			_listViewColumDefinitionsOutBox.Add(new MessageFrom("70"));
-			_listViewColumDefinitionsOutBox.Add(new BBS("60"));
-			_listViewColumDefinitionsOutBox.Add(new MessageSize("40"));
+			_listViewColumDefinitionsOutBox = new ListViewColumns(7);
+			_listViewColumDefinitionsOutBox.ListViewColumnsArray[0] = new CreateTime("120");
+			_listViewColumDefinitionsOutBox.ListViewColumnsArray[1] = new Subject("1*", 70);
+			_listViewColumDefinitionsOutBox.ListViewColumnsArray[2] = new MessageNumber();
+			_listViewColumDefinitionsOutBox.ListViewColumnsArray[3] = new MessageTo("70");
+			_listViewColumDefinitionsOutBox.ListViewColumnsArray[4] = new MessageFrom("70");
+			_listViewColumDefinitionsOutBox.ListViewColumnsArray[5] = new BBS("60");
+			_listViewColumDefinitionsOutBox.ListViewColumnsArray[6] = new MessageSize("40");
+			_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
+			_listViewColumDefinitionsInBox.SortPropertyName = nameof(CreateTime);
 			_listViewDefinitionsDict.Add(listViewOutBox.Name, new ListViewParameters(listViewOutBox, _listViewColumDefinitionsOutBox));
 
-			_listViewColumnDefinitionsDrafts = new ListViewColumns();
-			_listViewColumnDefinitionsDrafts.Add(new CreateTime("120"));
-			_listViewColumnDefinitionsDrafts.Add(new Subject("1*", 70));
-			_listViewColumnDefinitionsDrafts.Add(new MessageNumber("110"));
-			_listViewColumnDefinitionsDrafts.Add(new MessageTo("70"));
-			_listViewColumnDefinitionsDrafts.Add(new MessageFrom("70"));
-			_listViewColumnDefinitionsDrafts.Add(new BBS("60"));
+			_listViewColumnDefinitionsDrafts = new ListViewColumns(6);
+			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[0] = new CreateTime("120");
+			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[1] = new Subject("1*", 70);
+			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[2] = new MessageNumber();
+			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[3] = new MessageTo("70");
+			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[4] = new MessageFrom("70");
+			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[5] = new BBS("60");
+			_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
+			_listViewColumDefinitionsInBox.SortPropertyName = nameof(CreateTime);
 			_listViewDefinitionsDict.Add(listViewDrafts.Name, new ListViewParameters(listViewDrafts, _listViewColumnDefinitionsDrafts));
 
-			_listViewColumDefinitionsArchive = new ListViewColumns();
-			_listViewColumDefinitionsArchive.Add(new Area("40"));
-			_listViewColumDefinitionsArchive.Add(new ReceivedTime("120"));
-			_listViewColumDefinitionsArchive.Add(new CreateTime("120"));
-			_listViewColumDefinitionsArchive.Add(new Subject("1*", 70));
-			_listViewColumDefinitionsArchive.Add(new MessageNumber("110"));
-			_listViewColumDefinitionsArchive.Add(new MessageTo("70"));
-			_listViewColumDefinitionsArchive.Add(new MessageFrom("70"));
-			_listViewColumDefinitionsArchive.Add(new BBS("60"));
-			_listViewColumDefinitionsArchive.Add(new MessageSize("40"));
+			_listViewColumDefinitionsArchive = new ListViewColumns(9);
+			_listViewColumDefinitionsArchive.ListViewColumnsArray[0] = new Area("40");
+			_listViewColumDefinitionsArchive.ListViewColumnsArray[1] = new ReceivedTime("120");
+			_listViewColumDefinitionsArchive.ListViewColumnsArray[2] = new CreateTime("120");
+			_listViewColumDefinitionsArchive.ListViewColumnsArray[3] = new Subject("1*", 70);
+			_listViewColumDefinitionsArchive.ListViewColumnsArray[4] = new MessageNumber("110");
+			_listViewColumDefinitionsArchive.ListViewColumnsArray[5] = new MessageTo("70");
+			_listViewColumDefinitionsArchive.ListViewColumnsArray[6] = new MessageFrom("70");
+			_listViewColumDefinitionsArchive.ListViewColumnsArray[7] = new BBS("60");
+			_listViewColumDefinitionsArchive.ListViewColumnsArray[8] = new MessageSize("40");
+			_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
+			_listViewColumDefinitionsInBox.SortPropertyName = nameof(CreateTime);
 			_listViewDefinitionsDict.Add(listViewArchivedItems.Name, new ListViewParameters(listViewArchivedItems, _listViewColumDefinitionsArchive));
 
-			_listViewColumnDefinitionsDeleted = new ListViewColumns();
-			_listViewColumnDefinitionsDeleted.Add(new CreateTime("120"));
-			_listViewColumnDefinitionsDeleted.Add(new Subject("1*", 70));
-			_listViewColumnDefinitionsDeleted.Add(new MessageNumber("110"));
-			_listViewColumnDefinitionsDeleted.Add(new MessageTo("70"));
-			_listViewColumnDefinitionsDeleted.Add(new MessageFrom("70"));
-			_listViewColumnDefinitionsDeleted.Add(new BBS("60"));
+			_listViewColumnDefinitionsDeleted = new ListViewColumns(6);
+			_listViewColumnDefinitionsDeleted.ListViewColumnsArray[0] = new CreateTime();
+			_listViewColumnDefinitionsDeleted.ListViewColumnsArray[1] = new Subject("1*", 70);
+			_listViewColumnDefinitionsDeleted.ListViewColumnsArray[2] = new MessageNumber("110");
+			_listViewColumnDefinitionsDeleted.ListViewColumnsArray[3] = new MessageTo();
+			_listViewColumnDefinitionsDeleted.ListViewColumnsArray[4] = new MessageFrom();
+			_listViewColumnDefinitionsDeleted.ListViewColumnsArray[5] = new BBS();
+			_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
+			_listViewColumDefinitionsInBox.SortPropertyName = nameof(CreateTime);
 			_listViewDefinitionsDict.Add(listViewDeletedItems.Name, new ListViewParameters(listViewDeletedItems, _listViewColumnDefinitionsDeleted));
 
-			foreach (ColumnDescriptionBase field in _listViewColumnDefinitionsDrafts.MessageViewList)
+			foreach (ColumnDescriptionBase field in _listViewColumnDefinitionsDrafts.ListViewColumnsArray)
 			{
 				draftsPropertiesList.Add(field);
 			}
@@ -381,24 +393,24 @@ namespace PacketMessaging.Views
 
 		public async Task SetlistViewColumnDefinitionWidthAsync(int columnIndex, GridLength width)
 		{
-			_listViewDefinitionsDict[_currentListView.Name].ColumnDefinitions.MessageViewList[columnIndex].Width = width;
-			_listViewDefinitionsDict[_currentListView.Name].ColumnDefinitions.MessageViewList[columnIndex].WidthAsString = width.ToString();
+			_listViewDefinitionsDict[_currentListView.Name].ColumnDefinitions.ListViewColumnsArray[columnIndex].Width = width;
+			_listViewDefinitionsDict[_currentListView.Name].ColumnDefinitions.ListViewColumnsArray[columnIndex].WidthAsString = width.ToString();
 
 			await CreateGridItemTemplateAsync(_listViewDefinitionsDict[_currentListView.Name]);
 		}
 
-		void SetPointerState(PointerState pointerState)
-		{
-			if (pointerState != PointerState.None && _pointerState == PointerState.None)
-			{
-				CoreApplication.MainView.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.SizeWestEast, 0);
-			}
-			else if (pointerState == PointerState.None)
-			{
-				CoreApplication.MainView.CoreWindow.PointerCursor = _appCursor;
-			}
-			_pointerState = pointerState;
-		}
+		//void SetPointerState(PointerState pointerState)
+		//{
+		//	if (pointerState != PointerState.None && _pointerState == PointerState.None)
+		//	{
+		//		CoreApplication.MainView.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.SizeWestEast, 0);
+		//	}
+		//	else if (pointerState == PointerState.None)
+		//	{
+		//		CoreApplication.MainView.CoreWindow.PointerCursor = _appCursor;
+		//	}
+		//	_pointerState = pointerState;
+		//}
 		/*
 				StringReader reader = new StringReader(
 					@"<DataTemplate xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
@@ -438,14 +450,14 @@ namespace PacketMessaging.Views
 			//header.Append(" </Resources>");
 			//header.Append(" <Binding Converter="converters:DateTimeConverter"/>"); 			
 			header.Append("<Grid><Grid.ColumnDefinitions>");
-			foreach (var field in packetMessageViewList.MessageViewList)
+			foreach (var field in packetMessageViewList.ListViewColumnsArray)
 			{
 				header.Append($"<ColumnDefinition Width=\"{field.WidthAsString}\" MinWidth =\"{field.MinWidth}\"/>");
 			}
 			header.Append("</Grid.ColumnDefinitions>");
-			for (int i = 0; i < packetMessageViewList.MessageViewList.Count; i++)
+			for (int i = 0; i < packetMessageViewList.ListViewColumnsArray.Length; i++)
 			{
-				ColumnDescriptionBase field = packetMessageViewList.MessageViewList[i];
+				ColumnDescriptionBase field = packetMessageViewList.ListViewColumnsArray[i];
 				//if (field.PropertyName == "ReceivedTime"
 				//		|| field.PropertyName == "JNOSDate")
 				//{
@@ -487,57 +499,57 @@ namespace PacketMessaging.Views
 
 		//public delegate void DoubleTappedEventHandler(object sender, DoubleTappedRoutedEventArgs e);
 
-		private void CreateListViewHeader(ListView listView, ListViewColumns packetMessageViewList)
-		{
-			if (!packetMessageViewList.ListViewHeaderCreated)
-			{
-				packetMessageViewList.ListViewHeaderCreated = true;
+		//private void CreateListViewHeader(ListView listView, ListViewColumns packetMessageViewList)
+		//{
+		//	if (!packetMessageViewList.ListViewHeaderCreated)
+		//	{
+		//		packetMessageViewList.ListViewHeaderCreated = true;
 
-				Grid header = (Grid)listView.Header;
+		//		Grid header = (Grid)listView.Header;
 
-				for (int i = 0; i < packetMessageViewList.MessageViewList.Count; i++)
-				{
-					ColumnDefinition columnDefinition = new ColumnDefinition()
-					{
-						Width = packetMessageViewList.MessageViewList[i].Width,
-						MinWidth = packetMessageViewList.MessageViewList[i].MinWidth
-					};
+		//		for (int i = 0; i < packetMessageViewList.MessageViewList.Count; i++)
+		//		{
+		//			ColumnDefinition columnDefinition = new ColumnDefinition()
+		//			{
+		//				Width = packetMessageViewList.MessageViewList[i].Width,
+		//				MinWidth = packetMessageViewList.MessageViewList[i].MinWidth
+		//			};
 
-					header.ColumnDefinitions.Add(columnDefinition);
-					Border columnBorder = new Border();
-					Grid.SetColumn(columnBorder, i);
-					header.Children.Add(columnBorder);   // Not sure what this does, Add to visual tree?
-					columnBorder.BorderBrush = FormControlBasics._blackBrush;
-					if (i == 0)
-						columnBorder.BorderThickness = new Thickness(1, 1, 1, 1);
-					else
-						columnBorder.BorderThickness = new Thickness(0, 1, 1, 1);
+		//			header.ColumnDefinitions.Add(columnDefinition);
+		//			Border columnBorder = new Border();
+		//			Grid.SetColumn(columnBorder, i);
+		//			header.Children.Add(columnBorder);   // Not sure what this does, Add to visual tree?
+		//			columnBorder.BorderBrush = FormControlBasics._blackBrush;
+		//			if (i == 0)
+		//				columnBorder.BorderThickness = new Thickness(1, 1, 1, 1);
+		//			else
+		//				columnBorder.BorderThickness = new Thickness(0, 1, 1, 1);
 
-					TextBlock columnTextBlock = new TextBlock();
-					Grid.SetColumn(columnTextBlock, i);
-					//header.Children.Add(columnTextBlock);   // Not sure what this does, Add to visual tree?
-					columnBorder.Child = columnTextBlock;   // Not sure what this does, Add to visual tree?
-					columnTextBlock.Text = packetMessageViewList.MessageViewList[i].HeaderShort;
-					columnTextBlock.FontSize = 17;
-					if (columnTextBlock.Text == "Subject")
-					{
-						columnTextBlock.Padding = new Thickness(5, 5, 0, 0);
-					}
-					else
-					{
-						columnTextBlock.Width = Convert.ToDouble(packetMessageViewList.MessageViewList[i].WidthAsString);
-						columnTextBlock.TextAlignment = TextAlignment.Center;
-						columnTextBlock.Padding = new Thickness(0, 5, 0, 0);
-					}
-					columnTextBlock.Tag = packetMessageViewList.MessageViewList[i].PropertyName;
-					columnTextBlock.AddHandler(DoubleTappedEvent, new DoubleTappedEventHandler(TextBlock_DoubleTapped), true);
-					//columnTextBlock.AddHandler(PointerMovedEvent, new PointerEventHandler(TextBlock_PointerMoved), true);
-					//columnTextBlock.AddHandler(PointerPressedEvent, new PointerEventHandler(TextBlock_PointerPressed), true);
-					//columnTextBlock.AddHandler(PointerReleasedEvent, new PointerEventHandler(TextBlock_PointerReleased), true);
-					//columnTextBlock.AddHandler(PointerEnteredEvent, new PointerEventHandler(TextBlock_PointerEntered), true);
-				}
-			}
-		}
+		//			TextBlock columnTextBlock = new TextBlock();
+		//			Grid.SetColumn(columnTextBlock, i);
+		//			//header.Children.Add(columnTextBlock);   // Not sure what this does, Add to visual tree?
+		//			columnBorder.Child = columnTextBlock;   // Not sure what this does, Add to visual tree?
+		//			columnTextBlock.Text = packetMessageViewList.MessageViewList[i].HeaderShort;
+		//			columnTextBlock.FontSize = 17;
+		//			if (columnTextBlock.Text == "Subject")
+		//			{
+		//				columnTextBlock.Padding = new Thickness(5, 5, 0, 0);
+		//			}
+		//			else
+		//			{
+		//				columnTextBlock.Width = Convert.ToDouble(packetMessageViewList.MessageViewList[i].WidthAsString);
+		//				columnTextBlock.TextAlignment = TextAlignment.Center;
+		//				columnTextBlock.Padding = new Thickness(0, 5, 0, 0);
+		//			}
+		//			columnTextBlock.Tag = packetMessageViewList.MessageViewList[i].PropertyName;
+		//			columnTextBlock.AddHandler(DoubleTappedEvent, new DoubleTappedEventHandler(TextBlock_DoubleTapped), true);
+		//			//columnTextBlock.AddHandler(PointerMovedEvent, new PointerEventHandler(TextBlock_PointerMoved), true);
+		//			//columnTextBlock.AddHandler(PointerPressedEvent, new PointerEventHandler(TextBlock_PointerPressed), true);
+		//			//columnTextBlock.AddHandler(PointerReleasedEvent, new PointerEventHandler(TextBlock_PointerReleased), true);
+		//			//columnTextBlock.AddHandler(PointerEnteredEvent, new PointerEventHandler(TextBlock_PointerEntered), true);
+		//		}
+		//	}
+		//}
 
 		private void CreateListViewHeader(ListViewParameters listViewParameters)
 		{
@@ -549,12 +561,12 @@ namespace PacketMessaging.Views
 
 				Grid header = (Grid)listView.Header;
 
-				for (int i = 0; i < packetMessageViewList.MessageViewList.Count; i++)
+				for (int i = 0; i < packetMessageViewList.ListViewColumnsArray.Length; i++)
 				{
 					ColumnDefinition columnDefinition = new ColumnDefinition()
 					{
-						Width = packetMessageViewList.MessageViewList[i].Width,
-						MinWidth = packetMessageViewList.MessageViewList[i].MinWidth
+						Width = packetMessageViewList.ListViewColumnsArray[i].Width,
+						MinWidth = packetMessageViewList.ListViewColumnsArray[i].MinWidth
 					};
 					header.ColumnDefinitions.Add(columnDefinition);
 					Border columnBorder = new Border();
@@ -570,7 +582,7 @@ namespace PacketMessaging.Views
 					Grid.SetColumn(columnTextBlock, i);
 					//header.Children.Add(columnTextBlock);   // Not sure what this does, Add to visual tree?
 					columnBorder.Child = columnTextBlock;   // Not sure what this does, Add to visual tree?
-					columnTextBlock.Text = packetMessageViewList.MessageViewList[i].HeaderShort;
+					columnTextBlock.Text = packetMessageViewList.ListViewColumnsArray[i].HeaderShort;
 					columnTextBlock.FontSize = 17;
 					if (columnTextBlock.Text == "Subject")
 					{
@@ -578,7 +590,7 @@ namespace PacketMessaging.Views
 					}
 					else
 					{
-						columnTextBlock.Width = Convert.ToDouble(packetMessageViewList.MessageViewList[i].WidthAsString);
+						columnTextBlock.Width = Convert.ToDouble(packetMessageViewList.ListViewColumnsArray[i].WidthAsString);
 						columnTextBlock.TextAlignment = TextAlignment.Center;
 						columnTextBlock.Padding = new Thickness(0, 5, 0, 0);
 					}
@@ -595,7 +607,7 @@ namespace PacketMessaging.Views
 						Grid.SetColumn(gridSplitter, i);
 						header.Children.Add(gridSplitter);
 					}
-					columnTextBlock.Tag = packetMessageViewList.MessageViewList[i].PropertyName;
+					columnTextBlock.Tag = packetMessageViewList.ListViewColumnsArray[i].PropertyName;
 					columnTextBlock.AddHandler(DoubleTappedEvent, new DoubleTappedEventHandler(TextBlock_DoubleTapped), true);
 				}
 			}
@@ -708,7 +720,11 @@ namespace PacketMessaging.Views
 
         private async void AppBar_DeleteItemAsync(object sender, RoutedEventArgs e)
         {
-            PivotItem pivotItem = (PivotItem)MyPivot.SelectedItem;
+			await ViewModels.ListViewParametersArray.SaveAsync(_listViewDefinitionsDict);
+
+			return;
+
+			PivotItem pivotItem = (PivotItem)MyPivot.SelectedItem;
             StorageFolder folder = (StorageFolder)pivotItem.Tag;
             bool permanentlyDelete = false;
             if (folder == _deletedMessagesFolder)
@@ -783,39 +799,45 @@ namespace PacketMessaging.Views
 			}
 		}
 
-		private void SearchAutoSelectBox_QuerySubmitted(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
-		{
-			/* The QuerySubmitted event occurs when a user commits a query string. 
-			 * The user can commit a query in one of these ways:
-			 *		While the focus is in the text box, press Enter or click the query icon. 
-			 *			The event args ChosenSuggestion property is null.
-			 *		While the focus is in the suggestion list, press Enter, click, or tap an item. 
-			 *			The event args ChosenSuggestion property contains the item that was selected from the list.
-			 *	In all cases, the event args QueryText property contains the text from the text box.
-			*/
-		}
+		//private void SearchAutoSelectBox_QuerySubmitted(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
+		//{
+		//	/* The QuerySubmitted event occurs when a user commits a query string. 
+		//	 * The user can commit a query in one of these ways:
+		//	 *		While the focus is in the text box, press Enter or click the query icon. 
+		//	 *			The event args ChosenSuggestion property is null.
+		//	 *		While the focus is in the suggestion list, press Enter, click, or tap an item. 
+		//	 *			The event args ChosenSuggestion property contains the item that was selected from the list.
+		//	 *	In all cases, the event args QueryText property contains the text from the text box.
+		//	*/
+		//}
 
 		private void ListViewMessages_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
 		{
 			OpenMessage();
 		}
 
-		private void ListViewMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			_selectedMessages.Clear();
+		//private void ListViewMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		//{
+		//	_selectedMessages.Clear();
 
-			foreach (var message in e.AddedItems)
-			{
-				_selectedMessages.Add(message as PacketMessage);
-			}
-		}
+		//	foreach (var message in e.AddedItems)
+		//	{
+		//		_selectedMessages.Add(message as PacketMessage);
+		//	}
+		//}
 
 		public void TextBlock_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
 		{
 			// Get the sprting property
 			_sortOnPropertyName = (string)((TextBlock)sender).Tag;
+			_listViewDefinitionsDict[_currentListView.Name].ColumnDefinitions.SortPropertyName = _sortOnPropertyName;
 			// Switch sorting order and sort on this column
 			_sortDirection = _sortDirection == SortDirection.Ascending ? SortDirection.Descending : SortDirection.Ascending;
+			_listViewDefinitionsDict[_currentListView.Name].ColumnDefinitions.SortOrder = _sortDirection;
+
+			
+			//sortOrder.IsChecked = _sortDirection;
+
 			RefreshListView();
 		}
 

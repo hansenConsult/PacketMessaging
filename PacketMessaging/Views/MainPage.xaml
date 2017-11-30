@@ -203,7 +203,9 @@
 
         </controls:PageHeader>
 
-		<Pivot x:Name="MyPivot" 
+        <!--<CheckBox x:Name="sortOrder" Visibility="Collapsed" IsChecked="{Binding SortOrder}"/>-->
+        
+        <Pivot x:Name="MyPivot" 
                RelativePanel.AlignBottomWithPanel="True"
                RelativePanel.AlignLeftWithPanel="True"
                RelativePanel.AlignRightWithPanel="True"

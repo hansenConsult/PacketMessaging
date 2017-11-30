@@ -38,8 +38,6 @@ namespace PacketMessaging.Controls.GridSplitter
         private TextBlock _gripperDisplay;
 
 		MainPage _current;
-		Dictionary<string, ListViewParameters> _listViewDefinitionsDict;
-		ListView _currentListView;
 		int _gridSplitterTargetedColumnIndex;
 		int _gridSplitterSiblingColumnIndex;
 
@@ -195,8 +193,6 @@ namespace PacketMessaging.Controls.GridSplitter
             ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
 
 			_current = MainPage.Current;
-			_listViewDefinitionsDict = _current.ListViewDefinitionsDict;
-			_currentListView = _current.CurrentListView;
 		}
 	}
 }

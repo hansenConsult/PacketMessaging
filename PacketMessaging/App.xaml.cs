@@ -76,14 +76,14 @@ namespace PacketMessaging
             };
             _tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
 
-			//tacticalCallsignData = new TacticalCallsignData()
-			//{
-			//	AreaName = "Other",
-			//	FileName = "OtherTacticalCallsigns.xml",
-			//	StartString = "",
-			//	BulletinFileName = ""
-			//};
-			//_tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
+			tacticalCallsignData = new TacticalCallsignData()
+			{
+				AreaName = "All County",
+				FileName = "AllCountyTacticalCallsigns.xml",
+				StartString = "",
+				BulletinFileName = "https://scc-ares-races.org/activities/showtacticalcalls.php"
+			};
+			_tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
 
 			tacticalCallsignData = new TacticalCallsignData()
             {
