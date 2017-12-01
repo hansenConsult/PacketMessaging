@@ -149,7 +149,9 @@ namespace PacketMessaging
 
 			await DistributionListArray.Instance.OpenAsync();
 
-            NavigationService.Navigate(typeof(Views.MainPage));
+			await ListViewParametersArray.Instance.OpenAsync();
+
+			NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;
         }
 

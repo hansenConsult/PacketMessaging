@@ -110,6 +110,7 @@
     <Compile Include="Models\BackgroundTransfer.cs" />
     <Compile Include="Models\distributionlists.cs" />
     <Compile Include="Models\GroupInfoList.cs" />
+    <Compile Include="Models\PacketMessageGroup.cs" />
     <Compile Include="Models\profiles.cs" />
     <Compile Include="Services\CommunicationsService\BluetoothManager.cs" />
     <Compile Include="Services\CommunicationsService\CommunicationsService.cs" />
@@ -124,7 +125,6 @@
     <Compile Include="ViewModels\ToolePageViewModel.cs" />
     <Compile Include="ViewModels\FormsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="Models\PacketMessageGroup.cs" />
     <Compile Include="ViewModels\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\SharedData.cs" />
     <Compile Include="Views\DeviceListEntry.cs" />

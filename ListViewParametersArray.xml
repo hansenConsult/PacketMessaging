@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ListViewParametersArray
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <ListViewParameters2
+    ListViewName="PivotListView">
+    <ListViewColumns ListViewHeaderCreated="true"
+                     SortOrder="SortDirection.Ascending"
+                     SortPropertyName="string">
+      <ColumnDescriptionBase PropertyName="string1"
+                             Header="HeaderString"
+                             Headershort="ShortHeader"
+                             Width="Gridlength"
+                             MinWidth="2.4"
+                             WidthAsString="string width">
+      </ColumnDescriptionBase>
+      <ColumnDescriptionBase PropertyName="string2"
+                             Header="HeaderString"
+                             Headershort="ShortHeader"
+                             Width="Gridlength"
+                             MinWidth="2.4"
+                             WidthAsString="string width">
+      </ColumnDescriptionBase>
+      <ColumnDescriptionBase PropertyName="string3"
+                             Header="HeaderString"
+                             Headershort="ShortHeader"
+                             Width="Gridlength"
+                             MinWidth="2.4"
+                             WidthAsString="string width">
+      </ColumnDescriptionBase>
+      <ColumnDescriptionBase PropertyName="string4"
+                             Header="HeaderString"
+                             Headershort="ShortHeader"
+                             Width="Gridlength"
+                             MinWidth="2.4"
+                             WidthAsString="string width">
+      </ColumnDescriptionBase>
+      <ColumnDescriptionBase PropertyName="string5"
+                             Header="HeaderString"
+                             Headershort="ShortHeader"
+                             Width="Gridlength"
+                             MinWidth="2.4"
+                             WidthAsString="string width">
+      </ColumnDescriptionBase>
+    </ListViewColumns>
+  </ListViewParameters2>
+<ListViewParameters2
+  ListView="PivotListView">
+  <ListViewColumns ListViewHeaderCreated="true"
+                   SortOrder="SortDirection.Ascending"
+                   SortPropertyName="string">
+    <ColumnDescriptionBase PropertyName="string1"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string2"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string3"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string4"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string5"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+  </ListViewColumns>
+</ListViewParameters2>
+<ListViewParameters2
+  ListView="PivotListView">
+  <ListViewColumns ListViewHeaderCreated="true"
+                   SortOrder="SortDirection.Ascending"
+                   SortPropertyName="string">
+    <ColumnDescriptionBase PropertyName="string1"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string2"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string3"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string4"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string5"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+  </ListViewColumns>
+</ListViewParameters2>
+<ListViewParameters2
+  ListView="PivotListView">
+  <ListViewColumns ListViewHeaderCreated="true"
+                   SortOrder="SortDirection.Ascending"
+                   SortPropertyName="string">
+    <ColumnDescriptionBase PropertyName="string1"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string2"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string3"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string4"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+    <ColumnDescriptionBase PropertyName="string5"
+                           Header="HeaderString"
+                           Headershort="ShortHeader"
+                           Width="Gridlength"
+                           MinWidth="2.4"
+                           WidthAsString="string width">
+    </ColumnDescriptionBase>
+  </ListViewColumns>
+</ListViewParameters2>
+</ListViewParametersArray>
