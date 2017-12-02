@@ -24,6 +24,8 @@ namespace PacketMessaging.ViewModels
 		private static volatile ListViewParametersArray _instance;
 		private static object _syncRoot = new Object();
 
+		private Dictionary<string, ListViewParameters> _listViewDefinitionsDict = new Dictionary<string, ListViewParameters>();
+
 		private ListViewParametersArray() {	}
 
 		const string fileName = "ListViewDefinitions.xml";
@@ -36,6 +38,12 @@ namespace PacketMessaging.ViewModels
 		{
 			get => this.listViewParametersField;
 			set => this.listViewParametersField = value;
+		}
+
+		[XmlIgnore]
+		public Dictionary<string, ListViewParameters> ListViewDefinitionsDict
+		{
+			get => _listViewDefinitionsDict;
 		}
 
 		public static ListViewParametersArray Instance
@@ -81,14 +89,22 @@ namespace PacketMessaging.ViewModels
 				using (FileStream reader = new FileStream(file.Path, FileMode.Open))
 				{
 					XmlSerializer serializer = new XmlSerializer(typeof(ListViewParametersArray));
-					ArrayOfListViewParameters = (ListViewParameters[])serializer.Deserialize(reader);
+					_instance = (ListViewParametersArray)serializer.Deserialize(reader);
 				}
 			}
 			catch (Exception e)
 			{
 				;
 			}
+		}
 
+		public Dictionary<string, ListViewParameters> BuildDictionary()
+		{
+			foreach (ListViewParameters parms in ArrayOfListViewParameters)
+			{
+				_listViewDefinitionsDict.Add(parms.PivotListViewName, parms);
+			}
+			return _listViewDefinitionsDict;
 		}
 	}
 
