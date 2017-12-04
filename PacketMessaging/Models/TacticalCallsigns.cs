@@ -34,7 +34,9 @@ namespace PacketMessaging.Models
 
         private string areaNameField;
 
-        private string startStringField;
+		private string tacticallWithBBSField;
+
+		private string startStringField;
 
 		private string stopStringField;
 
@@ -58,7 +60,13 @@ namespace PacketMessaging.Models
             set { areaNameField = value; }
         }
 
-        public string StartString
+		public string TacticallWithBBS
+		{
+			get => tacticallWithBBSField;
+			set => tacticallWithBBSField = value;
+		}
+
+		public string StartString
         {
             get { return startStringField; }
             set { startStringField = value; }
@@ -164,42 +172,65 @@ namespace PacketMessaging.Models
             }
         }
 
+		private static async Task<TacticalCallsigns> GetTacticalCallsfromMasterFile(TacticalCallsignData tacticalCallsignData)
+		{
+			StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 
-        public static async Task<TacticalCallsigns> OpenAsync(string fileName)
+			IStorageItem tactiCallsMasterFile = await localFolder.TryGetItemAsync(TactiCallsMasterFileName);
+			if (tactiCallsMasterFile == null)
+			{
+				// Copy from install folder
+				var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
+				var storageFile = await folder.TryGetItemAsync(TactiCallsMasterFileName);
+				if (storageFile != null)
+				{
+					await ((StorageFile)storageFile).CopyAsync(localFolder, TactiCallsMasterFileName, Windows.Storage.NameCollisionOption.ReplaceExisting);
+					tactiCallsMasterFile = await localFolder.TryGetItemAsync(TactiCallsMasterFileName);
+				}
+				else
+				{
+					return null; // Reinstall
+				}
+			}
+			return await ParseTactiCallsMasterList(tacticalCallsignData);
+		}
+
+		public static async Task<TacticalCallsigns> OpenAsync(string fileName)
         {
             TacticalCallsigns tacticalCallsigns = null;
-            StorageFile file = null;
             try
             {
-                StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-                var storageItem = await localFolder.TryGetItemAsync(fileName);
+				TacticalCallsignData tacticalCallsignData = App._tacticalCallsignDataDictionary[fileName];
+
+				StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+                var tacticalCallFile = await localFolder.TryGetItemAsync(fileName);
 				FileInfo fileInfo = null;
-				if (storageItem != null)
+				if (tacticalCallFile != null)
 				{
-					fileInfo = new FileInfo(storageItem.Path);
+					fileInfo = new FileInfo(tacticalCallFile.Path);
 				}
-				if (storageItem == null || fileInfo?.Length == 0)
+				if (tacticalCallFile == null || fileInfo?.Length == 0)
                 {
-                    TacticalCallsignData tacticalCallsignData = App._tacticalCallsignDataDictionary[fileName];
 					if (tacticalCallsignData.RawDataFileName == "Tactical_Calls.txt")
 					{
-						storageItem = await localFolder.TryGetItemAsync(TactiCallsMasterFileName);
-						if (storageItem == null)
-						{
-							// Copy from install folder
-							var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
-							var storageFile = await folder.TryGetItemAsync(TactiCallsMasterFileName);
-							if (storageFile != null)
-							{
-								await ((StorageFile)storageFile).CopyAsync(localFolder, TactiCallsMasterFileName, Windows.Storage.NameCollisionOption.ReplaceExisting);
-							}
-							else
-							{
-								return null; // Reinstall
-							}
-						}
-
-						tacticalCallsigns = await ParseTactiCallsMasterList(tacticalCallsignData);
+						tacticalCallsigns = await GetTacticalCallsfromMasterFile(tacticalCallsignData);
+						//IStorageItem tactiCallsMasterFile = await localFolder.TryGetItemAsync(TactiCallsMasterFileName);
+						//if (tactiCallsMasterFile == null)
+						//{
+						//	// Copy from install folder
+						//	var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
+						//	var storageFile = await folder.TryGetItemAsync(TactiCallsMasterFileName);
+						//	if (storageFile != null)
+						//	{
+						//		await ((StorageFile)storageFile).CopyAsync(localFolder, TactiCallsMasterFileName, Windows.Storage.NameCollisionOption.ReplaceExisting);
+						//		tactiCallsMasterFile = await localFolder.TryGetItemAsync(TactiCallsMasterFileName);
+						//	}
+						//	else
+						//	{
+						//		return null; // Reinstall
+						//	}
+						//}
+						//tacticalCallsigns = await ParseTactiCallsMasterList(tacticalCallsignData);
 					}
 					else
 					{
@@ -207,9 +238,9 @@ namespace PacketMessaging.Models
 					}
                     if (tacticalCallsigns == null)
                     {
-                        // Copy from data folder
-                        storageItem = await localFolder.TryGetItemAsync(tacticalCallsignData.FileName);
-                        if (storageItem == null)
+						// Copy from data folder
+						tacticalCallFile = await localFolder.TryGetItemAsync(tacticalCallsignData.FileName);
+                        if (tacticalCallFile == null)
                         {
                             // Copy the file from the install folder to the local folder
                             var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
@@ -229,10 +260,22 @@ namespace PacketMessaging.Models
                         tacticalCallsigns.SaveAsync(fileName);
                     }
                 }
+				if (tacticalCallsignData.RawDataFileName == "Tactical_Calls.txt")
+				{
+					// Check file creation times
+					var storageFile = await localFolder.TryGetItemAsync(TactiCallsMasterFileName);
+					FileInfo masterFileInfo = new FileInfo(storageFile.Path);
+					fileInfo.Refresh();		// If file was recreated
+					if (fileInfo.LastWriteTime < masterFileInfo.LastWriteTime)
+					{
+						tacticalCallsigns = await GetTacticalCallsfromMasterFile(tacticalCallsignData);
+						tacticalCallsigns.SaveAsync(fileName);
+					}
+				}
 
-                file = await localFolder.GetFileAsync(fileName);
+				tacticalCallFile = await localFolder.GetFileAsync(fileName);
 
-                using (FileStream stream = new FileStream(file.Path, FileMode.Open))
+                using (FileStream stream = new FileStream(tacticalCallFile.Path, FileMode.Open))
                 {
                     using (StreamReader reader = new StreamReader(stream))
                     {
@@ -435,131 +478,39 @@ namespace PacketMessaging.Models
 			TacticalCallsigns tacticalCallsigns = new TacticalCallsigns();
 			List<TacticalCall> tacticalList = new List<TacticalCall>();
 
-			switch (tacticalCallsignData.AreaName)
+			(string primaryBBS, string secondaryBBS) = FindCountyPrimSecBBS(tacticalCallsignData.TacticallWithBBS);
+
+			int startIndex = tacticalCalls.IndexOf(tacticalCallsignData.StartString);
+			startIndex += tacticalCallsignData.StartString.Length;
+			int stopIndex = tacticalCalls.IndexOf(tacticalCallsignData.StopString);
+			string tacticalLinesPlus = tacticalCalls.Substring(startIndex, stopIndex - startIndex);
+			var tacticallLines = tacticalLinesPlus.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+			foreach (string line in tacticallLines)
 			{
-				case "County Hospitals":			
-					(string primaryBBS, string secondaryBBS) = FindCountyPrimSecBBS("HOSDOC");
-
-					string startString = "HOSDOC	SCCo Hospitals DEOC";
-					int startIndex = tacticalCalls.IndexOf(startString);
-					startIndex += startString.Length;
-					int stopIndex = tacticalCalls.IndexOf("# HOS001 - HOS010");
-					string tacticalLinesPlus = tacticalCalls.Substring(startIndex, stopIndex - startIndex);
-					var tacticallLines = tacticalLinesPlus.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-					foreach (string line in tacticallLines)
-					{
-						if (!line.StartsWith("#"))
-						{
-							string callsign = line.Substring(0, 6);
-							string agencyName = line.Substring(6);
-							// Remove tab characters, if any
-							var parts = agencyName.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
-							TacticalCall tacticalCall = new TacticalCall()
-							{
-								AgencyName = parts[0],
-								TacticalCallsign = callsign,
-								Prefix = callsign.Substring(3, 3),
-								PrimaryBBS = primaryBBS,
-								PrimaryBBSActive = true,
-								SecondaryBBS = secondaryBBS,
-							};
-							tacticalList.Add(tacticalCall);
-						}
-					}
-					tacticalCallsigns.Area = "County Hospitals";
-					tacticalCallsigns.TacticalCallsignsArray = tacticalList.ToArray();
-					break;
-				case "Local Mountain View":
-					(primaryBBS, secondaryBBS) = FindCountyPrimSecBBS("MTVEOC");
-
-					startString = "MTVEOC	Mtn. View Emergency Operations Ctr";
-					startIndex = tacticalCalls.IndexOf(startString);
-					startIndex += startString.Length;
-					stopIndex = tacticalCalls.IndexOf("#MTV001 thru MTV010 also permissible");
-					tacticalLinesPlus = tacticalCalls.Substring(startIndex, stopIndex - startIndex);
-					tacticallLines = tacticalLinesPlus.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-					foreach (string line in tacticallLines)
-					{
-						if (!line.StartsWith("#"))
-						{
-							string callsign = line.Substring(0, 6);
-							string agencyName = line.Substring(6);
-							// Remove tab characters, if any
-							var parts = agencyName.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
-							TacticalCall tacticalCall = new TacticalCall()
-							{
-								AgencyName = parts[0],
-								TacticalCallsign = callsign,
-								Prefix = callsign.Substring(3, 3),
-								PrimaryBBS = primaryBBS,
-								PrimaryBBSActive = true,
-								SecondaryBBS = secondaryBBS,
-							};
-							tacticalList.Add(tacticalCall);
-						}
-					}
-					tacticalCallsigns.Area = "Local Mountain View";
-					tacticalCallsigns.TacticalCallsignsArray = tacticalList.ToArray();
-					break;
-				case "Local Cupertino":
-					(primaryBBS, secondaryBBS) = FindCountyPrimSecBBS("CUPEOC");
-
-					startString = "# Cupertino OES";
-					startIndex = tacticalCalls.IndexOf(startString);
-					startIndex += startString.Length;
-					stopIndex = tacticalCalls.IndexOf("# City of Palo Alto");
-					tacticalLinesPlus = tacticalCalls.Substring(startIndex, stopIndex - startIndex);
-					tacticallLines = tacticalLinesPlus.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-					foreach (string line in tacticallLines)
-					{
-						if (!line.StartsWith("#"))
-						{
-							string callsign = line.Substring(0, 6);
-							string agencyName = line.Substring(6);
-							// Remove tab characters, if any
-							var parts = agencyName.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
-							TacticalCall tacticalCall = new TacticalCall()
-							{
-								AgencyName = parts[0],
-								TacticalCallsign = callsign,
-								Prefix = callsign.Substring(3, 3),
-								PrimaryBBS = primaryBBS,
-								PrimaryBBSActive = true,
-								SecondaryBBS = secondaryBBS,
-							};
-							tacticalList.Add(tacticalCall);
-						}
-					}
-					tacticalCallsigns.Area = tacticalCallsignData.AreaName;
-					tacticalCallsigns.TacticalCallsignsArray = tacticalList.ToArray();
-					break;
-			}
-			return tacticalCallsigns;
-
-			// Local Function
-			TacticalCall CreateTactical(string line, string primaryBBS, string secondaryBBS)
-			{
-				TacticalCall tacticalCall = null;
 				if (!line.StartsWith("#"))
 				{
 					string callsign = line.Substring(0, 6);
 					string agencyName = line.Substring(6);
 					// Remove tab characters, if any
 					var parts = agencyName.Split(new char[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
-					tacticalCall = new TacticalCall()
+					TacticalCall tacticalCall = new TacticalCall()
 					{
 						AgencyName = parts[0],
 						TacticalCallsign = callsign,
 						Prefix = callsign.Substring(3, 3),
 						PrimaryBBS = primaryBBS,
 						PrimaryBBSActive = true,
-						SecondaryBBS = secondaryBBS
+						SecondaryBBS = secondaryBBS,
 					};
+					tacticalList.Add(tacticalCall);
 				}
-				return tacticalCall;
 			}
-		}
+			tacticalCallsigns.BulletinCreationTime = DateTime.Now;
+			tacticalCallsigns.Area = tacticalCallsignData.AreaName;
+			tacticalCallsigns.TacticalCallsignsArray = tacticalList.ToArray();
 
+			return tacticalCallsigns;
+		}
 
 		public class LineInfo
         {

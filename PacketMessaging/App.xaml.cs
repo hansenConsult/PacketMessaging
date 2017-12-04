@@ -62,7 +62,8 @@ namespace PacketMessaging
 			{
 				AreaName = "Local Mountain View",
 				FileName = "MTVTacticalCallsigns.xml",
-				StartString = "MTVEOC	Mtn. View Emergency Operations Ctr",
+				TacticallWithBBS = "MTVEOC",
+				StartString = "#Mountain View Tactical Call List",
 				StopString = "#MTV001 thru MTV010 also permissible",
 				RawDataFileName = "Tactical_Calls.txt"
 			};
@@ -72,6 +73,7 @@ namespace PacketMessaging
 			{
 				AreaName = "Local Cupertino",
 				FileName = "CUPTacticalCallsigns.xml",
+				TacticallWithBBS = "CUPEOC",
 				StartString = "# Cupertino OES",
 				StopString = "# City of Palo Alto",
 				RawDataFileName = "Tactical_Calls.txt"
@@ -82,7 +84,8 @@ namespace PacketMessaging
 			{
 				AreaName = "County Hospitals",
 				FileName = "HospitalsTacticalCallsigns.xml",
-				StartString = "HOSDOC	SCCo Hospitals DEOC",
+				TacticallWithBBS = "HOSDOC",
+				StartString = "# SCCo Hospitals Packet Tactical Call Signs",
 				StopString = "# HOS001 - HOS010",
 				RawDataFileName = "Tactical_Calls.txt"
 			};
