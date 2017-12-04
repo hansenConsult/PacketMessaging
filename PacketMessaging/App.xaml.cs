@@ -62,8 +62,19 @@ namespace PacketMessaging
 			{
 				AreaName = "Local Mountain View",
 				FileName = "MTVTacticalCallsigns.xml",
-				StartString = "Packet Tactical Call List",
-				BulletinFileName = "http://www.k6mtv.org/emergency_plan_06-21-17.pdf"
+				StartString = "MTVEOC	Mtn. View Emergency Operations Ctr",
+				StopString = "#MTV001 thru MTV010 also permissible",
+				RawDataFileName = "Tactical_Calls.txt"
+			};
+			_tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
+
+			tacticalCallsignData = new TacticalCallsignData()
+			{
+				AreaName = "Local Cupertino",
+				FileName = "CUPTacticalCallsigns.xml",
+				StartString = "# Cupertino OES",
+				StopString = "# City of Palo Alto",
+				RawDataFileName = "Tactical_Calls.txt"
 			};
 			_tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
 
@@ -71,8 +82,9 @@ namespace PacketMessaging
 			{
 				AreaName = "County Hospitals",
 				FileName = "HospitalsTacticalCallsigns.xml",
-				StartString = "HOSPITAL ROLL CALL",
-				BulletinFileName = "http://www.scc-ares-races.org/netscripts/HospitalNetScriptApr2015.pdf"
+				StartString = "HOSDOC	SCCo Hospitals DEOC",
+				StopString = "# HOS001 - HOS010",
+				RawDataFileName = "Tactical_Calls.txt"
 			};
 			_tacticalCallsignDataDictionary.Add(tacticalCallsignData.FileName, tacticalCallsignData);
 

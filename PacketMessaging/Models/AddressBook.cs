@@ -160,7 +160,7 @@ namespace PacketMessaging.Models
                         BBSSecondary = tacticalCall.SecondaryBBS,
                         BBSPrimaryActive = true // tacticalCall.PrimaryBBSActive
                     };
-                    if (tacticalCall.SecondaryBBS.Length == 0 && tacticalCall.SecondaryBBSActive)
+                    if (tacticalCall.SecondaryBBS.Length == 0)
                     {
                         tacticalCall.PrimaryBBSActive = true;
                         //tacticalCall.SecondaryBBSActive = false;

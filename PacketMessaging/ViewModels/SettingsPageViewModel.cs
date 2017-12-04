@@ -293,7 +293,7 @@ namespace PacketMessaging.ViewModels
 						TacticalPrimary = _callsignData.PrimaryBBS;
 						TacticalPrimaryActive = _callsignData.PrimaryBBSActive;
 						TacticalSecondary = _callsignData.SecondaryBBS;
-						TacticalSecondaryActive = _callsignData.SecondaryBBSActive;
+						//TacticalSecondaryActive = _callsignData.SecondaryBBSActive;
 					}
 					base.RaisePropertyChanged();
 				}
@@ -346,21 +346,21 @@ namespace PacketMessaging.ViewModels
 			set { _settings.TacticalSecondary = value; base.RaisePropertyChanged(); }
 		}
 
-		public bool TacticalSecondaryActive
-		{
-			get { return _settings.TacticalSecondaryActive; }
-			set
-			{
-				_settings.TacticalSecondaryActive = value;
-				if (_callsignData == null)
-					_callsignData = Views.SettingsPage.listOfTacticallsignsArea[TacticalCallsignAreaSelectedIndex].TacticalCallsigns.TacticalCallsignsArray[TacticalCallsignSelectedIndex];
+		//public bool TacticalSecondaryActive
+		//{
+		//	get { return _settings.TacticalSecondaryActive; }
+		//	set
+		//	{
+		//		_settings.TacticalSecondaryActive = value;
+		//		if (_callsignData == null)
+		//			_callsignData = Views.SettingsPage.listOfTacticallsignsArea[TacticalCallsignAreaSelectedIndex].TacticalCallsigns.TacticalCallsignsArray[TacticalCallsignSelectedIndex];
 
-				_callsignData.SecondaryBBSActive = TacticalSecondaryActive;
-				_tacticalCallsignData.TacticalCallsignsChanged = true;
-				//AddressBook.UpdateEntry(_callsignData);
-				base.RaisePropertyChanged();
-			}
-		}
+		//		_callsignData.SecondaryBBSActive = TacticalSecondaryActive;
+		//		_tacticalCallsignData.TacticalCallsignsChanged = true;
+		//		//AddressBook.UpdateEntry(_callsignData);
+		//		base.RaisePropertyChanged();
+		//	}
+		//}
 
 		public bool DisplayIdentityAtStartup
 		{

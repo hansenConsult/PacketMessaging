@@ -96,6 +96,7 @@ namespace PacketMessaging.Views
 
 		//PacketMessage _selectedMessage = null;
 		List<PacketMessage> _selectedMessages = new List<PacketMessage>();
+		List<PacketMessage> _sortedListOfMessagesInCurrentListView;
 
 		//public Dictionary<string, ListViewParameters> ListViewDefinitionsDict
 		//{ get => _listViewDefinitionsDict; }
@@ -297,84 +298,9 @@ namespace PacketMessaging.Views
 					listViewParametersArray.ArrayOfListViewParameters[i].ColumnDefinitions = listViewColumns;
 				}
 			}
-			//else
-			//{
-				// rebuild Dictionary
-				_listViewDefinitionsDict = ListViewParametersArray.Instance.BuildDictionary();
 
+			_listViewDefinitionsDict = ListViewParametersArray.Instance.BuildDictionary();
 
-				//ListViewParametersArray listViewParametersArray = ListViewParametersArray.Instance;
-				//for (int i = 0; i < listViewParametersArray.ArrayOfListViewParameters.Length; i++)
-				//{
-				//	switch ((MyPivot.Items[i] as PivotItem).Name)
-				//	{
-				//		case "InBox":
-				//			_listViewDefinitionsDict.Add(listViewInBox.Name, new ListViewParameters(listViewInBox.Name,
-				//						listViewParametersArray.ArrayOfListViewParameters[i].ColumnDefinitions));
-				//			break;
-				//		case "Sent":
-				//			_listViewDefinitionsDict.Add(listViewSentItems.Name, new ListViewParameters(listViewSentItems.Name,
-				//						listViewParametersArray.ArrayOfListViewParameters[i].ColumnDefinitions));
-				//			break;
-				//		case "OutBox":
-				//			_listViewDefinitionsDict.Add(listViewOutBox.Name, new ListViewParameters(listViewOutBox.Name,
-				//						listViewParametersArray.ArrayOfListViewParameters[i].ColumnDefinitions));
-				//			break;
-				//		case "Drafts":
-				//			_listViewDefinitionsDict.Add(listViewDrafts.Name, new ListViewParameters(listViewDrafts.Name,
-				//						listViewParametersArray.ArrayOfListViewParameters[i].ColumnDefinitions));
-				//			break;
-				//		case "Archive":
-				//			_listViewDefinitionsDict.Add(listViewArchivedItems.Name, new ListViewParameters(listViewArchivedItems.Name,
-				//						listViewParametersArray.ArrayOfListViewParameters[i].ColumnDefinitions));
-				//			break;
-				//		case "Deleted":
-				//			_listViewDefinitionsDict.Add(listViewDeletedItems.Name, new ListViewParameters(listViewDeletedItems.Name,
-				//						listViewParametersArray.ArrayOfListViewParameters[i].ColumnDefinitions));
-				//			break;
-				//	}
-				//}
-			//}
-			//listViewParametersArray.SaveAsync();
-
-			//_listViewColumDefinitionsInBox = new ListViewColumns(9);
-			//_listViewColumDefinitionsInBox.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("Area");
-			//_listViewColumDefinitionsInBox.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("ReceivedTime");
-			//_listViewColumDefinitionsInBox.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("JNOSDate");
-			//_listViewColumDefinitionsInBox.ListViewColumnsArray[3] = ColumnDescription.CreateColumnDescrioption("Subject");
-			//_listViewColumDefinitionsInBox.ListViewColumnsArray[4] = ColumnDescription.CreateColumnDescrioption("MessageNumber");
-			//_listViewColumDefinitionsInBox.ListViewColumnsArray[5] = ColumnDescription.CreateColumnDescrioption("MessageTo");
-			//_listViewColumDefinitionsInBox.ListViewColumnsArray[6] = ColumnDescription.CreateColumnDescrioption("MessageFrom");
-			//_listViewColumDefinitionsInBox.ListViewColumnsArray[7] = ColumnDescription.CreateColumnDescrioption("BBS");
-			//_listViewColumDefinitionsInBox.ListViewColumnsArray[8] = ColumnDescription.CreateColumnDescrioption("MessageSize");
-			//_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
-			//_listViewColumDefinitionsInBox.SortPropertyName = "ReceivedTime";
-			//_listViewDefinitionsDict.Add(listViewInBox.Name, new ListViewParameters(listViewInBox.Name, _listViewColumDefinitionsInBox));
-
-			//_listViewColumDefinitionsSent = new ListViewColumns(8);
-			//_listViewColumDefinitionsSent.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("ReceivedTime");
-			//_listViewColumDefinitionsSent.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("SentTime");
-			//_listViewColumDefinitionsSent.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("Subject");
-			//_listViewColumDefinitionsSent.ListViewColumnsArray[3] = ColumnDescription.CreateColumnDescrioption("MessageNumber");
-			//_listViewColumDefinitionsSent.ListViewColumnsArray[4] = ColumnDescription.CreateColumnDescrioption("MessageTo");
-			//_listViewColumDefinitionsSent.ListViewColumnsArray[5] = ColumnDescription.CreateColumnDescrioption("MessageFrom");
-			//_listViewColumDefinitionsSent.ListViewColumnsArray[6] = ColumnDescription.CreateColumnDescrioption("BBS");
-			//_listViewColumDefinitionsSent.ListViewColumnsArray[7] = ColumnDescription.CreateColumnDescrioption("MessageSize");
-			//_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
-			//_listViewColumDefinitionsInBox.SortPropertyName = "SentTime";
-			//_listViewDefinitionsDict.Add(listViewSentItems.Name, new ListViewParameters(listViewSentItems.Name, _listViewColumDefinitionsSent));
-
-			//_listViewColumDefinitionsOutBox = new ListViewColumns(7);
-			//_listViewColumDefinitionsOutBox.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("CreateTime");
-			//_listViewColumDefinitionsOutBox.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("Subject");
-			//_listViewColumDefinitionsOutBox.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("MessageNumber");
-			//_listViewColumDefinitionsOutBox.ListViewColumnsArray[3] = ColumnDescription.CreateColumnDescrioption("MessageTo");
-			//_listViewColumDefinitionsOutBox.ListViewColumnsArray[4] = ColumnDescription.CreateColumnDescrioption("MessageFrom");
-			//_listViewColumDefinitionsOutBox.ListViewColumnsArray[5] = ColumnDescription.CreateColumnDescrioption("BBS");
-			//_listViewColumDefinitionsOutBox.ListViewColumnsArray[6] = ColumnDescription.CreateColumnDescrioption("MessageSize");
-			//_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
-			//_listViewColumDefinitionsInBox.SortPropertyName = "CreateTime";
-			//_listViewDefinitionsDict.Add(listViewOutBox.Name, new ListViewParameters(listViewOutBox.Name, _listViewColumDefinitionsOutBox));
 
 			_listViewColumnDefinitionsDrafts = new ListViewColumns(6);
 			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("CreateTime");
@@ -386,31 +312,6 @@ namespace PacketMessaging.Views
 			//_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
 			//_listViewColumDefinitionsInBox.SortPropertyName = "CreateTime";
 			//_listViewDefinitionsDict.Add(listViewDrafts.Name, new ListViewParameters(listViewDrafts.Name, _listViewColumnDefinitionsDrafts));
-
-			//_listViewColumDefinitionsArchive = new ListViewColumns(9);
-			//_listViewColumDefinitionsArchive.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("Area");
-			//_listViewColumDefinitionsArchive.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("ReceivedTime");
-			//_listViewColumDefinitionsArchive.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("CreateTime");
-			//_listViewColumDefinitionsArchive.ListViewColumnsArray[3] = ColumnDescription.CreateColumnDescrioption("Subject");
-			//_listViewColumDefinitionsArchive.ListViewColumnsArray[4] = ColumnDescription.CreateColumnDescrioption("MessageNumber");
-			//_listViewColumDefinitionsArchive.ListViewColumnsArray[5] = ColumnDescription.CreateColumnDescrioption("MessageTo");
-			//_listViewColumDefinitionsArchive.ListViewColumnsArray[6] = ColumnDescription.CreateColumnDescrioption("MessageFrom");
-			//_listViewColumDefinitionsArchive.ListViewColumnsArray[7] = ColumnDescription.CreateColumnDescrioption("BBS");
-			//_listViewColumDefinitionsArchive.ListViewColumnsArray[8] = ColumnDescription.CreateColumnDescrioption("MessageSize");
-			//_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
-			//_listViewColumDefinitionsInBox.SortPropertyName = "CreateTime";
-			//_listViewDefinitionsDict.Add(listViewArchivedItems.Name, new ListViewParameters(listViewArchivedItems.Name, _listViewColumDefinitionsArchive));
-
-			//_listViewColumnDefinitionsDeleted = new ListViewColumns(6);
-			//_listViewColumnDefinitionsDeleted.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("CreateTime");
-			//_listViewColumnDefinitionsDeleted.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("Subject");
-			//_listViewColumnDefinitionsDeleted.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("MessageNumber");
-			//_listViewColumnDefinitionsDeleted.ListViewColumnsArray[3] = ColumnDescription.CreateColumnDescrioption("MessageTo");
-			//_listViewColumnDefinitionsDeleted.ListViewColumnsArray[4] = ColumnDescription.CreateColumnDescrioption("MessageFrom");
-			//_listViewColumnDefinitionsDeleted.ListViewColumnsArray[5] = ColumnDescription.CreateColumnDescrioption("BBS");
-			//_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
-			//_listViewColumDefinitionsInBox.SortPropertyName = "CreateTime";
-			//_listViewDefinitionsDict.Add(listViewDeletedItems.Name, new ListViewParameters(listViewDeletedItems.Name, _listViewColumnDefinitionsDeleted));
 
 			foreach (ColumnDescription field in _listViewColumnDefinitionsDrafts.ListViewColumnsArray)
 			{
@@ -501,7 +402,8 @@ namespace PacketMessaging.Views
 			//}
 
 			var messagesInFolder = await PacketMessage.GetPacketMessages((StorageFolder)pivotItem.Tag);
-			List<PacketMessage> sortedList = Sort_List(messagesInFolder);
+			//List<PacketMessage> sortedList = Sort_List(messagesInFolder);
+			_sortedListOfMessagesInCurrentListView = Sort_List(messagesInFolder);
 			if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
 			{
 				if (MyPivot.ActualWidth > MyPivot.ActualHeight)
@@ -509,11 +411,11 @@ namespace PacketMessaging.Views
 				else
 					gridViewItemWidth = MyPivot.ActualWidth - 36;
 
-				if (sortedList.Count > 0)
-					sortedList[0].GridWidth = gridViewItemWidth;
+				if (_sortedListOfMessagesInCurrentListView.Count > 0)
+					_sortedListOfMessagesInCurrentListView[0].GridWidth = gridViewItemWidth;
 			}
 
-			messageFolderCollection.Source = new ObservableCollection<PacketMessage>(sortedList);
+			messageFolderCollection.Source = new ObservableCollection<PacketMessage>(_sortedListOfMessagesInCurrentListView);
 		}
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -894,7 +796,7 @@ namespace PacketMessaging.Views
 			//try
 			//{
 			//	//await ListViewParametersArray.Instance.SaveAsync();
-			//	await ListViewParametersArray.Instance.OpenAsync();
+			//	await TacticalCallsigns.ParseTactiCallsMasterListAsync();
 			//}
 			//catch (Exception ex)
 			//{
@@ -1050,6 +952,8 @@ namespace PacketMessaging.Views
 
 		private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
 		{
+			//messageFolderCollection.Source = new ObservableCollection<PacketMessage>(_sortedListOfMessagesInCurrentListView);
+
 			RefreshListView();
 		}
 

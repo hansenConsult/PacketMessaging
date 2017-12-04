@@ -1,0 +1,686 @@
+#
+# Sunnyvale Tactical Call List
+# updated/revised: 23-Apr-2012 by B Gundrum
+#
+SNYEOC    Sunnyvale EOC
+SNYMCC    Sunnyvale Mobile Communications Center
+#
+SNYFS1    Sunnyvale Fire Station 1
+SNYFS2    Sunnyvale Fire Station 2
+SNYFS3    Sunnyvale Fire Station 3
+SNYFS4    Sunnyvale Fire Station 4
+SNYFS5    Sunnyvale Fire Station 5
+SNYFS6    Sunnyvale Fire Station 6
+#
+SNYVC1    Sunnyvale Volunteer Center 1
+SNYVC2    Sunnyvale Volunteer Center 2
+SNYVC3    Sunnyvale Volunteer Center 3
+SNYVC4    Sunnyvale Volunteer Center 4
+#
+SNYS01    Sunnyvale Shelter 01
+SNYS02    Sunnyvale Shelter 02
+SNYS03    Sunnyvale Shelter 03
+SNYS04    Sunnyvale Shelter 04
+SNYS05    Sunnyvale Shelter 05
+SNYS06    Sunnyvale Shelter 06 
+SNYS07    Sunnyvale Shelter 07
+SNYS08    Sunnyvale Shelter 08
+SNYS09    Sunnyvale Shelter 09
+SNYS10    Sunnyvale Shelter 10
+#
+# Plus the 10 "Tactical Calls for Ad Hoc Use" (SNY001 > SNY010)
+#	
+#
+#Mountain View Tactical Call List
+#Revised: 05 Nov 2016 by Phil Henderson, KF6ZSQ, AEC
+#
+MTVEOC	Mtn. View Emergency Operations Ctr
+MTVMOC	Mtn. View Municipal Operations Ctr
+MTVPUB	Mtn. View Public Works Branch
+MTVOPS	Mtn. View Operations Section
+MTVFIR	Mtn. View Fire Branch
+MTVLAW	Mtn. View Law Branch
+MTVPLN	Mtn. View Planning Section
+MTVLOG	Mtn. View Logistics Section
+#
+MTVAPK	Ada Park CERT
+MTVATA	Appletree Area CERT
+MTVCPK	Cuesta Park CERT
+MTVCPR	Cooper Neighborhood CERT
+MTVGPK	Gemello Park CERT
+MTVGSA	Greater San Antonio CERT
+MTVMLN	Monta Loma CERT
+MTVMVG	Mountain View Gardens CERT
+MTVNWA	North Whisman CERT
+MTVOMV	Old Mtn. View CERT
+MTVREX	Rex Manor CERT
+MTVSFA	Saint Francis Acres CERT
+MTVSLA	Slater CERT
+MTVSLV	Sylvan Park CERT
+MTVSMV	South Mtn. View CERT
+MTVVAR	Varsity Park CERT
+MTVWWN	Wagon Wheel CERT
+#
+MTVMLA	Mtn. View-Los Altos H.S. Dist.
+MTVMVW	Mtn. View-Whisman School Dist.
+#
+MTVEVC	Mtn. View Emergent Volunteer Ctr.
+MTVSEN	Mtn. View Senior Ctr.
+MTVCOM	Mtn. View Community Ctr.
+
+MTVYMC	Mtn. View YMCA
+MTVGMS	Graham Middle School
+MTVCMS	Crittenden Middle School
+#
+MTVFS1	MTV Fire Sta. 1
+MTVFS2	MTV Fire Sta. 2
+MTVFS3	MTV Fire Sta. 3
+MTVFS4	MTV Fire Sta. 4
+MTVFS5	MTV Fire Sta. 5
+#
+MTVPAV	Mtn. View Sports Pavilian
+MTVWSC	Whisman Sports Center
+MTVSHR	Shoreline Park & Amphitheater
+#
+MTVWS1	Windshield 1
+MTVWS2	Windshield 2
+MTVWS3	Windshield 3
+#
+#MTV001 thru MTV010 also permissible
+#
+# Cupertino Tactical Calls
+# 07-Jan-2016
+#
+# Cupertino OES
+CUPCCC	Cupertino Citizen Corps
+CUPDPW	Cupertino Corp Yard
+CUPEOC	Cupertino EOC
+CUPOPS	Field Ops
+#
+# Parks and Rec
+CUPBBF	Cupertino Blackberry Farm
+CUPCRE	Creekside Park
+CUPJOL	Jollyman Park
+CUPMEM	Memorial Park
+CUPPOR	Portal Park
+CUPQLN	Quinlan Center/Shelter
+CUPSEN	Senior Center
+#
+# Arks
+CUPDZA	DeAnza College Ark
+CUPGGA	Garden Gate Ark
+CUPHYA	Hyde Middle School Ark
+CUPLSA	Lawson School Ark
+CUPMBA	Montebello Ridge Ark
+CUPMVA	Monta Vista Ark
+CUPRSA	Regnart School Ark
+CUPSCA	Stevens Canyon Ark
+#
+# Public Safety
+CUPCSO	County SO West Side Station
+#
+# Local Services
+CUPMED	Cupertino Medical Center
+CUPSAN	Cupertino Sanitary District (MOU)
+CUPWVS	West Valley Service Center
+#
+# City of Palo Alto Tactical Call List
+# Revised: 30-Jan-2014 by Paul Lufkin, K6PML, AEC
+# 
+# Ad hoc Tactical Calls pre-configured by Outpost, listed here as a reminder
+# PAF001
+# PAF002
+# PAF003
+# PAF004
+# PAF005
+# PAF006
+# PAF007
+# PAF008
+# PAF009
+# PAF010
+
+#Auxiliary Command 
+PAFOES	Palo Alto Office of Emergency Services (OES) 
+PAFMOC	Palo Alto Mobile Operations Center
+PAFDOC	Palo Alto Emergency Services Volunteer Division Operations Center
+#
+#   Tactical calls for Packet Net Operations
+#   Revised:  16-Dec-2013 by Michael Fox, N6MEF
+#
+PKTMON	Packet Net Check-in for Monday Nights
+PKTTUE	Packet Net Check-in for Tuesday Nights
+PKTEST	Packet Net Check-in Testing
+#
+PKTPNG	Packet Pinghosts Utility
+#
+# San Jose Tactical Call List Version 2
+# updated/revised: 20-Feb-2014 by Chris Swartout, N6WCP
+#
+SJCEOC	San Jose Emergency Operations Center
+SJCPKT	San Jose Packet NET Checkins
+SJCBFO	San Jose Battalion Field Operations
+SJCCNX	San Jose Connex (RACES Logistics Site)
+SJCCSH	San Jose Communications Shelter
+#
+# Fire Stations
+#
+SJCF01	San Jose Fire Station 1
+SJCF02	San Jose Fire Station 2
+SJCF03	San Jose Fire Station 3
+SJCF04	San Jose Fire Station 4
+SJCF05	San Jose Fire Station 5
+SJCF06	San Jose Fire Station 6
+SJCF07	San Jose Fire Station 7
+SJCF08	San Jose Fire Station 8
+SJCF09	San Jose Fire Station 9
+SJCF10	San Jose Fire Station 10
+SJCF11	San Jose Fire Station 11
+SJCF12	San Jose Fire Station 12
+SJCF13	San Jose Fire Station 13
+SJCF14	San Jose Fire Station 14
+SJCF15	San Jose Fire Station 15
+SJCF16	San Jose Fire Station 16
+SJCF17	San Jose Fire Station 17
+SJCF18	San Jose Fire Station 18
+SJCF19	San Jose Fire Station 19
+SJCF20	San Jose Fire Station 20
+SJCF21	San Jose Fire Station 21
+SJCF22	San Jose Fire Station 22
+SJCF23	San Jose Fire Station 23
+SJCF24	San Jose Fire Station 24
+SJCF25	San Jose Fire Station 25
+SJCF26	San Jose Fire Station 26
+SJCF27	San Jose Fire Station 27
+SJCF28	San Jose Fire Station 28
+SJCF29	San Jose Fire Station 29
+SJCF30	San Jose Fire Station 30
+SJCF31	San Jose Fire Station 31
+SJCF32	San Jose Fire Station 32
+SJCF33	San Jose Fire Station 33 (currently closed)
+SJCF34	San Jose Fire Station 34
+SJCF35	San Jose Fire Station 35
+SJCF36	San Jose Fire Station 36
+#
+# Community Centers
+#
+SJCC01	San Jose Almaden Community Center
+SJCC02	San Jose Bascom Community Center
+SJCC03	San Jose Berryessa Community Center
+SJCC04	San Jose Camden Community Center
+SJCC05	San Jose Cypress Community Center
+SJCC06	San Jose Evergreen Community Center
+SJCC07	San Jose Grace Community Center
+SJCC08	San Jose Mayfair Community Center
+SJCC09	San Jose Roosevelt Community Center
+SJCC10	San Jose Seven Trees Community Center
+SJCC11	San Jose Southside Community Center
+SJCC12	San Jose Willow Glen Community Center
+SJCC13	San Jose Future Community Center 01
+SJCC14	San Jose Future Community Center 02
+#
+# Responders
+#
+SJCR01	San Jose Responder 01
+SJCR02	San Jose Responder 02
+SJCR03	San Jose Responder 03
+SJCR04	San Jose Responder 04
+SJCR05	San Jose Responder 05
+SJCR06	San Jose Responder 06
+SJCR07	San Jose Responder 07
+SJCR08	San Jose Responder 08
+SJCR09	San Jose Responder 09
+SJCR10	San Jose Responder 10
+SJCR11	San Jose Responder 11
+SJCR12	San Jose Responder 12
+SJCR13	San Jose Responder 13
+SJCR14	San Jose Responder 14
+SJCR15	San Jose Responder 15
+SJCR16	San Jose Responder 16
+SJCR17	San Jose Responder 17
+SJCR18	San Jose Responder 18
+SJCR19	San Jose Responder 19
+SJCR20	San Jose Responder 20
+#
+# Shelters
+#
+SJCS01	San Jose Shelter 01
+SJCS02	San Jose Shelter 02
+SJCS03	San Jose Shelter 03
+SJCS04	San Jose Shelter 04
+SJCS05	San Jose Shelter 05
+SJCS06	San Jose Shelter 06
+SJCS07	San Jose Shelter 07
+SJCS08	San Jose Shelter 08
+SJCS09	San Jose Shelter 09
+SJCS10	San Jose Shelter 10
+SJCS11	San Jose Shelter 11
+SJCS12	San Jose Shelter 12
+SJCS13	San Jose Shelter 13
+SJCS14	San Jose Shelter 14
+SJCS15	San Jose Shelter 15
+SJCS16	San Jose Shelter 16
+SJCS17	San Jose Shelter 17
+SJCS18	San Jose Shelter 18
+SJCS19	San Jose Shelter 19
+SJCS20	San Jose Shelter 20
+SJCS21	San Jose Shelter 21
+SJCS22	San Jose Shelter 22
+SJCS23	San Jose Shelter 23
+SJCS24	San Jose Shelter 24
+SJCS25	San Jose Shelter 25
+#
+# Plus the 10 "Tactical Calls for Ad Hoc Use" (SJC001 > SJC010)
+#	
+#
+# Tactical calls for ARC - American Red Cross
+#
+# George Williams - N6NKT
+#
+# History Log
+#	29-Feb-16	Update file to include History Log
+#			Change ECO to EOC for Regional Tactical call
+#			Add 100 to all shelters tactical calls
+#			Add 1 to HQ tact call to be inline with Shelter tactical calls
+#
+#	2-Mar-16	Removed all reference to San Mateo County tactical call
+#			per packet/Outpost Leadership
+#
+
+ARCEOC	ARC Regional EOC - San Jose	Most often will be co-located at San Jose ARC office
+
+#
+#  ARC Santa Clara County
+#
+ARCHQ1	ARC - San Jose			San Jose ARC EOC
+ARC101	ARC Shelter 01 - SCC		Somewhere within Santa Clara County
+ARC102	ARC Shelter 02 - SCC
+ARC103	ARC Shelter 03 - SCC
+ARC104	ARC Shelter 04 - SCC
+ARC105 	ARC Shelter 05 - SCC
+ARC106 	ARC Shelter 06 - SCC
+ARC107 	ARC Shelter 07 - SCC
+ARC108 	ARC Shelter 08 - SCC
+ARC109	ARC Shelter 09 - SCC
+ARC110	ARC Shelter 10 - SCC
+ARC199	San Jose HQ Remote Test Packet Station
+
+
+#Gilroy Tactical Call List
+#
+#Prepared by Dana Timbrook AEC; reviewed by Pat Moore EC 4/6/14
+#
+#	Community shelters will be assigned locations as address information becomes available.
+#
+#Public safety
+#
+GILFSC	GILROY FIRE STATION CHESTNUT
+GILFSA	GILROY FIRE STATION LAS ANIMAS
+GILFSS	GILROY FIRE STATION SUNRISE
+GILFSM	GILROY FIRE STATION MESA
+#
+#Schools
+#
+GILHSG	GILROY HIGH SCHOOL GILROY
+GILHSC	GILROY HIGH SCHOOL CHRISTOPHER
+#
+GILMSS	GILROY MIDDLE SCHOOL ASCENCION SOLORSANO
+GILMSB	GILROY MIDDLE SCHOOL BROWNELL
+GILMSV	GILROY MIDDLE SCHOOL SOUTH VALLEY
+#
+GILESB	GILROY ELEMENTARY SCHOOL ANTONIO DEL BUONO
+GILESR	GILROY ELEMENTARY SCHOOL EL ROBLE
+GILESE	GILROY ELEMENTARY SCHOOL ELIOT
+GILESG	GILROY ELEMENTARY SCHOOL GLEN VIEW
+GILESL	GILROY ELEMENTARY SCHOOL LAS ANIMAS
+GILESA	GILROY ELEMENTARY SCHOOL LUIGI APREA
+GILESK	GILROY ELEMENTARY SCHOOL ROD KELLEY
+GILESS	GILROY ELEMENTARY SCHOOL RUCKER
+#
+GILCCG	GILROY COMMUNITY COLLEGE GAVILAN
+#
+#Shelters
+#
+GILCS1	GILROY COMMUNITY SHELTER 1
+GILCS2	GILROY COMMUNITY SHELTER 2
+GILCS3	GILROY COMMUNITY SHELTER 3
+GILCS4	GILROY COMMUNITY SHELTER 4
+GILCS5	GILROY COMMUNITY SHELTER 5
+GILCS6	GILROY COMMUNITY SHELTER 6
+GILCS7	GILROY COMMUNITY SHELTER 7
+GILCS8	GILROY COMMUNITY SHELTER 8
+#
+#Medical (in addition to St Louise Hospital HOSSLH)
+#
+GILMCV	GILROY MEDICAL CLINIC VALLEY HEALTH CENTER
+GILMCK	GILROY MEDICAL CLINIC KAISER
+# 
+#Mobile Units
+#
+GILMU1	GILROY MOBILE UNIT 1
+GILMU2	GILROY MOBILE UNIT 2
+GILMU3	GILROY MOBILE UNIT 3
+#
+#
+# Cal-Fire VIPs Tactical Call List (Morgan Hill Cal-Fire Hqs).
+# Created:	20-Feb-2011 by Bob Gundrum
+#
+# SCU (Santa Clara Unit - Cal-Fire Morgan Hill)
+SCUCIC	SCU VIP Communications Information Center
+SCUVAN	SCU VIP Communications Van 1629
+#
+# Other Locations
+SCUV01	SCU VIP #1
+SCUV02	SCU VIP #2
+SCUV03	SCU VIP #3
+SCUV04	SCU VIP #4
+SCUV05	SCU VIP #5
+#
+# City of Santa Clara Tactical Call List 1.2
+# Created: 17-Jan-2011 by Bill Rainey, K6WAR
+# Revision: pending approval
+#
+# Fire Department Stations
+#
+SNCF01	Santa Clara Fire Station 1	
+SNCF02	Santa Clara Fire Station 2	
+SNCF03	Santa Clara Fire Station 3	
+SNCF04	Santa Clara Fire Station 4	
+SNCF05	Santa Clara Fire Station 5	
+SNCF06	Santa Clara Fire Station 6	
+SNCF07	Santa Clara Fire Station 7	
+SNCF08	Santa Clara Fire Station 8	
+SNCF09	Santa Clara Fire Station 9	
+SNCF10	Santa Clara Fire Station 10	
+#
+# Emergency Shelters 
+#
+SNCCRC	Santa Clara Community Recreation Center
+SNCYAC	Santa Clara Youth Activity Center
+SNCSNR	Santa Clara Senior Center
+#
+# SCCo Hospitals Packet Tactical Call Signs
+# Revised: 13-Jan-2015 by Michael Fox, N6MEF
+#
+HOSDOC	SCCo Hospitals DEOC
+#
+HOSECL	El Camino Hospital Los Gatos
+HOSECM	El Camino Hospital Mountain View
+HOSGSH	Good Samaritan Hospital (San Jose)
+HOSKSJ	Kaiser Permanente San Jose Medical Center 
+HOSKSC	Kaiser Permanente Santa Clara Medical Center
+HOSLPC	Lucile Packard Children's Hospital (Palo Alto)
+HOSOCH	O'Connor Hospital (San Jose)
+HOSPAV	Palo Alto Veterans Hospital
+HOSRSJ	Regional Medical Center San Jose
+HOSSLH	Saint Louise Regional Hospital (Gilroy)
+HOSVMC	Santa Clara Valley Medical Center (San Jose)
+HOSSUH	Stanford University Medical Center (Palo Alto)
+HOSSOM	Stanford University School Of Medicine (Palo Alto)
+#
+# HOS001 - HOS010 are also available for ad hoc needs
+#
+# 
+# Milpitas Packet Tactical Call List 
+# Revised: 25-July-2016 by Tim Howard
+# 
+#  MLPEOC   	Milpitas Emergency Operations Center
+#  XSCLMI  	Milpitas Public Library 
+#
+MLPFS1		Milpitas Fire Station 1 
+MLPFS2		Milpitas Fire Station 2 
+MLPFS3		Milpitas Fire Station 3
+MLPFS4		Milpitas Fire Station 4
+MLPOCV		Milpitas OES Communications Van
+MLPPCV		Milpitas Police Command Van
+MLPFCV		Milpitas Fire Incident Command Van
+MLPSH1		Milpitas Shelter 1 (Sports Center)
+MLPSH2		Milpitas Shelter 2 (High School)
+MLPMCH		Milpitas City Hall
+MLPMSC		Milpitas Senior Center
+MLPMCC		Milpitas Community Center
+MLPUSD		Milpitas Unified School District Office
+# 	CERT TEAMS
+MLPSF1		SAFE Team 1
+MLPSF2		SAFE Team 2
+MLPSF3		SAFE Team 3
+MLPSF4		SAFE Team 4
+MLPSF5		SAFE Team 5
+MLPSF6		SAFE Team 6
+MLPSF7		SAFE Team 7
+MLPSF8		SAFE Team 8
+
+#
+# SCCo ARES-RACES Emergency Packet Network
+# Packet Tactical Call Signs
+# Towns of Los Gatos & Monte Sereno
+#
+# Rev 0 - by Matthew Hudes - nn/nn/2015 original list of locations needing to be staffed by LG/MS ARES-RACES 
+# Rev 1 - by Peter Hertan  - 08/18/2016 expanded list from Rev 0
+# Rev 2 - by Peter Hertan  - 08/19/2016 
+# Rev 3 - by Peter Hertan  - 08/20/2016 
+# Rev 4 - by Peter Hertan  - 08/21/2016 added LGTNTT (The Terraces NICP)
+# Rev 5 - by Peter Hertan  - 08/21/2016 removed use of # within CPOD Tac Calls
+# Rev 6 - by Peter Hertan  - 08/22/2016 removed use of lower case "n" within CPOD Tac Calls
+# Rev 7 - by Peter Hertan  - 08/22/2016 replaced LGTHEC with LGT9EH, and LGTFxx with LFT9xx
+# Rev 8 - by Peter Hertan  - 08/26/2016 non-LGT prefixed Tac Calls are now #commented
+# ...
+# Rev N - by Patrick Dirks - 09/01/2016 tbd
+#
+# Emergency Management
+LGTEOC	LG/MS Emergency Operations Center @ POB - 15900 LGB
+LGTECA	LG/MS Alternate Emergency Operations Center @ LG Adult Rec Center - 208 E. Main St
+#
+# Public Safety
+LGTPHQ	LG/MS Police HQ @ 110 E. Main St
+#
+# 911 Access
+LGT9EH	El Camino Hospital Los Gatos @ 815 Pollard Rd (911 Access in the Hospital parking lot)
+LGT9SF	Shannon Rd County Fire Station - 911 Access @ 16565 Shannon Rd, Los Gatos
+LGT9UF	University Ave County Fire Station - 911 Access @ 306 University Ave, Los Gatos
+LGT9RF	Redwood Estates County Fire Station - 911 Access @ 21452 Madrone Dr, Redwood Estates
+LGT9WF	Winchester Blvd County Fire Station - 911 Access @ 14850 Winchester Blvd, Los Gatos
+#
+# Hospitals
+# HOSECL  El Camino Hospital Los Gatos (within the Hospital for medical operations on HospitalNet) @ 815 Pollard Rd
+#
+# Fire Stations (County Fire)
+# XSCF82  SCCo Fire Station 82 - Shannon (County Fire radio) @ 16565 Shannon Rd, Los Gatos
+# XSCF83  SCCo Fire Station 83 - Los Gatos (County Fire radio) @ 306 University Ave, Los Gatos
+# XSCF84  SCCo Fire Station 84 - Redwood (County Fire radio) @ 21452 Madrone Dr, Redwood Estates
+# XSCF85  SCCo Fire Station 85 - Winchester (County Fire radio) @ 14850 Winchester Blvd, Los Gatos
+#
+# Red Cross Operated Shelters (LG/MS ARES-RACES communicators)
+LGTXHS	Red Cross Shelter @ LG High School - 20 High School Ct
+LGTXJC  Red Cross Shelter @ JCC - 14855 Oka Rd
+LGTXLD	Red Cross Shelter @ LDS Church - 15985 Rose Ave
+#
+# LG K-8 Schools (do not have Red Cross Shelters)
+LGTSED	LG Union School District HQ @ 17010 Roberts Rd (has own Public Safety Radio gear)
+LGTSVM	Van Meter School @ 16445 Los Gatos Blvd
+LGTSBH	Blossom Hill School @ 16400 Blossom Hill Rd
+LGTSFM	Fisher Middle School @ 19195 Fisher Ave
+LGTSHA	Hillbrook Ave School @ 300 Marchmont Dr
+LGTSLX	Lexington Elementary School @ 19700 Santa Cruz Hwy
+#
+# Existing CERT Neighborhood Incident Command Posts
+LGTNBW	Belwood NICP @ the North edge of the Belwood Cabana Club - 100 Belwood Gateway
+LGTNNS	North Santa Cruz NICP @ the NE corner of the Daves Ave School - 17770 Daves Ave
+LGTNKN	Kennedy North NICP @ the SE corner of the Shannon FS - 16565 Shannon Rd
+LGTNTT	The Terraces NICP @ 800 Blossom Hill Rd
+LGTNRC	Rinconada NICP @ Buzz Johnson's yard on Old Adobe Rd - tba
+LGTNVM	Vista Del Monte NICP @ xxx yard on LG Blvd & Stacia St - tba
+LGTNLA	LG Almaden NICP @ Mission Oaks Hospital - 15891 Los Gatos Almaden Rd
+LGTNCC	Civic Center NICP @ St. Marys School - 219 Bean Ave
+#
+# Future CERT Neighborhood Incident Command Posts
+LGTNVS	Vasona NICP (nr Netflix) @ tbd
+LGTNDT	Downtown/Almond Grove NICP @ tbd 	
+LGTNBH	Blossom Hill/Shannon NICP @ tbd
+LGTNKE	Kennedy East NICP @ tbd
+LGTNMS	Monte Sereno East NICP @ tbd
+LGTNSR	Santa Rosa/Hicks NICP @ tbd
+#
+# Religious Affilitated Institutions
+LGTRCB	Calvary Baptist Church @ 16330 Los Gatos Blvd
+LGTRSH	Congregation Shir Hadash @ 20 Cherry Blossom Ln
+LGTRSM	St Mary's Church @ 219 Bean Ave
+LGTRLS	LDS Church @ 15985 Rose Ave
+#
+# County Health Dept Community Points of Distribution
+LGTDN1	CPOD #1 @ JCC - 14855 Oka Rd
+LGTDN2	CPOD #2 @ Calvary Baptist Church - 16330 Los Gatos Blvd
+LGTDN3	CPOD #3 @ (location, if exists) - tbd
+LGTDN4	CPOD #4 @ (location, if exists) - tbd
+#
+# Other Town Locations
+LGTTYD	Town Yard @ 41 Miles Ave
+#
+# Ad Hoc calls (LGT0nn reserved for Ad Hoc use)
+LGT001
+LGT002
+LGT003
+LGT004
+LGT005
+LGT006
+LGT007
+LGT008
+LGT009
+LGT010
+#
+#
+#   Tactical calls for Los Altos Packet
+#   3 May 2016 Jim Clark
+#
+LOSEOC	Los Altos	EOC
+LOSPD1	Los Altos 	Police Station
+LOSRC1	Los Altos	Red Cross COOP @ Los Altos Christian School
+LOSESD	Los Altos	Elementary School District Office
+LOSHS1	Los Altos	High School
+LOSLOG	Los Altos	ICS Logistics @ Recreation Department
+LOSPKT  Los Altos       Monday Night Packet Check-ins (local)
+#
+# Tactical calls for reporting zones.  Notice the "Z" in the 4th position.
+LOSZ01  Los Altos       Zone 1 EIRS station
+LOSZ02  Los Altos       Zone 2 EIRS Station
+LOSZ03  Los Altos       Zone 3 EIRS station
+LOSZ04  Los Altos       Zone 4 EIRS Station
+LOSZ05  Los Altos       Zone 5 EIRS station
+LOSZ06  Los Altos       Zone 6 EIRS Station
+LOSZ07  Los Altos       Zone 7 EIRS station
+LOSZ08  Los Altos       Zone 8 EIRS Station
+LOSZ09  Los Altos       Zone 9 EIRS station
+LOSZ10  Los Altos       Zone 10 EIRS Station
+LOSZ11  Los Altos       Zone 11 EIRS station
+LOSZ12  Los Altos       Zone 12 EIRS Station
+LOSZ13  Los Altos       Zone 13 EIRS station
+LOSZ14  Los Altos       Zone 14 EIRS Station
+#
+# And the 10 ad hoc/general purpose calls of LOS001 - LOS010
+#
+LAHARK Los Altos Hills ARK
+# Santa Clara County ARES/RACES Data Network Tactical Call List
+# Updated/Revised: 01-Sep-2016 by Michael Fox, N6MEF
+
+# IMPORTANT:  Post a copy of this file in your radio room and retain a copy on
+# your packet computer.  The suggested location is the Outpost Archive folder.
+
+# Santa Clara County OES
+#XSCEOC SCCo Emergency Operations Center   55 W Younger Ave, San Jose
+
+# Santa Clara County ARES/RACES/ACS
+XSCRCT  SCCo RACES Communications Trailer
+
+# Santa Clara County Communications
+XSCCCC  SCCo Communications Center         2700 Carol Dr, San Jose
+XSCCIT  SCCo Communications Interoperability Trailer
+
+# Santa Clara County Fire Department
+XSCFHQ  SCCo Fire Headquarters             14700 Winchester Blvd, Los Gatos
+XSCF70  SCCo Fire Station 70 (expansion)
+XSCF71  SCCo Fire Station 71 (Cupertino)   20215 Stevens Creek Blvd, Cupertino
+XSCF72  SCCo Fire Station 72 (Seven Springs) 21000 Seven Springs Pkwy, Cupertino
+XSCF73  SCCo Fire Station 73 (Saratoga)    14380 Saratoga Ave, Saratoga
+XSCF74  SCCo Fire Station 74 (El Monte)    12355 El Monte Rd, Los Altos Hills
+XSCF75  SCCo Fire Station 75 (Los Altos)   10 Almond Ave, Los Altos
+XSCF76  SCCo Fire Station 76 (Loyola)      765 Fremont Ave, Los Altos
+XSCF77  SCCo Fire Station 77 (Monta Vista) 22620 Stevens Creek Blvd, Cupertino
+XSCF78  SCCo Fire Station 78 (Quito)       8870 Saratoga/Los Gatos Rd, Los Gatos
+XSCF79  SCCo Fire Station 79 (West Valley) 19800 Cox Ave, Saratoga
+XSCF80  SCCo Fire Station 80 (Sunnyoaks)   485 West Sunnyoaks Ave, Campbell
+XSCF81  SCCo Fire Station 81 (Campbell)    123 Union Ave, Campbell
+XSCF82  SCCo Fire Station 82 (Shannon)     16565 Shannon Rd, Los Gatos
+XSCF83  SCCo Fire Station 83 (Los Gatos)   306 University Ave, Los Gatos
+XSCF84  SCCo Fire Station 84 (Redwood)     21452 Madrone Dr, Redwood Estates
+XSCF85  SCCo Fire Station 85 (Winchester)  14850 Winchester Blvd, Los Gatos  
+
+# Santa Clara County Airports
+XSCARH  Reid-Hillview Airport - San Jose     2500 Cunningham Ave, San Jose
+XSCAPA  Palo Alto Airport     - Palo Alto    1925 Embarcadero Rd, Palo Alto
+XSCASC  South County Airport  - San Martin   13030 Murphy Ave, San Martin
+
+# Santa Clara County Libraries
+XSCLCA  SCCo Library - Campbell       77 Harrison Ave, Campbell
+XSCLCU  SCCo Library - Cupertino      10800 Torre Ave, Cupertino
+XSCLGI  SCCo Library - Gilroy         350 W. Sixth Street, Gilroy
+XSCLLA  SCCo Library - Los Altos      13 S. San Antonio Rd, Los Altos
+XSCLMI  SCCo Library - Milpitas       160 North Main Street, Milpitas
+XSCLMH  SCCo Library - Morgan Hill    660 West Main Ave, Morgan Hill
+XSCLSA  SCCo Library - Saratoga       13650 Saratoga Ave, Saratoga
+XSCLWL  SCCo Library - Woodland       1975 Grant Road, Los Altos
+
+# Santa Clara County Parks
+XSCPAQ  SCCo Park - Almaden Quicksilver      21785 Alamden Rd, San Jose
+XSCPAV  SCCo Park - Alviso Marina            1195 Hope Street, San Jose
+XSCPAL  SCCo Park - Anderson Lake            19245 Malaguerra Ave, Morgan Hill
+XSCPCL  SCCo Park - Calero                   23205 McKean Rd, San Jose
+XSCPCR  SCCo Park - Chesbro Reservoir        17655 Oak Glen Ave, Morgan Hill
+XSCPCA  SCCo Park - Chitactac-Adams          10001 Watsonville Rd, Gilroy
+XSCPCC  SCCo Park - Coyote Creek Parkway     (See Hellyer or Anderson Lake) 
+XSCPCH  SCCo Park - Coyote Lake-Harvey Bear Ranch  10840 Coyote Res. Rd, Gilroy
+XSCPEL  SCCo Park - Ed R. Levin              3100 Calaveras Rd, Milpitas
+XSCPFS  SCCo Park - Field Sports             9580 Malech Rd, San Jose
+XSCPHL  SCCo Park - Hellyer                  985 Hellyer Ave, San Jose
+XSCPJG  SCCo Park - Joseph D. Grant          18405 Mt Hamilton Rd, San Jose
+XSCPLR  SCCo Park - Lexington Reservoir      17770 Alma Bridge Rd, Los Gatos
+XSCPLG  SCCo Park - Los Gatos Creek          1250 Dell Ave, Campbell
+XSCPMC  SCCo Park - Martial Cottle           5283 Snell Ave, San Jose
+XSCPMO  SCCo Park - Motorcycle               300 Metcalf Rd, San Jose
+XSCPMM  SCCo Park - Mount Madonna            7850 Pole Line Rd, Watsonville
+XSCPPC  SCCo Park - Penitencia Creek         Mabury & Jackson Ave, San Jose
+XSCPRS  SCCo Park - Rancho San Antonio       22500 Cristo Rey Dr, Cupertino
+XSCPSA  SCCo Park - Sanborn                  16055 Sanborn Rd, Saratoga
+XSCPST  SCCo Park - Santa Teresa             260 Bernal Rd, San Jose
+XSCPSC  SCCo Park - Stevens Creek            11401 Stevens Canyon Rd, Cupertino
+XSCPSB  SCCo Park - Sunnyvale Baylands       999 E Caribbean Dr, Sunnyvale
+XSCPUS  SCCo Park - Upper Stevens Creek      Skyline Blvd, Palo Alto
+XSCPUC  SCCo Park - Uvas Canyon              8515 Croy Rd, Morgan Hill
+XSCPUR  SCCo Park - Uvas Reservoir           14200 Uvas Rd, Morgan Hill
+XSCPVA  SCCo Park - Vasona                   333 Blossom Hill Rd, Los Gatos
+XSCPVM  SCCo Park - Villa Montalvo           15400 Montalvo Rd, Saratoga
+
+# Plus 10 Tactical Calls for Ad Hoc Use:  XSC001 - XSC010
+#
+# Campbell Tactical Call List
+# Revised:  16 March 2016 by Barton Smith N6HDN
+#
+CBLSSV	Campbell ARES Shift Supervisor
+CBLEC1	Campbell Emergency Coordinator
+CBLAEC	Campbell Assistant Emergency Coordinator
+CBLACP	Campbell Alternate Command Post
+CBLSH1	Shelter in Campbell
+CBLSH2	Shelter in Campbell
+CBLCRT	Campbell CERT
+CBLMCP	Campbell Mobile Command Post
+CBLCCC	Campbell Community Center CERT
+CBLCVE	Campbell Village CERT
+CBLDWN	Downtown CERT
+CBLHCA	Hacienda CERT
+CBLHPK	Hamann Park CERT
+CBLHZD	Hazelwood CERT
+CBLMPK	Morgan Park CERT
+CBLPDC	Pruneyard Dry Creek CERT
+CBLSTS	San Tomas CERT
+CBLSTA	San Tomas Aquino CERT
+CBLSTW	San Tomas West CERT
+CBLUAV	Union Avenue CERT
+CBLWOK	White Oak CERT
