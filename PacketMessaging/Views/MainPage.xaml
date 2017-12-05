@@ -18,7 +18,7 @@
 		<converters:AreaConverter x:Key="Converter1"/>
 		<converters:DateTimeConverter x:Key="DatetimeConverter"/>
 
-		<CollectionViewSource x:Name="listViewProperties"  IsSourceGrouped="False" />
+		<!--<CollectionViewSource x:Name="listViewProperties"  IsSourceGrouped="False" />-->
 		<CollectionViewSource x:Name="messageFolderCollection" IsSourceGrouped="False"/>
 		<CollectionViewSource x:Name="viewColumnsDeleted" IsSourceGrouped="False"/>
 
@@ -202,8 +202,6 @@
             </controls:PageHeader.SecondaryCommands>-->
 
         </controls:PageHeader>
-
-        <!--<CheckBox x:Name="sortOrder" Visibility="Collapsed" IsChecked="{Binding SortOrder}"/>-->
         
         <Pivot x:Name="MyPivot" 
                RelativePanel.AlignBottomWithPanel="True"
@@ -217,7 +215,7 @@
 
 			<!--  Inbox  -->
             <PivotItem x:Name="InBox"  Header="Inbox" >
-				<ScrollViewer HorizontalContentAlignment="Left"
+				<ScrollViewer HorizontalContentAlignment="Left" Margin="0,0,0,48"
                               VerticalScrollBarVisibility="Auto" >
                     <StackPanel>
                         <Grid x:Name="InBoxListViewHeader" Margin="12,0,12,0" >
@@ -259,7 +257,6 @@
                             <Border Grid.Column="8" BorderBrush="Black" BorderThickness="0,1,1,1">
                                 <TextBlock Grid.Column="8" Text="Size" FontSize="17" Padding="0,5,0,0" HorizontalAlignment="Center" DoubleTapped="TextBlock_DoubleTapped" />
                             </Border>
-
 
                             <!--Column Grid Splitter-->
                             <localControls:GridSplitter
@@ -337,12 +334,12 @@
                                 />
                         </Grid>
 
-                        <ListView x:Name="listViewInBox" 
-							  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
-                              ItemTemplate="{StaticResource InboxListViewTemplate}"
-                              SelectionMode="Extended" 
-							  DoubleTapped="ListBox_DoubleTapped" 
-							  SelectionChanged="ListView_SelectionChanged" >
+                        <ListView x:Name="listViewInBox" Margin="0,0,0,76" 
+							      ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
+                                  ItemTemplate="{StaticResource InboxListViewTemplate}"
+                                  SelectionMode="Extended" 
+							      DoubleTapped="ListBox_DoubleTapped" 
+							      SelectionChanged="ListView_SelectionChanged" >
                         <!--<ListView.Header>
                             <Grid x:Name="InBoxListViewHeader" Margin="12,0,12,0" PointerExited="ListViewHeader_PointerExited">
                                 <Grid.ColumnDefinitions>

@@ -24,7 +24,6 @@ using Windows.Media.Ocr;
 using Windows.Graphics.Imaging;
 using Windows.Globalization;
 using System.Text;
-using PacketMessaging.Models;
 
 namespace PacketMessaging.Models
 {
@@ -111,14 +110,11 @@ namespace PacketMessaging.Models
 
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    //[System.SerializableAttribute()]
     //[System.Diagnostics.DebuggerStepThroughAttribute()]
-    //[System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
     public partial class TacticalCallsigns
     {
-        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static ILogger log = LogManagerFactory.DefaultLogManager.GetLogger<TacticalCallsigns>();
 
 		private static string TactiCallsMasterFileName = "Tactical_Calls.txt";
@@ -214,23 +210,6 @@ namespace PacketMessaging.Models
 					if (tacticalCallsignData.RawDataFileName == "Tactical_Calls.txt")
 					{
 						tacticalCallsigns = await GetTacticalCallsfromMasterFile(tacticalCallsignData);
-						//IStorageItem tactiCallsMasterFile = await localFolder.TryGetItemAsync(TactiCallsMasterFileName);
-						//if (tactiCallsMasterFile == null)
-						//{
-						//	// Copy from install folder
-						//	var folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
-						//	var storageFile = await folder.TryGetItemAsync(TactiCallsMasterFileName);
-						//	if (storageFile != null)
-						//	{
-						//		await ((StorageFile)storageFile).CopyAsync(localFolder, TactiCallsMasterFileName, Windows.Storage.NameCollisionOption.ReplaceExisting);
-						//		tactiCallsMasterFile = await localFolder.TryGetItemAsync(TactiCallsMasterFileName);
-						//	}
-						//	else
-						//	{
-						//		return null; // Reinstall
-						//	}
-						//}
-						//tacticalCallsigns = await ParseTactiCallsMasterList(tacticalCallsignData);
 					}
 					else
 					{
@@ -251,7 +230,7 @@ namespace PacketMessaging.Models
                             }
                             else
                             {
-
+								return null; // Reinstall
                             }
                         }
                     }

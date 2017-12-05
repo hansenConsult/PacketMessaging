@@ -77,7 +77,7 @@ namespace PacketMessaging.Views
 		ListViewColumns _listViewColumnDefinitionsDrafts;
 		//ListViewColumns _listViewColumDefinitionsArchive;
 		//ListViewColumns _listViewColumnDefinitionsDeleted;
-		string _sortOnPropertyName;
+		//string _sortOnPropertyName;
 		//public SortDirection _sortDirection = SortDirection.Ascending;
 
 		public static MainPage Current;
@@ -184,7 +184,8 @@ namespace PacketMessaging.Views
 
 			AddressBook.Instance.CreateAddressBook();
 
-			ObservableCollection<ColumnDescription> draftsPropertiesList = new ObservableCollection<ColumnDescription>();
+			//ObservableCollection<ColumnDescription> draftsPropertiesList = new ObservableCollection<ColumnDescription>();
+			ObservableCollection<ListViewColumns> draftsPropertiesList = new ObservableCollection<ListViewColumns>();
 
 			if (ListViewParametersArray.Instance.ArrayOfListViewParameters == null)
 			{
@@ -248,7 +249,7 @@ namespace PacketMessaging.Views
 							//_listViewDefinitionsDict.Add(listViewOutBox.Name, new ListViewParameters(listViewOutBox.Name, listViewColumns));
 							break;
 						case "Drafts":
-							listViewParametersArray.ArrayOfListViewParameters[i].PivotListViewName = listViewDrafts.Name;
+							listViewParametersArray.ArrayOfListViewParameters[i].PivotListViewName = listViewDrafts?.Name;
 
 							listViewColumns.ListViewColumnsArray = new ColumnDescription[6];
 							listViewColumns.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("CreateTime");
@@ -301,23 +302,21 @@ namespace PacketMessaging.Views
 
 			_listViewDefinitionsDict = ListViewParametersArray.Instance.BuildDictionary();
 
+			//PacketMessageViewList _packetMessageViewListDrafts;
 
-			_listViewColumnDefinitionsDrafts = new ListViewColumns(6);
-			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("CreateTime");
-			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("Subject");
-			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("MessageNumber");
-			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[3] = ColumnDescription.CreateColumnDescrioption("MessageTo");
-			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[4] = ColumnDescription.CreateColumnDescrioption("MessageFrom");
-			_listViewColumnDefinitionsDrafts.ListViewColumnsArray[5] = ColumnDescription.CreateColumnDescrioption("BBS");
-			//_listViewColumDefinitionsInBox.SortOrder = SortDirection.Ascending;
-			//_listViewColumDefinitionsInBox.SortPropertyName = "CreateTime";
-			//_listViewDefinitionsDict.Add(listViewDrafts.Name, new ListViewParameters(listViewDrafts.Name, _listViewColumnDefinitionsDrafts));
+			//_packetMessageViewListDrafts = new PacketMessageViewList();
+			//_packetMessageViewListDrafts.Add(new CreateTime("120"));
+			//_packetMessageViewListDrafts.Add(new Subject("1*", 60));
+			//_packetMessageViewListDrafts.Add(new MessageNumber("110"));
+			//_packetMessageViewListDrafts.Add(new MessageTo("70"));
+			//_packetMessageViewListDrafts.Add(new MessageFrom("70"));
+			//_packetMessageViewListDrafts.Add(new BBSName("60"));
 
-			foreach (ColumnDescription field in _listViewColumnDefinitionsDrafts.ListViewColumnsArray)
-			{
-				draftsPropertiesList.Add(field);
-			}
-			listViewProperties.Source = draftsPropertiesList;
+			//foreach (Field field in _packetMessageViewListDrafts.MessageViewList)
+			//{
+			//	draftsPropertiesList.Add(field);
+			//}
+			//listViewProperties.Source = draftsPropertiesList;
 
 			if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
 			{
@@ -752,6 +751,9 @@ namespace PacketMessaging.Views
 
 					case "Drafts":
 						_currentListView = listViewDrafts;
+						_listViewDefinitionsDict[_currentListView.Name].ColumnDefinitions.ListViewColumnsArray[1].WidthAsString = "80";
+						CreateListViewHeader(_listViewDefinitionsDict[_currentListView.Name]);
+						await CreateGridItemTemplateAsync(_listViewDefinitionsDict[_currentListView.Name]);
 						break;
 
 					case "Archive":
@@ -864,7 +866,8 @@ namespace PacketMessaging.Views
 		{
 			string selection = e.AddedItems[0] as string;
 			//_sortOnPropertyName = ((ColumnDescription)e.AddedItems[0]).PropertyName as string;
-			_listViewDefinitionsDict[_currentListView.Name].ColumnDefinitions.SortPropertyName = ((ColumnDescription)e.AddedItems[0]).PropertyName as string;
+			if (_currentListView != null)
+				_listViewDefinitionsDict[_currentListView.Name].ColumnDefinitions.SortPropertyName = ((ColumnDescription)e.AddedItems[0]).PropertyName as string;
 			RefreshListView();
 		}
 

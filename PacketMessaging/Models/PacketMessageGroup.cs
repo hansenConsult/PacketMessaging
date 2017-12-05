@@ -102,7 +102,8 @@ namespace PacketMessaging.ViewModels
 		{
 			foreach (ListViewParameters parms in ArrayOfListViewParameters)
 			{
-				_listViewDefinitionsDict.Add(parms.PivotListViewName, parms);
+				if (parms.PivotListViewName != null)
+					_listViewDefinitionsDict.Add(parms.PivotListViewName, parms);
 			}
 			return _listViewDefinitionsDict;
 		}
@@ -256,14 +257,14 @@ rootGrid.Children.Add(lv);
 			set => this.headershortField = value;
 		}
 
-		/// <remarks/>
-		//[System.Xml.Serialization.XmlAttributeAttribute()]
-		[XmlIgnore]
-		public GridLength Width
-		{
-			get => this.widthField;
-			set => this.widthField = value;
-		}
+		///// <remarks/>
+		////[System.Xml.Serialization.XmlAttributeAttribute()]
+		//[XmlIgnore]
+		//public GridLength Width
+		//{
+		//	get => this.widthField;
+		//	set => this.widthField = value;
+		//}
 
 		/// <remarks/>
 		[System.Xml.Serialization.XmlAttributeAttribute()]

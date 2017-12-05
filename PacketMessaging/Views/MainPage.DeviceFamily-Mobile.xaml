@@ -369,8 +369,8 @@
 			<!--  Drafts  -->
 			<PivotItem x:Name="Drafts" 
                        Header="Drafts" Padding="0">
-				<RelativePanel>
-						<RelativePanel x:Name="sortHeaderDrafts"
+				<!--<RelativePanel>-->
+						<!--<RelativePanel x:Name="sortHeaderDrafts"
 									   RelativePanel.AlignLeftWithPanel="True"
 									   RelativePanel.AlignRightWithPanel="True">
 							<ComboBox x:Name="comboBoxSelectListProperty"
@@ -393,18 +393,22 @@
 											PlaceholderText="Search"
 											Margin="0,0,12,0"
 											TextChanged="SearchAutoSelectBox_TextChanged"/>
-						</RelativePanel>
-					<!--<ScrollViewer Margin="0,0,-12,48" VerticalScrollBarVisibility="Auto">-->
-					<!--<ListView x:Name="listViewDrafts"
-								
+						</RelativePanel>-->
+                <ScrollViewer Margin="0,0,0,48" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                    <ListView x:Name="listViewDrafts"
+								ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
 								SelectionMode="Extended" 
 								IsItemClickEnabled="False"
-								ItemTemplate="{StaticResource DraftsListViewTemplate}"
+                              ScrollViewer.HorizontalScrollBarVisibility="Visible"
 								DoubleTapped="ListViewMessages_DoubleTapped" 
-								SelectionChanged="ListViewMessages_SelectionChanged" 
+								SelectionChanged="ListView_SelectionChanged" 
 							  >
-						</ListView>-->
-					<GridView x:Name="GridViewDrafts" 
+                        <ListView.Header>
+                            <Grid Margin="12,0,12,0">
+                            </Grid>
+                        </ListView.Header>
+                    </ListView>
+                    <!--<GridView x:Name="GridViewDrafts" 
 								  ItemsSource="{x:Bind messageFolderCollection.View, Mode=OneWay}"
 								  Margin="0,12,0,48"
 								  RelativePanel.Below="sortHeaderDrafts"
@@ -450,10 +454,10 @@
 							</DataTemplate>
 						</GridView.ItemTemplate>
 							
-					</GridView>
-				</RelativePanel>
-
-			</PivotItem>
+					</GridView>-->
+                    <!--</RelativePanel>-->
+                </ScrollViewer>
+            </PivotItem>
 
 			<!--  Archived Items  -->
 			<PivotItem x:Name="Archive" DataContext="{Binding }" 
