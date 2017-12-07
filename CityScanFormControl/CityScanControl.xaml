@@ -192,7 +192,7 @@
 						<ColumnDefinition Width="1*"/>
 					</Grid.ColumnDefinitions>
 					<StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Width="auto">
-						<TextBlock Text="City:" Foreground="LightSalmon" HorizontalAlignment="Left" Style="{StaticResource ResourceKey=LabelFontTNR12B}" Width="34" VerticalAlignment="Center"/>
+						<TextBlock Text="City of:" Foreground="LightSalmon" HorizontalAlignment="Left" Style="{StaticResource ResourceKey=LabelFontTNR12B}" Width="42" VerticalAlignment="Center"/>
 						<ComboBox x:Name="city" Grid.Column="0" Tag="required" SelectionChanged="city_SelectionChanged" Width="181" >
 						</ComboBox>
 					</StackPanel>

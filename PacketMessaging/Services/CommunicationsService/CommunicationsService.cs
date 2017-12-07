@@ -120,7 +120,7 @@ namespace PacketMessaging.Services.CommunicationsService
 					pktMsg.FormFieldArray = formControl.ConvertFromOutpost(pktMsg.MessageNumber, ref msgLines);
 					pktMsg.ReceivedTime = packetMessageOutpost.ReceivedTime;
 					pktMsg.CreateFileName();
-					string fileFolder = Views.MainPage.receivedMessagesFolder.Path;
+					string fileFolder = Views.MainPage._receivedMessagesFolder.Path;
 					pktMsg.Save(fileFolder);
 
 					//log.Info($"Message number {pktMsg.MessageNumber} received");

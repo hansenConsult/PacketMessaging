@@ -62,7 +62,7 @@ namespace PacketMessaging.Views
 
         public static StorageFolder _unsentMessagesFolder = null;
         public static StorageFolder _sentMessagesFolder = null;
-        public static StorageFolder receivedMessagesFolder = null;
+        public static StorageFolder _receivedMessagesFolder = null;
         public static StorageFolder _draftMessagesFolder = null;
         public static StorageFolder _archivedMessagesFolder = null;
         public static StorageFolder _deletedMessagesFolder = null;
@@ -74,7 +74,7 @@ namespace PacketMessaging.Views
 		//ListViewColumns _listViewColumDefinitionsInBox;
 		//ListViewColumns _listViewColumDefinitionsSent;
 		//ListViewColumns _listViewColumDefinitionsOutBox;
-		ListViewColumns _listViewColumnDefinitionsDrafts;
+		//ListViewColumns _listViewColumnDefinitionsDrafts;
 		//ListViewColumns _listViewColumDefinitionsArchive;
 		//ListViewColumns _listViewColumnDefinitionsDeleted;
 		//string _sortOnPropertyName;
@@ -123,7 +123,7 @@ namespace PacketMessaging.Views
 				switch (item.Name)
 				{
 					case "InBox":
-						item.Tag = receivedMessagesFolder;
+						item.Tag = _receivedMessagesFolder;
 						break;
 					case "Sent":
 						item.Tag = _sentMessagesFolder;
