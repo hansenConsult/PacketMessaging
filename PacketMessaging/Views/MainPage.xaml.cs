@@ -815,7 +815,7 @@ namespace PacketMessaging.Views
                 permanentlyDelete = true;
             }
 
-			List<Object> selectedMessages = null;
+			IList<Object> selectedMessages = null;
 			if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile")
 			{
 				if (pivotItem.Name == "Drafts")
@@ -829,11 +829,11 @@ namespace PacketMessaging.Views
 					}
 				}
 				else
-					selectedMessages = (List<Object>)_currentListView.SelectedItems;
+					selectedMessages = (IList<Object>)_currentListView.SelectedItems;
 			}
 			else
 			{
-				selectedMessages = (List<Object>)_currentListView.SelectedItems;
+				selectedMessages = _currentListView.SelectedItems;
 			}
 			foreach (PacketMessage packetMessage in selectedMessages)
             {

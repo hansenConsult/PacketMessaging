@@ -80,9 +80,41 @@ namespace PacketMessaging.Services.SettingsServices
             get => _helper.Read<bool>(nameof(W5XSCStatusUp), true);
             set => _helper.Write(nameof(W5XSCStatusUp), value);
         }
-#endregion // Settings
-#region Identity
-        public string UserCallsign
+
+		public string MailServer
+		{
+			get => _helper.Read<string>(nameof(MailServer), "");
+			set => _helper.Write(nameof(MailServer), value);
+		}
+
+		public bool IsMailSSL
+		{
+			get => _helper.Read<bool>(nameof(IsMailSSL), false);
+			set => _helper.Write(nameof(IsMailSSL), value);
+		}
+
+		public string MailUserName
+		{
+			get => _helper.Read<string>(nameof(MailUserName), "");
+			set => _helper.Write(nameof(MailUserName), value);
+		}
+
+		public string MailPassword
+		{
+			get => _helper.Read<string>(nameof(MailPassword), "");
+			set => _helper.Write(nameof(MailPassword), value);
+		}
+
+		public string MailPort
+		{
+			get => _helper.Read<string>(nameof(MailPort), "");
+			set => _helper.Write(nameof(MailPort), value);
+		}
+
+
+		#endregion // Settings
+		#region Identity
+		public string UserCallsign
 		{
             get => _helper.Read<string>(nameof(UserCallsign), "");
             set => _helper.Write(nameof(UserCallsign), value.ToString());

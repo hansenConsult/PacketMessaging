@@ -202,7 +202,109 @@ namespace PacketMessaging.ViewModels
                 AddressBook.Instance.UpdateForBBSStatusChange("W5XSC", W5XSCStatusUp);
             }
         }
-    }
+
+		// Outlook.com
+		// HostName : smtp-mail.outlook.com
+		// Port : 587
+		// SSL : No (upgarde ssl after STARTTLS)
+
+		// Gmail.com
+		// HostName : smtp.gmail.com
+		// Port : 465
+		// SSL : Yes
+
+		// Gmail
+		//SmtpClient client = new SmtpClient("smtp.gmail.com", 465, 
+		//                                   "your_mail@gmail.com", "password", true);
+
+		public string MailServer
+		{
+			get
+			{
+				Services.SMTPClient.SmtpClient.Instance.Server = _settings.MailServer;
+				return _settings.MailServer;
+			}
+			set
+			{
+				_settings.MailServer = value;
+				base.RaisePropertyChanged();
+				if (_settings.MailServer.Contains("Outlook"))
+				{
+					_settings.MailServer = "smtp-mail.outlook.com";
+					MailPort = "587";
+					IsMailSSL = false;
+				}
+				else if (_settings.MailServer.Contains("Gmail.com"))
+				{
+					_settings.MailServer = "smtp.gmail.com";
+					MailPort = "465";
+					IsMailSSL = true;
+				}
+				Services.SMTPClient.SmtpClient.Instance.Server = _settings.MailServer;
+			}
+		}
+
+		public string MailPort
+		{
+			get
+			{
+				Services.SMTPClient.SmtpClient.Instance.Port = Convert.ToInt32(_settings.MailPort);
+				return _settings.MailPort;
+			}
+			set
+			{
+				_settings.MailPort = value;
+				base.RaisePropertyChanged();
+				Services.SMTPClient.SmtpClient.Instance.Port = Convert.ToInt32(_settings.MailPort);
+			}
+		}
+
+		public bool IsMailSSL
+		{
+			get
+			{
+				Services.SMTPClient.SmtpClient.Instance.IsSsl = _settings.IsMailSSL;
+				return _settings.IsMailSSL;
+			}
+			set
+			{
+				_settings.IsMailSSL = value;
+				base.RaisePropertyChanged();
+				Services.SMTPClient.SmtpClient.Instance.IsSsl = _settings.IsMailSSL;
+			}
+		}
+
+		public string MailUserName
+		{
+			get
+			{
+				Services.SMTPClient.SmtpClient.Instance.UserName = _settings.MailUserName;
+				return _settings.MailUserName;
+			}
+			set
+			{
+				_settings.MailUserName = value;
+				base.RaisePropertyChanged();
+				Services.SMTPClient.SmtpClient.Instance.UserName = _settings.MailUserName;
+			}
+		}
+
+		public string MailPassword
+		{
+			get
+			{
+				Services.SMTPClient.SmtpClient.Instance.Password = _settings.MailPassword;
+				return _settings.MailPassword;
+			}
+			set
+			{
+				_settings.MailPassword = value;
+				base.RaisePropertyChanged();
+				Services.SMTPClient.SmtpClient.Instance.Password = _settings.MailPassword;
+			}
+		}
+
+	}
 
     public class IdentityPartViewModel : ViewModelBase
 	{

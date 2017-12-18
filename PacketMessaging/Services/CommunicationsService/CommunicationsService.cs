@@ -13,6 +13,7 @@ using Windows.Networking.Sockets;
 using Windows.Storage;
 using Windows.Storage.Search;
 using Windows.UI.Popups;
+using PacketMessaging.Services.SMTPClient;
 
 namespace PacketMessaging.Services.CommunicationsService
 {
@@ -207,7 +208,7 @@ namespace PacketMessaging.Services.CommunicationsService
             ViewModels.SharedData sharedData =  ViewModels.SharedData.SharedDataInstance;
 
             TNCDevice tncDevice = sharedData.CurrentTNCDevice;
-            if (tncDevice != null)
+			if (tncDevice != null)
 			{
 				BBSData bbs = sharedData.CurrentBBS;
 				if (bbs != null)
@@ -235,7 +236,7 @@ namespace PacketMessaging.Services.CommunicationsService
 						}
 						if (!_deviceFound)
 						{
-							Utilities.ShowMessageDialogAsync($"TNC not found. Sending the message via e-mail");
+							await Utilities.ShowMessageDialogAsync($"TNC not found. Sending the message via e-mail");
 						}
 						else
 						{
@@ -257,40 +258,40 @@ namespace PacketMessaging.Services.CommunicationsService
 								success = false;
 								LogHelper(LogLevel.Error, "Bluetootn Connect failed:" + ex.Message);
 							}
-						// If the connection was successful, the RemoteAddress field will be populated
-						try
-						{
-							if (success)
+							// If the connection was successful, the RemoteAddress field will be populated
+							try
 							{
-								//System.Diagnostics.Debug.WriteLine(msg);
-								//await md.ShowAsync();
+								if (success)
+								{
+									//System.Diagnostics.Debug.WriteLine(msg);
+									//await md.ShowAsync();
+								}
+							}
+							catch (Exception ex)
+							{
+								LogHelper(LogLevel.Error, $"Overall Connect: { ex.Message}");
+								_socket.Dispose();
+								_socket = null;
 							}
 						}
-						catch (Exception ex)
-						{
-							LogHelper(LogLevel.Error, $"Overall Connect: { ex.Message}");
-							_socket.Dispose();
-							_socket = null;
-						}
 					}
-				}
-				    // Collect messages to be sent
-				    _packetMessagesToSend.Clear();
-                    List<string> fileTypeFilter = new List<string>() { ".xml" };
-                    QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypeFilter);
+					// Collect messages to be sent
+					_packetMessagesToSend.Clear();
+					List<string> fileTypeFilter = new List<string>() { ".xml" };
+					QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypeFilter);
 
-                    // Get the files in the user's archive folder
-                    StorageFileQueryResult results = MainPage._unsentMessagesFolder.CreateFileQueryWithOptions(queryOptions);
-                    // Iterate over the results
-                    IReadOnlyList<StorageFile> files = await results.GetFilesAsync();
-                    foreach (StorageFile file in files)
-                    {
-                        // Add Outpost message format by Filling the MessageBody field in packetMessage. 
-                        PacketMessage packetMessage = PacketMessage.Open(file);
-                        if (packetMessage == null)
-                        {
-                            continue;
-                        }
+					// Get the files in the user's archive folder
+					StorageFileQueryResult results = MainPage._unsentMessagesFolder.CreateFileQueryWithOptions(queryOptions);
+					// Iterate over the results
+					IReadOnlyList<StorageFile> files = await results.GetFilesAsync();
+					foreach (StorageFile file in files)
+					{
+						// Add Outpost message format by Filling the MessageBody field in packetMessage. 
+						PacketMessage packetMessage = PacketMessage.Open(file);
+						if (packetMessage == null)
+						{
+							continue;
+						}
 
 						DateTime now = DateTime.Now;
 
@@ -301,7 +302,7 @@ namespace PacketMessaging.Services.CommunicationsService
 						var operatorTimeField = packetMessage.FormFieldArray.Where(formField => formField.ControlName == "operatorTime").FirstOrDefault();
 						if (operatorTimeField != null)
 							operatorTimeField.ControlContent = $"{now.Hour:d2}{now.Minute:d2}";
-                       
+
 						formControl = Views.FormsPage.CreateFormControlInstance(packetMessage.PacFormType);
 						if (formControl == null)
 						{
@@ -317,16 +318,16 @@ namespace PacketMessaging.Services.CommunicationsService
 
 						_packetMessagesToSend.Add(packetMessage);
 					}
-                    if (_packetMessagesToSend.Count == 0)
-                    {
-                        LogHelper(LogLevel.Info, $"No messages to send.");
-                        //return;
-                    }
+					if (_packetMessagesToSend.Count == 0)
+					{
+						LogHelper(LogLevel.Info, $"No messages to send.");
+						//return;
+					}
 
-					TNCInterface tncInterface = new TNCInterface(bbs.ConnectName, ref tncDevice, ViewModels.SharedData._forceReadBulletins, ViewModels.SharedData._Areas, ref _packetMessagesToSend); 
+					TNCInterface tncInterface = new TNCInterface(bbs.ConnectName, ref tncDevice, ViewModels.SharedData._forceReadBulletins, ViewModels.SharedData._Areas, ref _packetMessagesToSend);
 
 					// Send as email if a TNC is not reachable.
-					if (!_deviceFound)
+					if (!_deviceFound || tncDevice.Name == "E-Mail")
 					{
 						EmailMessage emailMessage;
 						try
@@ -359,8 +360,27 @@ namespace PacketMessaging.Services.CommunicationsService
 										emailMessage.To.Add(new EmailRecipient(to));
 									}
 								}
+								SmtpClient smtpClient = Services.SMTPClient.SmtpClient.Instance;
+								if (smtpClient.Server == "smtp-mail.outlook.com")
+									if (!smtpClient.UserName.EndsWith("outlook.com") && !smtpClient.UserName.EndsWith("hotmail.com") && !smtpClient.UserName.EndsWith("live.com"))
+										throw new Exception("Mail from user must be a valid outlook.com address.");
+								else if (smtpClient.Server == "smtp.gmail.com")
+									if (!smtpClient.UserName.EndsWith("gmail.com"))
+											throw new Exception("mail from user must be a valid gmail address.");
+								smtpClient.SetSmtpClient(smtpClient.Server, smtpClient.Port, smtpClient.UserName, smtpClient.Password, smtpClient.IsSsl);
 
-								emailMessage.Subject = packetMessage.Subject;
+								SmtpMessage message = new SmtpMessage(smtpClient.UserName, packetMessage.MessageTo, null, packetMessage.Subject, packetMessage.MessageBody);
+
+								// adding an other To receiver
+								//message.To.Add("Eleanore.Doe@somewhere.com");
+
+								await smtpClient.SendMail(message);
+
+								//string mailData = $"mailto:?to={emailMessage.To[0]}&subject={packetMessage.Subject}&body={packetMessage.MessageBody}";
+								//var mailto = new Uri("mailto:?to=user@mail.com&subject=subject&body=Message");
+								//await Windows.System.Launcher.LaunchUriAsync(mailto);
+
+//								emailMessage.Subject = packetMessage.Subject;
 								//// Insert \r\n 
 								//string temp = packetMessage.MessageBody;
 								//string messageBody = temp.Replace("\r", "\r\n");
@@ -371,7 +391,7 @@ namespace PacketMessaging.Services.CommunicationsService
 								//	messageBody += (s + "\r\n");
 								//}
 								//emailMessage.Body = messageBody;
-								emailMessage.Body = packetMessage.MessageBody;
+//								emailMessage.Body = packetMessage.MessageBody;
 
 								//IBuffer 
 								//var memStream = new InMemoryRandomAccessStream();
@@ -379,7 +399,7 @@ namespace PacketMessaging.Services.CommunicationsService
 								//emailMessage.SetBodyStream(EmailMessageBodyKind.PlainText, randomAccessStreamReference);
 								//emailMessage.Body = await memStream.WriteAsync(packetMessage.MessageBody);
 
-								await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+//								await EmailManager.ShowComposeNewEmailAsync(emailMessage);
 
 								packetMessage.SentTime = DateTime.Now;
 								tncInterface.PacketMessagesSent.Add(packetMessage);

@@ -120,6 +120,12 @@
     <Compile Include="Services\CommunicationsService\TNCInterface.cs" />
     <Compile Include="Services\CommunicationsService\Utilities.cs" />
     <Compile Include="Services\FormsPageService\FormsPageService.cs" />
+    <Compile Include="Services\SMTPClient\SmtpClient.cs" />
+    <Compile Include="Services\SMTPClient\SmtpCode.cs" />
+    <Compile Include="Services\SMTPClient\SmtpMessage.cs" />
+    <Compile Include="Services\SMTPClient\SmtpPriority.cs" />
+    <Compile Include="Services\SMTPClient\SmtpResponse.cs" />
+    <Compile Include="Services\SMTPClient\SmtpSocket.cs" />
     <Compile Include="Services\ToolsPageServices\ToolsPageService.cs" />
     <Compile Include="Models\TNCDevices.cs" />
     <Compile Include="ViewModels\ToolePageViewModel.cs" />
@@ -278,7 +284,7 @@
       <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.4</Version>
+      <Version>6.0.5</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.4.0</Version>
