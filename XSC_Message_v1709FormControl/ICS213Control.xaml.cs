@@ -9,7 +9,7 @@ namespace XSC_Message_v1709FormControl
 {
 	[FormControl(
 		FormControlName = "Message",
-		FormControlMenuName = "ICS-213 Message New",
+		FormControlMenuName = "ICS-213 Message",
 		FormControlType = FormControlAttribute.FormType.CountyForm)
 	]
 

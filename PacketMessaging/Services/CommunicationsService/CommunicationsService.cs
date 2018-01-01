@@ -14,6 +14,7 @@ using Windows.Storage;
 using Windows.Storage.Search;
 using Windows.UI.Popups;
 using PacketMessaging.Services.SMTPClient;
+using Windows.Devices.SerialCommunication;
 
 namespace PacketMessaging.Services.CommunicationsService
 {
@@ -75,7 +76,10 @@ namespace PacketMessaging.Services.CommunicationsService
 					for (int i = 0; i < Math.Min(msgLines.Length, 20); i++)
 					{
 						if (msgLines[i].StartsWith("Date:"))
+						{
 							pktMsg.JNOSDate = DateTime.Parse(msgLines[i].Substring(10, 21));
+							pktMsg.JNOSDateDisplay = $"{pktMsg.JNOSDate.Month:d2}/{pktMsg.JNOSDate.Date:d2}/{pktMsg.JNOSDate.Year - 2000:d2} {pktMsg.JNOSDate.Hour:d2}:{pktMsg.JNOSDate.Minute:d2}";
+						}
 						else if (msgLines[i].StartsWith("From:"))
 							pktMsg.MessageFrom = msgLines[i].Substring(6);
 						else if (msgLines[i].StartsWith("To:"))
@@ -111,7 +115,7 @@ namespace PacketMessaging.Services.CommunicationsService
 								await Utilities.ShowMessageDialogAsync($"Form {pktMsg.PacFormName} not found");
 								return;
 							}
-                            break;
+							break;
 						}
 					}
 
@@ -120,6 +124,16 @@ namespace PacketMessaging.Services.CommunicationsService
                     pktMsg.MessageNumber = packetMessageOutpost.MessageNumber;
 					pktMsg.FormFieldArray = formControl.ConvertFromOutpost(pktMsg.MessageNumber, ref msgLines);
 					pktMsg.ReceivedTime = packetMessageOutpost.ReceivedTime;
+					if (pktMsg.ReceivedTime != null)
+					{
+						DateTime dateTime = (DateTime)pktMsg.ReceivedTime;
+						pktMsg.ReceivedTimeDisplay = $"{dateTime.Month:d2}/{dateTime.Date:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
+					}
+					if (pktMsg.ReceivedTime != null)
+					{
+						DateTime dateTime = (DateTime)pktMsg.ReceivedTime;
+						pktMsg.ReceivedTimeDisplay = $"{dateTime.Month:d2}/{dateTime.Date:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
+					}
 					pktMsg.CreateFileName();
 					string fileFolder = Views.MainPage._receivedMessagesFolder.Path;
 					pktMsg.Save(fileFolder);
@@ -187,6 +201,10 @@ namespace PacketMessaging.Services.CommunicationsService
 											formField.ControlContent = receiversMessageId;
 										}
 										packetMessage.ReceivedTime = receiveTime;
+										if (receiveTime != null)
+										{
+											packetMessage.ReceivedTimeDisplay = $"{receiveTime.Month:d2}/{receiveTime.Date:d2}/{receiveTime.Year - 2000:d2} {receiveTime.Hour:d2}:{receiveTime.Minute:d2}";
+										}
 										packetMessage.Save(MainPage._sentMessagesFolder.Path);
 										break;
 									}
@@ -197,6 +215,29 @@ namespace PacketMessaging.Services.CommunicationsService
 				}
 				//RefreshDataGrid();      // Display newly added messages
 			}
+		}
+
+		private async System.Threading.Tasks.Task<bool> TryOpenComportAsync()
+		{
+			Boolean openSuccess = false;
+			var aqsFilter = SerialDevice.GetDeviceSelector(ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort.Comport);
+			var devices = await DeviceInformation.FindAllAsync(aqsFilter);
+			if (devices.Count > 0)
+			{
+				DeviceInformation deviceInfo = devices[0];
+				if (deviceInfo != null)
+				{
+					openSuccess = await EventHandlerForDevice.Current.OpenDeviceAsync(deviceInfo, aqsFilter);
+					//SerialDevice device = await SerialDevice.FromIdAsync(deviceInfo.Id);
+					if (openSuccess)
+					{
+						//device.Dispose();
+						EventHandlerForDevice.Current.CloseDevice();
+						openSuccess = true;
+					}
+				}
+			}
+			return openSuccess;
 		}
 
 		public async void BBSConnectAsync()
@@ -210,6 +251,9 @@ namespace PacketMessaging.Services.CommunicationsService
             TNCDevice tncDevice = sharedData.CurrentTNCDevice;
 			if (tncDevice != null)
 			{
+				// Try to connect to TNC
+				_deviceFound = await TryOpenComportAsync();
+
 				BBSData bbs = sharedData.CurrentBBS;
 				if (bbs != null)
 				{
@@ -326,7 +370,7 @@ namespace PacketMessaging.Services.CommunicationsService
 
 					TNCInterface tncInterface = new TNCInterface(bbs.ConnectName, ref tncDevice, ViewModels.SharedData._forceReadBulletins, ViewModels.SharedData._Areas, ref _packetMessagesToSend);
 
-					// Send as email if a TNC is not reachable.
+					// Send as email if a TNC is not reachable, or if defined as e-mail message
 					if (!_deviceFound || tncDevice.Name == "E-Mail")
 					{
 						EmailMessage emailMessage;
@@ -335,7 +379,7 @@ namespace PacketMessaging.Services.CommunicationsService
 							foreach (PacketMessage packetMessage in _packetMessagesToSend)
 							{
 								// Mark message as sent by email
-								packetMessage.TNCName = "e-mail";
+								packetMessage.TNCName = "E-Mail";
 								emailMessage = new EmailMessage();
 								// Create the to field.
 								var messageTo = packetMessage.MessageTo.Split(new char[] { ' ', ';' });
@@ -362,12 +406,19 @@ namespace PacketMessaging.Services.CommunicationsService
 								}
 								SmtpClient smtpClient = Services.SMTPClient.SmtpClient.Instance;
 								if (smtpClient.Server == "smtp-mail.outlook.com")
+								{
 									if (!smtpClient.UserName.EndsWith("outlook.com") && !smtpClient.UserName.EndsWith("hotmail.com") && !smtpClient.UserName.EndsWith("live.com"))
 										throw new Exception("Mail from user must be a valid outlook.com address.");
+								}
 								else if (smtpClient.Server == "smtp.gmail.com")
+								{
 									if (!smtpClient.UserName.EndsWith("gmail.com"))
-											throw new Exception("mail from user must be a valid gmail address.");
-								smtpClient.SetSmtpClient(smtpClient.Server, smtpClient.Port, smtpClient.UserName, smtpClient.Password, smtpClient.IsSsl);
+										throw new Exception("Mail from user must be a valid gmail address.");
+								}
+								else if (string.IsNullOrEmpty(smtpClient.Server))
+								{
+									throw new Exception("Mail Server must be defined");
+								}
 
 								SmtpMessage message = new SmtpMessage(smtpClient.UserName, packetMessage.MessageTo, null, packetMessage.Subject, packetMessage.MessageBody);
 
@@ -375,10 +426,6 @@ namespace PacketMessaging.Services.CommunicationsService
 								//message.To.Add("Eleanore.Doe@somewhere.com");
 
 								await smtpClient.SendMail(message);
-
-								//string mailData = $"mailto:?to={emailMessage.To[0]}&subject={packetMessage.Subject}&body={packetMessage.MessageBody}";
-								//var mailto = new Uri("mailto:?to=user@mail.com&subject=subject&body=Message");
-								//await Windows.System.Launcher.LaunchUriAsync(mailto);
 
 //								emailMessage.Subject = packetMessage.Subject;
 								//// Insert \r\n 
@@ -401,7 +448,10 @@ namespace PacketMessaging.Services.CommunicationsService
 
 //								await EmailManager.ShowComposeNewEmailAsync(emailMessage);
 
-								packetMessage.SentTime = DateTime.Now;
+								DateTime dateTime = DateTime.Now;
+								packetMessage.SentTime = dateTime;
+								packetMessage.SentTimeDisplay = $"{dateTime.Month:d2}/{dateTime.Day:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
+								packetMessage.MailUserName = smtpClient.UserName;
 								tncInterface.PacketMessagesSent.Add(packetMessage);
 
 								LogHelper(LogLevel.Info, $"Message sent via email {packetMessage.MessageNumber}");

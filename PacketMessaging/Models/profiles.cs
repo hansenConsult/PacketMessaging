@@ -70,7 +70,7 @@ namespace PacketMessaging.Models
                         BBS = ViewModels.SharedData.SharedDataInstance.BbsArray.BBSDataArray[0].Name,
                         TNC = ViewModels.SharedData.SharedDataInstance.TncDeviceArray.TNCDevices[0].Name,
                         SendTo = "",
-                        Selected = true
+                        //Selected = true
                     };
 
 					profileArray = new ProfileArray();
@@ -158,7 +158,7 @@ namespace PacketMessaging.Models
 
 		private string sendToField;
 
-		private bool selectedField;
+		//private bool selectedField;
 
 		/// <remarks/>
 		[System.Xml.Serialization.XmlAttributeAttribute()]
@@ -217,18 +217,18 @@ namespace PacketMessaging.Models
 		}
 
 		/// <remarks/>
-		[System.Xml.Serialization.XmlAttributeAttribute()]
-		public bool Selected
-		{
-			get
-			{
-				return this.selectedField;
-			}
-			set
-			{
-				this.selectedField = value;
-			}
-		}
+		//[System.Xml.Serialization.XmlAttributeAttribute()]
+		//public bool Selected
+		//{
+		//	get
+		//	{
+		//		return this.selectedField;
+		//	}
+		//	set
+		//	{
+		//		this.selectedField = value;
+		//	}
+		//}
 
 		public override string ToString() => Name;
 	}

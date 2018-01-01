@@ -105,10 +105,10 @@ namespace PacketMessaging.Services.SettingsServices
 			set => _helper.Write(nameof(MailPassword), value);
 		}
 
-		public string MailPort
+		public string MailPortString
 		{
-			get => _helper.Read<string>(nameof(MailPort), "");
-			set => _helper.Write(nameof(MailPort), value);
+			get => _helper.Read<string>(nameof(MailPortString), "0");
+			set => _helper.Write(nameof(MailPortString), value);
 		}
 
 

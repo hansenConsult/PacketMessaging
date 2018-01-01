@@ -209,7 +209,7 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBox Grid.Column="0" Grid.Row="0" x:Name="mailServer" Text="{Binding MailServer, Mode=TwoWay}" Header="Mail Server"/>
-                            <TextBox Grid.Column="1" Grid.Row="0" x:Name="mailPort" Text="{Binding MailPort, Mode=TwoWay}" Header="Mail port:" Margin="10,0,0,0"/>
+                            <TextBox Grid.Column="1" Grid.Row="0" x:Name="mailPortString" Text="{Binding MailPortString, Mode=TwoWay}" Header="Mail port:" Margin="10,0,0,0"/>
                             <TextBox Grid.Column="0" Grid.Row="1" x:Name="mailUserName" Text="{Binding MailUserName, Mode=TwoWay}" Header="Mail username:" Margin="0,5,0,0"/>
                             <PasswordBox Grid.Column="1" Grid.Row="1" x:Name="mailPassword" Password="{Binding MailPassword, Mode=TwoWay}" Header="Mail password:" Margin="10,5,0,0"/>
                         </Grid>
@@ -367,12 +367,12 @@
 							<RelativePanel x:Name="panelProfileSelection" Margin="18">
 								<TextBlock x:Name="labelProfile"  Text="Profile:" Margin="0,0,5,0" 
 										RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                                <!--SelectedIndex="{Binding ProfileSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
                                 <ComboBox x:Name="comboBoxProfiles"  Width="300"
-										RelativePanel.RightOf="labelProfile"
-										ItemTemplate="{StaticResource  ProfilesDataTemplate}"
-										ItemsSource="{x:Bind ProfilesCollection.View, Mode=OneWay}"
-										VerticalAlignment="Center" SelectionChanged="ComboBoxProfiles_SelectionChanged"   />
+										  RelativePanel.RightOf="labelProfile"
+										  ItemTemplate="{StaticResource  ProfilesDataTemplate}"
+										  ItemsSource="{x:Bind ProfilesCollection.View, Mode=OneWay}"
+                                          SelectedIndex="{Binding ProfileSelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          VerticalAlignment="Center" SelectionChanged="ComboBoxProfiles_SelectionChanged"   />
 								<TextBox x:Name="textBoxNewProfileName" Width="300"
 										RelativePanel.RightOf="labelProfile"
 										PlaceholderText="Enter profile name"

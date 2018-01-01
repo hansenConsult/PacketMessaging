@@ -54,13 +54,19 @@ namespace FormControlBaseClass
 
         private DateTime jNOSDateField;
 
-        private DateTime? messageSentTimeField;
+		private string jNOSDateDisplayField;
 
-        private string messageCreateTimeField = null;
+		private DateTime? messageSentTimeField;
+
+		private string messageSentTimeDisplayField;
+
+		private string messageCreateTimeField = null;
 
         private DateTime? messageReceiveTimeField = null;
 
-        private string messageNumberField;
+		private string messageReceiveTimeDisplayField;
+
+		private string messageNumberField;
 
         private string messageFromField;
 
@@ -75,6 +81,8 @@ namespace FormControlBaseClass
         private string messageBodyField;
 
         private bool messageOpenedField = false;
+
+		private string mailUserNameField;
 
         /// <remarks/>
         public string FileName
@@ -167,8 +175,15 @@ namespace FormControlBaseClass
             }
         }
 
-        /// <remarks/>
-        public DateTime? SentTime
+		/// <remarks/>
+		public string JNOSDateDisplay
+		{
+			get => jNOSDateDisplayField;
+			set => jNOSDateDisplayField = value;
+		}
+
+		/// <remarks/>
+		public DateTime? SentTime
         {
             get
             {
@@ -180,8 +195,15 @@ namespace FormControlBaseClass
             }
         }
 
-        /// <remarks/>
-        public string CreateTime
+		/// <remarks/>
+		public string SentTimeDisplay
+		{
+			get => messageSentTimeDisplayField;
+			set => messageSentTimeDisplayField = value;
+		}
+
+		/// <remarks/>
+		public string CreateTime
         {
             get
             {
@@ -206,8 +228,15 @@ namespace FormControlBaseClass
             }
         }
 
-        /// <remarks/>
-        public string MessageNumber
+		/// <remarks/>
+		public string ReceivedTimeDisplay
+		{
+			get => messageReceiveTimeDisplayField;
+			set => messageReceiveTimeDisplayField = value;
+		}
+
+		/// <remarks/>
+		public string MessageNumber
         {
             get
             {
@@ -311,31 +340,38 @@ namespace FormControlBaseClass
             }
         }
 
-        /// <remarks/>
-        //public bool MessageReadOnly
-        //{
-        //    get
-        //    {
-        //        return this.messageReadOnlyField;
-        //    }
-        //    set
-        //    {
-        //        this.messageReadOnlyField = value;
-        //    }
-        //}
+		public string MailUserName
+		{
+			get => mailUserNameField;
+			set => mailUserNameField = value;
+		}
 
-        public double GridWidth
+		/// <remarks/>
+		//public bool MessageReadOnly
+		//{
+		//    get
+		//    {
+		//        return this.messageReadOnlyField;
+		//    }
+		//    set
+		//    {
+		//        this.messageReadOnlyField = value;
+		//    }
+		//}
+
+		public double GridWidth
 		{
 			get { return gridWidthField; }
 			set => gridWidthField = value;
 		}
 
+		[XmlIgnore]
 		public int Size
 		{
 			get
 			{
-				int MessageBodyLength = MessageBody == null ? 0 : MessageBody.Length;
-				int MessageSubjectLength = Subject == null ? 0 : Subject.Length;
+				int MessageBodyLength = string.IsNullOrEmpty(MessageBody) ? 0 : MessageBody.Length;
+				int MessageSubjectLength = string.IsNullOrEmpty(Subject) ? 0 : Subject.Length;
 
 				return MessageBodyLength + MessageSubjectLength;
 			}

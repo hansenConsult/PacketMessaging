@@ -140,22 +140,24 @@ namespace PacketMessaging.Views
 					case "Deleted":
 						item.Tag = _deletedMessagesFolder;
 						break;
-					case "testDataGrid":
-						item.Tag = _deletedMessagesFolder;
-						break;
 				}
 			}
 
 			SharedData sharedData = SharedData.SharedDataInstance;
 
             sharedData.CurrentProfile = null;
-            foreach (Profile profile in sharedData.ProfileArray.Profiles)
-            {
-                if (profile.Selected)
-                {
-                    sharedData.CurrentProfile = profile;
-                }
-            }
+			int selectedIndex = SettingsPageViewModel.PacketSettingsPartViewModel.ProfileSelectedIndex;
+			selectedIndex = selectedIndex < 0 ? 0 : selectedIndex;
+			sharedData.CurrentProfile = sharedData.ProfileArray.Profiles[selectedIndex];
+
+			//foreach (Profile profile in sharedData.ProfileArray.Profiles)
+   //         {
+   //             if (profile.Selected)
+   //             {
+   //                 sharedData.CurrentProfile = profile;
+   //             }
+   //         }
+
 
             if (sharedData.CurrentProfile == null)
             {
@@ -167,14 +169,16 @@ namespace PacketMessaging.Views
                 if (sharedData.CurrentProfile.BBS == bbs.Name)
                 {
                     sharedData.CurrentBBS = bbs;
+					break;
                 }
             }
 
-            foreach (TNCDevice tncDevice in sharedData.TncDeviceArray.TNCDevices)
+			foreach (TNCDevice tncDevice in sharedData.TncDeviceArray.TNCDevices)
             {
                 if (sharedData.CurrentProfile.TNC == tncDevice.Name)
                 {
                     sharedData.CurrentTNCDevice = tncDevice;
+					break;
                 }
             }
 
@@ -202,8 +206,8 @@ namespace PacketMessaging.Views
 
 							listViewColumns.ListViewColumnsArray = new ColumnDescription[9];
 							listViewColumns.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("Area");
-							listViewColumns.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("ReceivedTime");
-							listViewColumns.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("JNOSDate");
+							listViewColumns.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("ReceivedTimeDisplay");
+							listViewColumns.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("JNOSDateDisplay");
 							listViewColumns.ListViewColumnsArray[3] = ColumnDescription.CreateColumnDescrioption("Subject");
 							listViewColumns.ListViewColumnsArray[4] = ColumnDescription.CreateColumnDescrioption("MessageNumber");
 							listViewColumns.ListViewColumnsArray[5] = ColumnDescription.CreateColumnDescrioption("MessageTo");
@@ -219,8 +223,8 @@ namespace PacketMessaging.Views
 							listViewParametersArray.ArrayOfListViewParameters[i].PivotListViewName = listViewSentItems.Name;
 
 							listViewColumns.ListViewColumnsArray = new ColumnDescription[8];
-							listViewColumns.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("ReceivedTime");
-							listViewColumns.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("SentTime");
+							listViewColumns.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("ReceivedTimeDisplay");
+							listViewColumns.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("SentTimeDisplay");
 							listViewColumns.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("Subject");
 							listViewColumns.ListViewColumnsArray[3] = ColumnDescription.CreateColumnDescrioption("MessageNumber");
 							listViewColumns.ListViewColumnsArray[4] = ColumnDescription.CreateColumnDescrioption("MessageTo");
@@ -268,7 +272,7 @@ namespace PacketMessaging.Views
 
 							listViewColumns.ListViewColumnsArray = new ColumnDescription[9];
 							listViewColumns.ListViewColumnsArray[0] = ColumnDescription.CreateColumnDescrioption("Area");
-							listViewColumns.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("ReceivedTime");
+							listViewColumns.ListViewColumnsArray[1] = ColumnDescription.CreateColumnDescrioption("ReceivedTimeDisplay");
 							listViewColumns.ListViewColumnsArray[2] = ColumnDescription.CreateColumnDescrioption("CreateTime");
 							listViewColumns.ListViewColumnsArray[3] = ColumnDescription.CreateColumnDescrioption("Subject");
 							listViewColumns.ListViewColumnsArray[4] = ColumnDescription.CreateColumnDescrioption("MessageNumber");
@@ -324,6 +328,12 @@ namespace PacketMessaging.Views
 
 				viewColumnsDeleted.Source = draftsPropertiesList;
 			}
+
+			// Update e-mail parameters
+			Services.SMTPClient.SmtpClient smtpClient = Services.SMTPClient.SmtpClient.Instance;
+			SettingsPartViewModel viewModel = SettingsPageViewModel.SettingsPartViewModel;
+			smtpClient.SetSmtpClient(viewModel.MailServer, viewModel.MailPort, viewModel.MailUserName, viewModel.MailPassword, viewModel.IsMailSSL);
+			smtpClient.Server = SettingsPageViewModel.SettingsPartViewModel.MailServer;
 		}
 
 		private void OpenMessage()

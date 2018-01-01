@@ -1209,7 +1209,6 @@ namespace PacketMessaging.Views
                 stackPanel.Children.Insert(1, _packetForm);
 
 				_packetAddressForm.MessageSubject = $"{_packetForm.MessageNo}_O/R_";
-
 			}
             //else if (pivotItemName == "Message")
             //{

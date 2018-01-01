@@ -181,9 +181,8 @@ namespace PacketMessaging.Services.CommunicationsService
 			string readText = "";
 			//int index = -1;
 
-			//_serialPort.Write("\r");
-
-			//string readCmdText = _serialPort.ReadTo(_TNCPrompt);
+			await _serialPort.WriteWithEchoAsync("\r");
+			readText = await _serialPort.ReadBufferAsync();
 
 			//_serialPort.Write("D\r");
 
@@ -205,27 +204,39 @@ namespace PacketMessaging.Services.CommunicationsService
 			//	await _serialPort.WriteAsync("\r\n");
 			//	await _serialPort.ReadToAsync(_TNCPrompt);
 			//}
-			do
+
+
+			while (!readText.EndsWith(_TNCPrompt))
 			{
-				await _serialPort.WriteAsync("\r\n");
+				//readText = await _serialPort.ReadBufferAsync(); // read line and possibly prompt
+				await _serialPort.WriteLineAsync("");
+				readText = await _serialPort.ReadBufferAsync(); // read line and possibly prompt
+				LogHelper(LogLevel.Info, $"r1 {readText}");
+				if (readText.EndsWith(_TNCPrompt))
+					break;
 				readText = await _serialPort.ReadBufferAsync();
-				LogHelper(LogLevel.Info, $"Buffer: {readText}");
+				LogHelper(LogLevel.Info, $"r2: {readText}");
+				if (readText.EndsWith(_TNCPrompt))
+					break;
+				readText = await _serialPort.ReadBufferAsync();
 			}
-			while (!readText.EndsWith(_TNCPrompt));
 
-			LogHelper(LogLevel.Info, $"Write: {"D\r"}");
-			await _serialPort.WriteAsync("D\r");
+			//LogHelper(LogLevel.Info, $"Write: {"D\r"}");
+			await _serialPort.WriteWithEchoAsync("D\r");
+			//await _serialPort.WriteAsync("D\r");
 			//readText = await _serialPort.ReadToAsync(_TNCPrompt);
 			readText = await _serialPort.ReadBufferAsync();
-			LogHelper(LogLevel.Info, $"Buffer: {readText}");
-			//await _serialPort.ReadBufferAsync();
-			//if (readText.Length == 0)
-			//    goto redo;
+			//string readCmdText = await _serialPort.ReadToAsync(_TNCPrompt);
+			//string readCmdText = await _serialPort.ReadBufferAsync();
+			//LogHelper(LogLevel.Info, $"D: {readCmdText}");
 
-			await _serialPort.WriteAsync("b\r");
+			await _serialPort.WriteWithEchoAsync("b\r");
+			//await _serialPort.WriteAsync("b\r");
 			//readText = await _serialPort.ReadToAsync(_TNCPrompt);
 			readText = await _serialPort.ReadBufferAsync();
-			LogHelper(LogLevel.Info, $"Buffer: {readText}");
+			//LogHelper(LogLevel.Info, $"br: {readText}");
+			//readCmdText = await _serialPort.ReadBufferAsync();
+			//LogHelper(LogLevel.Info, $"b: {readCmdText}");
 
 			await _serialPort.WriteAsync("Echo on\r");
 			//readText = await _serialPort.ReadToAsync(_TNCPrompt);
@@ -244,7 +255,7 @@ namespace PacketMessaging.Services.CommunicationsService
 
 			DateTime dateTime = DateTime.Now;
             string dayTime = $"{dateTime.Year - 2000:d2}{dateTime.Month:d2}{dateTime.Day:d2}{dateTime.Hour:d2}{dateTime.Minute:d2}{dateTime.Second:d2}";
-            await _serialPort.WriteAsync("daytime " + dayTime + "\r");
+            await _serialPort.WriteAsync("daytime " + dayTime + "\r\n");
 			//readText = await _serialPort.ReadToAsync(_TNCPrompt);       // Ready for precommands
 			readText = await _serialPort.ReadBufferAsync();
 			LogHelper(LogLevel.Info, $"Buffer: {readText}");
@@ -273,7 +284,9 @@ namespace PacketMessaging.Services.CommunicationsService
 				//Debug.WriteLine(readText + "\n");
                 //LogHelper(LogLevel.Info, readText
 
-                packetMessage.SentTime = DateTime.Now;
+				DateTime dateTime = DateTime.Now;
+				packetMessage.SentTime = dateTime;
+				packetMessage.SentTimeDisplay = $"{dateTime.Month:d2}/{dateTime.Day:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
 				_packetMessagesSent.Add(packetMessage);
 			}
 			catch (Exception e)
@@ -301,7 +314,10 @@ namespace PacketMessaging.Services.CommunicationsService
 						for (int i = 0; i < Math.Min(msgLines.Length, 10); i++)
 						{
 							if (msgLines[i].StartsWith("Date:"))
+							{
 								pktMsg.JNOSDate = DateTime.Parse(msgLines[i].Substring(10, 21));
+								pktMsg.JNOSDateDisplay = $"{pktMsg.JNOSDate.Month:d2}/{pktMsg.JNOSDate.Date:d2}/{pktMsg.JNOSDate.Year - 2000:d2} {pktMsg.JNOSDate.Hour:d2}:{pktMsg.JNOSDate.Minute:d2}";
+							}
 							else if (msgLines[i].StartsWith("From:"))
 								pktMsg.MessageFrom = msgLines[i].Substring(6);
 							else if (msgLines[i].StartsWith("To:"))
@@ -348,7 +364,9 @@ namespace PacketMessaging.Services.CommunicationsService
 							MessageControl packetForm = new MessageControl();
 							receiptMessage.MessageBody = packetForm.CreateOutpostData(ref receiptMessage);
 							receiptMessage.CreateFileName();
-							receiptMessage.SentTime = DateTime.Now;
+							DateTime dateTime = DateTime.Now;
+							receiptMessage.SentTime = dateTime;
+							receiptMessage.SentTimeDisplay = $"{dateTime.Month:d2}/{dateTime.Day:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
 							receiptMessage.MessageSize = receiptMessage.Size;
 							log.Info(receiptMessage.MessageBody);   // Disable if not testing
 							//SendMessage(ref receiptMessage);		// Disabled for testing
@@ -447,7 +465,9 @@ namespace PacketMessaging.Services.CommunicationsService
 						//Debug.WriteLine(readCmdText + "\n");
 
 						packetMessage.MessageBody = readText.Substring(0, readText.Length - _BBSPrompt.Length); // Remove beginning of prompt
-						packetMessage.ReceivedTime = DateTime.Now;
+						DateTime dateTime = DateTime.Now;
+						packetMessage.ReceivedTime = dateTime;
+						packetMessage.ReceivedTimeDisplay = $"{dateTime.Month:d2}/{dateTime.Date:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
 						_packetMessagesReceived.Add(packetMessage);
 
 						if (area.Length == 0)
@@ -545,7 +565,7 @@ namespace PacketMessaging.Services.CommunicationsService
 					_connectState = ConnectState.ConnectStatePrepare;
 					foreach (string commandLine in preCommandLines)
 					{
-						await _serialPort.WriteAsync(commandLine + "\r");
+						await _serialPort.WriteAsync(commandLine + "\r\n");
 
 						//readText = await _serialPort.ReadLine();       // Read command
 						//log.Info(readCmdText + _TNCPrompt + readText);
@@ -744,7 +764,7 @@ Disconnect:
 					log.Fatal($"Connect state: {Enum.Parse(typeof(ConnectState), _connectState.ToString())} Exception: {e.Message}");
 				}
                 //_serialPort.Debug.WriteLine("B\r\n");
-                Utilities.ShowMessageDialogAsync("Failed to communicate with the TNC");
+                await Utilities.ShowMessageDialogAsync("Failed to communicate with the TNC");
                 return;
 			}
 			finally

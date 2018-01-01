@@ -283,7 +283,7 @@ namespace PacketMessaging.Services.CommunicationsService
             }
             if (!successfullyOpenedDevice)
             {
-                Utilities.ShowMessageDialogAsync(notificationMessage);
+                await Utilities.ShowMessageDialogAsync(notificationMessage);
                 LogHelper(LogLevel.Error, notificationMessage);
             }
 
@@ -362,6 +362,7 @@ namespace PacketMessaging.Services.CommunicationsService
                 // Notify callback that we're about to close the device
                 deviceCloseCallback?.Invoke(this, deviceInformation);
 
+				string comport = device.PortName;
                 // This closes the handle to the device
                 device.Dispose();
 
@@ -371,7 +372,7 @@ namespace PacketMessaging.Services.CommunicationsService
                 // device
                 String deviceId = deviceInformation.Id;
 
-                LogHelper(LogLevel.Info, $"{deviceId} is closed");
+                LogHelper(LogLevel.Info, $"{comport} is closed");
             }
         }
 

@@ -207,8 +207,11 @@ namespace PacketMessaging.Views
                 PacketMessage packetMsg = new PacketMessage();
                 packetMsg.MessageBody = receivedMessage.Text;
                 packetMsg.MessageSize = packetMsg.MessageBody.Length;
-                packetMsg.ReceivedTime = DateTime.Now;
-                packetMsg.BBSName = "BBS";
+				DateTime dateTime = DateTime.Now;
+				packetMsg.ReceivedTime = dateTime;
+				packetMsg.ReceivedTimeDisplay = $"{dateTime.Month:d2}/{dateTime.Date:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
+
+				packetMsg.BBSName = "BBS";
                 packetMsg.TNCName = "TncDevice";
                 packetMsg.MessageNumber = ViewModels.SettingsPageViewModel.GetMessageNumberPacket();
                 packetMsg.Area = "";

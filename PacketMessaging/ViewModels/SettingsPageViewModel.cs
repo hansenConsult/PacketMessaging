@@ -14,7 +14,7 @@ namespace PacketMessaging.ViewModels
 	{
 		static bool _activeMessageNumber = false;
 
-		public SettingsPartViewModel SettingsPartViewModel { get; } = new SettingsPartViewModel();
+		public static SettingsPartViewModel SettingsPartViewModel { get; } = new SettingsPartViewModel();
 		public static IdentityPartViewModel IdentityPartViewModel { get; } = new IdentityPartViewModel();
 		public static PacketSettingsPartViewModel PacketSettingsPartViewModel { get; } = new PacketSettingsPartViewModel();
 		public static TNCPartViewModel TNCPartViewModel { get; } = new TNCPartViewModel();
@@ -219,53 +219,53 @@ namespace PacketMessaging.ViewModels
 
 		public string MailServer
 		{
-			get
-			{
-				Services.SMTPClient.SmtpClient.Instance.Server = _settings.MailServer;
-				return _settings.MailServer;
-			}
+			get => _settings.MailServer;
 			set
 			{
 				_settings.MailServer = value;
 				base.RaisePropertyChanged();
-				if (_settings.MailServer.Contains("Outlook"))
+				if (_settings.MailServer.Contains("Outlook.com"))
 				{
 					_settings.MailServer = "smtp-mail.outlook.com";
-					MailPort = "587";
+					MailPort = 587;
 					IsMailSSL = false;
 				}
 				else if (_settings.MailServer.Contains("Gmail.com"))
 				{
 					_settings.MailServer = "smtp.gmail.com";
-					MailPort = "465";
+					MailPort = 465;
 					IsMailSSL = true;
 				}
 				Services.SMTPClient.SmtpClient.Instance.Server = _settings.MailServer;
 			}
 		}
 
-		public string MailPort
+		public string MailPortString
 		{
-			get
-			{
-				Services.SMTPClient.SmtpClient.Instance.Port = Convert.ToInt32(_settings.MailPort);
-				return _settings.MailPort;
-			}
+			get => _settings.MailPortString;
 			set
 			{
-				_settings.MailPort = value;
+				_settings.MailPortString = value;
 				base.RaisePropertyChanged();
-				Services.SMTPClient.SmtpClient.Instance.Port = Convert.ToInt32(_settings.MailPort);
+				Services.SMTPClient.SmtpClient.Instance.Port = Convert.ToInt32(_settings.MailPortString);
+				MailPort = Convert.ToInt32(_settings.MailPortString);
+			}
+		}
+
+		public int MailPort
+		{
+			get => Convert.ToInt32(MailPortString);
+			set
+			{
+				MailPort = value;
+				MailPortString = MailPort.ToString();
+				Services.SMTPClient.SmtpClient.Instance.Port = MailPort;
 			}
 		}
 
 		public bool IsMailSSL
 		{
-			get
-			{
-				Services.SMTPClient.SmtpClient.Instance.IsSsl = _settings.IsMailSSL;
-				return _settings.IsMailSSL;
-			}
+			get => _settings.IsMailSSL;
 			set
 			{
 				_settings.IsMailSSL = value;
@@ -276,11 +276,7 @@ namespace PacketMessaging.ViewModels
 
 		public string MailUserName
 		{
-			get
-			{
-				Services.SMTPClient.SmtpClient.Instance.UserName = _settings.MailUserName;
-				return _settings.MailUserName;
-			}
+			get => _settings.MailUserName;
 			set
 			{
 				_settings.MailUserName = value;
@@ -291,11 +287,7 @@ namespace PacketMessaging.ViewModels
 
 		public string MailPassword
 		{
-			get
-			{
-				Services.SMTPClient.SmtpClient.Instance.Password = _settings.MailPassword;
-				return _settings.MailPassword;
-			}
+			get => _settings.MailPassword;
 			set
 			{
 				_settings.MailPassword = value;
@@ -497,10 +489,7 @@ namespace PacketMessaging.ViewModels
 
 		public int ProfileSelectedIndex
 		{
-			get
-			{
-				return _settings.ProfileSelectedIndex;
-			}
+			get => _settings.ProfileSelectedIndex;
 			set
 			{
 				if (value < 0)

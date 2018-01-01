@@ -10,6 +10,7 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Markup;
+using MetroLog;
 
 namespace PacketMessaging.ViewModels
 {
@@ -21,6 +22,8 @@ namespace PacketMessaging.ViewModels
 	[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
 	public partial class ListViewParametersArray
 	{
+		private static ILogger log = LogManagerFactory.DefaultLogManager.GetLogger<ListViewParametersArray>();
+
 		private static volatile ListViewParametersArray _instance;
 		private static object _syncRoot = new Object();
 
@@ -28,7 +31,7 @@ namespace PacketMessaging.ViewModels
 
 		private ListViewParametersArray() {	}
 
-		const string fileName = "ListViewDefinitions.xml";
+		const string _fileName = "ListViewDefinitions.xml";
 
 		private ListViewParameters[] listViewParametersField;
 
@@ -67,7 +70,7 @@ namespace PacketMessaging.ViewModels
 			StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 			try
 			{
-				StorageFile file = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+				StorageFile file = await localFolder.CreateFileAsync(_fileName, CreationCollisionOption.ReplaceExisting);
 				using (StreamWriter writer = new StreamWriter(new FileStream(file.Path, FileMode.OpenOrCreate)))
 				{
 					XmlSerializer serializer = new XmlSerializer(typeof(ListViewParametersArray));
@@ -76,7 +79,7 @@ namespace PacketMessaging.ViewModels
 			}
 			catch (Exception e)
 			{
-				//log.Error($"Error saving {fileName} {e}");
+				log.Error($"Error saving {_fileName} {e}");
 			}
 		}
 
@@ -85,7 +88,7 @@ namespace PacketMessaging.ViewModels
 			StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 			try
 			{
-				StorageFile file = await localFolder.GetFileAsync(fileName);
+				StorageFile file = await localFolder.GetFileAsync(_fileName);
 				using (FileStream reader = new FileStream(file.Path, FileMode.Open))
 				{
 					XmlSerializer serializer = new XmlSerializer(typeof(ListViewParametersArray));
@@ -94,7 +97,7 @@ namespace PacketMessaging.ViewModels
 			}
 			catch (Exception e)
 			{
-				;
+				log.Error($"Error opening {_fileName} {e}");
 			}
 		}
 
@@ -313,13 +316,22 @@ rootGrid.Children.Add(lv);
 				case "JNOSDate":
 					columnDescription = new ColumnDescription(propertyName, "Sent Time", "Sent Time", "120");
 					break;
+				case "JNOSDateDisplay":
+					columnDescription = new ColumnDescription(propertyName, "Sent Time", "Sent Time", "120");
+					break;
 				case "SentTime":
+					columnDescription = new ColumnDescription(propertyName, "Sent", "Sent Time", "120");
+					break;
+				case "SentTimeDisplay":
 					columnDescription = new ColumnDescription(propertyName, "Sent", "Sent Time", "120");
 					break;
 				case "CreateTime":
 					columnDescription = new ColumnDescription(propertyName, "Create Time", "Create Time", "120");
 					break;
 				case "ReceivedTime":
+					columnDescription = new ColumnDescription(propertyName, "Received Time", "Received Time", "120");
+					break;
+				case "ReceivedTimeDisplay":
 					columnDescription = new ColumnDescription(propertyName, "Received Time", "Received Time", "120");
 					break;
 				case "MessageNumber":

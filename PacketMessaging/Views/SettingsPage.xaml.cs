@@ -118,10 +118,10 @@ namespace PacketMessaging.Views
 			_profileCollection = new ObservableCollection<Profile>();
 			foreach (Profile profile in sharedData.ProfileArray?.Profiles)
 			{
-				if (profile.Selected)
-				{
-					selectedProfile = profile;
-				}
+				//if (profile.Selected)
+				//{
+				//	selectedProfile = profile;
+				//}
 				_profileCollection.Add(profile);
 			}
 			ProfilesCollection.Source = _profileCollection;
@@ -400,10 +400,10 @@ namespace PacketMessaging.Views
 
         private void ComboBoxProfiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			foreach (Profile profile in e.RemovedItems)
-			{
-				profile.Selected = false;
-			}
+			//foreach (Profile profile in e.RemovedItems)
+			//{
+			//	profile.Selected = false;
+			//}
 
 			try
 			{
@@ -417,7 +417,7 @@ namespace PacketMessaging.Views
 					textBoxTo.Text = profile.SendTo;
 					//MessageTo = profile.SendTo;
 					sharedData.CurrentProfile = profile;
-					profile.Selected = true;
+					//profile.Selected = true;
 				}
                 _bbsChanged = false;
                 _tncChanged = false;
@@ -458,7 +458,7 @@ namespace PacketMessaging.Views
 			profile.BBS = comboBoxBBS.SelectedValue as string;
 			profile.TNC = comboBoxTNCs.SelectedValue as string;
 			profile.SendTo = textBoxTo.Text;
-			profile.Selected = true;
+			//profile.Selected = true;
 
 			sharedData.ProfileArray.Profiles.SetValue(profile, index);
 			//}
@@ -506,10 +506,10 @@ namespace PacketMessaging.Views
 			ObservableCollection<Profile> profileCollection = new ObservableCollection<Profile>();
 			foreach (Profile profile in sharedData.ProfileArray.Profiles)
 			{
-				profile.Selected = false;
+				//profile.Selected = false;
 				profileCollection.Add(profile);
 			}
-			sharedData.ProfileArray.Profiles[length].Selected = true;
+			//sharedData.ProfileArray.Profiles[length].Selected = true;
 			ProfilesCollection.Source = profileCollection;
 			comboBoxProfiles.SelectedIndex = length;
 		}

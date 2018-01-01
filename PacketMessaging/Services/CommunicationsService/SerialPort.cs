@@ -25,21 +25,17 @@ namespace PacketMessaging.Services.CommunicationsService
 		private MainPage rootPage = MainPage.Current;
 
 		// Track Read Operation
-		private CancellationTokenSource _ReadCancellationTokenSource;
+		DataReader _dataReaderObject = null;
+		private CancellationTokenSource _readCancellationTokenSource;
 		private Object _ReadCancelLock = new Object();
 
-		//private Boolean IsReadTaskPending;
-		//private uint ReadBytesCounter = 0;
-		//DataReader _DataReaderObject = null;
 		string _readBytesBuffer = "";
 
 		// Track Write Operation
-		private CancellationTokenSource _WriteCancellationTokenSource;
+		private CancellationTokenSource _writeCancellationTokenSource;
 		private Object _WriteCancelLock = new Object();
 
-		//private Boolean IsWriteTaskPending;
-		//private uint WriteBytesCounter = 0;
-		DataWriter _DataWriteObject = null;
+		DataWriter _dataWriteObject = null;
 
 		//bool WriteBytesAvailable = false;
 
@@ -127,10 +123,16 @@ namespace PacketMessaging.Services.CommunicationsService
 
 
 		public TimeSpan ReadTimeout
-		{ get { return EventHandlerForDevice.Current.Device.ReadTimeout; } set { EventHandlerForDevice.Current.Device.ReadTimeout = value; } }
+		{
+			get => EventHandlerForDevice.Current.Device.ReadTimeout;
+			set => EventHandlerForDevice.Current.Device.ReadTimeout = value;
+		}
 
 		public TimeSpan WriteTimeout
-		{ get { return EventHandlerForDevice.Current.Device.WriteTimeout; } set { EventHandlerForDevice.Current.Device.WriteTimeout = value; } }
+		{
+			get => EventHandlerForDevice.Current.Device.WriteTimeout;
+			set => EventHandlerForDevice.Current.Device.WriteTimeout = value;
+		}
 
 
 		/// <summary>
@@ -146,11 +148,11 @@ namespace PacketMessaging.Services.CommunicationsService
 		{
 			lock (_ReadCancelLock)
 			{
-				if (_ReadCancellationTokenSource != null)
+				if (_readCancellationTokenSource != null)
 				{
-					if (!_ReadCancellationTokenSource.IsCancellationRequested)
+					if (!_readCancellationTokenSource.IsCancellationRequested)
 					{
-						_ReadCancellationTokenSource.Cancel();
+						_readCancellationTokenSource.Cancel();
 
 						// Existing IO already has a local copy of the old cancellation token so this reset won't affect it
 						ResetReadCancellationTokenSource();
@@ -163,11 +165,11 @@ namespace PacketMessaging.Services.CommunicationsService
 		{
 			lock (_WriteCancelLock)
 			{
-				if (_WriteCancellationTokenSource != null)
+				if (_writeCancellationTokenSource != null)
 				{
-					if (!_WriteCancellationTokenSource.IsCancellationRequested)
+					if (!_writeCancellationTokenSource.IsCancellationRequested)
 					{
-						_WriteCancellationTokenSource.Cancel();
+						_writeCancellationTokenSource.Cancel();
 
 						// Existing IO already has a local copy of the old cancellation token so this reset won't affect it
 						ResetWriteCancellationTokenSource();
@@ -217,8 +219,8 @@ namespace PacketMessaging.Services.CommunicationsService
 			bool endOfMessage = false;
 			Task<UInt32> loadAsyncTask;
 
-			//uint ReadBufferLength = 1024;
-			DataReader dataReaderObject = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
+			uint readBufferLength = 1024;
+			_dataReaderObject = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
 
 			while (!endOfMessage)
 			{
@@ -229,14 +231,14 @@ namespace PacketMessaging.Services.CommunicationsService
 
 					// Cancellation Token will be used so we can stop the task operation explicitly
 					// The completion function should still be called so that we can properly handle a canceled task
-					dataReaderObject.InputStreamOptions = InputStreamOptions.Partial;
+					_dataReaderObject.InputStreamOptions = InputStreamOptions.Partial;
 
-					loadAsyncTask = dataReaderObject.LoadAsync((uint)readToIncluding.Length).AsTask(cancellationToken);
+					loadAsyncTask = _dataReaderObject.LoadAsync(readBufferLength).AsTask(cancellationToken);
 				}
 				uint bytesRead = await loadAsyncTask;
 				if (bytesRead > 0)
 				{
-					_readBytesBuffer += dataReaderObject.ReadString(bytesRead);
+					_readBytesBuffer += _dataReaderObject.ReadString(bytesRead);
 				}
 				readBytes = _readBytesBuffer;
 				LogHelper(LogLevel.Info, $"count: {bytesRead} Read: {readBytes}");
@@ -252,69 +254,68 @@ namespace PacketMessaging.Services.CommunicationsService
 						endOfMessage = true;
 					}
 				}
-				else if (readToIncluding != null && readToIncluding.Length == 0)
+				else 
 				{
+					endOfMessage = true;
 					continue;
 				}
 			}
-			dataReaderObject.DetachStream();
-			dataReaderObject = null;
-
 			readBytes = readBytes.Replace('\0', ' ');
-			//LogHelper(LogLevel.Info, $"Read: {readBytes}");
+			LogHelper(LogLevel.Info, $"Read: {readBytes}");
 			return readBytes;
 		}
 
 		private async Task WriteAsync(CancellationToken cancellationToken, string stringToWrite)
 		{
-			Task<UInt32> storeAsyncTask;
-
-			if (!string.IsNullOrEmpty(stringToWrite))
+			if (EventHandlerForDevice.Current.IsDeviceConnected)
 			{
-				char[] buffer = new char[stringToWrite.Length];
-				stringToWrite.CopyTo(0, buffer, 0, stringToWrite.Length);
-				String InputString = new string(buffer);
-				_DataWriteObject.WriteString(InputString);
-				stringToWrite = "";
-
-				// Don't start any IO if we canceled the task
-				lock (_WriteCancelLock)
+				if (!string.IsNullOrEmpty(stringToWrite))
 				{
-					cancellationToken.ThrowIfCancellationRequested();
+					Task<UInt32> storeAsyncTask;
 
-					// Cancellation Token will be used so we can stop the task operation explicitly
-					// The completion function should still be called so that we can properly handle a canceled task
-					storeAsyncTask = _DataWriteObject.StoreAsync().AsTask(cancellationToken);
-				}
+					char[] buffer = new char[stringToWrite.Length];
+					stringToWrite.CopyTo(0, buffer, 0, stringToWrite.Length);
+					String InputString = new string(buffer);
+					_dataWriteObject.WriteString(InputString);
+					stringToWrite = "";
 
-				UInt32 bytesWritten = await storeAsyncTask;
-				if (bytesWritten > 0)
-				{
-					//LogHelper(LogLevel.Info, $"Write: {InputString.Substring(0, (int)bytesWritten)}");
-					//writeBytes += InputString.Substring(0, (int)bytesWritten) + '\n';
-					//WriteBytesCounter += bytesWritten;
-					//UpdateWriteBytesCounterView();
+					// Don't start any IO if we canceled the task
+					lock (_WriteCancelLock)
+					{
+						cancellationToken.ThrowIfCancellationRequested();
+
+						// Cancellation Token will be used so we can stop the task operation explicitly
+						// The completion function should still be called so that we can properly handle a canceled task
+						storeAsyncTask = _dataWriteObject.StoreAsync().AsTask(cancellationToken);
+					}
+
+					UInt32 bytesWritten = await storeAsyncTask;
+					if (bytesWritten > 0)
+					{
+						//LogHelper(LogLevel.Info, $"WriteAsync(): {bytesWritten.ToString()}");
+						//writeBytes += InputString.Substring(0, (int)bytesWritten) + '\n';
+					}
 				}
 			}
 			else
 			{
 				LogHelper(LogLevel.Warn, $"{_tncDevice.CommPort.Comport} is not connected");
-				Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
+				await Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
 			}
 		}
 
 		public async Task<string> ReadToTimeoutAsync() => await ReadAsync("");		// This is mostly for debugging
 
-		public async Task<string> ReadLineAsync() => await ReadToAsync("\r\n");
+		public async Task<string> ReadLineAsync() => await ReadToAsync("\r");
 
 		public async Task<string> ReadToAsync(string text) => await ReadAsync(text);
 
 		public async Task WriteLineAsync(string s)
 		{
-			await WriteAsync(s + "\r\n");
+			await WriteAsync(s + "\r");
 		}
 
-		public async Task<string> ReadAsync(string readToIncluding)
+		public async Task<string> ReadAsync(string readToIncluding = null)
 		{
 			string readString = "";
 
@@ -322,8 +323,8 @@ namespace PacketMessaging.Services.CommunicationsService
 			{
 				try
 				{
-					_ReadCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.ReadTimeout);
-					readString = await ReadAsync(_ReadCancellationTokenSource.Token, readToIncluding);
+					_readCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.ReadTimeout);
+					readString = await ReadAsync(_readCancellationTokenSource.Token, readToIncluding);
 				}
 				catch (OperationCanceledException)
 				{
@@ -338,13 +339,13 @@ namespace PacketMessaging.Services.CommunicationsService
 				finally
 				{
 					ResetReadCancellationTokenSource();
-					//_DataReaderObject.DetachStream();
-					//_DataReaderObject = null;
+					_dataReaderObject.DetachStream();
+					_dataReaderObject = null;
 				}
 			}
 			else
 			{
-				Utilities.ShowMessageDialogAsync("Device not connected");
+				await Utilities.ShowMessageDialogAsync("Device not connected");
 				LogHelper(LogLevel.Error, $"Device not connected");
 			}
 
@@ -353,19 +354,30 @@ namespace PacketMessaging.Services.CommunicationsService
 			return readString;
 		}
 
+		public async Task WriteWithEchoAsync(string s)
+		{
+			string echoString = "";
+			foreach (char c in s)
+			{
+				await WriteAsync(c.ToString());
+				string echoChar = await ReadCharAsync();
+				echoString += echoChar;
+			}
+			LogHelper(LogLevel.Info, $"WriteWithEcho - {echoString}");
+		}
+
+
 		public async Task WriteAsync(string s)
 		{
 			if (EventHandlerForDevice.Current.IsDeviceConnected)
 			{
 				try
 				{
-					//LogHelper(LogLevel.Info, $"{s}");
+					LogHelper(LogLevel.Info, $"Write {s}");
 
-					// We need to set this to true so that the buttons can be updated to disable the write button. We will not be able to
-					// update the button states until after the write completes.
-					_DataWriteObject = new DataWriter(EventHandlerForDevice.Current.Device.OutputStream);
-					_WriteCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.WriteTimeout);
-					await WriteAsync(_WriteCancellationTokenSource.Token, s);
+					_dataWriteObject = new DataWriter(EventHandlerForDevice.Current.Device.OutputStream);
+					_writeCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.WriteTimeout);
+					await WriteAsync(_writeCancellationTokenSource.Token, s);
 				}
 				catch (OperationCanceledException /*exception*/)
 				{
@@ -378,8 +390,8 @@ namespace PacketMessaging.Services.CommunicationsService
 				finally
 				{
 					ResetWriteCancellationTokenSource();
-					_DataWriteObject.DetachStream();
-					_DataWriteObject = null;
+					_dataWriteObject.DetachStream();
+					_dataWriteObject = null;
 				}
 			}
 			else
@@ -388,53 +400,104 @@ namespace PacketMessaging.Services.CommunicationsService
 			}
 		}
 
-		public async Task<string> ReadBufferAsync()
+		private async Task<string> ReadCharAsync(CancellationToken cancellationToken)
+		{
+			Task<UInt32> loadAsyncTask;
+
+			uint ReadBufferLength = 1;
+			string stringRead = "";
+
+			// Don't start any IO if we canceled the task
+			lock (_ReadCancelLock)
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+
+				// Cancellation Token will be used so we can stop the task operation explicitly
+				// The completion function should still be called so that we can properly handle a canceled task
+				_dataReaderObject.InputStreamOptions = InputStreamOptions.Partial;
+				loadAsyncTask = _dataReaderObject.LoadAsync(ReadBufferLength).AsTask(cancellationToken);
+			}
+			UInt32 bytesRead = await loadAsyncTask;
+			if (bytesRead > 0)
+			{
+				stringRead = _dataReaderObject.ReadString(bytesRead);
+			}
+			return stringRead;
+		}
+
+		private async Task<string> ReadAsync(CancellationToken cancellationToken)
+		{
+			Task<UInt32> loadAsyncTask;
+
+			uint ReadBufferLength = 1024;
+			uint totalBytesRead = 0;
+			string stringRead = "";
+			bool endFound = false;
+
+			//LogHelper(LogLevel.Trace, $"ReadAsync()");
+			while (!endFound)
+			{
+				// Don't start any IO if we canceled the task
+				lock (_ReadCancelLock)
+				{
+					cancellationToken.ThrowIfCancellationRequested();
+
+					// Cancellation Token will be used so we can stop the task operation explicitly
+					// The completion function should still be called so that we can properly handle a canceled task
+					_dataReaderObject.InputStreamOptions = InputStreamOptions.Partial;
+					loadAsyncTask = _dataReaderObject.LoadAsync(ReadBufferLength).AsTask(cancellationToken);
+				}				
+				UInt32 bytesRead = await loadAsyncTask;
+				if (bytesRead > 0)
+				{
+					stringRead += _dataReaderObject.ReadString(bytesRead);
+					totalBytesRead += bytesRead;
+					if (stringRead.EndsWith("cmd:"))
+					{
+						endFound = true;
+					}
+				}
+			}
+			LogHelper(LogLevel.Info, $"Read completed - {totalBytesRead.ToString()}, {stringRead}");
+			return stringRead;
+		}
+
+		public async Task<string> ReadCharAsync()
 		{
 			string readString = "";
-			uint ReadBufferLength = 4096 * 4;
-			byte[] ReadBuffer = new byte[ReadBufferLength];
-			byte[] buffer;
-			DataReader dataReaderObject = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
+			//uint ReadBufferLength = 4096 * 4;
+			//byte[] ReadBuffer = new byte[ReadBufferLength];
+			//byte[] buffer;
+			//DataReader dataReaderObject = null;// = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
 
 
 			if (EventHandlerForDevice.Current.IsDeviceConnected)
 			{
 				try
 				{
-					dataReaderObject = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
-					dataReaderObject.UnicodeEncoding = UnicodeEncoding.Utf8;
+					_dataReaderObject = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
 
-					dataReaderObject.InputStreamOptions = InputStreamOptions.Partial;
-					await dataReaderObject.LoadAsync(ReadBufferLength);
-					//_ReadCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.ReadTimeout);
-					uint bytesReceived = EventHandlerForDevice.Current.Device.BytesReceived;
-
-					//LogHelper(LogLevel.Trace, $"bytes received: {bytesReceived}");
-
-					if ((bytesReceived > 0) && (bytesReceived <= ReadBufferLength))
-					{
-						buffer = new byte[bytesReceived + 2];
-						readString = dataReaderObject.ReadString(bytesReceived);
-					}
-
-					//await ReadAsync(_ReadCancellationTokenSource.Token, readToIncluding);
+					_readCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.ReadTimeout);
+					readString = await ReadCharAsync(_readCancellationTokenSource.Token);
 				}
-				catch (OperationCanceledException)
+				catch (OperationCanceledException /*exception*/)
 				{
-					OperationCanceledException exception = new OperationCanceledException("Read cancelled");
-					LogHelper(LogLevel.Fatal, $"Read cancelled {readString}");
+					OperationCanceledException exception = new OperationCanceledException("Read timeout");
+					LogHelper(LogLevel.Fatal, $"Read timeout");
 					throw exception;
 				}
-				catch (Exception e)
+				catch (Exception exception)
 				{
-					LogHelper(LogLevel.Error, $"{e.Message.ToString()}");
+					LogHelper(LogLevel.Info, exception.Message.ToString() + $" {EventHandlerForDevice.Current.Device.PortName}");
 				}
 				finally
 				{
 					ResetReadCancellationTokenSource();
-					dataReaderObject.DetachStream();
-					dataReaderObject = null;
+					_dataReaderObject.DetachStream();
+					//_dataReaderObject.Dispose();
+					_dataReaderObject = null;
 				}
+
 			}
 			else
 			{
@@ -443,6 +506,90 @@ namespace PacketMessaging.Services.CommunicationsService
 			}
 
 			//LogHelper(LogLevel.Info, $"Buffer: {readString}");
+
+			return readString;
+		}
+
+		public async Task<string> ReadBufferAsync()
+		{
+			string readString = "";
+			//uint ReadBufferLength = 4096 * 4;
+			//byte[] ReadBuffer = new byte[ReadBufferLength];
+			//byte[] buffer;
+			//DataReader dataReaderObject = null;// = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
+
+
+			if (EventHandlerForDevice.Current.IsDeviceConnected)
+			{
+				try
+				{
+					_dataReaderObject = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
+
+					_readCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.ReadTimeout);
+					readString = await ReadAsync(_readCancellationTokenSource.Token);
+				}
+				catch (OperationCanceledException /*exception*/)
+				{
+					OperationCanceledException exception = new OperationCanceledException("Read timeout");
+					LogHelper(LogLevel.Fatal, $"Read timeout");
+					throw exception;
+				}
+				catch (Exception exception)
+				{
+					LogHelper(LogLevel.Info, exception.Message.ToString() + $" {EventHandlerForDevice.Current.Device.PortName}");
+				}
+				finally
+				{
+					ResetReadCancellationTokenSource();
+					_dataReaderObject.DetachStream();
+					//_dataReaderObject.Dispose();
+					_dataReaderObject = null;
+				}
+
+				//try
+				//{
+				//	dataReaderObject = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
+				//	dataReaderObject.UnicodeEncoding = UnicodeEncoding.Utf8;
+
+				//	dataReaderObject.InputStreamOptions = InputStreamOptions.Partial;
+				//	await dataReaderObject.LoadAsync(ReadBufferLength);
+				//	//_ReadCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.ReadTimeout);
+				//	uint bytesReceived = EventHandlerForDevice.Current.Device.BytesReceived;
+
+				//	//LogHelper(LogLevel.Trace, $"bytes received: {bytesReceived}");
+
+				//	if ((bytesReceived > 0) && (bytesReceived <= ReadBufferLength))
+				//	{
+				//		buffer = new byte[bytesReceived + 2];
+				//		readString = dataReaderObject.ReadString(bytesReceived);
+				//	}
+
+				//	//await ReadAsync(_ReadCancellationTokenSource.Token, readToIncluding);
+				//}
+				//catch (OperationCanceledException)
+				//{
+				//	OperationCanceledException exception = new OperationCanceledException("Read cancelled");
+				//	LogHelper(LogLevel.Fatal, $"Read cancelled {readString}");
+				//	throw exception;
+				//}
+				//catch (Exception e)
+				//{
+				//	LogHelper(LogLevel.Error, $"{e.Message.ToString()}");
+				//}
+				//finally
+				//{
+				//	ResetReadCancellationTokenSource();
+				//	dataReaderObject.DetachStream();
+				//	dataReaderObject = null;
+				//}
+			}
+			else
+			{
+				//Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
+				LogHelper(LogLevel.Error, $"{_tncDevice.CommPort.Comport} is not connected");
+			}
+
+			LogHelper(LogLevel.Trace, $"Buffer: {readString}");
 
 			return readString;
 		}
@@ -481,8 +628,8 @@ namespace PacketMessaging.Services.CommunicationsService
 						_serialDevice.DataBits = Convert.ToUInt16(_tncDevice.CommPort.Databits);
 						_serialDevice.Parity = (SerialParity)_tncDevice.CommPort?.Parity;
 						_serialDevice.Handshake = (SerialHandshake)_tncDevice.CommPort.Flowcontrol;
-						_serialDevice.ReadTimeout = new TimeSpan(0, 0, 0, 5, 0);
-						_serialDevice.WriteTimeout = new TimeSpan(0, 0, 0, 5, 0);
+						_serialDevice.ReadTimeout = new TimeSpan(0, 0, 10); // hours, min, sec
+						_serialDevice.WriteTimeout = new TimeSpan(0, 0, 10);
 
 						ResetReadCancellationTokenSource();
 						ResetWriteCancellationTokenSource();
@@ -491,7 +638,7 @@ namespace PacketMessaging.Services.CommunicationsService
 					}
 					else
 					{
-						LogHelper(LogLevel.Error, $"Failed to open comport {device}");
+						LogHelper(LogLevel.Error, $"Failed to open comport {_serialDevice.PortName}");
 					}
 				}
 			}
@@ -527,19 +674,19 @@ namespace PacketMessaging.Services.CommunicationsService
 		private void ResetReadCancellationTokenSource()
 		{
 			// Create a new cancellation token source so that can cancel all the tokens again
-			_ReadCancellationTokenSource = new CancellationTokenSource();
+			_readCancellationTokenSource = new CancellationTokenSource();
 
 			// Hook the cancellation callback (called whenever Task.cancel is called)
-			_ReadCancellationTokenSource.Token.Register(() => NotifyReadCancelingTaskAsync());
+			_readCancellationTokenSource.Token.Register(() => NotifyReadCancelingTaskAsync());
 		}
 
 		private void ResetWriteCancellationTokenSource()
 		{
 			// Create a new cancellation token source so that can cancel all the tokens again
-			_WriteCancellationTokenSource = new CancellationTokenSource();
+			_writeCancellationTokenSource = new CancellationTokenSource();
 
 			// Hook the cancellation callback (called whenever Task.cancel is called)
-			_WriteCancellationTokenSource.Token.Register(() => NotifyWriteCancelingTaskAsync());
+			_writeCancellationTokenSource.Token.Register(() => NotifyWriteCancelingTaskAsync());
 		}
 
 		/// <summary>
@@ -611,16 +758,16 @@ namespace PacketMessaging.Services.CommunicationsService
 
 		public void Dispose()
 		{
-			if (_ReadCancellationTokenSource != null)
+			if (_readCancellationTokenSource != null)
 			{
-				_ReadCancellationTokenSource.Dispose();
-				_ReadCancellationTokenSource = null;
+				_readCancellationTokenSource.Dispose();
+				_readCancellationTokenSource = null;
 			}
 
-			if (_WriteCancellationTokenSource != null)
+			if (_writeCancellationTokenSource != null)
 			{
-				_WriteCancellationTokenSource.Dispose();
-				_WriteCancellationTokenSource = null;
+				_writeCancellationTokenSource.Dispose();
+				_writeCancellationTokenSource = null;
 			}
 
 			_serialDevice.Dispose();
