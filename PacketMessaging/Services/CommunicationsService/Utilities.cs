@@ -48,7 +48,7 @@ namespace PacketMessaging.Services.CommunicationsService
 			//await messageDialog.ShowAsync();
 		}
 
-		public static async void ShowMessageDialogAsync(string dialogMessage, string title)
+		public static async Task ShowMessageDialogAsync(string dialogMessage, string title)
 		{
 			ContentDialog contentDialog = new ContentDialog()
 			{ 
@@ -56,7 +56,7 @@ namespace PacketMessaging.Services.CommunicationsService
 				Content = dialogMessage,
 				CloseButtonText = "Close"
 			};
-		await contentDialog.ShowAsync();
+			await contentDialog.ShowAsync();
+		}
 	}
-}
 }

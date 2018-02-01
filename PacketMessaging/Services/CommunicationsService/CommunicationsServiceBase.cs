@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -9,7 +8,7 @@ using Windows.Networking.Sockets;
 
 namespace PacketMessaging.Services.CommunicationsService
 {
-    public class CommunicationsServiceBase
+	public class CommunicationsServiceBase
     {
 		public StreamSocket _socket = null;
 

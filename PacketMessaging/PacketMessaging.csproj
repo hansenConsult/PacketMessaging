@@ -117,6 +117,7 @@
     <Compile Include="Services\CommunicationsService\CommunicationsServiceBase.cs" />
     <Compile Include="Services\CommunicationsService\EventHandlerForDevice.cs" />
     <Compile Include="Services\CommunicationsService\SerialPort.cs" />
+    <Compile Include="Services\CommunicationsService\SerialPortException.cs" />
     <Compile Include="Services\CommunicationsService\TNCInterface.cs" />
     <Compile Include="Services\CommunicationsService\Utilities.cs" />
     <Compile Include="Services\FormsPageService\FormsPageService.cs" />
@@ -284,7 +285,7 @@
       <Version>1.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.0.5</Version>
+      <Version>6.0.6</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.4.0</Version>

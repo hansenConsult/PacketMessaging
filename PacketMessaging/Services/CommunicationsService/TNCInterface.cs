@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 using System.Runtime.CompilerServices;
 using PacketMessaging.Models;
+using Windows.Devices.SerialCommunication;
 
 namespace PacketMessaging.Services.CommunicationsService
 {
@@ -174,93 +175,101 @@ namespace PacketMessaging.Services.CommunicationsService
 			return readCmdText;
 		}
 
-		private async Task KenwoodAsync()
+		private async Task<bool> KenwoodAsync()
         {
 			LogHelper(LogLevel.Trace, "Initializing Kenwood TNC");
 
+			bool success = true;
 			string readText = "";
 			//int index = -1;
-
-			await _serialPort.WriteWithEchoAsync("\r");
-			readText = await _serialPort.ReadBufferAsync();
-
-			//_serialPort.Write("D\r");
-
-			//string readText = _serialPort.ReadLine();
-			//log.Info(readCmdText + _TNCPrompt + readText);
-
-			//readText = _serialPort.ReadLine();
-			//log.Info(readText);
-
-			//readCmdText = _serialPort.ReadTo(_TNCPrompt);
-
-			//_serialPort.Write("b\r");
-
-			//redo:
-			//await _serialPort.WriteAsync("\r\n");
-			//readText = await _serialPort.ReadBufferAsync();
-			//if (!readText.EndsWith(_TNCPrompt))
-			//{
-			//	await _serialPort.WriteAsync("\r\n");
-			//	await _serialPort.ReadToAsync(_TNCPrompt);
-			//}
-
-
-			while (!readText.EndsWith(_TNCPrompt))
+			try
 			{
-				//readText = await _serialPort.ReadBufferAsync(); // read line and possibly prompt
-				await _serialPort.WriteLineAsync("");
-				readText = await _serialPort.ReadBufferAsync(); // read line and possibly prompt
-				LogHelper(LogLevel.Info, $"r1 {readText}");
-				if (readText.EndsWith(_TNCPrompt))
-					break;
+				await _serialPort.WriteWithEchoAsync("\r");
 				readText = await _serialPort.ReadBufferAsync();
-				LogHelper(LogLevel.Info, $"r2: {readText}");
-				if (readText.EndsWith(_TNCPrompt))
-					break;
+
+				//_serialPort.Write("D\r");
+
+				//string readText = _serialPort.ReadLine();
+				//log.Info(readCmdText + _TNCPrompt + readText);
+
+				//readText = _serialPort.ReadLine();
+				//log.Info(readText);
+
+				//readCmdText = _serialPort.ReadTo(_TNCPrompt);
+
+				//_serialPort.Write("b\r");
+
+				//redo:
+				//await _serialPort.WriteAsync("\r\n");
+				//readText = await _serialPort.ReadBufferAsync();
+				//if (!readText.EndsWith(_TNCPrompt))
+				//{
+				//	await _serialPort.WriteAsync("\r\n");
+				//	await _serialPort.ReadToAsync(_TNCPrompt);
+				//}
+
+
+				while (!readText.EndsWith(_TNCPrompt))
+				{
+					//readText = await _serialPort.ReadBufferAsync(); // read line and possibly prompt
+					await _serialPort.WriteLineAsync("");
+					readText = await _serialPort.ReadBufferAsync(); // read line and possibly prompt
+					LogHelper(LogLevel.Info, $"r1 {readText}");
+					if (readText.EndsWith(_TNCPrompt))
+						break;
+					readText = await _serialPort.ReadBufferAsync();
+					LogHelper(LogLevel.Info, $"r2: {readText}");
+					if (readText.EndsWith(_TNCPrompt))
+						break;
+					readText = await _serialPort.ReadBufferAsync();
+				}
+
+				//LogHelper(LogLevel.Info, $"Write: {"D\r"}");
+				await _serialPort.WriteWithEchoAsync("D\r");
+				//await _serialPort.WriteAsync("D\r");
+				//readText = await _serialPort.ReadToAsync(_TNCPrompt);
 				readText = await _serialPort.ReadBufferAsync();
+				//string readCmdText = await _serialPort.ReadToAsync(_TNCPrompt);
+				//string readCmdText = await _serialPort.ReadBufferAsync();
+				//LogHelper(LogLevel.Info, $"D: {readCmdText}");
+
+				await _serialPort.WriteWithEchoAsync("b\r");
+				//await _serialPort.WriteAsync("b\r");
+				//readText = await _serialPort.ReadToAsync(_TNCPrompt);
+				readText = await _serialPort.ReadBufferAsync();
+				//LogHelper(LogLevel.Info, $"br: {readText}");
+				//readCmdText = await _serialPort.ReadBufferAsync();
+				//LogHelper(LogLevel.Info, $"b: {readCmdText}");
+
+				await _serialPort.WriteWithEchoAsync("Echo on\r");
+				//readText = await _serialPort.ReadToAsync(_TNCPrompt);
+				readText = await _serialPort.ReadBufferAsync();
+				//LogHelper(LogLevel.Info, $"Buffer: {readText}");
+
+				await _serialPort.WriteAsync("my " + ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserCallsign + "\r");
+				//readText = await _serialPort.ReadToAsync(_TNCPrompt);
+				readText = await _serialPort.ReadBufferAsync();
+				LogHelper(LogLevel.Info, $"Buffer: {readText}");
+
+				await _serialPort.WriteAsync("Mon off\r");
+				//readText = await _serialPort.ReadToAsync(_TNCPrompt);
+				readText = await _serialPort.ReadBufferAsync();
+				LogHelper(LogLevel.Info, $"Buffer: {readText}");
+
+				DateTime dateTime = DateTime.Now;
+				string dayTime = $"{dateTime.Year - 2000:d2}{dateTime.Month:d2}{dateTime.Day:d2}{dateTime.Hour:d2}{dateTime.Minute:d2}{dateTime.Second:d2}";
+				await _serialPort.WriteAsync("daytime " + dayTime + "\r\n");
+				//readText = await _serialPort.ReadToAsync(_TNCPrompt);       // Ready for precommands
+				readText = await _serialPort.ReadBufferAsync();
+				LogHelper(LogLevel.Info, $"Buffer: {readText}");
 			}
-
-			//LogHelper(LogLevel.Info, $"Write: {"D\r"}");
-			await _serialPort.WriteWithEchoAsync("D\r");
-			//await _serialPort.WriteAsync("D\r");
-			//readText = await _serialPort.ReadToAsync(_TNCPrompt);
-			readText = await _serialPort.ReadBufferAsync();
-			//string readCmdText = await _serialPort.ReadToAsync(_TNCPrompt);
-			//string readCmdText = await _serialPort.ReadBufferAsync();
-			//LogHelper(LogLevel.Info, $"D: {readCmdText}");
-
-			await _serialPort.WriteWithEchoAsync("b\r");
-			//await _serialPort.WriteAsync("b\r");
-			//readText = await _serialPort.ReadToAsync(_TNCPrompt);
-			readText = await _serialPort.ReadBufferAsync();
-			//LogHelper(LogLevel.Info, $"br: {readText}");
-			//readCmdText = await _serialPort.ReadBufferAsync();
-			//LogHelper(LogLevel.Info, $"b: {readCmdText}");
-
-			await _serialPort.WriteAsync("Echo on\r");
-			//readText = await _serialPort.ReadToAsync(_TNCPrompt);
-			readText = await _serialPort.ReadBufferAsync();
-			LogHelper(LogLevel.Info, $"Buffer: {readText}");
-
-			await _serialPort.WriteAsync("my " + ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserCallsign + "\r");
-			//readText = await _serialPort.ReadToAsync(_TNCPrompt);
-			readText = await _serialPort.ReadBufferAsync();
-			LogHelper(LogLevel.Info, $"Buffer: {readText}");
-
-			await _serialPort.WriteAsync("Mon off\r");
-			//readText = await _serialPort.ReadToAsync(_TNCPrompt);
-			readText = await _serialPort.ReadBufferAsync();
-			LogHelper(LogLevel.Info, $"Buffer: {readText}");
-
-			DateTime dateTime = DateTime.Now;
-            string dayTime = $"{dateTime.Year - 2000:d2}{dateTime.Month:d2}{dateTime.Day:d2}{dateTime.Hour:d2}{dateTime.Minute:d2}{dateTime.Second:d2}";
-            await _serialPort.WriteAsync("daytime " + dayTime + "\r\n");
-			//readText = await _serialPort.ReadToAsync(_TNCPrompt);       // Ready for precommands
-			readText = await _serialPort.ReadBufferAsync();
-			LogHelper(LogLevel.Info, $"Buffer: {readText}");
-
-			LogHelper(LogLevel.Trace, "Done Initializing Kenwood TNC");
+			catch (SerialPortException e)
+			{
+				LogHelper(LogLevel.Error, $"Kenwood initialization exception. {e.Message}");
+				success = false;
+			}
+			LogHelper(LogLevel.Trace, $"Done Initializing Kenwood TNC. Result: {(success == false ? "Error" : "Succeded")}");
+			return success;
 		}
 
 		private async void SendMessageAsync(PacketMessage packetMessage)
@@ -519,31 +528,32 @@ namespace PacketMessaging.Services.CommunicationsService
 		//    }
 		//}
 
-		public async Task BBSConnectThreadProcAsync()
+		public async Task<bool> BBSConnectThreadProcAsync()
 		{
 			_packetMessagesSent.Clear();
 			_packetMessagesReceived.Clear();
 
-			_serialPort = new SerialPort(ref _tncDevice);
-			await _serialPort.OpenAsync();
+			SerialDevice serialDevice = EventHandlerForDevice.Current.Device;
 
-            //var aqsFilter = SerialDevice.GetDeviceSelector(_tncDevice.CommPort.Comport);
-            //var devices = await DeviceInformation.FindAllAsync(aqsFilter);
-            //if (devices.Count > 0)
-            //{
-            //	_serialPort = await SerialDevice.FromIdAsync(devices[0].Id);
+			serialDevice.BaudRate = (uint)_tncDevice.CommPort?.Baudrate;
+			serialDevice.StopBits = (SerialStopBitCount)_tncDevice.CommPort?.Stopbits;
+			serialDevice.DataBits = Convert.ToUInt16(_tncDevice.CommPort.Databits);
+			serialDevice.Parity = (SerialParity)_tncDevice.CommPort?.Parity;
+			serialDevice.Handshake = (SerialHandshake)_tncDevice.CommPort.Flowcontrol;
+			serialDevice.ReadTimeout = new TimeSpan(0, 0, 10); // hours, min, sec
+			serialDevice.WriteTimeout = new TimeSpan(0, 0, 10);
 
-            //}F
+			_serialPort = new SerialPort();
+
 
             //_serialPort.RtsEnable = _TncDevice.CommPort.Flowcontrol == _serialPort.Handshake.RequestToSend ? true : false;
             //_serialPort..ErrorReceived += new SerialErrorReceivedEventHandler(SerialPortErrorReceived);
             LogHelper(LogLevel.Info, "\n");
 			LogHelper(LogLevel.Info, $"{DateTime.Now.ToString()}");
-            LogHelper(LogLevel.Info, $"{_tncDevice.Name}: {_tncDevice.CommPort.Comport}, {_tncDevice.CommPort.Baudrate}, {_tncDevice.CommPort.Databits}, {_tncDevice.CommPort.Stopbits}, {_tncDevice.CommPort.Parity}, {_tncDevice.CommPort.Flowcontrol}");
+            LogHelper(LogLevel.Info, $"{_tncDevice.Name}: {serialDevice.PortName}, {serialDevice.BaudRate}, {serialDevice.DataBits}, {serialDevice.StopBits}, {serialDevice.Parity}, {serialDevice.Handshake}");
 			try
 			{
 				_connectState = ConnectState.ConnectStateNone;
-				//_serialPort.Open();
 
 				string readText = "";
 				string readCmdText = "";
@@ -557,7 +567,12 @@ namespace PacketMessaging.Services.CommunicationsService
 					}
 					else if (_tncDevice.Name == "XSC_Kenwood_TM-D710A" || _tncDevice.Name == "XSC_Kenwood_TH-D72A")
 					{
-						await KenwoodAsync();
+						bool success = await KenwoodAsync();
+						if (!success)
+						{
+							throw new IOException();
+							//return false;
+						}
 					}
 					// Send Precommands
 					string preCommands = _tncDevice.InitCommands.Precommands;
@@ -578,10 +593,15 @@ namespace PacketMessaging.Services.CommunicationsService
 				}
 				catch (Exception e)
 				{
+					if (e is IOException)
+					{
+						await Utilities.ShowMessageDialogAsync("Looks like the USB cable to the TNC is disconnected, or the radio is off", "TNC Connect Error");
+						return false;
+					}
+
 					LogHelper(LogLevel.Error, $"{e.Message}");
 					await Utilities.ShowMessageDialogAsync("Failed setting up the TNC");
-					_serialPort.Dispose();
-					return;
+					return false;
 				}
 				// Connect to JNOS
 				TimeSpan readTimeout = _serialPort.ReadTimeout;
@@ -734,7 +754,7 @@ Disconnect:
 				if (_connectState == ConnectState.ConnectStateBBSTryConnect)
 				{
 					//await _serialPort.Write("XM 0\r\x05");
-					Utilities.ShowMessageDialogAsync("It appears that the radio is tuned to the wrong frequency,\nor the BBS was out of reach", "BBS Connect Error");
+					await Utilities.ShowMessageDialogAsync("It appears that the radio is tuned to the wrong frequency,\nor the BBS was out of reach", "BBS Connect Error");
 					throw;
 				}
 				else if (_connectState == ConnectState.ConnectStatePrepareTNCType)
@@ -743,7 +763,7 @@ Disconnect:
 				}
 				else if (_connectState == ConnectState.ConnectStateConverseMode)
 				{
-					Utilities.ShowMessageDialogAsync($"Error sending FCC Identification - {ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserCallsign}.", "TNC Converse Error");
+					await Utilities.ShowMessageDialogAsync($"Error sending FCC Identification - {ViewModels.SettingsPageViewModel.IdentityPartViewModel.UserCallsign}.", "TNC Converse Error");
 				}
 				else if (_connectState == ConnectState.ConnectStateBBSConnected)
 				{
@@ -753,11 +773,11 @@ Disconnect:
 				//else if (e.Message.Contains("not exist"))
 				else if (e is IOException)
 				{
-					Utilities.ShowMessageDialogAsync("Looks like the USB cable to the TNC is disconnected", "TNC Connect Error");
+					await Utilities.ShowMessageDialogAsync("Looks like the USB cable to the TNC is disconnected, or the radio is off", "TNC Connect Error");
 				}
 				else if (e is UnauthorizedAccessException)
 				{
-					Utilities.ShowMessageDialogAsync($"The COM Port ({_tncDevice.CommPort.Comport}) is in use by another application. ", "TNC Connect Error");
+					await Utilities.ShowMessageDialogAsync($"The COM Port ({_tncDevice.CommPort.Comport}) is in use by another application. ", "TNC Connect Error");
 				}
 				else
 				{
@@ -765,14 +785,14 @@ Disconnect:
 				}
                 //_serialPort.Debug.WriteLine("B\r\n");
                 await Utilities.ShowMessageDialogAsync("Failed to communicate with the TNC");
-                return;
+                return false;
 			}
 			finally
 			{
-				_serialPort.Dispose();
 			}
 
 			//CloseDlgWindow(ConnectDlg);
+			return true;
 		}
 
 		//#region IDisposable Support

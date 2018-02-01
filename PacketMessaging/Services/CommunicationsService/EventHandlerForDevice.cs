@@ -24,6 +24,7 @@ using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using MetroLog;
+using PacketMessaging.Views;
 
 namespace PacketMessaging.Services.CommunicationsService
 {
@@ -40,10 +41,10 @@ namespace PacketMessaging.Services.CommunicationsService
     /// </summary>
     public class EventHandlerForDevice : CommunicationsServiceBase
     {
-		private static ILogger log = LogManagerFactory.DefaultLogManager.GetLogger<EventHandlerForDevice>();
+		private static ILogger _log = LogManagerFactory.DefaultLogManager.GetLogger<EventHandlerForDevice>();
 
 		/// <summary>
-		/// Allows for singleton EventHandlerForDevice
+		/// Used to synchronize threads to avoid multiple instantiations of eventHandlerForDevice.
 		/// </summary>
 		private static volatile EventHandlerForDevice eventHandlerForDevice;
 
@@ -52,32 +53,32 @@ namespace PacketMessaging.Services.CommunicationsService
         /// </summary>
         private static readonly Object singletonCreationLock = new Object();
 
-        private String deviceSelector;
-        private DeviceWatcher deviceWatcher;
+        private String _deviceSelector;
+        private DeviceWatcher _deviceWatcher;
 
-        private DeviceInformation deviceInformation;
-        private DeviceAccessInformation deviceAccessInformation;
+        private DeviceInformation _deviceInformation;
+        private DeviceAccessInformation _deviceAccessInformation;
         private SerialDevice device;
 
-        private SuspendingEventHandler appSuspendEventHandler;
-        private EventHandler<Object> appResumeEventHandler;
+        private SuspendingEventHandler _appSuspendEventHandler;
+        private EventHandler<Object> _appResumeEventHandler;
 
-        private TypedEventHandler<EventHandlerForDevice, DeviceInformation> deviceCloseCallback;
-        private TypedEventHandler<EventHandlerForDevice, DeviceInformation> deviceConnectedCallback;
+        private TypedEventHandler<EventHandlerForDevice, DeviceInformation> _deviceCloseCallback;
+        private TypedEventHandler<EventHandlerForDevice, DeviceInformation> _deviceConnectedCallback;
 
-        private TypedEventHandler<DeviceWatcher, DeviceInformation> deviceAddedEventHandler;
-        private TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> deviceRemovedEventHandler;
-        private TypedEventHandler<DeviceAccessInformation, DeviceAccessChangedEventArgs> deviceAccessEventHandler;
+        private TypedEventHandler<DeviceWatcher, DeviceInformation> _deviceAddedEventHandler;
+        private TypedEventHandler<DeviceWatcher, DeviceInformationUpdate> _deviceRemovedEventHandler;
+        private TypedEventHandler<DeviceAccessInformation, DeviceAccessChangedEventArgs> _deviceAccessEventHandler;
 
-		private TypedEventHandler<SerialDevice, ErrorReceivedEventArgs> deviceErrorEventHandler;
+		private TypedEventHandler<SerialDevice, ErrorReceivedEventArgs> _deviceErrorEventHandler;
 
-        private Boolean watcherSuspended;
-        private Boolean watcherStarted;
-        private Boolean isEnabledAutoReconnect;
+        private Boolean _watcherSuspended;
+        private Boolean _watcherStarted;
+        private Boolean _isEnabledAutoReconnect;
 
         // A pointer back to the main page.  This is needed if you want to call methods in MainPage such
         // as NotifyUser()
-        //private MainPage rootPage = MainPage.Current;
+        private MainPage rootPage = MainPage.Current;
 
         /// <summary>
         /// Enforces the singleton pattern so that there is only one object handling app events
@@ -98,11 +99,10 @@ namespace PacketMessaging.Services.CommunicationsService
                     {
                         if (eventHandlerForDevice == null)
                         {
-                            eventHandlerForDevice = new EventHandlerForDevice(log);
+							CreateNewEventHandlerForDevice();
                         }
                     }
                 }
-
                 return eventHandlerForDevice;
             }
         }
@@ -111,19 +111,19 @@ namespace PacketMessaging.Services.CommunicationsService
         /// </summary>
         public static void CreateNewEventHandlerForDevice()
         {
-            eventHandlerForDevice = new EventHandlerForDevice(log);
+            eventHandlerForDevice = new EventHandlerForDevice(_log);
         }
 
         public TypedEventHandler<EventHandlerForDevice, DeviceInformation> OnDeviceClose
         {
             get
             {
-                return deviceCloseCallback;
+                return _deviceCloseCallback;
             }
 
             set
             {
-                deviceCloseCallback = value;
+                _deviceCloseCallback = value;
             }
         }
 
@@ -131,12 +131,12 @@ namespace PacketMessaging.Services.CommunicationsService
         {
             get
             {
-                return deviceConnectedCallback;
+                return _deviceConnectedCallback;
             }
 
             set
             {
-                deviceConnectedCallback = value;
+                _deviceConnectedCallback = value;
             }
         }
 
@@ -152,7 +152,7 @@ namespace PacketMessaging.Services.CommunicationsService
         {
             get
             {
-                return deviceInformation;
+                return _deviceInformation;
             }
         }
 
@@ -164,7 +164,7 @@ namespace PacketMessaging.Services.CommunicationsService
         {
             get
             {
-                return deviceAccessInformation;
+                return _deviceAccessInformation;
             }
         }
 
@@ -173,10 +173,7 @@ namespace PacketMessaging.Services.CommunicationsService
         /// </summary>
         public String DeviceSelector
         {
-            get
-            {
-                return deviceSelector;
-            }
+            get => _deviceSelector;
         }
 
         /// <summary>
@@ -186,11 +183,11 @@ namespace PacketMessaging.Services.CommunicationsService
         {
             get
             {
-                return isEnabledAutoReconnect;
+                return _isEnabledAutoReconnect;
             }
             set
             {
-                isEnabledAutoReconnect = value;
+                _isEnabledAutoReconnect = value;
             }
         }
 
@@ -219,44 +216,43 @@ namespace PacketMessaging.Services.CommunicationsService
             {
                 successfullyOpenedDevice = true;
 
-                deviceInformation = deviceInfo;
-                this.deviceSelector = deviceSelector;
+                _deviceInformation = deviceInfo;
+                _deviceSelector = deviceSelector;
 
-                //notificationStatus = NotifyType.StatusMessage;
-                notificationMessage = "Device " + deviceInformation.Id + " opened";
+                notificationMessage = "Device " + _deviceInformation.Id + " opened";
 
 				// Notify registered callback handle that the device has been opened
-				deviceConnectedCallback?.Invoke(this, deviceInformation);
+				_deviceConnectedCallback?.Invoke(this, _deviceInformation);
 
-				if (appSuspendEventHandler == null || appResumeEventHandler == null)
+				if (_appSuspendEventHandler == null || _appResumeEventHandler == null)
                 {
                     RegisterForAppEvents();
                 }
 
                 // Register for DeviceAccessInformation.AccessChanged event and react to any changes to the
                 // user access after the device handle was opened.
-                if (deviceAccessEventHandler == null)
+                if (_deviceAccessEventHandler == null)
                 {
                     RegisterForDeviceAccessStatusChange();
                 }
 
                 // Create and register device watcher events for the device to be opened unless we're reopening the device
-                if (deviceWatcher == null)
+                if (_deviceWatcher == null)
                 {
-                    deviceWatcher = DeviceInformation.CreateWatcher(deviceSelector);
+                    _deviceWatcher = DeviceInformation.CreateWatcher(deviceSelector);
 
                     RegisterForDeviceWatcherEvents();
                 }
 
-                if (!watcherStarted)
+                if (!_watcherStarted)
                 {
                     // Start the device watcher after we made sure that the device is opened.
                     StartDeviceWatcher();
                 }
 
-				if (deviceErrorEventHandler == null)
+				if (_deviceErrorEventHandler == null)
 				{
-
+					RegisterForDeviceError();
 				}
             }
             else
@@ -267,18 +263,18 @@ namespace PacketMessaging.Services.CommunicationsService
 
                 if (deviceAccessStatus == DeviceAccessStatus.DeniedByUser)
                 {
-                    notificationMessage = "Access to the device was blocked by the user : " + deviceInfo.Id;
+                    notificationMessage = "Access to the device was blocked by the user : " + device.PortName;
                 }
                 else if (deviceAccessStatus == DeviceAccessStatus.DeniedBySystem)
                 {
                     // This status is most likely caused by app permissions (did not declare the device in the app's package.appxmanifest)
                     // This status does not cover the case where the device is already opened by another app.
-                    notificationMessage = "Access to the device was blocked by the system : " + deviceInfo.Id;
+                    notificationMessage = "Access to the device was blocked by the system : " + device.PortName;
                 }
                 else
                 {
                     // Most likely the device is opened by another app, but cannot be sure
-                    notificationMessage = "Unknown error, possibly opened by another app : " + deviceInfo.Id;
+                    notificationMessage = "Unknown error, possibly opened by another app : " + device.PortName;
                 }
             }
             if (!successfullyOpenedDevice)
@@ -296,54 +292,54 @@ namespace PacketMessaging.Services.CommunicationsService
         /// </summary>
         public void CloseDevice()
         {
-            if (IsDeviceConnected)
+			if (_deviceErrorEventHandler != null)
+			{
+				UnregisterFromDeviceError();
+			}
+
+			if (IsDeviceConnected)
             {
                 CloseCurrentlyConnectedDevice();
             }
 
-            if (deviceWatcher != null)
+            if (_deviceWatcher != null)
             {
-                if (watcherStarted)
+                if (_watcherStarted)
                 {
                     StopDeviceWatcher();
 
                     UnregisterFromDeviceWatcherEvents();
                 }
 
-                deviceWatcher = null;
+                _deviceWatcher = null;
             }
 
-            if (deviceAccessInformation != null)
+            if (_deviceAccessInformation != null)
             {
                 UnregisterFromDeviceAccessStatusChange();
 
-                deviceAccessInformation = null;
+                _deviceAccessInformation = null;
             }
 
-			if (deviceErrorEventHandler != null)
-			{
-				UnregisterFromDeviceError();
-			}
-
-            if (appSuspendEventHandler != null || appResumeEventHandler != null)
+            if (_appSuspendEventHandler != null || _appResumeEventHandler != null)
             {
                 UnregisterFromAppEvents();
             }
 
-            deviceInformation = null;
-            deviceSelector = null;
+            _deviceInformation = null;
+            _deviceSelector = null;
 
-            deviceConnectedCallback = null;
-            deviceCloseCallback = null;
+            _deviceConnectedCallback = null;
+            _deviceCloseCallback = null;
 
-            isEnabledAutoReconnect = true;
+            _isEnabledAutoReconnect = false;
         }
 
         private EventHandlerForDevice(ILogger log) : base(log)
         {
-            watcherStarted = false;
-            watcherSuspended = false;
-            isEnabledAutoReconnect = true;
+            _watcherStarted = false;
+            _watcherSuspended = false;
+            _isEnabledAutoReconnect = false;
         }
 
         /// <summary>
@@ -360,17 +356,14 @@ namespace PacketMessaging.Services.CommunicationsService
             if (device != null)
             {
                 // Notify callback that we're about to close the device
-                deviceCloseCallback?.Invoke(this, deviceInformation);
+                _deviceCloseCallback?.Invoke(this, _deviceInformation);
 
+				// Save the port name for logging info
 				string comport = device.PortName;
                 // This closes the handle to the device
                 device.Dispose();
 
                 device = null;
-
-                // Save the deviceInformation.Id in case deviceInformation is set to null when closing the
-                // device
-                String deviceId = deviceInformation.Id;
 
                 LogHelper(LogLevel.Info, $"{comport} is closed");
             }
@@ -384,23 +377,23 @@ namespace PacketMessaging.Services.CommunicationsService
         /// </summary>
         private void RegisterForAppEvents()
         {
-            appSuspendEventHandler = new SuspendingEventHandler(EventHandlerForDevice.Current.OnAppSuspension);
-            appResumeEventHandler = new EventHandler<Object>(EventHandlerForDevice.Current.OnAppResume);
+            _appSuspendEventHandler = new SuspendingEventHandler(EventHandlerForDevice.Current.OnAppSuspension);
+            _appResumeEventHandler = new EventHandler<Object>(EventHandlerForDevice.Current.OnAppResume);
 
             // This event is raised when the app is exited and when the app is suspended
-            App.Current.Suspending += appSuspendEventHandler;
+            App.Current.Suspending += _appSuspendEventHandler;
 
-            App.Current.Resuming += appResumeEventHandler;
+            App.Current.Resuming += _appResumeEventHandler;
         }
 
         private void UnregisterFromAppEvents()
         {
             // This event is raised when the app is exited and when the app is suspended
-            App.Current.Suspending -= appSuspendEventHandler;
-            appSuspendEventHandler = null;
+            App.Current.Suspending -= _appSuspendEventHandler;
+            _appSuspendEventHandler = null;
 
-            App.Current.Resuming -= appResumeEventHandler;
-            appResumeEventHandler = null;
+            App.Current.Resuming -= _appResumeEventHandler;
+            _appResumeEventHandler = null;
         }
 
         /// <summary>
@@ -409,22 +402,22 @@ namespace PacketMessaging.Services.CommunicationsService
         /// </summary>
         private void RegisterForDeviceWatcherEvents()
         {
-            deviceAddedEventHandler = new TypedEventHandler<DeviceWatcher, DeviceInformation>(this.OnDeviceAdded);
+            _deviceAddedEventHandler = new TypedEventHandler<DeviceWatcher, DeviceInformation>(OnDeviceAddedAsync);
 
-            deviceRemovedEventHandler = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(this.OnDeviceRemoved);
+            _deviceRemovedEventHandler = new TypedEventHandler<DeviceWatcher, DeviceInformationUpdate>(this.OnDeviceRemoved);
 
-            deviceWatcher.Added += deviceAddedEventHandler;
+            _deviceWatcher.Added += _deviceAddedEventHandler;
 
-            deviceWatcher.Removed += deviceRemovedEventHandler;
+            _deviceWatcher.Removed += _deviceRemovedEventHandler;
         }
 
         private void UnregisterFromDeviceWatcherEvents()
         {
-            deviceWatcher.Added -= deviceAddedEventHandler;
-            deviceAddedEventHandler = null;
+            _deviceWatcher.Added -= _deviceAddedEventHandler;
+            _deviceAddedEventHandler = null;
 
-            deviceWatcher.Removed -= deviceRemovedEventHandler;
-            deviceRemovedEventHandler = null;
+            _deviceWatcher.Removed -= _deviceRemovedEventHandler;
+            _deviceRemovedEventHandler = null;
         }
 
         /// <summary>
@@ -439,51 +432,51 @@ namespace PacketMessaging.Services.CommunicationsService
             // Enable the following registration ONLY if the Serial device under test is non-internal.
             //
 
-            deviceAccessInformation = DeviceAccessInformation.CreateFromId(deviceInformation.Id);
-            deviceAccessEventHandler = new TypedEventHandler<DeviceAccessInformation, DeviceAccessChangedEventArgs>(this.OnDeviceAccessChanged);
-            deviceAccessInformation.AccessChanged += deviceAccessEventHandler;
+            _deviceAccessInformation = DeviceAccessInformation.CreateFromId(_deviceInformation.Id);
+            _deviceAccessEventHandler = new TypedEventHandler<DeviceAccessInformation, DeviceAccessChangedEventArgs>(OnDeviceAccessChangedAsync);
+            _deviceAccessInformation.AccessChanged += _deviceAccessEventHandler;
         }
 
         private void UnregisterFromDeviceAccessStatusChange()
         {
-            deviceAccessInformation.AccessChanged -= deviceAccessEventHandler;
+            _deviceAccessInformation.AccessChanged -= _deviceAccessEventHandler;
 
-            deviceAccessEventHandler = null;
+            _deviceAccessEventHandler = null;
         }
 
 		private void RegisterForDeviceError()
 		{
-			deviceErrorEventHandler = new TypedEventHandler<SerialDevice, ErrorReceivedEventArgs>(this.OnDeviceError);
-			Device.ErrorReceived += deviceErrorEventHandler;
+			_deviceErrorEventHandler = new TypedEventHandler<SerialDevice, ErrorReceivedEventArgs>(OnDeviceError);
+			Device.ErrorReceived += _deviceErrorEventHandler;
 		}
 
 		private void UnregisterFromDeviceError()
 		{
-			Device.ErrorReceived -= deviceErrorEventHandler;
+			Device.ErrorReceived -= _deviceErrorEventHandler;
 
-			deviceErrorEventHandler = null;
+			_deviceErrorEventHandler = null;
 		}
 
 		private void StartDeviceWatcher()
         {
-            watcherStarted = true;
+            _watcherStarted = true;
 
-            if ((deviceWatcher.Status != DeviceWatcherStatus.Started)
-                && (deviceWatcher.Status != DeviceWatcherStatus.EnumerationCompleted))
+            if ((_deviceWatcher.Status != DeviceWatcherStatus.Started)
+                && (_deviceWatcher.Status != DeviceWatcherStatus.EnumerationCompleted))
             {
-                deviceWatcher.Start();
+                _deviceWatcher.Start();
             }
         }
 
         private void StopDeviceWatcher()
         {
-            if ((deviceWatcher.Status == DeviceWatcherStatus.Started)
-                || (deviceWatcher.Status == DeviceWatcherStatus.EnumerationCompleted))
+            if ((_deviceWatcher.Status == DeviceWatcherStatus.Started)
+                || (_deviceWatcher.Status == DeviceWatcherStatus.EnumerationCompleted))
             {
-                deviceWatcher.Stop();
+                _deviceWatcher.Stop();
             }
 
-            watcherStarted = false;
+            _watcherStarted = false;
         }
 
         /// <summary>
@@ -501,14 +494,14 @@ namespace PacketMessaging.Services.CommunicationsService
         /// <param name="eventArgs"></param>
         private void OnAppSuspension(Object sender, SuspendingEventArgs args)
         {
-            if (watcherStarted)
+            if (_watcherStarted)
             {
-                watcherSuspended = true;
+                _watcherSuspended = true;
                 StopDeviceWatcher();
             }
             else
             {
-                watcherSuspended = false;
+                _watcherSuspended = false;
             }
 
             CloseCurrentlyConnectedDevice();
@@ -525,9 +518,9 @@ namespace PacketMessaging.Services.CommunicationsService
         /// <param name="arg"></param>
         private void OnAppResume(Object sender, Object args)
         {
-            if (watcherSuspended)
+            if (_watcherSuspended)
             {
-                watcherSuspended = false;
+                _watcherSuspended = false;
                 StartDeviceWatcher();
             }
         }
@@ -539,7 +532,7 @@ namespace PacketMessaging.Services.CommunicationsService
         /// <param name="deviceInformationUpdate"></param>
         private void OnDeviceRemoved(DeviceWatcher sender, DeviceInformationUpdate deviceInformationUpdate)
         {
-            if (IsDeviceConnected && (deviceInformationUpdate.Id == deviceInformation.Id))
+            if (IsDeviceConnected && (deviceInformationUpdate.Id == _deviceInformation.Id))
             {
                 // The main reasons to close the device explicitly is to clean up resources, to properly handle errors,
                 // and stop talking to the disconnected device.
@@ -552,18 +545,18 @@ namespace PacketMessaging.Services.CommunicationsService
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="deviceInfo"></param>
-		private void OnDeviceAdded(DeviceWatcher sender, DeviceInformation deviceInfo)
+		private async void OnDeviceAddedAsync(DeviceWatcher sender, DeviceInformation deviceInfo)
 		{
-			if ((deviceInformation != null) && (deviceInfo.Id == deviceInformation.Id) && !IsDeviceConnected && isEnabledAutoReconnect)
+			if ((_deviceInformation != null) && (deviceInfo.Id == _deviceInformation.Id) && !IsDeviceConnected && _isEnabledAutoReconnect)
 			{
-				//await rootPage.Dispatcher.RunAsync(
-				//    CoreDispatcherPriority.Normal,
-				//    new DispatchedHandler(async () =>
-				//    {
-				//        await OpenDeviceAsync(deviceInformation, deviceSelector);
+				await rootPage.Dispatcher.RunAsync(
+					CoreDispatcherPriority.Normal,
+					new DispatchedHandler(async () =>
+					{
+						await OpenDeviceAsync(_deviceInformation, _deviceSelector);
 
-				//        // Any app specific device initialization should be done here because we don't know the state of the device when it is re-enumerated.
-				//    }));
+						// Any app specific device initialization should be done here because we don't know the state of the device when it is re-enumerated.
+					}));
 			}
 		}
 
@@ -572,23 +565,23 @@ namespace PacketMessaging.Services.CommunicationsService
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="eventArgs"></param>
-		private void OnDeviceAccessChanged(DeviceAccessInformation sender, DeviceAccessChangedEventArgs eventArgs)
+		private async void OnDeviceAccessChangedAsync(DeviceAccessInformation sender, DeviceAccessChangedEventArgs eventArgs)
 		{
 			if ((eventArgs.Status == DeviceAccessStatus.DeniedBySystem)
 				|| (eventArgs.Status == DeviceAccessStatus.DeniedByUser))
 			{
 				CloseCurrentlyConnectedDevice();
 			}
-			else if ((eventArgs.Status == DeviceAccessStatus.Allowed) && (deviceInformation != null) && isEnabledAutoReconnect)
+			else if ((eventArgs.Status == DeviceAccessStatus.Allowed) && (_deviceInformation != null) && _isEnabledAutoReconnect)
 			{
-				//await rootPage.Dispatcher.RunAsync(
-				//    CoreDispatcherPriority.Normal,
-				//    new DispatchedHandler(async () =>
-				//    {
-				//        await OpenDeviceAsync(deviceInformation, deviceSelector);
+				await rootPage.Dispatcher.RunAsync(
+					CoreDispatcherPriority.Normal,
+					new DispatchedHandler(async () =>
+					{
+						await OpenDeviceAsync(_deviceInformation, _deviceSelector);
 
-				//        // Any app specific device initialization should be done here because we don't know the state of the device when it is re-enumerated.
-				//    }));
+						// Any app specific device initialization should be done here because we don't know the state of the device when it is re-enumerated.
+					}));
 			}
 		}
 

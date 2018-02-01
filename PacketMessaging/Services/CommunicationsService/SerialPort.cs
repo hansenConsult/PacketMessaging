@@ -25,101 +25,27 @@ namespace PacketMessaging.Services.CommunicationsService
 		private MainPage rootPage = MainPage.Current;
 
 		// Track Read Operation
-		DataReader _dataReaderObject = null;
 		private CancellationTokenSource _readCancellationTokenSource;
 		private Object _ReadCancelLock = new Object();
+		DataReader _dataReaderObject = null;
 
 		string _readBytesBuffer = "";
 
 		// Track Write Operation
 		private CancellationTokenSource _writeCancellationTokenSource;
 		private Object _WriteCancelLock = new Object();
-
 		DataWriter _dataWriteObject = null;
-
-		//bool WriteBytesAvailable = false;
 
 		SerialDevice _serialDevice = null;
 
-		TNCDevice _tncDevice;
 
-		public SerialPort(ref TNCDevice tncDevice) : base(log)
+		public SerialPort() : base(log)
 		{
-			_tncDevice = tncDevice;
+			_serialDevice = EventHandlerForDevice.Current.Device;
 
-			//mapDeviceWatchersToDeviceSelector = new Dictionary<DeviceWatcher, String>();
-			//watchersStarted = false;
-			//watchersSuspended = false;
-
-			//isAllDevicesEnumerated = false;
-
-			//// Begin watching out for events
-			//StartHandlingAppEvents();
-
-			//// Initialize the desired device watchers so that we can watch for when devices are connected/removed
-			//InitializeDeviceWatchers();
-			//StartDeviceWatchers();
+			ResetReadCancellationTokenSource();
+			ResetWriteCancellationTokenSource();
 		}
-
-
-		///// <summary>
-		///// Creates a DeviceListEntry for a device and adds it to the list of devices in the UI
-		///// </summary>
-		///// <param name="deviceInformation">DeviceInformation on the device to be added to the list</param>
-		///// <param name="deviceSelector">The AQS used to find this device</param>
-		//private void AddDeviceToList(DeviceInformation deviceInformation, String deviceSelector)
-		//{
-		//	// search the device list for a device with a matching interface ID
-		//	var match = FindDevice(deviceInformation.Id);
-
-		//	// Add the device if it's new
-		//	if (match == null)
-		//	{
-		//		// Create a new element for this device interface, and queue up the query of its
-		//		// device information
-		//		match = new DeviceListEntry(deviceInformation, deviceSelector);
-
-		//		// Add the new element to the end of the list of devices
-		//		listOfDevices.Add(match);
-		//	}
-		//}			
-
-
-		//private void RemoveDeviceFromList(String deviceId)
-		//{
-		//	// Removes the device entry from the internal list; therefore the UI
-		//	var deviceEntry = FindDevice(deviceId);
-
-		//	listOfDevices.Remove(deviceEntry);
-		//}
-
-		//private void ClearDeviceEntries()
-		//{
-		//	listOfDevices.Clear();
-		//}
-
-		/// <summary>
-		/// Searches through the existing list of devices for the first DeviceListEntry that has
-		/// the specified device Id.
-		/// </summary>
-		/// <param name="deviceId">Id of the device that is being searched for</param>
-		/// <returns>DeviceListEntry that has the provided Id; else a nullptr</returns>
-		//private DeviceListEntry FindDevice(String deviceId)
-		//{
-		//	if (deviceId != null)
-		//	{
-		//		foreach (DeviceListEntry entry in listOfDevices)
-		//		{
-		//			if (entry.DeviceInformation.Id == deviceId)
-		//			{
-		//				return entry;
-		//			}
-		//		}
-		//	}
-
-		//	return null;
-		//}
-
 
 
 		public TimeSpan ReadTimeout
@@ -299,8 +225,8 @@ namespace PacketMessaging.Services.CommunicationsService
 			}
 			else
 			{
-				LogHelper(LogLevel.Warn, $"{_tncDevice.CommPort.Comport} is not connected");
-				await Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
+				LogHelper(LogLevel.Warn, $"{_serialDevice.PortName} is not connected");
+				await Utilities.ShowMessageDialogAsync($"{_serialDevice.PortName} is not connected");
 			}
 		}
 
@@ -330,11 +256,12 @@ namespace PacketMessaging.Services.CommunicationsService
 				{
 					OperationCanceledException exception = new OperationCanceledException("Read timeout");
 					LogHelper(LogLevel.Fatal, $"Read timeout");
-					throw exception;
+					throw new SerialPortException("Read timeout");
 				}
 				catch (Exception e)
 				{
 					LogHelper(LogLevel.Fatal, $"{e.Message.ToString()}");
+					throw new SerialPortException( e.Message);
 				}
 				finally
 				{
@@ -373,19 +300,22 @@ namespace PacketMessaging.Services.CommunicationsService
 			{
 				try
 				{
-					LogHelper(LogLevel.Info, $"Write {s}");
+					//LogHelper(LogLevel.Info, $"Write {s}");
 
 					_dataWriteObject = new DataWriter(EventHandlerForDevice.Current.Device.OutputStream);
 					_writeCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.WriteTimeout);
 					await WriteAsync(_writeCancellationTokenSource.Token, s);
 				}
-				catch (OperationCanceledException /*exception*/)
+				catch (OperationCanceledException )
 				{
-					NotifyWriteTaskCanceledAsync();
+					//NotifyWriteTaskCanceledAsync();
+					LogHelper(LogLevel.Info, $"WriteAsync has been cancelled");
+					throw new SerialPortException("WriteAsync has been cancelled");
 				}
 				catch (Exception exception)
 				{
 					LogHelper(LogLevel.Fatal, $"{exception.Message}");
+					throw new SerialPortException(exception.Message);
 				}
 				finally
 				{
@@ -396,7 +326,7 @@ namespace PacketMessaging.Services.CommunicationsService
 			}
 			else
 			{
-				await Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
+				await Utilities.ShowMessageDialogAsync($"{_serialDevice.PortName} is not connected");
 			}
 		}
 
@@ -429,7 +359,7 @@ namespace PacketMessaging.Services.CommunicationsService
 		{
 			Task<UInt32> loadAsyncTask;
 
-			uint ReadBufferLength = 1024;
+			uint ReadBufferLength = 256;
 			uint totalBytesRead = 0;
 			string stringRead = "";
 			bool endFound = false;
@@ -465,11 +395,6 @@ namespace PacketMessaging.Services.CommunicationsService
 		public async Task<string> ReadCharAsync()
 		{
 			string readString = "";
-			//uint ReadBufferLength = 4096 * 4;
-			//byte[] ReadBuffer = new byte[ReadBufferLength];
-			//byte[] buffer;
-			//DataReader dataReaderObject = null;// = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
-
 
 			if (EventHandlerForDevice.Current.IsDeviceConnected)
 			{
@@ -482,13 +407,13 @@ namespace PacketMessaging.Services.CommunicationsService
 				}
 				catch (OperationCanceledException /*exception*/)
 				{
-					OperationCanceledException exception = new OperationCanceledException("Read timeout");
 					LogHelper(LogLevel.Fatal, $"Read timeout");
-					throw exception;
+					throw new SerialPortException("Read timeout");
 				}
 				catch (Exception exception)
 				{
 					LogHelper(LogLevel.Info, exception.Message.ToString() + $" {EventHandlerForDevice.Current.Device.PortName}");
+					throw new SerialPortException(exception.Message);
 				}
 				finally
 				{
@@ -502,7 +427,7 @@ namespace PacketMessaging.Services.CommunicationsService
 			else
 			{
 				//Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
-				LogHelper(LogLevel.Error, $"{_tncDevice.CommPort.Comport} is not connected");
+				LogHelper(LogLevel.Error, $"{_serialDevice.PortName} is not connected");
 			}
 
 			//LogHelper(LogLevel.Info, $"Buffer: {readString}");
@@ -513,11 +438,6 @@ namespace PacketMessaging.Services.CommunicationsService
 		public async Task<string> ReadBufferAsync()
 		{
 			string readString = "";
-			//uint ReadBufferLength = 4096 * 4;
-			//byte[] ReadBuffer = new byte[ReadBufferLength];
-			//byte[] buffer;
-			//DataReader dataReaderObject = null;// = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
-
 
 			if (EventHandlerForDevice.Current.IsDeviceConnected)
 			{
@@ -532,11 +452,12 @@ namespace PacketMessaging.Services.CommunicationsService
 				{
 					OperationCanceledException exception = new OperationCanceledException("Read timeout");
 					LogHelper(LogLevel.Fatal, $"Read timeout");
-					throw exception;
+					throw new SerialPortException("Read timeout");
 				}
 				catch (Exception exception)
 				{
 					LogHelper(LogLevel.Info, exception.Message.ToString() + $" {EventHandlerForDevice.Current.Device.PortName}");
+					throw new SerialPortException(exception.Message, exception);
 				}
 				finally
 				{
@@ -586,7 +507,7 @@ namespace PacketMessaging.Services.CommunicationsService
 			else
 			{
 				//Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
-				LogHelper(LogLevel.Error, $"{_tncDevice.CommPort.Comport} is not connected");
+				LogHelper(LogLevel.Error, $"{_serialDevice.PortName} is not connected");
 			}
 
 			LogHelper(LogLevel.Trace, $"Buffer: {readString}");
@@ -594,55 +515,55 @@ namespace PacketMessaging.Services.CommunicationsService
 			return readString;
 		}
 
-		public async Task OpenAsync()
-		{
-			LogHelper(LogLevel.Info, $"Opening Comport {_tncDevice.CommPort.Comport}");
+		//public async Task OpenAsync()
+		//{
+		//	LogHelper(LogLevel.Info, $"Opening Comport {_serialDevice.PortName}");
 
-			var aqsFilter = SerialDevice.GetDeviceSelector(_tncDevice.CommPort.Comport);
-			var devices = await DeviceInformation.FindAllAsync(aqsFilter);
-			//LogHelper(LogLevel.Info, $"Device to open: {devices[0].Id}");
-			if (devices.Count > 0)
-			{
-				DeviceInformation device = devices[0];
-				//LogHelper(LogLevel.Info, $"Comport: {comport}");
+		//	var aqsFilter = SerialDevice.GetDeviceSelector(_serialDevice.PortName);
+		//	var devices = await DeviceInformation.FindAllAsync(aqsFilter);
+		//	//LogHelper(LogLevel.Info, $"Device to open: {devices[0].Id}");
+		//	if (devices.Count > 0)
+		//	{
+		//		DeviceInformation device = devices[0];
+		//		//LogHelper(LogLevel.Info, $"Comport: {comport}");
 
-				if (device != null)
-				{
-					// Create an EventHandlerForDevice to watch for the device we are connecting to
-					EventHandlerForDevice.CreateNewEventHandlerForDevice();
+		//		if (device != null)
+		//		{
+		//			// Create an EventHandlerForDevice to watch for the device we are connecting to
+		//			EventHandlerForDevice.CreateNewEventHandlerForDevice();
 
-					// Get notified when the device was successfully connected to or about to be closed
-					EventHandlerForDevice.Current.OnDeviceConnected = this.OnDeviceConnected;
-					//EventHandlerForDevice.Current.OnDeviceClose = this.OnDeviceClosing;
+		//			// Get notified when the device was successfully connected to or about to be closed
+		//			EventHandlerForDevice.Current.OnDeviceConnected = this.OnDeviceConnected;
+		//			//EventHandlerForDevice.Current.OnDeviceClose = this.OnDeviceClosing;
 
-					// It is important that the FromIdAsync call is made on the UI thread because the consent prompt, when present,
-					// can only be displayed on the UI thread. Since this method is invoked by the UI, we are already in the UI thread.
-					Boolean openSuccess = await EventHandlerForDevice.Current.OpenDeviceAsync(device, aqsFilter);
+		//			// It is important that the FromIdAsync call is made on the UI thread because the consent prompt, when present,
+		//			// can only be displayed on the UI thread. Since this method is invoked by the UI, we are already in the UI thread.
+		//			Boolean openSuccess = await EventHandlerForDevice.Current.OpenDeviceAsync(device, aqsFilter);
 
-					if (openSuccess)
-					{
-						_serialDevice =  EventHandlerForDevice.Current.Device;
+		//			if (openSuccess)
+		//			{
+		//				_serialDevice =  EventHandlerForDevice.Current.Device;
 
-						_serialDevice.BaudRate = (uint)_tncDevice.CommPort?.Baudrate;
-						_serialDevice.StopBits = (SerialStopBitCount)_tncDevice.CommPort?.Stopbits;
-						_serialDevice.DataBits = Convert.ToUInt16(_tncDevice.CommPort.Databits);
-						_serialDevice.Parity = (SerialParity)_tncDevice.CommPort?.Parity;
-						_serialDevice.Handshake = (SerialHandshake)_tncDevice.CommPort.Flowcontrol;
-						_serialDevice.ReadTimeout = new TimeSpan(0, 0, 10); // hours, min, sec
-						_serialDevice.WriteTimeout = new TimeSpan(0, 0, 10);
+		//				_serialDevice.BaudRate = (uint)_tncDevice.CommPort?.Baudrate;
+		//				_serialDevice.StopBits = (SerialStopBitCount)_tncDevice.CommPort?.Stopbits;
+		//				_serialDevice.DataBits = Convert.ToUInt16(_tncDevice.CommPort.Databits);
+		//				_serialDevice.Parity = (SerialParity)_tncDevice.CommPort?.Parity;
+		//				_serialDevice.Handshake = (SerialHandshake)_tncDevice.CommPort.Flowcontrol;
+		//				_serialDevice.ReadTimeout = new TimeSpan(0, 0, 10); // hours, min, sec
+		//				_serialDevice.WriteTimeout = new TimeSpan(0, 0, 10);
 
-						ResetReadCancellationTokenSource();
-						ResetWriteCancellationTokenSource();
+		//				ResetReadCancellationTokenSource();
+		//				ResetWriteCancellationTokenSource();
 
-						LogHelper(LogLevel.Info, $"Comport open. {_serialDevice.PortName}, {_serialDevice.BaudRate}, {_serialDevice.DataBits}, {_serialDevice.StopBits}, {_serialDevice.Parity}, {_serialDevice.Handshake}");
-					}
-					else
-					{
-						LogHelper(LogLevel.Error, $"Failed to open comport {_serialDevice.PortName}");
-					}
-				}
-			}
-		}
+		//				LogHelper(LogLevel.Info, $"Comport open. {_serialDevice.PortName}, {_serialDevice.BaudRate}, {_serialDevice.DataBits}, {_serialDevice.StopBits}, {_serialDevice.Parity}, {_serialDevice.Handshake}");
+		//			}
+		//			else
+		//			{
+		//				LogHelper(LogLevel.Error, $"Failed to open comport {_serialDevice.PortName}");
+		//			}
+		//		}
+		//	}
+		//}
 
 		/// <summary>
 		/// If all the devices have been enumerated, select the device in the list we connected to. Otherwise let the EnumerationComplete event
@@ -662,7 +583,7 @@ namespace PacketMessaging.Services.CommunicationsService
 
 				if (EventHandlerForDevice.Current.Device.PortName != "")
 				{
-					LogHelper(LogLevel.Info, "Connected to - " + EventHandlerForDevice.Current.Device.PortName);
+					LogHelper(LogLevel.Info, "Connected to - " + _serialDevice.PortName);
 				}
 				else
 				{
@@ -677,7 +598,7 @@ namespace PacketMessaging.Services.CommunicationsService
 			_readCancellationTokenSource = new CancellationTokenSource();
 
 			// Hook the cancellation callback (called whenever Task.cancel is called)
-			_readCancellationTokenSource.Token.Register(() => NotifyReadCancelingTaskAsync());
+			//_readCancellationTokenSource.Token.Register(() => NotifyReadCancelingTaskAsync());
 		}
 
 		private void ResetWriteCancellationTokenSource()
@@ -686,75 +607,75 @@ namespace PacketMessaging.Services.CommunicationsService
 			_writeCancellationTokenSource = new CancellationTokenSource();
 
 			// Hook the cancellation callback (called whenever Task.cancel is called)
-			_writeCancellationTokenSource.Token.Register(() => NotifyWriteCancelingTaskAsync());
+			//_writeCancellationTokenSource.Token.Register(() => NotifyWriteCancelingTaskAsync());
 		}
 
 		/// <summary>
 		/// Print a status message saying we are canceling a task and disable all buttons to prevent multiple cancel requests.
 		/// <summary>
-		private async void NotifyReadCancelingTaskAsync()
-		{
-			// Setting the dispatcher priority to high allows the UI to handle disabling of all the buttons
-			// before any of the IO completion callbacks get a chance to modify the UI; that way this method
-			// will never get the opportunity to overwrite UI changes made by IO callbacks
-			await rootPage.Dispatcher.RunAsync(CoreDispatcherPriority.High,
-				new DispatchedHandler(() =>
-				{
-					//ReadButton.IsEnabled = false;
-					//ReadCancelButton.IsEnabled = false;
+		//private async void NotifyReadCancelingTaskAsync()
+		//{
+		//	// Setting the dispatcher priority to high allows the UI to handle disabling of all the buttons
+		//	// before any of the IO completion callbacks get a chance to modify the UI; that way this method
+		//	// will never get the opportunity to overwrite UI changes made by IO callbacks
+		//	await rootPage.Dispatcher.RunAsync(CoreDispatcherPriority.High,
+		//		new DispatchedHandler(() =>
+		//		{
+		//			//ReadButton.IsEnabled = false;
+		//			//ReadCancelButton.IsEnabled = false;
 
-					//if (!IsNavigatedAway)
-					//{
-					//	rootPage.NotifyUser("Canceling Read... Please wait...", NotifyType.StatusMessage);
-					//}
-				}));
-		}
+		//			//if (!IsNavigatedAway)
+		//			//{
+		//			//	rootPage.NotifyUser("Canceling Read... Please wait...", NotifyType.StatusMessage);
+		//			//}
+		//		}));
+		//}
 
-		private async void NotifyWriteCancelingTaskAsync()
-		{
-			// Setting the dispatcher priority to high allows the UI to handle disabling of all the buttons
-			// before any of the IO completion callbacks get a chance to modify the UI; that way this method
-			// will never get the opportunity to overwrite UI changes made by IO callbacks
-			await rootPage.Dispatcher.RunAsync(CoreDispatcherPriority.High,
-				new DispatchedHandler(() =>
-				{
-					//WriteButton.IsEnabled = false;
-					//WriteCancelButton.IsEnabled = false;
+		//private async void NotifyWriteCancelingTaskAsync()
+		//{
+		//	// Setting the dispatcher priority to high allows the UI to handle disabling of all the buttons
+		//	// before any of the IO completion callbacks get a chance to modify the UI; that way this method
+		//	// will never get the opportunity to overwrite UI changes made by IO callbacks
+		//	await rootPage.Dispatcher.RunAsync(CoreDispatcherPriority.High,
+		//		new DispatchedHandler(() =>
+		//		{
+		//			//WriteButton.IsEnabled = false;
+		//			//WriteCancelButton.IsEnabled = false;
 
-					//if (!IsNavigatedAway)
-					//{
-					//	rootPage.NotifyUser("Canceling Write... Please wait...", NotifyType.StatusMessage);
-					//}
-				}));
-		}
+		//			//if (!IsNavigatedAway)
+		//			//{
+		//			//	rootPage.NotifyUser("Canceling Write... Please wait...", NotifyType.StatusMessage);
+		//			//}
+		//		}));
+		//}
 
-		/// <summary>
-		/// Notifies the UI that the operation has been canceled
-		/// </summary>
-		private async void NotifyReadTaskCanceledAsync()
-		{
-			await rootPage.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-				new DispatchedHandler(() =>
-				{
-					//if (!IsNavigatedAway)
-					//{
-					//	rootPage.NotifyUser("Read request has been canceled", NotifyType.StatusMessage);
-					//}
-				}));
+		///// <summary>
+		///// Notifies the UI that the operation has been canceled
+		///// </summary>
+		//private async void NotifyReadTaskCanceledAsync()
+		//{
+		//	await rootPage.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+		//		new DispatchedHandler(() =>
+		//		{
+		//			//if (!IsNavigatedAway)
+		//			//{
+		//			//	rootPage.NotifyUser("Read request has been canceled", NotifyType.StatusMessage);
+		//			//}
+		//		}));
 
-		}
+		//}
 
-		private async void NotifyWriteTaskCanceledAsync()
-		{
-			await rootPage.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-				new DispatchedHandler(() =>
-				{
-					//if (!IsNavigatedAway)
-					//{
-					//	rootPage.NotifyUser("Write request has been canceled", NotifyType.StatusMessage);
-					//}
-				}));
-		}
+		//private async void NotifyWriteTaskCanceledAsync()
+		//{
+		//	await rootPage.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+		//		new DispatchedHandler(() =>
+		//		{
+		//			//if (!IsNavigatedAway)
+		//			//{
+		//			//	rootPage.NotifyUser("Write request has been canceled", NotifyType.StatusMessage);
+		//			//}
+		//		}));
+		//}
 
 		public void Dispose()
 		{

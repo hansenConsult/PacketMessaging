@@ -227,14 +227,21 @@ namespace PacketMessaging.Services.CommunicationsService
 				DeviceInformation deviceInfo = devices[0];
 				if (deviceInfo != null)
 				{
+					// Create an EventHandlerForDevice to watch for the device we are connecting to
+					EventHandlerForDevice.CreateNewEventHandlerForDevice();
+
+					// Get notified when the device was successfully connected to or about to be closed
+					EventHandlerForDevice.Current.OnDeviceConnected = this.OnDeviceConnected;
+					EventHandlerForDevice.Current.OnDeviceClose = this.OnDeviceClosing;
+
 					openSuccess = await EventHandlerForDevice.Current.OpenDeviceAsync(deviceInfo, aqsFilter);
 					//SerialDevice device = await SerialDevice.FromIdAsync(deviceInfo.Id);
-					if (openSuccess)
-					{
-						//device.Dispose();
-						EventHandlerForDevice.Current.CloseDevice();
-						openSuccess = true;
-					}
+					//if (openSuccess)
+					//{
+					//	//device.Dispose();
+					//	EventHandlerForDevice.Current.CloseDevice();
+					//	openSuccess = true;
+					//}
 				}
 			}
 			return openSuccess;
@@ -365,7 +372,6 @@ namespace PacketMessaging.Services.CommunicationsService
 					if (_packetMessagesToSend.Count == 0)
 					{
 						LogHelper(LogLevel.Info, $"No messages to send.");
-						//return;
 					}
 
 					TNCInterface tncInterface = new TNCInterface(bbs.ConnectName, ref tncDevice, ViewModels.SharedData._forceReadBulletins, ViewModels.SharedData._Areas, ref _packetMessagesToSend);
@@ -473,7 +479,14 @@ namespace PacketMessaging.Services.CommunicationsService
 						//connectDlg.Owner = Window.GetWindow(this);
 						//tncInterface.ConnectDlg = connectDlg;
 
-						await tncInterface.BBSConnectThreadProcAsync();
+						bool success = await tncInterface.BBSConnectThreadProcAsync();
+
+						EventHandlerForDevice.Current.CloseDevice();
+
+						if (!success)
+						{
+							return;
+						}
 
 						//var thread = new Thread(tncInterface.BBSConnectThreadProc);
 						//thread.SetApartmentState(ApartmentState.STA);
@@ -514,6 +527,27 @@ namespace PacketMessaging.Services.CommunicationsService
 				await messageDialog.ShowAsync();
                 LogHelper(LogLevel.Error, $"Could not find the requested BBS ({ViewModels.SharedData.SharedDataInstance.CurrentProfile.BBS}). Check Packet Settings");
 			}
+		}
+
+		/// <summary>
+		/// If all the devices have been enumerated, select the device in the list we connected to. Otherwise let the EnumerationComplete event
+		/// from the device watcher handle the device selection
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="deviceInformation"></param>
+		private void OnDeviceConnected(EventHandlerForDevice sender, DeviceInformation deviceInformation)
+		{
+			LogHelper(LogLevel.Info, $"{ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort.Comport} Connected.");
+		}
+
+		/// <summary>
+		/// The device was closed. If we will autoreconnect to the device, reflect that in the UI
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="deviceInformation"></param>
+		private void OnDeviceClosing(EventHandlerForDevice sender, DeviceInformation deviceInformation)
+		{
+			LogHelper(LogLevel.Info, $"{ViewModels.SharedData.SharedDataInstance.CurrentTNCDevice.CommPort.Comport} Disconnected.");
 		}
 
 	}
