@@ -45,7 +45,7 @@ namespace MessageFormControl
         //public override string OperatorTime
         //{ get; set; }
 
-		public override string PacFormName => "SimpleMessage";
+		public override string PacFormFileName => "SimpleMessage";
 
         public override string PacFormType => "SimpleMessage";
 

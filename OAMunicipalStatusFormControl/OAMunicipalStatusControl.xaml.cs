@@ -177,7 +177,7 @@ namespace OAMunicipalStatusFormControl
         public string MunicipalityName
         { get => (municipalityName.SelectedIndex != 0 ? "" : municipalityName.SelectedItem as string); }
 
-        public override string PacFormName => "XSC_OA_MuniStatus";
+        public override string PacFormFileName => "XSC_OA_MuniStatus";
 
         public override string PacFormType => "OAMuniStatus";
 

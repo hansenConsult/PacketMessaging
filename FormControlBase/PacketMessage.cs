@@ -225,7 +225,12 @@ namespace FormControlBaseClass
             set
             {
                 this.messageReceiveTimeField = value;
-            }
+				if (value != null)
+				{
+					messageReceiveTimeDisplayField = ConvertToDisplayTime((DateTime)this.messageReceiveTimeField);
+				}
+
+			}
         }
 
 		/// <remarks/>
@@ -380,6 +385,11 @@ namespace FormControlBaseClass
 		public override string ToString()
 		{
 			return Subject;
+		}
+
+		private string ConvertToDisplayTime(DateTime dateTime)
+		{
+			return $"{dateTime.Month:d2}/{dateTime.Day:d2}/{dateTime.Year - 2000:d2} {dateTime.Hour:d2}:{dateTime.Minute:d2}";
 		}
 
 		public async void CreateFileName()

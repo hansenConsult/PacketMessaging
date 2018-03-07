@@ -55,6 +55,7 @@ namespace PacketMessaging.Services.SMTPClient
         public String Subject { get; set; }
 
         public String Body { get; set; }
+
         public Boolean IsHtml { get; set; }
 
         /// <summary>

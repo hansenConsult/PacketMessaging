@@ -129,7 +129,7 @@ namespace XSC_Message_v1709FormControl
 		public override string OperatorTime
 		{ get { return GetTextBoxString(operatorTime); } set { SetTextBoxString(operatorTime, value); } }
 
-		public override string PacFormName => "Message";
+		public override string PacFormFileName => "Message";
 
         public override string PacFormType => "Message";
 

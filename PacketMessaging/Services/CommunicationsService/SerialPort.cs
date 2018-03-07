@@ -300,7 +300,7 @@ namespace PacketMessaging.Services.CommunicationsService
 			{
 				try
 				{
-					//LogHelper(LogLevel.Info, $"Write {s}");
+					LogHelper(LogLevel.Info, $"Write {s}");
 
 					_dataWriteObject = new DataWriter(EventHandlerForDevice.Current.Device.OutputStream);
 					_writeCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.WriteTimeout);
@@ -309,8 +309,8 @@ namespace PacketMessaging.Services.CommunicationsService
 				catch (OperationCanceledException )
 				{
 					//NotifyWriteTaskCanceledAsync();
-					LogHelper(LogLevel.Info, $"WriteAsync has been cancelled");
-					throw new SerialPortException("WriteAsync has been cancelled");
+					LogHelper(LogLevel.Info, $"WriteAsync has been canceled");
+					throw new SerialPortException("WriteAsync has been canceled");
 				}
 				catch (Exception exception)
 				{
@@ -402,7 +402,7 @@ namespace PacketMessaging.Services.CommunicationsService
 				{
 					_dataReaderObject = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
 
-					_readCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.ReadTimeout);
+					//_readCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.ReadTimeout);
 					readString = await ReadCharAsync(_readCancellationTokenSource.Token);
 				}
 				catch (OperationCanceledException /*exception*/)
@@ -431,6 +431,49 @@ namespace PacketMessaging.Services.CommunicationsService
 			}
 
 			//LogHelper(LogLevel.Info, $"Buffer: {readString}");
+
+			return readString;
+		}
+		public async Task<string> ReadWithTimeoutAsync()
+		{
+			string readString = "";
+
+			if (EventHandlerForDevice.Current.IsDeviceConnected)
+			{
+				try
+				{
+					_dataReaderObject = new DataReader(EventHandlerForDevice.Current.Device.InputStream);
+
+					_readCancellationTokenSource.CancelAfter(EventHandlerForDevice.Current.Device.ReadTimeout);
+					readString = await ReadAsync(_readCancellationTokenSource.Token);
+				}
+				catch (OperationCanceledException /*exception*/)
+				{
+					OperationCanceledException exception = new OperationCanceledException("Read timeout");
+					LogHelper(LogLevel.Fatal, $"Read timeout no exception thrown");
+					//throw new SerialPortException("Read timeout");
+				}
+				catch (Exception exception)
+				{
+					LogHelper(LogLevel.Info, exception.Message.ToString() + $" {EventHandlerForDevice.Current.Device.PortName}");
+					throw new SerialPortException(exception.Message, exception);
+				}
+				finally
+				{
+					ResetReadCancellationTokenSource();
+					_dataReaderObject.DetachStream();
+					//_dataReaderObject.Dispose();
+					_dataReaderObject = null;
+				}
+
+			}
+			else
+			{
+				//Utilities.ShowMessageDialogAsync($"{_tncDevice.CommPort.Comport} is not connected");
+				LogHelper(LogLevel.Error, $"{_serialDevice.PortName} is not connected");
+			}
+
+			LogHelper(LogLevel.Trace, $"Buffer: {readString}");
 
 			return readString;
 		}
@@ -463,7 +506,7 @@ namespace PacketMessaging.Services.CommunicationsService
 				{
 					ResetReadCancellationTokenSource();
 					_dataReaderObject.DetachStream();
-					//_dataReaderObject.Dispose();
+					_dataReaderObject.Dispose();
 					_dataReaderObject = null;
 				}
 
@@ -489,8 +532,8 @@ namespace PacketMessaging.Services.CommunicationsService
 				//}
 				//catch (OperationCanceledException)
 				//{
-				//	OperationCanceledException exception = new OperationCanceledException("Read cancelled");
-				//	LogHelper(LogLevel.Fatal, $"Read cancelled {readString}");
+				//	OperationCanceledException exception = new OperationCanceledException("Read canceled");
+				//	LogHelper(LogLevel.Fatal, $"Read canceled {readString}");
 				//	throw exception;
 				//}
 				//catch (Exception e)

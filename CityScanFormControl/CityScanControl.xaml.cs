@@ -147,7 +147,7 @@ namespace CityScanFormControl
 		public override string OperatorName
 		{ get; set; }
 
-		public override string PacFormName => "city-scan";
+		public override string PacFormFileName => "city-scan";
 
         public override string PacFormType => "city_scan";
 

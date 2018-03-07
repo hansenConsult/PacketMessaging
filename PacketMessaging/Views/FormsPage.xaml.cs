@@ -882,7 +882,7 @@ namespace PacketMessaging.Views
                 BBSName = _packetAddressForm.MessageBBS,
                 TNCName = _packetAddressForm.MessageTNC,
                 FormFieldArray = _packetForm.CreateFormFieldsInXML(),
-                PacFormName = _packetForm.PacFormName,
+                PacFormName = _packetForm.PacFormFileName,
                 PacFormType = _packetForm.PacFormType,
                 MessageFrom = _packetAddressForm.MessageFrom,
                 MessageTo = _packetAddressForm.MessageTo,

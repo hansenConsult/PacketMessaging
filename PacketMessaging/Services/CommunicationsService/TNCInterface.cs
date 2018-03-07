@@ -184,30 +184,18 @@ namespace PacketMessaging.Services.CommunicationsService
 			//int index = -1;
 			try
 			{
+				readText = await _serialPort.ReadWithTimeoutAsync();
+				LogHelper(LogLevel.Info, $"rr {readText}");
+
 				await _serialPort.WriteWithEchoAsync("\r");
 				readText = await _serialPort.ReadBufferAsync();
 
-				//_serialPort.Write("D\r");
+				LogHelper(LogLevel.Info, $"r0 {readText}");
 
-				//string readText = _serialPort.ReadLine();
-				//log.Info(readCmdText + _TNCPrompt + readText);
-
-				//readText = _serialPort.ReadLine();
-				//log.Info(readText);
-
-				//readCmdText = _serialPort.ReadTo(_TNCPrompt);
-
-				//_serialPort.Write("b\r");
-
-				//redo:
-				//await _serialPort.WriteAsync("\r\n");
+				//await _serialPort.WriteWithEchoAsync("\r");
 				//readText = await _serialPort.ReadBufferAsync();
-				//if (!readText.EndsWith(_TNCPrompt))
-				//{
-				//	await _serialPort.WriteAsync("\r\n");
-				//	await _serialPort.ReadToAsync(_TNCPrompt);
-				//}
 
+				//LogHelper(LogLevel.Info, $"r01 {readText}");
 
 				while (!readText.EndsWith(_TNCPrompt))
 				{
@@ -540,8 +528,14 @@ namespace PacketMessaging.Services.CommunicationsService
 			serialDevice.DataBits = Convert.ToUInt16(_tncDevice.CommPort.Databits);
 			serialDevice.Parity = (SerialParity)_tncDevice.CommPort?.Parity;
 			serialDevice.Handshake = (SerialHandshake)_tncDevice.CommPort.Flowcontrol;
-			serialDevice.ReadTimeout = new TimeSpan(0, 0, 10); // hours, min, sec
-			serialDevice.WriteTimeout = new TimeSpan(0, 0, 10);
+			serialDevice.ReadTimeout = new TimeSpan(0, 0, 1); // hours, min, sec
+			//serialDevice.ReadTimeout = new TimeSpan(0, 0, 0); // hours, min, sec
+			serialDevice.WriteTimeout = new TimeSpan(0, 0, 0);
+			bool carrierDetectState = serialDevice.CarrierDetectState;
+			bool dataSetReadyState = serialDevice.DataSetReadyState;
+			bool breakSignalState = serialDevice.BreakSignalState;
+			bool isDataTerminalReadyEnabled = serialDevice.IsDataTerminalReadyEnabled;
+			bool isRequestToSendEnabled = serialDevice.IsRequestToSendEnabled;
 
 			_serialPort = new SerialPort();
 
@@ -574,7 +568,7 @@ namespace PacketMessaging.Services.CommunicationsService
 							//return false;
 						}
 					}
-					// Send Precommands
+					// Send Pre-Commands
 					string preCommands = _tncDevice.InitCommands.Precommands;
 					string[] preCommandLines = preCommands.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 					_connectState = ConnectState.ConnectStatePrepare;
@@ -615,7 +609,7 @@ namespace PacketMessaging.Services.CommunicationsService
 				string readConnectText = await _serialPort.ReadLineAsync();    // Read command response
 				if (readConnectText.ToLower().Contains(_tncDevice.Prompts.Timeout.ToLower()))
 				{
-					Utilities.ShowMessageDialogAsync("Timeout connecting to the BBS.\nIs the BBS connect name and frequency correct?\nIs the antenna connected.\nThe BBS may be out of reach.", "BBS Connect Error");
+					await Utilities.ShowMessageDialogAsync("Timeout connecting to the BBS.\nIs the BBS connect name and frequency correct?\nIs the antenna connected.\nThe BBS may be out of reach.", "BBS Connect Error");
 
 					goto Disconnect;
 				}

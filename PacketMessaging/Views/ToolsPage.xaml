@@ -61,6 +61,20 @@
 				<!--</ScrollViewer>-->
 			</PivotItem>
             
+            <!--Convert ASCII data-->
+            <PivotItem x:Name="ConvertToFromPacForm"  Header="Convert text">
+                <ScrollViewer>
+                    <StackPanel Margin="0,5,0,0">
+                        <TextBox x:Name="messageTo" Header="To:" Margin="0,5,0,0" />
+                        <TextBox x:Name="messageFrom" Header="From:" Margin="0,5,0,0" />
+                        <TextBox x:Name="messageReceivedTime" Header="Time" Margin="0,5,0,0" />
+                        <TextBox x:Name="messageSubject" Header="Subject:" Margin="0,5,0,0" />
+                        <TextBox x:Name="PacFormText" Header="Message:" Height="auto" AcceptsReturn="True" Margin="0,6,0,0"/>
+                        <Button x:Name="buttonShowForm" Content="Convert To Form" Click="ConvertToForm_Click" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            
             <!--Test receive Outpost data-->
             <PivotItem x:Name="testReceive" DataContext="{Binding ToolsPageTestReceivePartViewModel}" Header="Test Receive">
                   <RelativePanel x:Name="testReceivePanel">

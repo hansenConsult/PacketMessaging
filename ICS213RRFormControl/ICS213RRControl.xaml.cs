@@ -76,7 +76,7 @@ namespace EOC213RRFormControl
         public string IncidentName
 		{ get => GetTextBoxString(incidentName); set => SetTextBoxString(incidentName, value); }
 
-		public override string PacFormName => "XSC_EOC-213RR_v1706";
+		public override string PacFormFileName => "XSC_EOC-213RR_v1706";
 
         public override string PacFormType => "XSC_EOC_213RR";
 

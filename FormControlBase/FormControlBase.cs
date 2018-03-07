@@ -400,7 +400,7 @@ namespace FormControlBaseClass
         public virtual string HowReceivedSent
         { get; set; }
 
-        public abstract string PacFormName
+        public abstract string PacFormFileName
 		{ get; }
 
         public abstract string PacFormType

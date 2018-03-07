@@ -50,7 +50,148 @@ namespace PacketMessaging.Services.CommunicationsService
 			return _communicationsService;
 		}
 
-        public async void ProcessReceivedMessagesAsync()
+		public void CreatePacketMessageFromMessageAsync(ref PacketMessage pktMsg)
+		{
+			FormControlBase formControl = new MessageControl();
+			// test for packet form!!
+			//pktMsg.PacFormType = PacForms.Message;
+			//pktMsg.PacFormName = "SimpleMessage";
+			// Save the original message for post processing (tab characters are lost in the displayed message)
+			string[] msgLines = pktMsg.MessageBody.Split(new string[] { "\r\n", "\r" }, StringSplitOptions.None);
+
+			bool subjectFound = false;
+			for (int i = 0; i < Math.Min(msgLines.Length, 20); i++)
+			{
+				if (msgLines[i].StartsWith("Date:"))
+				{
+					string startpos = new string(new char[] { 'D','a','t','e',':',' ' });
+					pktMsg.JNOSDate = DateTime.Parse(msgLines[i].Substring(startpos.Length));
+					pktMsg.JNOSDateDisplay = $"{pktMsg.JNOSDate.Month:d2}/{pktMsg.JNOSDate.Date:d2}/{pktMsg.JNOSDate.Year - 2000:d2} {pktMsg.JNOSDate.Hour:d2}:{pktMsg.JNOSDate.Minute:d2}";
+				}
+				else if (msgLines[i].StartsWith("From:"))
+					pktMsg.MessageFrom = msgLines[i].Substring(6);
+				else if (msgLines[i].StartsWith("To:"))
+					pktMsg.MessageTo = msgLines[i].Substring(4);
+				else if (msgLines[i].StartsWith("Cc:"))
+				{
+					pktMsg.MessageTo += (", " + msgLines[i].Substring(4));
+					while (msgLines[i + 1].Length == 0)
+					{
+						i++;
+					}
+					if (msgLines[i + 1][0] == ' ')
+					{
+						pktMsg.MessageTo += msgLines[i + 1].TrimStart(new char[] { ' ' });
+					}
+				}
+				else if (!subjectFound && msgLines[i].StartsWith("Subject:"))
+				{
+					pktMsg.Subject = msgLines[i].Substring(9);
+					//pktMsg.MessageSubject = pktMsg.MessageSubject.Replace('\t', ' ');
+					subjectFound = true;
+				}
+				else if (msgLines[i].StartsWith("# FORMFILENAME:"))
+				{
+					string html = ".html";
+					string formName = msgLines[i].Substring(16).TrimEnd(new char[] { ' ' });
+					formName = formName.Substring(0, formName.Length - html.Length);
+					pktMsg.PacFormType = formName;
+
+					formControl = Views.FormsPage.CreateFormControlInstance(pktMsg.PacFormType);
+					if (formControl == null)
+					{
+						//await Utilities.ShowMessageDialogAsync($"Form {pktMsg.PacFormName} not found");
+						log.Error($"Form {pktMsg.PacFormName} not found");
+						return ;
+					}
+					break;
+				}
+			}
+			pktMsg.PacFormName = formControl.PacFormFileName;
+			//pktMsg.PacFormType = formControl.PacFormType;
+			//pktMsg.MessageNumber = packetMessage.MessageNumber;
+			pktMsg.FormFieldArray = formControl.ConvertFromOutpost(pktMsg.MessageNumber, ref msgLines);
+			//pktMsg.ReceivedTime = packetMessage.ReceivedTime;
+			pktMsg.CreateFileName();
+			string fileFolder = Views.MainPage._receivedMessagesFolder.Path;
+			pktMsg.Save(fileFolder);
+
+			//log.Info($"Message number {pktMsg.MessageNumber} received");
+			LogHelper(LogLevel.Info, $"Message number {pktMsg.MessageNumber} converted and saved");
+
+			// If the received message is a delivery confirmation, update receivers message number in the original sent message
+			//if (!string.IsNullOrEmpty(pktMsg.Subject) && pktMsg.Subject.Contains("DELIVERED:"))
+			//{
+			//	var formField = pktMsg.FormFieldArray.FirstOrDefault(x => x.ControlName == "messageBody");
+			//	if (formField.ControlContent.Contains("!LMI!"))
+			//	{
+			//		string[] searchStrings = new string[] { "Subject: ", "was delivered on ", "Recipient's Local Message ID: " };
+			//		DateTime receiveTime = DateTime.Now;
+			//		string receiversMessageId = "", sendersMessageId = "";
+			//		var messageLines = formField.ControlContent.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+			//		foreach (string line in messageLines)
+			//		{
+			//			if (line.Contains(searchStrings[0]))
+			//			{
+			//				int indexOfUnderscore = line.IndexOf('_');
+			//				int indexOfDelivered = line.IndexOf(searchStrings[0]);
+			//				if (indexOfUnderscore >= 0)
+			//				{
+			//					sendersMessageId = line.Substring(indexOfDelivered + searchStrings[0].Length, indexOfUnderscore - (indexOfDelivered + searchStrings[0].Length));
+			//				}
+			//			}
+			//			else if (line.Contains(searchStrings[1]))
+			//			{
+			//				int indexOfDeliveryTime = line.IndexOf(searchStrings[1]);
+			//				if (indexOfDeliveryTime >= 0)
+			//				{
+			//					string s = line.Substring(indexOfDeliveryTime + searchStrings[1].Length);
+			//					receiveTime = DateTime.Parse(s);
+			//				}
+			//			}
+			//			else if (line.Contains(searchStrings[2]))
+			//			{
+			//				receiversMessageId = line.Substring(line.IndexOf(searchStrings[2]) + searchStrings[2].Length);
+			//			}
+			//		}
+
+			//		List<string> fileTypeFilter = new List<string>() { ".xml" };
+			//		QueryOptions queryOptions = new QueryOptions(CommonFileQuery.DefaultQuery, fileTypeFilter);
+
+			//		// Get the files in the user's archive folder
+			//		StorageFileQueryResult results = MainPage._sentMessagesFolder.CreateFileQueryWithOptions(queryOptions);
+			//		// Iterate over the results
+			//		IReadOnlyList<StorageFile> files = await results.GetFilesAsync();
+			//		foreach (StorageFile file in files)
+			//		{
+			//			// Update sent form with receivers message number and receive time
+			//			if (file.Name.Contains(sendersMessageId))
+			//			{
+			//				PacketMessage message = PacketMessage.Open(file);
+			//				if (packetMessage.MessageNumber == sendersMessageId)
+			//				{
+			//					formField = packetMessage.FormFieldArray.FirstOrDefault(x => x.ControlName == "receiverMsgNo");
+			//					if (formField != null)
+			//					{
+			//						formField.ControlContent = receiversMessageId;
+			//					}
+			//					packetMessage.ReceivedTime = receiveTime;
+			//					if (receiveTime != null)
+			//					{
+			//						packetMessage.ReceivedTimeDisplay = $"{receiveTime.Month:d2}/{receiveTime.Date:d2}/{receiveTime.Year - 2000:d2} {receiveTime.Hour:d2}:{receiveTime.Minute:d2}";
+			//					}
+			//					packetMessage.Save(MainPage._sentMessagesFolder.Path);
+			//					break;
+			//				}
+			//			}
+			//		}
+			//	}
+			//}
+
+			return ;
+		}
+
+		public async void ProcessReceivedMessagesAsync()
 		{
 			if (_packetMessagesReceived.Count() > 0)
 			{
@@ -107,9 +248,10 @@ namespace PacketMessaging.Services.CommunicationsService
 							string html = ".html";
 							string formName = msgLines[i].Substring(16).TrimEnd(new char[] { ' ' });
 							formName = formName.Substring(0, formName.Length - html.Length);
-							pktMsg.PacFormName = formName;
+							pktMsg.PacFormType = formName;
 
-							formControl = Views.FormsPage.CreateFormControlInstanceFromFileName(pktMsg.PacFormName);
+							//formControl = Views.FormsPage.CreateFormControlInstanceFromFileName(pktMsg.PacFormName);
+							formControl = Views.FormsPage.CreateFormControlInstance(pktMsg.PacFormType);
 							if (formControl == null)
 							{
 								await Utilities.ShowMessageDialogAsync($"Form {pktMsg.PacFormName} not found");
